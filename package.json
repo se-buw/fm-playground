@@ -1,0 +1,11 @@
+{
+  "name": "z3-playground",
+  "version": "1.0.0",
+  "description": "A Z3 playground using the Monaco Editor",
+  "author": "Soaibuzzaman",
+  "license": "MIT",
+  "devDependencies": {
+    "monaco-editor": "^0.41.0"
+  }
+}
+
