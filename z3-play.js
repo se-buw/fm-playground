@@ -128,11 +128,32 @@ var editor = monaco.editor.create(document.getElementById('container'), {
 /* --------------------------------------------------------------------------- */
 
 var z3_loaded = false;
+const host = "http://127.0.0.1:5000"
 
-function load_in_editor(code) {
+function load_in_editor() {
   const info = document.getElementById("info");
-  editor.getModel().setValue(code);
-  info.innerText = "";
+  if(window.location.hash != "" && window.location.hash != undefined && window.location.hash != null){
+    let permalink = window.location.hash.substring(1);
+    console.log("permalink: ", permalink);
+    let code_content;
+    fetch(host+'/'+permalink)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      code_content = data.code;
+      console.log('Success:', data.code);
+      editor.getModel().setValue(code_content);
+      info.innerText = "";
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    }); 
+  }
+  
 }
 
 function my_run_id(code) {
@@ -140,10 +161,12 @@ function my_run_id(code) {
   editor.getModel().setValue(code);
   if (z3_loaded) {
     try {
+      console.log(code);
       info.innerText = "";
       let res = Z3.solve(code);
       // console.log(res)
       info.innerText += res;
+      save_to_db(code);
     } catch (error) {
       console.error(error);
       // info.innerText += error;
@@ -152,6 +175,29 @@ function my_run_id(code) {
     info.innerText = "Wait for Z3 to load and try again."
   }
 }
+
+function save_to_db(code){
+  fetch(host+'/save', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({code: code}),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.permalink != "ea4a7c948e74cb77f788c3a3bf889bdf") {
+      window.location.hash = data.permalink;
+      //console.log('Success:', data.permalink);
+    }
+    
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
+
 
 Module = {};
 Module.onRuntimeInitialized = () => { console.log("z3 loaded"); z3_loaded = true; };
@@ -164,46 +210,12 @@ Module.print = (text) => {
 
 window.onload = function () {
   // Z3["onInitialized"] = () => { console.log("z3 loaded 2"); z3_loaded = true; }
-
+  
   let button = document.getElementById("run-button");
   button.onclick = () => {
     let code = editor.getModel().getValue();
     my_run_id(code);
   };
 
-  // Grab all pre elements and replace them with textarea button results combo
-  var examples = document.getElementsByTagName("pre");
-  console.log(examples)
-  examples = Array.from(examples)
-  for (let code of examples) {
-    if (code.className == "listing") {
-      let div = document.createElement("div");
-
-      let ta = document.createElement("pre");
-
-      let button = document.createElement("button");
-      let br = document.createElement("br");
-
-      ta.style.width = "100%";
-      ta.innerHTML = code.textContent.replace(/\r?\n/g, '\r\n');
-      button.className = "load-button";
-      button.innerHTML = "&#9998; Try it";
-      button.onclick = () => {
-        load_in_editor(code.textContent);
-      };
-      div.appendChild(button);
-      div.appendChild(ta);
-      code.parentNode.replaceChild(div, code);
-    }
-  }
-
-  // destroy aref that do nothing now
-  var badlinks = document.getElementsByTagName('a');
-  for (var i = 0; i < badlinks.length; i++) {
-    link = badlinks[i]
-    if (link.innerHTML == "load in editor") {
-      link.innerHTML = ""
-      //link.remove()
-    }
-  }
+  load_in_editor();
 }
