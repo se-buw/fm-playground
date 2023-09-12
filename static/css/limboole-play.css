@@ -1,5 +1,3 @@
-/*! https://github.com/jfmc/z3-play/blob/main/src/z3-play.css - Jose F. Morales, licensed under MIT */
-
 body, h2 {
     font-family: 'Open Sans', sans-serif;
 }
@@ -45,8 +43,9 @@ body {
     padding: 1em;
 }
 
+
 .monacoContainer {
-    height: 50vh;
+    height: 45vh;
     width: 100%;
     margin: 0;
     padding: 0;
@@ -70,6 +69,24 @@ code, tt {
     font-family: Menlo, monospace;
 }
 
+textarea {
+    font-family: Menlo, monospace;
+    font-size: 10pt;
+    height: 50vh;
+    background: #fff5e9;
+    padding-top: 0.5em;
+    padding-left: 0.5em;
+    padding-bottom: 0.5em;
+    overflow-x: auto;
+}
+
+
+textarea.form-control{
+    height: 20vh !important;
+    border: none !important;
+    border-radius: 0px !important;
+}
+
 pre {
     font-family: Menlo, monospace;
     font-size: 10pt;
@@ -90,6 +107,10 @@ pre.infoContents {
     overflow-y: auto;
     font-family: Menlo, monospace;
     font-size: 10pt;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #f4f4f4 !important;
 }
 
 .load-button {

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <link
+      rel="stylesheet"
+      data-name="vs/editor/editor.main"
+      href="./static/node_modules/monaco-editor/min/vs/editor/editor.main.css"
+      />
+    <link href="./static/css/limboole-play.css" rel="stylesheet" />
+    <!-- <link href="./static/css/z3-play.css" rel="stylesheet" /> -->
+    <link href="./static/css/bootstrap.css" rel="stylesheet" />
+    <link href="./static/css/footer.css" rel="stylesheet" />
+    
+    <title>Limboole Playground</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <div class="container">
+      <!-- Navbar -->
+      <nav class="navbar navbar-light">
+        <h1>FM Playground</h1>
+        <form class="form-inline">
+          <a class="gh-button" href="https://github.com/se-buw/fm-playground"><span class="gh-button__icon"></span>Github</a>
+        </form>
+      </nav>
+      <div class="grid">
+        <hr class="sketch-rule grid__item">
+      </div>
+
+      <!-- Select Checking -->
+      <form style="height: 3em">
+        <div class="row">
+          <div class="col">
+            <select
+              tabindex="1"
+              id="select_wrapper"
+              class="form-control"
+            ></select>
+          </div>
+        </div>
+      </form>
+
+      <div class="row" style="margin-top: 10px">
+        <div class="col-md-6">
+          <h2>Input</h2>
+          <div
+            tabindex="0"
+            class="js-auto-size monacoContainer"
+            id="input"
+          ></div>
+        </div>
+        <div class="col-md-6">
+          <div id="stdout_area">
+            <h2>Output</h2>
+            <textarea
+              readonly
+              tabindex="3"
+              class="form-control js-auto-size"
+              id="stdout"
+            ></textarea>
+            <pre class="infoContents" id="info">
+          </div>
+          <div id="stderr_area">
+            <h2 id="header_error">Errors</h2>
+            <textarea
+              readonly
+              tabindex="4"
+              class="form-control js-auto-size"
+              id="stderr"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row" style="margin-top: 2px">
+        <div class="col-md-6">
+          <div class="control">
+            <button tabindex="0"
+            type="button"
+            class="btn btn-primary btn-block"
+            onclick="run_();"
+            id="run-btn">Run</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+    <footer class="bg-muted text-dark text-center">
+      <div class="text-center p-3">
+        Made with ♥ in Bauhaus-Universität Weimar
+        <p class="text-dark">
+          Acknowledgments: <a href="https://github.com/maximaximal/limboole" class="text-muted">limboole</a> 
+          <a href="https://github.com/microsoft/z3guide" class="text-muted">Z3 Guide</a>, 
+          <a href="https://github.com/bramvdbogaerde/z3-wasm" class="text-muted">z3-wasm</a>, 
+          <a href="https://github.com/microsoft/monaco-editor" class="text-muted">monaco-editor</a>
+      </div>
+    </footer>
+
+    <script>
+      var require = { paths: { vs: 'static/node_modules/monaco-editor/min/vs' } };
+    </script>
+    <script src="./static/node_modules/monaco-editor/min/vs/loader.js"></script>
+    <script src="./static/node_modules/monaco-editor/min/vs/editor/editor.main.nls.js"></script>
+    <script src="./static/node_modules/monaco-editor/min/vs/editor/editor.main.js"></script>
+    <script src="./static/node_modules/monaco-editor/min/vs/base/worker/workerMain.js"></script>
+    <!-- <script src="./static/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="./static/js/bootstrap.bundle.min.js"></script> -->
+
+
+    <script src="/limboole.js"></script>
+    <script src="/main.js"></script>
+    <!-- <script src="/z3-play.js"></script> -->
+    <script src="/z3.js"> </script>
+    <script src="/coi-serviceworker.js"></script>
+  </body>
+</html>

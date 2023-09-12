@@ -48,7 +48,7 @@ if (typeof window === 'undefined') {
         const coi = {
             shouldRegister: () => true,
             shouldDeregister: () => false,
-            doReload: () => window.location.reload(),
+            //doReload: () => window.location.reload(),
             quiet: false,
             ...window.coi
         }
