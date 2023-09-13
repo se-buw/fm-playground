@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  fm_playground:
+    image: fm_playground:latest
+    container_name: fm_playground
+    environment:
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+      DB_PORT: "5432"
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:15.4
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
