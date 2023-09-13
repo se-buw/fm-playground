@@ -2,26 +2,32 @@ version: '3.8'
 
 services:
   fm_playground:
-    image: fm_playground:latest
+    image: soaib/fm_playground:latest
     container_name: fm_playground
     environment:
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
       DB_HOST: postgres
       DB_PORT: "5432"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    restart: always
   
   postgres:
     image: postgres:15.4
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: postgres
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
+ 
