@@ -1,6 +1,5 @@
-# Z3 Playground
-A Z3 playground using the Monaco Editor and wasm compiled version of Z3.
-
+# FM Playground
+A Formal Method playground for limboole and z3 with Monaco Editor
 
 ## Requirements
 
@@ -8,8 +7,12 @@ A Z3 playground using the Monaco Editor and wasm compiled version of Z3.
 
 ## Usage
 1. Clone the repository
-2. Run `npm install .`
-3. Run `python .\simple-server.py`
+2. `cd static`
+2. `npm install .`
+3. `cd ..`
+4. `pip install -r requirements.txt`
+5. `python app.py`
+
 
 ## TODO
 
