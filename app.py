@@ -11,9 +11,12 @@ password = os.getenv('DB_PASSWORD', 'postgres')
 host = os.getenv('DB_HOST', 'postgres')
 port = os.getenv('DB_PORT', '5432')
 database = os.getenv('DB_NAME', 'postgres')
+
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username}:{password}@{host}:{port}/{database}"
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
+app.config['APPLICATION_ROOT'] = "/fm"
 db = SQLAlchemy(app)
 app.app_context().push()
 
@@ -26,7 +29,8 @@ class Data(db.Model):
   code = db.Column(db.String())
   permalink = db.Column(db.String())
 
-db.create_all()
+Data.__table__.create(db.engine, checkfirst=True)
+#db.create_all()
 
 CHECK = {
   0: "VAL",

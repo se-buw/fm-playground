@@ -361,7 +361,7 @@ window.run_ = function () {
 };
 
 function save_to_db(satcheck, code){
-  fetch('/save', {
+  fetch('/fm/save', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -390,7 +390,7 @@ function load_in_editor() {
   if(window.location.hash != "" && window.location.hash != undefined && window.location.hash != null){
     let permalink = window.location.hash.substring(1);
     let code_content;
-    fetch('/'+permalink)
+    fetch('/fm/'+permalink)
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
