@@ -126,7 +126,6 @@ var editor = monaco.editor.create(document.getElementById('input'), {
 
 /* ---------------End of Editor Configuration--------------- */
 
-/* ---------------Start of Limboole Configuration--------------- */
 class StdinToStdoutProcessor {
   stdin() {
     if (this.input_str_pos < this.input_str.length) {
@@ -182,7 +181,7 @@ class StdinToStdoutProcessor {
 
     var self = this;
 
-    console.debug("Creating Processor");
+    //console.debug("Creating Processor");
     createLimbooleModule(options).then(function (Module) {
       self.Module = Module;
       window.input__ = function () {
@@ -191,9 +190,9 @@ class StdinToStdoutProcessor {
       window.stdout__ = function (_) {};
       window.stderr__ = function (_) {};
 
-      console.debug("Initial Processor Startup");
+      //console.debug("Initial Processor Startup");
       Module.callMain();
-      console.debug("Initialized Processor");
+      //console.debug("Initialized Processor");
       self.limboole = Module.cwrap("limboole_extended", "number", [
         "number",
         "array",
@@ -289,8 +288,7 @@ window.LimbooleLoadedPromise = new Promise(function (resolve, reject) {
 window.Wrappers = [
   new ProcessorWrapper(window.Processors[0], "Validity Check", 0),
   new ProcessorWrapper(window.Processors[0], "Satisfiability Check", 1),
-  //new ProcessorWrapper(window.Processors[0], "QBF Validity Check", 2),
-  new ProcessorWrapper(window.Processors[0], "QBF Satisfiability Check", 3),
+  new ProcessorWrapper(window.Processors[0], "QBF Satisfiability Check", 2),
 ];
 
 let selector = document.getElementById("select_wrapper");
@@ -303,7 +301,7 @@ for (let i = 0; i < window.Wrappers.length; ++i) {
 }
 let o_smt = document.createElement("option");
 o_smt.appendChild(document.createTextNode("SMT"));
-o_smt.value = 4;
+o_smt.value = 3;
 selector.appendChild(o_smt);
 
 
@@ -325,9 +323,8 @@ function run_z3(code) {
     try {
       info.innerText = "";
       let res = Z3.solve(code);
-      console.log(res);
       info.innerText += res;
-      save_to_db(4,code);
+      save_to_db(3,code);
     } catch (error) {
       console.error(error);
       //info.innerText += error;
@@ -344,7 +341,7 @@ window.run_ = function () {
   var info_element = document.getElementById("info");
   var header_error_element = document.getElementById("header_error");
 
-  if(selector.value < 4) {
+  if(selector.value < 3) {
     info_element.style.display = "none";
     std_err_element.style.display = "block";
     std_out_element.style.display = "block";
@@ -353,7 +350,7 @@ window.run_ = function () {
     let wr = window.Wrappers[selector.options.selectedIndex];
     run_limboole(wr);
   }
-  else if(selector.value == 4) {
+  else if(selector.value == 3) {
     std_err_element.style.display = "none";
     std_out_element.style.display = "none";
     header_error_element.style.display = "none";
@@ -380,11 +377,7 @@ function save_to_db(satcheck, code){
     }
   })
   .then(data => {
-    if (data.permalink != "ea4a7c948e74cb77f788c3a3bf889bdf") {
-      window.location.hash = data.permalink;
-      //console.log('Success:', data.permalink);
-    }
-    
+    window.location.hash = data.permalink;
   })
   .catch((error) => {
     console.error('Error:', error);
@@ -396,7 +389,6 @@ function load_in_editor() {
   const info = document.getElementById("info");
   if(window.location.hash != "" && window.location.hash != undefined && window.location.hash != null){
     let permalink = window.location.hash.substring(1);
-    console.log("permalink: ", permalink);
     let code_content;
     fetch('/'+permalink)
     .then(response => {
@@ -407,16 +399,11 @@ function load_in_editor() {
     })
     .then(data => {
       code_content = data.code;
-      console.log('Success:', data.code);
       editor.getModel().setValue(code_content);
       let v = permalink.charAt(0);
-      console.log("First char",v);
-      if (v == 2) {
-        v = 3;
-      }
       selector.value = v;
       info.innerText = ""; 
-      if(v < 4) {
+      if(v < 3) {
         window.LimbooleLoadedPromise.then(function () {
           window.run_();
         });
