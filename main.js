@@ -116,6 +116,7 @@ monaco.languages.register({ id: 'smt2' });
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
 
+
 var editor = monaco.editor.create(document.getElementById('input'), {
   value: code,
   language: 'smt2',
@@ -286,9 +287,9 @@ window.LimbooleLoadedPromise = new Promise(function (resolve, reject) {
 });
 
 window.Wrappers = [
-  new ProcessorWrapper(window.Processors[0], "Validity Check", 0),
-  new ProcessorWrapper(window.Processors[0], "Satisfiability Check", 1),
-  new ProcessorWrapper(window.Processors[0], "QBF Satisfiability Check", 2),
+  new ProcessorWrapper(window.Processors[0], "Limboole Validity", 0),
+  new ProcessorWrapper(window.Processors[0], "Limboole Satisfiability", 1),
+  new ProcessorWrapper(window.Processors[0], "Limboole Satisfiability", 2),
 ];
 
 let selector = document.getElementById("select_wrapper");
@@ -303,7 +304,10 @@ let o_smt = document.createElement("option");
 o_smt.appendChild(document.createTextNode("SMT"));
 o_smt.value = 3;
 selector.appendChild(o_smt);
-
+let o_xmv = document.createElement("option");
+o_xmv.appendChild(document.createTextNode("NuXMV"));
+o_xmv.value = 4;
+selector.appendChild(o_xmv);
 
 var z3_loaded = false;
 document.getElementById("info").style.display = "none";
@@ -334,6 +338,41 @@ function run_z3(code) {
   }
 }
 
+function run_nuxmv(code) {
+  const info = document.getElementById("info");
+  editor.getModel().setValue(code);
+  fetch('/run_nuxmv', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({code: code}),
+  })
+  .then(response => {
+    if (response.status === 200) {
+        return response.json();
+    } else {
+      //alert("Slow Down!!")
+      throw new Error('Request failed with status ' + response.status);
+    }
+  })
+  .then(data => {
+    try {
+      info.innerText = "";
+
+      info.innerText += data.result;
+      save_to_db(4,code);
+    } catch (error) {
+      console.error(error);
+      //info.innerText += error;
+    }
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+
+}
+
 window.run_ = function () {
   let selector = document.getElementById("select_wrapper");
   var std_out_element = document.getElementById("stdout");
@@ -358,10 +397,18 @@ window.run_ = function () {
 
     run_z3(editor.getModel().getValue());
   }
+  else if(selector.value == 4) {
+    std_err_element.style.display = "none";
+    std_out_element.style.display = "none";
+    header_error_element.style.display = "none";
+    info_element.style.display = "block";
+
+    run_nuxmv(editor.getModel().getValue());
+  }
 };
 
 function save_to_db(satcheck, code){
-  fetch('/fm/save', {
+  fetch('/save', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -414,5 +461,14 @@ function load_in_editor() {
     }); 
   }
 }
+
+// TODO: change the editor language configuration (after having nuXMV syntax/grammar)
+// function handleOptionChange(selectElement) {
+//   var selectedValue = selectElement.value;
+//   if (selectedValue == 4) {
+//     editor.getModel().setValue(`-- You can edit this code!\n-- Click here and start typing.\n`);  
+//   }
+//   // alert("Selected value: " + selectedValue);
+// }
 
 load_in_editor()
