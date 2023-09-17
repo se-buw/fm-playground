@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 import hashlib
 from datetime import datetime, timedelta
 from flask import Flask, request, render_template, send_from_directory, jsonify, session, make_response
@@ -15,11 +16,11 @@ database = os.getenv('DB_NAME', 'postgres')
 app_secret = os.getenv("APP_SECKET_KEY", "secret_key")
 
 app = Flask(__name__)
+app.secret_key = app_secret
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username}:{password}@{host}:{port}/{database}"
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
-app.config['APPLICATION_ROOT'] = "/fm"
-app.secret_key = app_secret
+# app.config['APPLICATION_ROOT'] = "/fm"
 db = SQLAlchemy(app)
 app.app_context().push()
 
@@ -45,6 +46,7 @@ CHECK = {
 
 REQ_TIME_WINDOW = 5 # time window within which multiple requests are not allowed
 
+# Check if the code is too large
 def is_valid_size(code: str) -> bool:
   size_in_bytes = sys.getsizeof(code)
   size_in_mb = size_in_bytes / (1024*1024)
@@ -53,7 +55,7 @@ def is_valid_size(code: str) -> bool:
 
 @app.route("/")
 def index():
-   return render_template("index.html")
+  return render_template("index.html")
  
 @app.route('/coi-serviceworker.js')
 def coi_serviceworker_js():
@@ -97,67 +99,67 @@ def limboole_wasm():
   
 @app.route('/save', methods=['POST'])
 def save():
+  current_timestamp = time.time()
   data = request.get_json()
-  curr_time = datetime.now()
   check = CHECK.get(data['check'], None)
   code = data['code']
   
   if not is_valid_size(code):
-    return {'result': "The code is too large."}, 413
+    response = make_response(jsonify({'result': "The code is too large."}), 413)
+    return response
   
   last_request_time = session.get('last_request_time')
-  #last_check_type = session.get('last_check_type')
-  
+ 
   # Allow one request per 5 seconds and same check
-  if last_request_time is not None and curr_time - last_request_time < timedelta(seconds=REQ_TIME_WINDOW): 
-      return {'result': "You've already made a request recently."}, 429
+  if last_request_time is not None and current_timestamp - last_request_time < REQ_TIME_WINDOW:
+    response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
+    return response
   
   try:
     permalink = str(data['check'])+hashlib.md5(code.encode()).hexdigest()[:10]
+    
     # check if the same code has been submitted before
     exist = Data.query.filter_by(permalink=permalink).filter_by(check_type=check).first() is not None
     if not exist:
-      new_data = Data( time=curr_time, check_type=check, code=code, permalink=permalink)
+      new_data = Data( time= datetime.now(), check_type=check, code=code, permalink=permalink)
       db.session.add(new_data)
       db.session.commit()
+      
   except:
     db.session.rollback()
-    raise Exception('Error saving data to database')
-  finally:
-    db.session.close()
+    response = make_response(jsonify({'result': "There is a problem. Please try after some time."}), 500)
+    return response
   
-  response = jsonify({'permalink': permalink})
-  session['last_request_time'] = curr_time
-  # response.set_cookie('last_check_type', check)
-  
-  return response, 200
+  session['last_request_time'] = current_timestamp
+  response = make_response(jsonify({'permalink': permalink}), 200)
+  return response
   
 
 @app.route('/<permalink>', methods=['GET'])
 def get_code(permalink):
   data = Data.query.filter_by(permalink=permalink).first_or_404()
-  return {'code': data.code}, 200 
+  response = make_response(jsonify({'code': data.code}))
+  return response
 
 @app.route('/run_nuxmv', methods=['POST'])
 def run_nuxmv():
   data = request.get_json()
   code = data['code']
-  curr_time = datetime.now()
+  current_timestamp = time.time()
 
   # Check if the code is too large
   if not is_valid_size(code):
-    return {'result': "The code is too large."}, 413
+    return {'error': "The code is too large."}, 413
 
   last_request_time = session.get('last_request_time')
   #last_check_type = session.get('last_check_type')
   
-  # Allow one request per 5 seconds and same check
-  if last_request_time is not None and curr_time - last_request_time < timedelta(seconds=REQ_TIME_WINDOW):  
-      return {'result': "You've already made a request recently."}, 429
+  if last_request_time is not None and current_timestamp - last_request_time < REQ_TIME_WINDOW:
+    response = make_response(jsonify({'error': "You've already made a request recently."}), 429)
+    return response
   
   try:
     res = xmv_utils.process_commands(code)
-    print(res)
     response = make_response(jsonify({'result': res}), 200)
   except:
     response = make_response(jsonify({'result': "Error running nuXmv. Server is busy. Please try again after"}), 503)

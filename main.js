@@ -116,6 +116,9 @@ monaco.languages.register({ id: 'smt2' });
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
 
+// const apiUrl 'http://fm_playground:5000/'; 
+const apiUrl ='http://localhost:5000/'; 
+
 
 var editor = monaco.editor.create(document.getElementById('input'), {
   value: code,
@@ -216,9 +219,8 @@ class StdinToStdoutProcessor {
     window.stderr__ = this.stderr.bind(this);
 
     let status = this.limboole(1, [""], satcheck, input, input.length);
-    if(status == 0){
-      save_to_db(satcheck, input);
-    }
+    
+    save_to_db(satcheck, input);
 
     if (this.stdout_buf != "") {
       this.print_line_stdout(this.stdout_buf);
@@ -289,7 +291,7 @@ window.LimbooleLoadedPromise = new Promise(function (resolve, reject) {
 window.Wrappers = [
   new ProcessorWrapper(window.Processors[0], "Limboole Validity", 0),
   new ProcessorWrapper(window.Processors[0], "Limboole Satisfiability", 1),
-  new ProcessorWrapper(window.Processors[0], "Limboole Satisfiability", 2),
+  new ProcessorWrapper(window.Processors[0], "Limboole QBF Satisfiability", 2),
 ];
 
 let selector = document.getElementById("select_wrapper");
@@ -326,9 +328,9 @@ function run_z3(code) {
   if (z3_loaded) {
     try {
       info.innerText = "";
+      save_to_db(3,code);
       let res = Z3.solve(code);
       info.innerText += res;
-      save_to_db(3,code);
     } catch (error) {
       console.error(error);
       //info.innerText += error;
@@ -341,7 +343,7 @@ function run_z3(code) {
 function run_nuxmv(code) {
   const info = document.getElementById("info");
   editor.getModel().setValue(code);
-  fetch('/run_nuxmv', {
+  fetch(apiUrl+'run_nuxmv', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -351,8 +353,11 @@ function run_nuxmv(code) {
   .then(response => {
     if (response.status === 200) {
         return response.json();
-    } else {
-      //alert("Slow Down!!")
+    } else if(response.status === 413){
+      alert("Code size is too large!");
+      throw new Error('Request failed with status ' + response.status);
+    } else if(response.status === 429){
+      alert("Slow Down! You've already made a request recently.");
       throw new Error('Request failed with status ' + response.status);
     }
   })
@@ -408,7 +413,7 @@ window.run_ = function () {
 };
 
 function save_to_db(satcheck, code){
-  fetch('/save', {
+  fetch(apiUrl+'save', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -418,9 +423,14 @@ function save_to_db(satcheck, code){
   .then(response => {
     if (response.status === 200) {
         return response.json();
-    } else {
-      alert("Slow Down!!")
-        throw new Error('Request failed with status ' + response.status);
+    } 
+    else if(response.status === 413){
+      alert("Code size is too large!");
+      throw new Error('Request failed with status ' + response.status);
+    } 
+    else if(response.status === 429) {
+      alert("Slow Down! You've already made a request recently.");
+      throw new Error('Request failed with status ' + response.status);
     }
   })
   .then(data => {
@@ -437,9 +447,12 @@ function load_in_editor() {
   if(window.location.hash != "" && window.location.hash != undefined && window.location.hash != null){
     let permalink = window.location.hash.substring(1);
     let code_content;
-    fetch('/fm/'+permalink)
+    fetch(apiUrl+permalink)
     .then(response => {
-      if (!response.ok) {
+      if (response.status === 404) {
+        alert("Permalink not found!");
+      }
+      else if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       return response.json();
@@ -463,12 +476,9 @@ function load_in_editor() {
 }
 
 // TODO: change the editor language configuration (after having nuXMV syntax/grammar)
-// function handleOptionChange(selectElement) {
-//   var selectedValue = selectElement.value;
-//   if (selectedValue == 4) {
-//     editor.getModel().setValue(`-- You can edit this code!\n-- Click here and start typing.\n`);  
-//   }
-//   // alert("Selected value: " + selectedValue);
-// }
+function handleOptionChange(selectElement) {
+  // var selectedValue = selectElement.value;
+  // alert("Selected value: " + selectedValue);
+}
 
 load_in_editor()

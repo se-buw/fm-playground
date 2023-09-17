@@ -15,4 +15,4 @@ ENV DB_PORT=5432
 
 EXPOSE 4000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:4000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]

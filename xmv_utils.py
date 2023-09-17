@@ -56,7 +56,6 @@ def process_commands(code: str):
     if code_queue is None:
       break
     ex = executor.submit(run_nuxmv, code_command)
-    print(ex.result())
     return ex.result()
 
 
