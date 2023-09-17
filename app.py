@@ -3,6 +3,7 @@ import sys
 import time
 import hashlib
 from datetime import datetime, timedelta
+from flask_cors import CORS
 from flask import Flask, request, render_template, send_from_directory, jsonify, session, make_response
 from flask_sqlalchemy import SQLAlchemy
 import xmv_utils
@@ -16,10 +17,11 @@ database = os.getenv('DB_NAME', 'postgres')
 app_secret = os.getenv("APP_SECKET_KEY", "secret_key")
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = app_secret
 
-# app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username}:{password}@{host}:{port}/{database}"
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username}:{password}@{host}:{port}/{database}"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
 # app.config['APPLICATION_ROOT'] = "/fm"
 db = SQLAlchemy(app)
 app.app_context().push()

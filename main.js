@@ -116,8 +116,8 @@ monaco.languages.register({ id: 'smt2' });
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
 
-// const apiUrl 'http://fm_playground:5000/'; 
-const apiUrl ='http://localhost:5000/'; 
+const apiUrl = 'http://fm_playground:5000/'; 
+// const apiUrl ='http://localhost:5000/'; 
 
 
 var editor = monaco.editor.create(document.getElementById('input'), {

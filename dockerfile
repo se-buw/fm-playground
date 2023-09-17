@@ -13,6 +13,6 @@ ENV DB_PASSWORD=postgres
 ENV DB_HOST=postgres
 ENV DB_PORT=5432
 
-EXPOSE 4000
+EXPOSE 5000
 
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
