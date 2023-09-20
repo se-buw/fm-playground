@@ -1,9 +1,18 @@
 version: '3.8'
 
 services:
-  fm_playground:
+  frontend:
     build: 
-      context: ./
+      context: ./frontend
+    ports:
+      - "5000:5000"
+    networks:
+      - my_network
+    restart: unless-stopped
+
+  backend:
+    build: 
+      context: ./backend
     # container_name: fm_playground
     environment:
       DB_USERNAME: postgres
@@ -15,10 +24,10 @@ services:
       postgres:
         condition: service_healthy
     ports:
-      - "5000:5000"
+      - "8000:8000"
     networks:
       - my_network
-    restart: always
+    restart: unless-stopped
   
   postgres:
     image: postgres:15.4

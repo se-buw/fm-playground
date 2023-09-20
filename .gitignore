@@ -1,5 +1,7 @@
 .venv/
 nuXmv/
+test.py
+_felt_cute_might_delete_later/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

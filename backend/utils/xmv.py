@@ -9,7 +9,7 @@ import time
 
 import platform
 
-NU_XMV_PATH = platform.system() == "Windows" and r'nuXmv\nuXmv-2.0.0-win64\bin\nuXmv.exe' or r'nuXmv\nuXmv-2.0.0-Linux\bin\nuXmv'
+NU_XMV_PATH = platform.system() == "Windows" and r'nuXmv\nuXmv-2.0.0-win64\bin\nuXmv.exe' or r'nuXmv/nuXmv-2.0.0-Linux/bin/nuXmv'
 
 MAX_CONCURRENT_REQUESTS = 10 # Maximum number of concurrent subprocesses
 
@@ -25,7 +25,7 @@ def run_nuxmv(code: str):
   tmp_file.close()
   print(tmp_file.name)
 
-  command = [NU_XMV_PATH, tmp_file.name]
+  command = [NU_XMV_PATH, "-dynamic", tmp_file.name] # TODO: Check dynamic ordering
   try:
     result = subprocess.run(command, capture_output=True, text=True, timeout=5)
     os.remove(tmp_file.name)

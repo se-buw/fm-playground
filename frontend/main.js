@@ -116,8 +116,8 @@ monaco.languages.register({ id: 'smt2' });
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
 
-const apiUrl = 'http://fm_playground:5000/'; 
-// const apiUrl ='http://localhost:5000/'; 
+// const apiUrl = 'http://fm_playground:5000/'; 
+const apiUrl ='http://localhost:8000/'; 
 
 
 var editor = monaco.editor.create(document.getElementById('input'), {
@@ -280,6 +280,7 @@ function run_limboole(wrapper) {
       writeln(window.stderr_textarea, line);
     }
   );
+  run_button_enable();
 }
 
 window.LimbooleLoadedPromise = new Promise(function (resolve, reject) {
@@ -338,6 +339,7 @@ function run_z3(code) {
   } else {
     info.innerText = "Wait for Z3 to load and try again."
   }
+  run_button_enable()
 }
 
 function run_nuxmv(code) {
@@ -371,10 +373,13 @@ function run_nuxmv(code) {
       console.error(error);
       //info.innerText += error;
     }
+    run_button_enable();
   })
   .catch((error) => {
     console.error('Error:', error);
   });
+
+  //run_button_enable()
 
 }
 
@@ -384,7 +389,11 @@ window.run_ = function () {
   var std_err_element = document.getElementById("stderr");
   var info_element = document.getElementById("info");
   var header_error_element = document.getElementById("header_error");
+  var run_button = document.getElementById("run-btn");
 
+  run_button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Running...';
+  run_button.disabled = true;
+  
   if(selector.value < 3) {
     info_element.style.display = "none";
     std_err_element.style.display = "block";
@@ -410,11 +419,13 @@ window.run_ = function () {
 
     run_nuxmv(editor.getModel().getValue());
   }
+
 };
 
 function save_to_db(satcheck, code){
   fetch(apiUrl+'save', {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -475,10 +486,20 @@ function load_in_editor() {
   }
 }
 
+function run_button_enable() {
+  var run_button = document.getElementById("run-btn");
+
+  run_button.disabled = false;
+  run_button.innerHTML = 'Run';
+}
+
+
 // TODO: change the editor language configuration (after having nuXMV syntax/grammar)
 function handleOptionChange(selectElement) {
   // var selectedValue = selectElement.value;
   // alert("Selected value: " + selectedValue);
 }
+
+
 
 load_in_editor()
