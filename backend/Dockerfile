@@ -8,10 +8,12 @@ COPY . /backend
 RUN pip install --no-cache-dir --upgrade pip setuptools
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV DB_USERNAME=postgres
-ENV DB_PASSWORD=postgres
-ENV DB_HOST=postgres
-ENV DB_PORT=5432
+ENV DB_USERNAME: ${DB_USERNAME}
+ENV DB_PASSWORD: ${DB_PASSWORD}
+ENV DB_HOST: ${DB_HOST}
+ENV DB_PORT: ${DB_PORT}
+ENV APP_SECKET_KEY: ${APP_SECKET_KEY}
+ENV FLASK_ENV=${FLASK_ENV}
 
 EXPOSE 8000
 
