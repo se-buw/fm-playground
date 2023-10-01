@@ -32,7 +32,6 @@ def is_valid_size(code: str) -> bool:
   return size_in_mb <= 1
 
 
-
 @routes.route('/')
 def index():
     # Get the current time
@@ -51,12 +50,26 @@ def index():
     # Process the request normally
     return "Request accepted"
   
+
+@routes.route('/get_session_id')
+def get_session_id():
+  session_id = session.sid
+  print(session_id)
+  session['last_request_time'] = datetime.now(pytz.utc)
+  last_request_time = session.get('last_request_time')
+  print(f"Last request time: {last_request_time}")
+  session_id = session.sid
+  print(session_id)
+  return f"The session ID is: {session_id}"
+  
+  
 @routes.route('/save', methods=['POST'])
 def save():
   current_time = datetime.now(pytz.utc)
   data = request.get_json()
   check = CHECK.get(data['check'], None)
   code = data['code'].strip()
+  parent = data['parent']
   
   if not is_valid_size(code):
     response = make_response(jsonify({'result': "The code is too large."}), 413)
@@ -86,7 +99,9 @@ def save():
     else: # New: Generate a new permalink
       permalink = generate_passphrase(data['check'])
 
-    new_data = Data( time= datetime.now(), check_type=check, code=code, permalink=permalink)
+    session_id = session.sid
+    print(f"Session ID: {session_id}")
+    new_data = Data( time= datetime.now(), session_id=session_id, parent=parent, check_type=check, code=code, permalink=permalink)
     db.session.add(new_data)
     db.session.commit()
       

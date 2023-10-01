@@ -429,7 +429,7 @@ function save_to_db(satcheck, code){
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({check: satcheck, code: code}),
+    body: JSON.stringify({parent: window.location.hash.substring(1), check: satcheck, code: code}),
   })
   .then(response => {
     if (response.status === 200) {

@@ -13,6 +13,8 @@ class Data(db.Model):
   __tablename__ = 'data'
   id = db.Column(db.Integer, primary_key=True)
   time = db.Column(db.DateTime())
+  session_id = db.Column(db.String())
+  parent = db.Column(db.String())
   check_type = db.Column(db.String(3))
   code = db.Column(db.String())
   permalink = db.Column(db.String())

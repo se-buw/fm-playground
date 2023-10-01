@@ -16,8 +16,8 @@ class Config:
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = f"postgresql://{username}:{password}@{host}:{port}/{database}"
   CACHE_TYPE = 'simple'
-  SESSION_COOKIE_NAME = 'fm_playground_session'
-  SESSION_COOKIE_PATH = '/'
-  PERMANENT_SESSION_LIFETIME = 24*3600
-  SESSION_COOKIE_SECURE = True
-  SESSION_COOKIE_SAMESITE = None
+  
+  SESSION_TYPE = 'filesystem'
+  SECRET_KEY = 'your_secret_key'
+  SESSION_PERMANENT = True
+  PERMANENT_SESSION_LIFETIME = 3600  # Example: 1 hour
