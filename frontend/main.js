@@ -419,10 +419,6 @@ window.run_ = function () {
 
     run_nuxmv(editor.getModel().getValue());
   }
-  
-  var copyText = document.getElementById("permalink");
-  copyText.select();
-  copyText.value = window.location.href;
 
 };
 
@@ -450,6 +446,10 @@ function save_to_db(satcheck, code){
   })
   .then(data => {
     window.location.hash = data.permalink;
+    var copyText = document.getElementById("permalink");
+    copyText.select();
+    copyText.value = window.location.href;
+
   })
   .catch((error) => {
     console.error('Error:', error);
