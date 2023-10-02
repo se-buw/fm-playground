@@ -345,7 +345,7 @@ function run_z3(code) {
 function run_nuxmv(code) {
   const info = document.getElementById("info");
   editor.getModel().setValue(code);
-  fetch(apiUrl+'run_nuxmv', {
+  fetch('/api/run_nuxmv', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -423,7 +423,7 @@ window.run_ = function () {
 };
 
 function save_to_db(satcheck, code){
-  fetch(apiUrl+'save', {
+  fetch('/api/save', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -462,7 +462,7 @@ function load_in_editor() {
   if(window.location.hash != "" && window.location.hash != undefined && window.location.hash != null){
     let permalink = window.location.hash.substring(1);
     let code_content;
-    fetch(apiUrl+permalink)
+    fetch('/api/'+permalink)
     .then(response => {
       if (response.status === 404) {
         alert("Permalink not found!");

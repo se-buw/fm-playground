@@ -11,18 +11,8 @@ from flask_session import Session
 app_secret = os.getenv("APP_SECKET_KEY", "secret_key")
 
 
-
-# # app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username}:{password}@{host}:{port}/{database}"
-# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
-# app.config['CACHE_TYPE'] = 'simple' 
-# app.config['APPLICATION_ROOT'] = "/fm"
-# db = SQLAlchemy(app)
-# app.app_context().push()
-
-
 def create_app():
   app = Flask(__name__)
-  app.secret_key = "secret_key"
   app.config.from_object(Config)
   Session(app)
   init_app(app)
