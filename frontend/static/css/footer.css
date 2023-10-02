@@ -6,21 +6,22 @@ footer {
   width: 100vw;
   color: #000000;
   margin-bottom: 0;
+  position: relative;
 }
 
 /* Media query for phone screen sizes */
-/* @media (max-height: 768px) {
+@media (max-height: 768px) {
   footer {
-    position: sticky;
+    position: relative;
   }
-} */
+}
 
 /* Media query for PC screen sizes */
-@media (min-width: 769px) {
+/* @media (min-width: 769px) {
   footer {
     position: absolute;
   }
-}
+} */
 
 
 

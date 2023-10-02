@@ -419,6 +419,10 @@ window.run_ = function () {
 
     run_nuxmv(editor.getModel().getValue());
   }
+  
+  var copyText = document.getElementById("permalink");
+  copyText.select();
+  copyText.value = window.location.href;
 
 };
 
@@ -498,6 +502,13 @@ function run_button_enable() {
 function handleOptionChange(selectElement) {
   // var selectedValue = selectElement.value;
   // alert("Selected value: " + selectedValue);
+}
+
+function copy_permalink(){
+  var copyText = document.getElementById("permalink");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+  navigator.clipboard.writeText(copyText.value);
 }
 
 
