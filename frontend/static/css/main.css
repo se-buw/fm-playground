@@ -365,3 +365,9 @@ pre.infoContents {
   .copy:hover svg {
     color: var(--button-hover-text-color);
   }
+
+
+  .guide-wrapper{
+    padding-bottom: 20px;
+    padding-left: 25px;
+  }

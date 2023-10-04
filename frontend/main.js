@@ -134,6 +134,7 @@ var editor = monaco.editor.create(document.getElementById('input'), {
 
 /* ---------------End of Editor Configuration--------------- */
 
+loadResourceGuide('limboole-guide.html');
 class StdinToStdoutProcessor {
   stdin() {
     if (this.input_str_pos < this.input_str.length) {
@@ -513,17 +514,20 @@ function handleOptionChange(selectElement) {
     let code_on_editor = editor.getModel().getValue();
     let updated_code = code_on_editor.replace(/(--|;)/g, '%');
     editor.getModel().setValue(updated_code);
+    loadResourceGuide('limboole-guide.html');
   }
   if (selectedValue == 3) {
     let code_on_editor = editor.getModel().getValue();
     let updated_code = code_on_editor.replace(/(--|%)/g, ';');
     editor.getModel().setValue(updated_code);
+    loadResourceGuide('smt-guide.html');
   }
   if (selectedValue == 4) {
     link.style.display = 'inline';
     let code_on_editor = editor.getModel().getValue();
     let updated_code = code_on_editor.replace(/^[;%]/, '--');
     editor.getModel().setValue(updated_code);
+    loadResourceGuide('smv-guide.html');
   }
   else {
     link.style.display = 'none';
@@ -581,6 +585,22 @@ function downloadFile() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+}
+
+
+function loadResourceGuide(filename) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+              document.getElementById("resource-guide-wrapper").innerHTML = xhr.responseText;
+          }
+      }
+  };
+
+  xhr.open("GET", "./static/html/"+filename, true);
+  xhr.send();
 }
 
 
