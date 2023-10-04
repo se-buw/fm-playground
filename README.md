@@ -49,9 +49,17 @@ Open two terminals:
   - `python app.py`
   - The frontend will run on `http://127.0.0.1:5000`
 
-## Docker
-- `docker compose up --build`
-- The frontend will run on `http://127.0.0.1:5000`
-- The backend will run on `http://127.0.0.1:8000`
+## Docker Deploy
+- `docker-compose build --no-cache `
+- ``docker save -o fm-play-frontend.tar fm-playground-frontend:latest``
+- ``docker save -o fm-play-backend.tar fm-playground-backend:latest``
+- Upload the two tar files to the server
+  - On portainer,
+    - Stop the `fm-playground` stack
+    - Go to `Images` and remove the image(s) - 
+    - Upload new image `Images` -> `Import` -> `Select file` -> Select `fm-play-(*)end.tar` -> `Upload`
+    - Restart the `fm-playground` stack
+## Update Guide
+- Change corresponding files in the `frontend/static/html` folder
 
 ## TODO
