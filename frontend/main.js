@@ -116,8 +116,13 @@ monaco.languages.register({ id: 'smt2' });
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
 
-// const apiUrl = 'http://fm_playground:5000/'; 
-const apiUrl ='http://localhost:8000/'; 
+let apiUrl;
+if (window.location.hostname == 'localhost' || window.location.hostname === '127.0.0.1') {
+  apiUrl = 'http://localhost:8000/api/'; 
+}
+else{
+  apiUrl = '/api/'; 
+}
 
 
 var editor = monaco.editor.create(document.getElementById('input'), {
@@ -345,7 +350,7 @@ function run_z3(code) {
 function run_nuxmv(code) {
   const info = document.getElementById("info");
   editor.getModel().setValue(code);
-  fetch('/api/run_nuxmv', {
+  fetch(apiUrl+'run_nuxmv', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -423,7 +428,7 @@ window.run_ = function () {
 };
 
 function save_to_db(satcheck, code){
-  fetch('/api/save', {
+  fetch(apiUrl+'save', {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -462,7 +467,7 @@ function load_in_editor() {
   if(window.location.hash != "" && window.location.hash != undefined && window.location.hash != null){
     let permalink = window.location.hash.substring(1);
     let code_content;
-    fetch('/api/'+permalink)
+    fetch(apiUrl+permalink)
     .then(response => {
       if (response.status === 404) {
         alert("Permalink not found!");
