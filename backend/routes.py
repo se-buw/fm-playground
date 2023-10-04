@@ -21,7 +21,7 @@ CHECK = {
   4: "SMV"  
 }
 
-TIME_WINDOW = 5 # time window within which multiple requests are not allowed
+TIME_WINDOW = 1 # time window within which multiple requests are not allowed
 
 # Check if the code is too large
 def is_valid_size(code: str) -> bool:
