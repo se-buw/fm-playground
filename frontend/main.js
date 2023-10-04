@@ -107,7 +107,8 @@ const smt2_lang = {
   },
 };
 
-code = `; Click here and start typing.`;
+code = `% Click here and start typing.
+`;
 
 monaco.languages.register({ id: 'smt2' });
 // Register a tokens provider for the language
@@ -345,6 +346,8 @@ function run_z3(code) {
   run_button_enable()
 }
 
+var link = document.getElementById('smv-copyright');
+link.style.display = 'none';
 function run_nuxmv(code) {
   const info = document.getElementById("info");
   editor.getModel().setValue(code);
@@ -481,11 +484,12 @@ function load_in_editor() {
       let v = permalink.charAt(0);
       selector.value = v;
       info.innerText = ""; 
-      if(v < 3) {
-        window.LimbooleLoadedPromise.then(function () {
-          window.run_();
-        });
-      }
+      //Execute the code if limboole or z3
+      // if(v < 3) {
+      //   window.LimbooleLoadedPromise.then(function () {
+      //     window.run_();
+      //   });
+      // }
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -503,7 +507,27 @@ function run_button_enable() {
 
 // TODO: change the editor language configuration (after having nuXMV syntax/grammar)
 function handleOptionChange(selectElement) {
-  // var selectedValue = selectElement.value;
+  let selectedValue = selectElement.value;
+  var link = document.getElementById('smv-copyright');
+  if (selectedValue < 3) {
+    let code_on_editor = editor.getModel().getValue();
+    let updated_code = code_on_editor.replace(/(--|;)/g, '%');
+    editor.getModel().setValue(updated_code);
+  }
+  if (selectedValue == 3) {
+    let code_on_editor = editor.getModel().getValue();
+    let updated_code = code_on_editor.replace(/(--|%)/g, ';');
+    editor.getModel().setValue(updated_code);
+  }
+  if (selectedValue == 4) {
+    link.style.display = 'inline';
+    let code_on_editor = editor.getModel().getValue();
+    let updated_code = code_on_editor.replace(/^[;%]/, '--');
+    editor.getModel().setValue(updated_code);
+  }
+  else {
+    link.style.display = 'none';
+}
   // alert("Selected value: " + selectedValue);
 }
 
@@ -514,7 +538,6 @@ function copy_permalink(){
   navigator.clipboard.writeText(copyText.value);
 }
 
-// script.js
 
 function uploadFile() {
 
