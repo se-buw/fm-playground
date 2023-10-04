@@ -107,9 +107,7 @@ const smt2_lang = {
   },
 };
 
-code = `; You can edit this code!
-; Click here and start typing.
-`;
+code = `; Click here and start typing.`;
 
 monaco.languages.register({ id: 'smt2' });
 // Register a tokens provider for the language
@@ -516,6 +514,51 @@ function copy_permalink(){
   navigator.clipboard.writeText(copyText.value);
 }
 
+// script.js
+
+function uploadFile() {
+
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.txt, .smt2, smv'; // Optionally, you can restrict the file type
+
+  input.onchange = function(e) {
+      var file = e.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function() {
+        editor.getModel().setValue(reader.result);
+      }
+
+      reader.readAsText(file);
+  }
+
+  input.click();
+}
+
+function downloadFile() {
+  let selector = document.getElementById("select_wrapper");
+  const content = editor.getModel().getValue();
+
+  let filename = "code.txt"
+  if(selector.value < 3){
+    filename = 'code.txt';
+  }else if(selector.value == 3){
+    filename = 'code.smt2';
+  }else if(selector.value == 4){
+    filename = 'code.smv';
+  }
+
+  const blob = new Blob([content], { type: 'text/plain'});
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
 
 
 load_in_editor()
