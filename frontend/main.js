@@ -1,3 +1,32 @@
+/* --------------Limboole Grammar------------ */
+const limboole_lang = {
+
+  operators: [
+    '<->', '->', '<-', '&','|', '/', '!',
+  ],
+
+  // operators
+  symbols: /([\.]{2})|([=><!:&\|\+\-\*\/%,;]+)/,
+
+  // escape sequences
+  escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
+
+  tokenizer: {
+    root : [
+      // operators
+      [ /@symbols/, { cases:{ '@operators': 'keyword'} } ],
+
+      // whitespace
+      { include: '@whitespace' },
+    ],
+   
+    whitespace: [
+      [/[ \t\r\n]+/, 'white'],
+    ],
+  }
+};
+
+/* ---------------smt2 Grammar--------------- */
 const smt2_conf = {
   autoClosingPairs: [
       { open: '(', close: ')' }
@@ -107,26 +136,44 @@ const smt2_lang = {
   },
 };
 
-code = `; You can edit this code!
-; Click here and start typing.
-`;
 
 monaco.languages.register({ id: 'smt2' });
 // Register a tokens provider for the language
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
 
+
+monaco.languages.register({ id: 'limboole' });
+// Register a tokens provider for the language
+monaco.languages.setMonarchTokensProvider('limboole', limboole_lang);
+
+
 // const apiUrl = 'http://fm_playground:5000/'; 
 const apiUrl ='http://localhost:8000/'; 
 
 
 var editor = monaco.editor.create(document.getElementById('input'), {
-  value: code,
-  language: 'smt2',
+  value: '% Here you can write Limboole code!',
+  language: 'limboole',
   automaticLayout: true ,
   minimap: {
     enabled: false
 }});
+
+
+function setGrammarToLimboole() {
+  editor.setValue('% Here you can write Limboole code!');
+  monaco.editor.setModelLanguage(editor.getModel(), 'limboole');
+}
+
+function setGrammarToSmt2() {
+  editor.setValue('; Here you can write SMT code!');
+  monaco.editor.setModelLanguage(editor.getModel(), 'smt2');
+}
+
+function setGrammarToNuXMV() {
+  editor.setValue('% The Grammar for NuXMV is not defined yet!');
+}
 
 /* ---------------End of Editor Configuration--------------- */
 
@@ -494,12 +541,23 @@ function run_button_enable() {
 }
 
 
-// TODO: change the editor language configuration (after having nuXMV syntax/grammar)
 function handleOptionChange(selectElement) {
-  // var selectedValue = selectElement.value;
-  // alert("Selected value: " + selectedValue);
+   var selectedValue = selectElement.value;
+
+   switch (selectedValue) {
+    case '0': case '1': case '2':
+        setGrammarToLimboole();
+        break;
+    case '3':
+        setGrammarToSmt2();
+        break;
+    case '4':
+        setGrammarToNuXMV();
+        break;    
+    default:
+        // Handle unsupported language or do nothing
+        break;
+  }
 }
-
-
 
 load_in_editor()
