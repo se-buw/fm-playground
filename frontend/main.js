@@ -669,7 +669,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   if (permalink){
     let code_content;
-    fetch(apiUrl+"permalink?check=" + checkValue.toUpperCase()+"&p="+permalink)
+    fetch(apiUrl+"permalink/?check=" + checkValue.toUpperCase()+"&p="+permalink)
     .then(response => {
       if (response.status === 404) {
         alert("Permalink not found!");
