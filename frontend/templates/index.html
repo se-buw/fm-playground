@@ -10,7 +10,8 @@
     <link href="./static/css/main.css" rel="stylesheet" />
     <link href="./static/css/bootstrap.css" rel="stylesheet" />
     <link href="./static/css/footer.css" rel="stylesheet" />
-    
+    <link rel="icon" href="./static/favicon.ico" type="image/x-icon">
+
     <title>FM Playground</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
@@ -36,7 +37,6 @@
               tabindex="1"
               id="select_wrapper"
               class="form-control"
-              onchange="handleOptionChange(this)"
             ></select>
           </div>
         </div>
@@ -70,28 +70,8 @@
             id="input"
           ></div>
         </div>
-        <div class="col-md-6">
-          <div id="stdout_area">
-            <h2>Output </h2>
-            <small ><a class="hidden" id="smv-copyright" href="./static/nusmv-copyright.txt" target="_blank">NuSMV Copyright Notice</a></small >
-            
-            <textarea
-              readonly
-              tabindex="3"
-              class="form-control js-auto-size"
-              id="stdout"
-            ></textarea>
-            <pre class="infoContents" id="info">
-          </div>
-          <div id="stderr_area">
-            <h2 id="header_error">Errors</h2>
-            <textarea
-              readonly
-              tabindex="4"
-              class="form-control js-auto-size"
-              id="stderr"
-            ></textarea>
-          </div>
+        <div class="col-md-6" id="output-wrapper">
+          <!--Output Area-->
         </div>
       </div>
 
@@ -128,21 +108,23 @@
       <!-- Resource Guide -->
       <h3>Guide</h3>
       <div class="guide-wrapper" id="resource-guide-wrapper">
-        <!--Fetch with xhr-->
+        <!--Resources-->
       </div>
     </div>
     
 
     </div>
 
-    <footer class="container bg-muted text-dark text-center">
+    <footer class="container text-dark text-center">
       <div class="text-center p-3">
         Made with ♥ in Bauhaus-Universität Weimar
+        <br />
+        <a href="https://github.com/se-buw/fm-playground/issues/" class="text-primary" target="_blank">Create an issue on Github</a>
         <br />
         Privacy Policy: This website logs the code and options, which may be analyzed and made public for research purposes. 
         Do not share confidential information. However, it does not collect any personally identifiable information.
         <br />
-          Acknowledgments: <a href="https://github.com/maximaximal/limboole" class="text-muted" target="_blank">limboole</a> 
+          Acknowledgments: <a href="https://github.com/maximaximal/limboole" class="text-muted" target="_blank">limboole</a>,
           <a href="https://github.com/Z3Prover/z3" class="text-muted" target="_blank">z3</a>, 
           <a href="https://github.com/bramvdbogaerde/z3-wasm" class="text-muted" target="_blank">z3-wasm</a>,
           <a href="https://nuxmv.fbk.eu/" class="text-muted" target="_blank">nuXmv</a>

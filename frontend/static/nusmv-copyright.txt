@@ -1,25 +1,25 @@
-*** This is NuSMV 2.6.0 (compiled on Wed Oct 14 15:36:00 2015)
-*** Enabled addons are: compass
+*** This is nuXmv 2.0.0 (compiled on Mon Oct 14 18:05:39 2019)
+*** Copyright (c) 2014-2019, Fondazione Bruno Kessler
+*** For more information on nuXmv see https://nuxmv.fbk.eu
+*** or email to <nuxmv@list.fbk.eu>.
+*** Please report bugs at https://nuxmv.fbk.eu/bugs
+*** (click on "Login Anonymously" to access)
+*** Alternatively write to <nuxmv@list.fbk.eu>.
+
+*** This version of nuXmv is linked to NuSMV 2.6.0.
 *** For more information on NuSMV see <http://nusmv.fbk.eu>
 *** or email to <nusmv-users@list.fbk.eu>.
-*** Please report bugs to <Please report bugs to <nusmv-users@fbk.eu>>
+*** Copyright (C) 2010-2019, Fondazione Bruno Kessler
 
-*** Copyright (c) 2010-2014, Fondazione Bruno Kessler
-
-*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** This version of nuXmv is linked to the CUDD library version 2.4.1
 *** Copyright (c) 1995-2004, Regents of the University of Colorado
 
-*** This version of NuSMV is linked to the MiniSat SAT solver.
+*** This version of nuXmv is linked to the MiniSat SAT solver.
 *** See http://minisat.se/MiniSat.html
 *** Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
 *** Copyright (c) 2007-2010, Niklas Sorensson
 
-WARNING *** This version of NuSMV is linked to the zchaff SAT         ***
-WARNING *** solver (see http://www.princeton.edu/~chaff/zchaff.html). ***
-WARNING *** Zchaff is used in Bounded Model Checking when the         ***
-WARNING *** system variable "sat_solver" is set to "zchaff".          ***
-WARNING *** Notice that zchaff is for non-commercial purposes only.   ***
-WARNING *** NO COMMERCIAL USE OF ZCHAFF IS ALLOWED WITHOUT WRITTEN    ***
-WARNING *** PERMISSION FROM PRINCETON UNIVERSITY.                     ***
-WARNING *** Please contact Sharad Malik (malik@ee.princeton.edu)      ***
-WARNING *** for details.      
+*** This version of nuXmv is linked to MathSAT
+*** Copyright (C) 2009-2019 by Fondazione Bruno Kessler
+*** Copyright (C) 2009-2019 by University of Trento and others
+*** See http://mathsat.fbk.eu
