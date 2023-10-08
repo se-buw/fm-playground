@@ -1,4 +1,20 @@
-/* --------------Limboole Grammar------------ */
+const checkMap = {
+  0: "VAL",
+  1: "SAT",
+  2: "QBF",
+  3: "SMT",
+  4: "XMV",
+};
+
+let apiUrl;
+if (window.location.hostname == 'localhost' || window.location.hostname === '127.0.0.1') {
+  apiUrl = 'http://localhost:8000/api/'; 
+}
+else{
+  apiUrl = '/api/'; 
+}
+
+/* --------------Start Limboole Grammar------------ */
 const limboole_lang = {
 
   operators: [
@@ -19,14 +35,16 @@ const limboole_lang = {
       // whitespace
       { include: '@whitespace' },
     ],
-   
+
     whitespace: [
       [/[ \t\r\n]+/, 'white'],
     ],
   }
 };
 
-/* ---------------smt2 Grammar--------------- */
+/* --------------End Limboole Grammar------------ */
+
+/* ---------------Start SMT Grammer--------------- */
 const smt2_conf = {
   autoClosingPairs: [
       { open: '(', close: ')' }
@@ -136,47 +154,48 @@ const smt2_lang = {
   },
 };
 
+/* ---------------End SMT Grammer--------------- */
+
+/* ---------------Start nuXmv Grammer--------------- */
+
+/* ---------------End nuXmv Grammer--------------- */
+
+/* ---------------Start Editor Configuration--------------- */
+code = `; Click here and start typing.
+`;
 
 monaco.languages.register({ id: 'smt2' });
+monaco.languages.register({ id: 'limboole' });
 // Register a tokens provider for the language
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
-
-
-monaco.languages.register({ id: 'limboole' });
-// Register a tokens provider for the language
 monaco.languages.setMonarchTokensProvider('limboole', limboole_lang);
 
 
-// const apiUrl = 'http://fm_playground:5000/'; 
-const apiUrl ='http://localhost:8000/'; 
-
 
 var editor = monaco.editor.create(document.getElementById('input'), {
-  value: '% Here you can write Limboole code!',
-  language: 'limboole',
+  value: code,
+  language: 'smt2',
   automaticLayout: true ,
   minimap: {
     enabled: false
 }});
 
-
 function setGrammarToLimboole() {
-  editor.setValue('% Here you can write Limboole code!');
   monaco.editor.setModelLanguage(editor.getModel(), 'limboole');
 }
 
 function setGrammarToSmt2() {
-  editor.setValue('; Here you can write SMT code!');
   monaco.editor.setModelLanguage(editor.getModel(), 'smt2');
 }
 
-function setGrammarToNuXMV() {
-  editor.setValue('% The Grammar for NuXMV is not defined yet!');
+function setGrammarTonuXmv() {
+  // editor.setValue('-- The Grammar for NuXMV is not defined yet!');
 }
 
 /* ---------------End of Editor Configuration--------------- */
 
+/* ---------------Start Limboole --------------- */
 class StdinToStdoutProcessor {
   stdin() {
     if (this.input_str_pos < this.input_str.length) {
@@ -267,7 +286,7 @@ class StdinToStdoutProcessor {
 
     let status = this.limboole(1, [""], satcheck, input, input.length);
     
-    save_to_db(satcheck, input);
+    save_to_db(input);
 
     if (this.stdout_buf != "") {
       this.print_line_stdout(this.stdout_buf);
@@ -343,6 +362,10 @@ window.Wrappers = [
 ];
 
 let selector = document.getElementById("select_wrapper");
+let o_option = document.createElement("option");
+o_option.appendChild(document.createTextNode("Select a tool"));
+o_option.value = -1;
+selector.appendChild(o_option);
 for (let i = 0; i < window.Wrappers.length; ++i) {
   let proc = window.Wrappers[i];
   let o = document.createElement("option");
@@ -355,12 +378,12 @@ o_smt.appendChild(document.createTextNode("SMT"));
 o_smt.value = 3;
 selector.appendChild(o_smt);
 let o_xmv = document.createElement("option");
-o_xmv.appendChild(document.createTextNode("NuXMV"));
+o_xmv.appendChild(document.createTextNode("nuXmv"));
 o_xmv.value = 4;
 selector.appendChild(o_xmv);
 
+/* ---------------Start SMT/Z3 --------------- */
 var z3_loaded = false;
-document.getElementById("info").style.display = "none";
 
 Module = {};
 Module.onRuntimeInitialized = () => { console.log("z3 loaded"); z3_loaded = true; };
@@ -376,12 +399,12 @@ function run_z3(code) {
   if (z3_loaded) {
     try {
       info.innerText = "";
-      save_to_db(3,code);
+      save_to_db(code);
       let res = Z3.solve(code);
       info.innerText += res;
     } catch (error) {
       console.error(error);
-      //info.innerText += error;
+      // info.innerText += error;
     }
   } else {
     info.innerText = "Wait for Z3 to load and try again."
@@ -389,6 +412,8 @@ function run_z3(code) {
   run_button_enable()
 }
 
+
+/* ---------------Start nuXmv --------------- */
 function run_nuxmv(code) {
   const info = document.getElementById("info");
   editor.getModel().setValue(code);
@@ -408,75 +433,65 @@ function run_nuxmv(code) {
     } else if(response.status === 429){
       alert("Slow Down! You've already made a request recently.");
       throw new Error('Request failed with status ' + response.status);
+    }else {
+      throw new Error('Request failed with status ' + response.status);
     }
   })
   .then(data => {
     try {
       info.innerText = "";
-
       info.innerText += data.result;
-      save_to_db(4,code);
+      save_to_db(code);
     } catch (error) {
       console.error(error);
       //info.innerText += error;
     }
-    run_button_enable();
   })
   .catch((error) => {
     console.error('Error:', error);
   });
-
-  //run_button_enable()
+  run_button_enable();
 
 }
+/* ---------------End nuXmv --------------- */
 
-window.run_ = function () {
+function run_() {
   let selector = document.getElementById("select_wrapper");
-  var std_out_element = document.getElementById("stdout");
-  var std_err_element = document.getElementById("stderr");
-  var info_element = document.getElementById("info");
-  var header_error_element = document.getElementById("header_error");
   var run_button = document.getElementById("run-btn");
 
   run_button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Running...';
   run_button.disabled = true;
-  
-  if(selector.value < 3) {
-    info_element.style.display = "none";
-    std_err_element.style.display = "block";
-    std_out_element.style.display = "block";
-    header_error_element.style.display = "block"; 
-
-    let wr = window.Wrappers[selector.options.selectedIndex];
+  if(selector.value == -1) {
+    alert("Please select a tool!");
+    run_button_enable();
+  }
+  else if(selector.value >= 0 && selector.value < 3) {
+    let wr = window.Wrappers[selector.options.selectedIndex-1];
     run_limboole(wr);
   }
   else if(selector.value == 3) {
-    std_err_element.style.display = "none";
-    std_out_element.style.display = "none";
-    header_error_element.style.display = "none";
-    info_element.style.display = "block";
-
     run_z3(editor.getModel().getValue());
   }
   else if(selector.value == 4) {
-    std_err_element.style.display = "none";
-    std_out_element.style.display = "none";
-    header_error_element.style.display = "none";
-    info_element.style.display = "block";
-
     run_nuxmv(editor.getModel().getValue());
   }
 
 };
 
-function save_to_db(satcheck, code){
+function save_to_db(code){
+  var urlParams = new URLSearchParams(window.location.search);
+  var checkValue = urlParams.get("check");
+  var permalink = urlParams.get("p");
   fetch(apiUrl+'save', {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({check: satcheck, code: code}),
+    body: JSON.stringify({
+      parent: permalink, 
+      check: checkValue.toUpperCase(),
+      code: code}),
   })
   .then(response => {
     if (response.status === 200) {
@@ -492,7 +507,11 @@ function save_to_db(satcheck, code){
     }
   })
   .then(data => {
-    window.location.hash = data.permalink;
+    let url = "/?check="+data.check+"&p="+data.permalink;
+    window.history.pushState({}, null, url);
+    var copyText = document.getElementById("permalink");
+    copyText.select();
+    copyText.value = window.location.href;
   })
   .catch((error) => {
     console.error('Error:', error);
@@ -500,12 +519,157 @@ function save_to_db(satcheck, code){
 }
 
 
-function load_in_editor() {
-  const info = document.getElementById("info");
-  if(window.location.hash != "" && window.location.hash != undefined && window.location.hash != null){
-    let permalink = window.location.hash.substring(1);
+function run_button_enable() {
+  var run_button = document.getElementById("run-btn");
+
+  run_button.disabled = false;
+  run_button.innerHTML = 'Run';
+}
+
+
+document.getElementById('select_wrapper').addEventListener('change', function() {
+  let selectedValue = this.value;
+  var urlParams = new URLSearchParams(window.location.search);
+  var permalink = urlParams.get("p");
+  if (permalink) {
+    let url = "/?check="+checkMap[selectedValue]+"&p="+permalink;
+    window.history.pushState({}, null, url);
+  }else{
+    window.history.pushState({}, null, "/?check=" + checkMap[selectedValue]);
+  }
+
+  if (selectedValue >=0 && selectedValue < 3) {
+    setGrammarToLimboole();
+    loadResourceGuide('limboole-guide.html');
+    loadOutputArea('limboole-output.html');
+  }
+  else if (selectedValue == 3) {
+    setGrammarToSmt2();
+    loadResourceGuide('smt-guide.html');
+    loadOutputArea('smt-output.html');
+  }
+  else if (selectedValue == 4) {
+    loadResourceGuide('xmv-guide.html');
+    loadOutputArea('xmv-output.html');
+  }
+});
+
+
+function copy_permalink(){
+  var copyText = document.getElementById("permalink");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+  navigator.clipboard.writeText(copyText.value);
+}
+
+function uploadFile() {
+
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.txt, .smt2, .smv'; // Optionally, you can restrict the file type
+
+  input.onchange = function(e) {
+      var file = e.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function() {
+        editor.getModel().setValue(reader.result);
+      }
+
+      reader.readAsText(file);
+  }
+
+  input.click();
+}
+
+function downloadFile() {
+  let selector = document.getElementById("select_wrapper");
+  const content = editor.getModel().getValue();
+
+  let filename = "code.txt"
+  if(selector.value < 3){
+    filename = 'code.txt';
+  }else if(selector.value == 3){
+    filename = 'code.smt2';
+  }else if(selector.value == 4){
+    filename = 'code.smv';
+  }
+
+  const blob = new Blob([content], { type: 'text/plain'});
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function loadResourceGuide(filename) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+              document.getElementById("resource-guide-wrapper").innerHTML = xhr.responseText;
+          }
+      }
+  };
+
+  xhr.open("GET", "./static/html/"+filename, true);
+  xhr.send();
+}
+
+function loadOutputArea(filename) {
+
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+              document.getElementById("output-wrapper").innerHTML = xhr.responseText;
+          }
+      }
+  };
+
+  xhr.open("GET", "./static/html/"+filename, true);
+  xhr.send();
+}
+
+function getKeyByValue(object, value) {
+  return Object.keys(object).find(key => object[key] === value);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var checkValue = urlParams.get("check");
+  var permalink = urlParams.get("p");
+  if (checkValue) {
+    document.getElementById("select_wrapper").value = getKeyByValue(checkMap, checkValue.toUpperCase());
+    window.history.pushState({}, null, "/?check=" + checkValue);
+    switch(checkValue.toUpperCase()){
+      case "VAL": case "SAT": case "QBF":
+        loadResourceGuide('limboole-guide.html');
+        loadOutputArea('limboole-output.html');
+        setGrammarToLimboole();
+        break;
+      case "SMT":
+        loadResourceGuide('smt-guide.html');
+        loadOutputArea('smt-output.html');
+        setGrammarToSmt2(); 
+        break;
+      case "XMV":
+        loadResourceGuide('xmv-guide.html');
+        loadOutputArea('xmv-output.html');
+        setGrammarTonuXmv();
+        break;
+      default:
+        document.getElementById('select_wrapper').value = -1; 
+    }
+  }
+  if (permalink){
     let code_content;
-    fetch(apiUrl+permalink)
+    fetch(apiUrl+"permalink/?check=" + checkValue.toUpperCase()+"&p="+permalink)
     .then(response => {
       if (response.status === 404) {
         alert("Permalink not found!");
@@ -518,46 +682,10 @@ function load_in_editor() {
     .then(data => {
       code_content = data.code;
       editor.getModel().setValue(code_content);
-      let v = permalink.charAt(0);
-      selector.value = v;
-      info.innerText = ""; 
-      if(v < 3) {
-        window.LimbooleLoadedPromise.then(function () {
-          window.run_();
-        });
-      }
+      window.history.pushState({}, null, "/?check=" + checkValue+"&p="+permalink);
     })
     .catch((error) => {
       console.error('Error:', error);
     }); 
   }
-}
-
-function run_button_enable() {
-  var run_button = document.getElementById("run-btn");
-
-  run_button.disabled = false;
-  run_button.innerHTML = 'Run';
-}
-
-
-function handleOptionChange(selectElement) {
-   var selectedValue = selectElement.value;
-
-   switch (selectedValue) {
-    case '0': case '1': case '2':
-        setGrammarToLimboole();
-        break;
-    case '3':
-        setGrammarToSmt2();
-        break;
-    case '4':
-        setGrammarToNuXMV();
-        break;    
-    default:
-        // Handle unsupported language or do nothing
-        break;
-  }
-}
-
-load_in_editor()
+});

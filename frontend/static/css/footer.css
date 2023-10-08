@@ -2,25 +2,25 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #f9f9f9;
   width: 100vw;
   color: #000000;
   margin-bottom: 0;
+  position: relative;
 }
 
 /* Media query for phone screen sizes */
-/* @media (max-height: 768px) {
+@media (max-height: 768px) {
   footer {
-    position: sticky;
+    position: relative;
   }
-} */
+}
 
 /* Media query for PC screen sizes */
-@media (min-width: 769px) {
+/* @media (min-width: 769px) {
   footer {
     position: absolute;
   }
-}
+} */
 
 
 

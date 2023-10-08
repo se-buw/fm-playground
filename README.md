@@ -49,9 +49,9 @@ Open two terminals:
   - `python app.py`
   - The frontend will run on `http://127.0.0.1:5000`
 
-## Docker
-- `docker compose up --build`
-- The frontend will run on `http://127.0.0.1:5000`
-- The backend will run on `http://127.0.0.1:8000`
+## Docker Deploy
+
+## Update Guide
+- Change corresponding files in the `frontend/static/html` folder
 
 ## TODO

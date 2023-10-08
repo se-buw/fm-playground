@@ -8,11 +8,31 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 app.config['APPLICATION_ROOT'] = "/"
 
 
-
 @app.route("/")
 def index():
   return render_template("index.html")
- 
+
+# @app.route('/val')
+# def validity():
+#   return render_template("limboole/limboole.html", selected_option=0)
+
+# @app.route('/sat')
+# def Satisfiability():
+#   return render_template("limboole/limboole.html", selected_option=1)
+
+# @app.route('/qbf')
+# def  QBFSatisfiability():
+#   return render_template("limboole/limboole.html", selected_option=2)
+
+# @app.route('/smt')
+# def  smt():
+#   return render_template("smt/smt.html", selected_option=3)
+
+# @app.route('/xmv')
+# def  nuxmv():
+#   return render_template("xmv/xmv.html", selected_option=4)
+
+
 @app.route('/coi-serviceworker.js')
 def coi_serviceworker_js():
     return send_from_directory(app.root_path, 'coi-serviceworker.js')
@@ -20,7 +40,7 @@ def coi_serviceworker_js():
 @app.route('/z3-play.js')
 def z3_play_js():
     return send_from_directory(app.root_path, 'z3-play.js')
-  
+
 @app.route('/z3.js')
 def z3_js():
     return send_from_directory(app.root_path, 'z3.js')
@@ -53,6 +73,9 @@ def main_js():
 def limboole_wasm():
     return send_from_directory(app.root_path, 'limboole.wasm') 
  
+@app.route('/favicon.ico')
+def fevicon():
+     return send_from_directory('static', 'favicon.ico')
 
 if __name__ == '__main__':
     app.run(port=5000)

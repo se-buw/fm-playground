@@ -13,13 +13,13 @@ services:
   backend:
     build: 
       context: ./backend
-    # container_name: fm_playground
     environment:
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: postgres
-      DB_PORT: "5432"
-      APP_SECKET_KEY: "app-secret-key"
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      APP_SECKET_KEY: ${APP_SECKET_KEY}
+      FLASK_ENV: ${FLASK_ENV}
     depends_on:
       postgres:
         condition: service_healthy
@@ -32,9 +32,9 @@ services:
   postgres:
     image: postgres:15.4
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -42,6 +42,17 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - my_network
+  
+  # Development purpose only
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: soaib@soaib.com
+      PGADMIN_DEFAULT_PASSWORD: pass123
+    ports:
+      - "5050:80"
     networks:
       - my_network
 
