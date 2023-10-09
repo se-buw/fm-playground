@@ -37,8 +37,12 @@ def save():
   current_time = datetime.now(pytz.utc)
   data = request.get_json()
   check_type = data['check']
-  code = data['code'].strip()
-  parent = data['parent']
+  code = data['code']
+  parent = get_id_by_permalink(data['parent'])
+  if parent is None:
+    parent_id = None
+  else:
+    parent_id = parent.id
   
   if not is_valid_size(code):
     response = make_response(jsonify({'result': "The code is too large."}), 413)
@@ -51,42 +55,46 @@ def save():
     response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
     return response
   
+  permalink = generate_passphrase()
   try:
-    exist_same_check = code_exists_in_db_for_same_check(check_type, code)
-    if exist_same_check is not None: # Exist: Do not save again
-      permalink = exist_same_check.permalink
-      session['last_request_time'] = current_time
-      response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
-      return response
-    
-    exist_different_check = code_exists_in_db_different_check(code)
+    code_id_in_db = code_exists_in_db(code)
+    session['last_request_time'] = current_time
     session_id = session.sid
-    if exist_different_check is not None: # Exist but different check
-      permalink = exist_different_check.permalink # replace the check type only
-      new_data = Data( time= datetime.now(), session_id=session_id, parent=parent, check_type=check_type, code=code, permalink=permalink)
-    else: # New: Generate a new permalink
-      permalink = generate_passphrase()
-      new_data = Data( time= datetime.now(), session_id=session_id, parent=parent, check_type=check_type, code=code, permalink=permalink)
+    if code_id_in_db is None: # New: Save the code
+      new_code = Code(code=code)
+      db.session.add(new_code)
+      db.session.commit()
+      code_id = new_code.id
+    else: # Exist: Use the existing code id
+      code_id = code_id_in_db.id
 
+
+    new_data = Data( 
+                time= datetime.now(), 
+                session_id=session_id, 
+                parent=parent_id, 
+                check_type=check_type,  
+                permalink=permalink,
+                code_id=code_id
+              )
     db.session.add(new_data)
     db.session.commit()
-      
   except:
     db.session.rollback()
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
     return response
   
-  session['last_request_time'] = current_time
+  # session['last_request_time'] = current_time
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
   return response
   
 
 @routes.route('/api/permalink/', methods=['GET'])
 def get_code():
-  check = request.args.get('check')
+
   p = request.args.get('p')
-  data = Data.query.filter_by(permalink=p).filter_by(check_type=check).first_or_404()
-  response = make_response(jsonify({'code': data.code}))
+  code_data = Code.query.join(Data, Data.code_id == Code.id).filter(Data.permalink == p).first_or_404()
+  response = make_response(jsonify({'code': code_data.code}))
   return response
 
 @routes.route('/api/run_nuxmv', methods=['POST'])
