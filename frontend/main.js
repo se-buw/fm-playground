@@ -22,7 +22,7 @@ const limboole_lang = {
   ],
 
   // operators
-  symbols: /([\.]{2})|([=><!:&\|\+\-\*\/%,;]+)/,
+  symbols: /([\.]{2})|([=><!:&\|\+\-\*\/,;]+)/,
 
   // escape sequences
   escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
@@ -38,6 +38,7 @@ const limboole_lang = {
 
     whitespace: [
       [/[ \t\r\n]+/, 'white'],
+      [/(^%.*$)/, 'comment'],
     ],
   }
 };
