@@ -1,3 +1,5 @@
+![Website](https://img.shields.io/website?url=https%3A%2F%2Fplay.formal-methods.net%2F&link=https%3A%2F%2Fplay.formal-methods.net%2F)
+
 # FM Playground Dev branch 
 A Formal Method playground for limboole, z3, and NuXMV.
 
