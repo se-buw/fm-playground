@@ -162,7 +162,7 @@ const smt2_lang = {
 /* ---------------End nuXmv Grammer--------------- */
 
 /* ---------------Start Editor Configuration--------------- */
-code = `; Click here and start typing.
+code = `% Click here and start typing.
 `;
 
 monaco.languages.register({ id: 'smt2' });
@@ -363,10 +363,6 @@ window.Wrappers = [
 ];
 
 let selector = document.getElementById("select_wrapper");
-let o_option = document.createElement("option");
-o_option.appendChild(document.createTextNode("Select a tool"));
-o_option.value = -1;
-selector.appendChild(o_option);
 for (let i = 0; i < window.Wrappers.length; ++i) {
   let proc = window.Wrappers[i];
   let o = document.createElement("option");
@@ -462,12 +458,8 @@ function run_() {
 
   run_button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Running...';
   run_button.disabled = true;
-  if(selector.value == -1) {
-    alert("Please select a tool!");
-    run_button_enable();
-  }
-  else if(selector.value >= 0 && selector.value < 3) {
-    let wr = window.Wrappers[selector.options.selectedIndex-1];
+  if(selector.value >= 0 && selector.value < 3) {
+    let wr = window.Wrappers[selector.options.selectedIndex];
     run_limboole(wr);
   }
   else if(selector.value == 3) {
@@ -665,8 +657,14 @@ document.addEventListener("DOMContentLoaded", function() {
         setGrammarTonuXmv();
         break;
       default:
-        document.getElementById('select_wrapper').value = -1; 
+        document.getElementById('select_wrapper').value = 1; 
     }
+  }else{
+    document.getElementById('select_wrapper').value = 1; 
+    window.history.pushState({}, null, "/?check=SAT");
+    loadResourceGuide('limboole-guide.html');
+    loadOutputArea('limboole-output.html');
+    setGrammarToLimboole();
   }
   if (permalink){
     let code_content;
