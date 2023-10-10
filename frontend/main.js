@@ -177,7 +177,7 @@ monaco.languages.setMonarchTokensProvider('limboole', limboole_lang);
 var editor = monaco.editor.create(document.getElementById('input'), {
   value: code,
   language: 'smt2',
-  automaticLayout: true ,
+  automaticLayout: true,
   minimap: {
     enabled: false
 }});
@@ -688,3 +688,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }); 
   }
 });
+
+
+document.getElementById('select-theme').addEventListener('change', function(){
+  let selectedTheme = this.value;
+  monaco.editor.setTheme(selectedTheme);
+})
