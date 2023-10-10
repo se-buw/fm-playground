@@ -693,4 +693,4 @@ document.addEventListener("DOMContentLoaded", function() {
 document.getElementById('select-theme').addEventListener('change', function(){
   let selectedTheme = this.value;
   monaco.editor.setTheme(selectedTheme);
-})
+});
