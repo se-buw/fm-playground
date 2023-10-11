@@ -91,7 +91,7 @@ def save():
 
 @routes.route('/api/permalink/', methods=['GET'])
 def get_code():
-  c = request.args.get('check')
+  c = request.args.get('check').upper()
   p = request.args.get('p')
   code_data = Code.query.join(Data, Data.code_id == Code.id).filter_by(permalink=p).filter_by(check_type=c).first_or_404()
   response = make_response(jsonify({'code': code_data.code}))
