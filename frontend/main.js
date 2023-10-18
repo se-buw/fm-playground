@@ -21,7 +21,11 @@ const limboole_conf = {
   },
   autoClosingPairs: [
       { open: '(', close: ')' }
-  ]
+  ],
+  brackets: [['(', ')']],
+  surroundingPairs: [
+      { open: '(', close: ')' }
+  ],
 };
 
 const limboole_lang = {
@@ -61,7 +65,11 @@ const smt2_conf = {
   },
   autoClosingPairs: [
       { open: '(', close: ')' }
-  ]
+  ],
+  brackets: [['(', ')']],
+  surroundingPairs: [
+      { open: '(', close: ')' }
+  ],
 };
 
 /* SMT2 language definition (borrowed from monaco editor languages) */
@@ -174,9 +182,17 @@ const nuXmv_conf = {
   comments: {
     lineComment: "--",
   },
+  brackets: [['{', '}'], ['[', ']'], ['(', ')']],
   autoClosingPairs: [
-      { open: '(', close: ')' }
-  ]
+    { open: '{', close: '}' },
+    { open: '[', close: ']' },
+    { open: '(', close: ')' }
+  ],
+  surroundingPairs: [
+    { open: '{', close: '}' },
+    { open: '[', close: ']' },
+    { open: '(', close: ')' }
+  ],
 };
 
 
@@ -287,6 +303,10 @@ var editor = monaco.editor.create(document.getElementById('input'), {
     enabled: false
   },
   mouseWheelZoom: true,
+  bracketPairColorizationOptions: {
+    enabled: true,
+    independentColorPoolPerBracketType: true,
+  },
 });
 
 function setGrammarToLimboole() {
