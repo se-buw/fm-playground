@@ -96,7 +96,7 @@ textarea.form-control{
 
 pre {
     font-family: Menlo, monospace;
-    font-size: 12pt;
+    font-size: 10pt;
     background: #fff5e9;
     padding-top: 0.5em;
     padding-left: 0.5em;
@@ -110,10 +110,10 @@ pre.infoContents {
     background: #f4f4f4;
     margin: 0px;
     padding: 1em;
-    height: 50vh;
+    height: 45vh;
     overflow-y: auto;
     font-family: Menlo, monospace;
-    font-size: 12pt;
+    font-size: 10pt;
     resize: both;
     overflow-x: auto;
 }

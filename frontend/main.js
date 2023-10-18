@@ -15,6 +15,15 @@ else{
 }
 
 /* --------------Start Limboole Grammar------------ */
+const limboole_conf = {
+  comments: {
+    lineComment: "%",
+  },
+  autoClosingPairs: [
+      { open: '(', close: ')' }
+  ]
+};
+
 const limboole_lang = {
 
   operators: [
@@ -47,6 +56,9 @@ const limboole_lang = {
 
 /* ---------------Start SMT Grammer--------------- */
 const smt2_conf = {
+  comments: {
+    lineComment: ";",
+  },
   autoClosingPairs: [
       { open: '(', close: ')' }
   ]
@@ -158,6 +170,16 @@ const smt2_lang = {
 /* ---------------End SMT Grammer--------------- */
 
 /* ---------------Start nuXmv Grammer--------------- */
+const nuXmv_conf = {
+  comments: {
+    lineComment: "--",
+  },
+  autoClosingPairs: [
+      { open: '(', close: ')' }
+  ]
+};
+
+
 const nuXmv_lang = {
 
   keywords: [
@@ -248,7 +270,11 @@ monaco.languages.register({ id: 'nuXmv' });
 // Register a tokens provider for the language
 monaco.languages.setLanguageConfiguration('smt2', smt2_conf);
 monaco.languages.setMonarchTokensProvider('smt2', smt2_lang);
+
+monaco.languages.setLanguageConfiguration('limboole', limboole_conf);
 monaco.languages.setMonarchTokensProvider('limboole', limboole_lang);
+
+monaco.languages.setLanguageConfiguration('nuXmv', nuXmv_conf);
 monaco.languages.setMonarchTokensProvider('nuXmv', nuXmv_lang);
 
 
@@ -539,7 +565,6 @@ function run_() {
   else if(selector.value == 4) {
     run_nuxmv(editor.getModel().getValue());
   }
-
 };
 
 function save_to_db(code){
