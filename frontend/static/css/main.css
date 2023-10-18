@@ -83,18 +83,20 @@ textarea {
     padding-left: 0.5em;
     padding-bottom: 0.5em;
     overflow-x: auto;
+
 }
 
 
 textarea.form-control{
-    height: 20vh !important;
+    height: 50vh;
+    resize: both;
     border: none !important;
     border-radius: 0px !important;
 }
 
 pre {
     font-family: Menlo, monospace;
-    font-size: 10pt;
+    font-size: 12pt;
     background: #fff5e9;
     padding-top: 0.5em;
     padding-left: 0.5em;
@@ -111,7 +113,9 @@ pre.infoContents {
     height: 50vh;
     overflow-y: auto;
     font-family: Menlo, monospace;
-    font-size: 10pt;
+    font-size: 12pt;
+    resize: both;
+    overflow-x: auto;
 }
 
 .form-control:disabled, .form-control[readonly] {

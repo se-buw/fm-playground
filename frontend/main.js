@@ -259,7 +259,9 @@ var editor = monaco.editor.create(document.getElementById('input'), {
   automaticLayout: true,
   minimap: {
     enabled: false
-}});
+  },
+  mouseWheelZoom: true,
+});
 
 function setGrammarToLimboole() {
   monaco.editor.setModelLanguage(editor.getModel(), 'limboole');
@@ -404,26 +406,16 @@ class ProcessorWrapper {
 
 function run_limboole(wrapper) {
   window.input_textarea = editor.getModel().getValue();
-  window.stdout_textarea = document.getElementById("stdout");
-  window.stderr_textarea = document.getElementById("stderr");
-
-  function writeln(element, line) {
-    element.value += line;
-
-    element.style.height = "auto";
-    element.style.height = element.scrollHeight + "px";
-  }
-
-  window.stdout_textarea.value = "";
-  window.stderr_textarea.value = "";
+  const info = document.getElementById("info");
+  info.innerText = "";
 
   wrapper.run.bind(wrapper)(
     editor.getModel().getValue(),
     function (line) {
-      writeln(window.stdout_textarea, line);
+      info.innerText += line + "\n";
     },
     function (line) {
-      writeln(window.stderr_textarea, line);
+      info.innerText += line + "\n";
     }
   );
   run_button_enable();
@@ -621,6 +613,7 @@ document.getElementById('select_wrapper').addEventListener('change', function() 
     loadOutputArea('smt-output.html');
   }
   else if (selectedValue == 4) {
+    setGrammarTonuXmv();
     loadResourceGuide('xmv-guide.html');
     loadOutputArea('xmv-output.html');
   }

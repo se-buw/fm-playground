@@ -1,4 +1,6 @@
-# FM Playground Dev branch 
+[![wakatime](https://wakatime.com/badge/user/4c982e71-84ec-49a9-8462-9a1c5f6d5d8f/project/aa70d1b4-abf2-4728-8d44-f4e2b27544e9.svg)](https://wakatime.com/badge/user/4c982e71-84ec-49a9-8462-9a1c5f6d5d8f/project/aa70d1b4-abf2-4728-8d44-f4e2b27544e9)
+
+# FM Playground
 A Formal Method playground for limboole, z3, and NuXMV.
 
 ## Requirements
