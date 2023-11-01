@@ -454,6 +454,13 @@ function run_limboole(wrapper) {
   window.input_textarea = editor.getModel().getValue();
   const info = document.getElementById("info");
   info.innerText = "";
+  
+  let non_ascii = findNonASCII(window.input_textarea);
+  if(findNonASCII){
+    info.innerText += `<stdin>:${non_ascii.position}:parse error at '${non_ascii.character}' expected ASCII character\n`;
+    run_button_enable();
+    return;
+  }
 
   wrapper.run.bind(wrapper)(
     editor.getModel().getValue(),
@@ -811,3 +818,18 @@ document.getElementById('select-theme').addEventListener('change', function(){
   let selectedTheme = this.value;
   monaco.editor.setTheme(selectedTheme);
 });
+
+
+function findNonASCII(input) {
+  const regex = /[^\x00-\x7F]/;
+  const match = regex.exec(input);
+  
+  if (match) {
+    return {
+      character: match[0],
+      position: match.index
+    };
+  }
+
+  return null;
+}
