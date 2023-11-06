@@ -3,7 +3,7 @@ import time
 from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify, session, make_response, abort
 from utils.db import db, Data
-from utils import xmv 
+from utils import xmv, z3
 from utils.permalink_generator import generate_passphrase
 from utils.db_query import *
 import pytz
@@ -11,10 +11,17 @@ aware_datetime = datetime.now(pytz.utc)
 
 routes = Blueprint('routes', __name__)
 
-TIME_WINDOW = 1 # time window within which multiple requests are not allowed
+TIME_WINDOW = 1 
 
-# Check if the code is too large
 def is_valid_size(code: str) -> bool:
+  """Check if the code is less than 1MB
+  
+  Parameters:
+    code (str): The code to be checked
+    
+  Returns:
+    bool: True if the code is less than 1MB, False otherwise
+  """
   size_in_bytes = sys.getsizeof(code)
   size_in_mb = size_in_bytes / (1024*1024)
   return size_in_mb <= 1
@@ -22,13 +29,14 @@ def is_valid_size(code: str) -> bool:
 
 @routes.route('/api/')
 def index():
-    current_time = datetime.now(pytz.utc)
-    last_request_time = session.get('last_request_time')
-    if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
-        return abort(429)  # HTTP status code for "Too Many Requests"
+  """Index page"""
+  current_time = datetime.now(pytz.utc)
+  last_request_time = session.get('last_request_time')
+  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
+    return abort(429) # Too Many Requests
 
-    session['last_request_time'] = current_time
-    return "Request accepted"
+  session['last_request_time'] = current_time
+  return "Request accepted"
   
 
 
@@ -116,7 +124,29 @@ def run_nuxmv():
     res = xmv.process_commands(code)
     response = make_response(jsonify({'result': res}), 200)
   except:
-    response = make_response(jsonify({'result': "Error running nuXmv. Server is busy. Please try again after"}), 503)
+    response = make_response(jsonify({'result': "Error running nuXmv. Server is busy. Please try again"}), 503)
   
   return response
+
+@routes.route('/api/run_z3', methods=['POST'])
+def run_z3():
+  data = request.get_json()
+  code = data['code']
+  current_time = datetime.now(pytz.utc)
+
+  # Check if the code is too large
+  if not is_valid_size(code):
+    return {'error': "The code is too large."}, 413
+
+  last_request_time = session.get('last_request_time')
+
+  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
+    response = make_response(jsonify({'error': "You've already made a request recently."}), 429)
+    return response
+  try:
+    res = z3.process_commands(code)
+    response = make_response(jsonify({'result': res}), 200)
+  except:
+    response = make_response(jsonify({'result': "Error running Z3. Server is busy. Please try again"}), 503)
   
+  return response

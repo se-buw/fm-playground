@@ -5,6 +5,9 @@ WORKDIR /backend
 
 COPY . /backend 
 
+RUN apt-get update && apt-get install -y
+RUN apt-get install z3 -y
+
 RUN pip install --no-cache-dir --upgrade pip setuptools
 RUN pip install --no-cache-dir -r requirements.txt
 

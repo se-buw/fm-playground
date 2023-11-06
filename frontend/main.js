@@ -456,7 +456,7 @@ function run_limboole(wrapper) {
   info.innerText = "";
   
   let non_ascii = findNonASCII(window.input_textarea);
-  if(findNonASCII){
+  if(non_ascii != null){
     info.innerText += `<stdin>:${non_ascii.position}:parse error at '${non_ascii.character}' expected ASCII character\n`;
     run_button_enable();
     return;
@@ -514,24 +514,66 @@ Module.print = (text) => {
   info.innerText += text + "\n";
 };
 
+
+/* ---------------Start z3 --------------- */
 function run_z3(code) {
   const info = document.getElementById("info");
   editor.getModel().setValue(code);
-  if (z3_loaded) {
+  fetch(apiUrl+'run_z3', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({code: code}),
+  })
+  .then(response => {
+    if (response.status === 200) {
+        return response.json();
+    } else if(response.status === 413){
+      alert("Code size is too large!");
+      throw new Error('Request failed with status ' + response.status);
+    } else if(response.status === 429){
+      alert("Slow Down! You've already made a request recently.");
+      throw new Error('Request failed with status ' + response.status);
+    }else {
+      throw new Error('Request failed with status ' + response.status);
+    }
+  })
+  .then(data => {
     try {
       info.innerText = "";
+      info.innerText += data.result;
       save_to_db(code);
-      let res = Z3.solve(code);
-      info.innerText += res;
     } catch (error) {
       console.error(error);
-      // info.innerText += error;
+      //info.innerText += error;
     }
-  } else {
-    info.innerText = "Wait for Z3 to load and try again."
-  }
-  run_button_enable()
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+  run_button_enable();
+
 }
+
+// function run_z3(code) {
+//   const info = document.getElementById("info");
+//   editor.getModel().setValue(code);
+//   if (z3_loaded) {
+//     try {
+//       info.innerText = "";
+//       save_to_db(code);
+//       let res = Z3.solve(code);
+//       info.innerText += res;
+//     } catch (error) {
+//       console.error(error);
+//       // info.innerText += error;
+//     }
+//   } else {
+//     info.innerText = "Wait for Z3 to load and try again."
+//   }
+//   run_button_enable()
+// }
 
 
 /* ---------------Start nuXmv --------------- */
@@ -829,7 +871,7 @@ function findNonASCII(input) {
       character: match[0],
       position: match.index
     };
+  }else{
+    return null;
   }
-
-  return null;
 }
