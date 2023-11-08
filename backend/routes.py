@@ -120,3 +120,60 @@ def run_nuxmv():
   
   return response
   
+@routes.route('/api/save-with-meta', methods=['POST'])
+def save_with_metadata():
+  current_time = datetime.now(pytz.utc)
+  data = request.get_json()
+  check_type = data['check']
+  code = data['code']
+  parent = get_id_by_permalink(data['parent'])
+  metadata = data['meta']
+  if parent is None:
+    parent_id = None
+  else:
+    parent_id = parent.id
+  
+  if not is_valid_size(code):
+    response = make_response(jsonify({'result': "The code is too large."}), 413)
+    return response
+  
+  last_request_time = session.get('last_request_time')
+ 
+  # Allow one request per 5 seconds and same check
+  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
+    response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
+    return response
+  
+  permalink = generate_passphrase()
+  try:
+    code_id_in_db = code_exists_in_db(code)
+    session['last_request_time'] = current_time
+    session_id = session.sid
+    if code_id_in_db is None: # New: Save the code
+      new_code = Code(code=code)
+      db.session.add(new_code)
+      db.session.commit()
+      code_id = new_code.id
+    else: # Exist: Use the existing code id
+      code_id = code_id_in_db.id
+
+
+    new_data = Data( 
+                time= datetime.now(), 
+                session_id=session_id, 
+                parent=parent_id, 
+                check_type=check_type,  
+                permalink=permalink,
+                meta=metadata,
+                code_id=code_id
+              )
+    db.session.add(new_data)
+    db.session.commit()
+  except:
+    db.session.rollback()
+    response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
+    return response
+  
+  # session['last_request_time'] = current_time
+  response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
+  return response

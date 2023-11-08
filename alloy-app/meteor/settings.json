@@ -1,0 +1,9 @@
+{
+    "env": {
+        "API_URL": "http://api:8080",
+        "MAX_INSTANCES": 10
+    },
+    "public": {
+
+    }
+}

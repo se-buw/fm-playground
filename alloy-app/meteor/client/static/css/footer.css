@@ -1,0 +1,56 @@
+footer {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  color: #000000;
+  margin-bottom: 0;
+  position: relative;
+}
+
+/* Media query for phone screen sizes */
+@media (max-height: 768px) {
+  footer {
+    position: relative;
+  }
+}
+
+/* Media query for PC screen sizes */
+/* @media (min-width: 769px) {
+  footer {
+    position: absolute;
+  }
+} */
+
+
+
+/* Horizontal line separator */
+.grid {
+  max-width: 80vw;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.grid__item {
+  grid-column: 3 / -3;
+  width: 100%;
+  direction: ltr;
+}
+
+hr {
+  display: block;
+  clear: both;
+  width: 33%;
+  height: 0.1rem;
+  padding: 0;
+  border: 0;
+  border-top: 0.1rem solid rgba(0, 0, 0, 0.1);
+}
+
+.sketch-rule {
+  width: 100%;
+  height: 0.4em;
+  border: 0;
+  background: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none' viewBox='0 0 119 6'%3E%3Cpath d='M119 3.8c-60 2.5-33.5-7-119 0' fill='none' stroke='%231d2d35' stroke-width='2'/%3E%3C/svg%3E")
+    center/5em 100% repeat-x;
+}

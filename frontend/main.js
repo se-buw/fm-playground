@@ -4,6 +4,7 @@ const checkMap = {
   2: "QBF",
   3: "SMT",
   4: "XMV",
+  5: "ALS"
 };
 
 let apiUrl;
@@ -458,6 +459,11 @@ o_xmv.appendChild(document.createTextNode("nuXmv"));
 o_xmv.value = 4;
 selector.appendChild(o_xmv);
 
+let o_alloy = document.createElement("option");
+o_alloy.appendChild(document.createTextNode("Alloy"));
+o_alloy.value = 5;
+selector.appendChild(o_alloy);
+
 /* ---------------Start SMT/Z3 --------------- */
 var z3_loaded = false;
 
@@ -624,6 +630,11 @@ document.getElementById('select_wrapper').addEventListener('change', function() 
     loadResourceGuide('xmv-guide.html');
     loadOutputArea('xmv-output.html');
   }
+  else if (selectedValue == 5) {
+    var code = editor.getModel().getValue();
+    // sendEditorContent(code)
+    window.location.href = 'http://localhost:3000'+ "/?check=" + checkMap[selectedValue]
+  }
 });
 
 
@@ -713,6 +724,11 @@ function getKeyByValue(object, value) {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+  var code = localStorage.getItem("editorCode");
+  if(code){
+    editor.getModel().setValue(code);
+    localStorage.removeItem("editorCode");
+  }
   var urlParams = new URLSearchParams(window.location.search);
   var checkValue = urlParams.get("check");
   var permalink = urlParams.get("p");
@@ -773,3 +789,33 @@ document.getElementById('select-theme').addEventListener('change', function(){
   let selectedTheme = this.value;
   monaco.editor.setTheme(selectedTheme);
 });
+
+// const socket = new WebSocket('ws://localhost:3000'); // Establish WebSocket connection
+
+// socket.addEventListener('message', (event) => {
+//   const receivedContent = event.data;
+//   editor.getModel().setValue(receivedContent);
+// });
+
+// function sendEditorContent(content) {
+//   socket.send(content); // Send content over WebSocket
+// }
+
+// socket.addEventListener('open', (event) => {
+//   console.log('WebSocket connection is now open');
+  
+//   // You can now send data over the WebSocket
+//   socket.send('Hello, server!');
+// });
+
+// socket.addEventListener('message', (event) => {
+//   console.log('Message from server:', event.data);
+// });
+
+// socket.addEventListener('error', (event) => {
+//   console.error('WebSocket error:', event);
+// });
+
+// socket.addEventListener('close', (event) => {
+//   console.log('WebSocket connection closed:', event);
+// });

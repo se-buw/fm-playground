@@ -1,0 +1,108 @@
+{
+    "name": "meteor_docker",
+    "private": true,
+    "scripts": {
+        "start": "MONGO_URL=mongodb://mongo:27017 meteor --settings settings.json",
+        "test": "TEST_BROWSER_DRIVER=chrome meteor test --once --driver-package meteortesting:mocha",
+        "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+        "visualize": "meteor --production --extra-packages bundle-visualizer",
+        "lint": "eslint . --fix"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.1.5",
+        "classie": "^1.0.0",
+        "codemirror": "^5.65.15",
+        "cytoscape": "^2.7.29",
+        "meteor-node-stubs": "^0.4.1",
+        "monaco-editor": "^0.44.0",
+        "qtip2": "^3.0.3",
+        "simpl-schema": "^1.5.3"
+    },
+    "meteor": {
+        "mainModule": {
+            "server": "server/main.js"
+        }
+    },
+    "devDependencies": {
+        "@meteorjs/eslint-config-meteor": "^1.0.5",
+        "babel-eslint": "^10.0.1",
+        "chromedriver": "74.0.0",
+        "eslint": "^5.15.1",
+        "eslint-config-airbnb": "^17.1.0",
+        "eslint-import-resolver-meteor": "^0.4.0",
+        "eslint-plugin-import": "^2.16.0",
+        "eslint-plugin-jsx-a11y": "^6.2.1",
+        "eslint-plugin-meteor": "^5.1.0",
+        "eslint-plugin-react": "^7.12.4",
+        "selenium-webdriver": "3.6.0"
+    },
+    "eslintConfig": {
+        "parser": "babel-eslint",
+        "parserOptions": {
+            "allowImportExportEverywhere": true
+        },
+        "plugins": [
+            "meteor"
+        ],
+        "extends": [
+            "airbnb",
+            "plugin:meteor/recommended"
+        ],
+        "rules": {
+            "import/no-extraneous-dependencies": "off",
+            "import/prefer-default-export": "off",
+            "no-underscore-dangle": "off",
+            "no-undef": "off",
+            "no-plusplus": "off",
+            "semi": [
+                "error",
+                "never"
+            ],
+            "no-var": "error",
+            "comma-dangle": [
+                "error",
+                "never"
+            ],
+            "object-curly-newline": [
+                "error",
+                {
+                    "ImportDeclaration": "never",
+                    "ExportDeclaration": "never"
+                }
+            ],
+            "indent": [
+                "error",
+                4
+            ],
+            "object-shorthand": [
+                "error",
+                "always",
+                {
+                    "avoidQuotes": false
+                }
+            ],
+            "meteor/eventmap-params": [
+                "error",
+                {
+                    "eventParamName": "event",
+                    "templateInstanceParamName": "instance"
+                }
+            ],
+            "meteor/template-names": [
+                "off"
+            ]
+        },
+        "settings": {
+            "import/resolver": "meteor"
+        }
+    },
+    "postcss": {
+        "plugins": {
+            "autoprefixer": {
+                "browsers": [
+                    "last 2 versions"
+                ]
+            }
+        }
+    }
+}

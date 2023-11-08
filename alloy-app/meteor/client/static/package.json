@@ -1,0 +1,11 @@
+{
+  "name": "fm-playground",
+  "version": "1.0.0",
+  "description": "A Formal Method playground for limboole and z3 with Monaco Editor",
+  "author": "Soaibuzzaman",
+  "license": "MIT",
+  "devDependencies": {
+    "monaco-editor": "^0.41.0"
+  }
+}
+

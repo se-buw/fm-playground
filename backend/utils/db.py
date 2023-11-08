@@ -19,6 +19,7 @@ class Data(db.Model):
   parent = db.Column(db.Integer)
   check_type = db.Column(db.String())
   permalink = db.Column(db.String())
+  meta = db.Column(db.String())
   
   code_id = db.Column(db.Integer, db.ForeignKey('code.id'), nullable=False)
   
