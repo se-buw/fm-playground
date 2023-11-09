@@ -27,6 +27,8 @@ services:
       - "8000:8000"
     networks:
       - my_network
+    env_file:
+      - .env
     restart: unless-stopped
   
   postgres:
@@ -42,6 +44,8 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    env_file:
+      - .env
     networks:
       - my_network
   

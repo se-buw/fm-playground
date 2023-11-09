@@ -11,7 +11,6 @@ app_secret = os.getenv('APP_SECKET_KEY')
 flask_env = os.getenv('FLASK_ENV')
 class Config:
   DEBUG = True
-  print(f"FLASK_ENV: {flask_env}")
   SQLALCHEMY_DATABASE_URI = "postgresql://postgres:postgres@localhost:5432/postgres"
   if flask_env == 'production':
     DEBUG = False
