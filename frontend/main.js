@@ -4,6 +4,7 @@ const checkMap = {
   2: "QBF",
   3: "SMT",
   4: "XMV",
+  5: "ALS"
 };
 
 let apiUrl;
@@ -454,7 +455,7 @@ function run_limboole(wrapper) {
   window.input_textarea = editor.getModel().getValue();
   const info = document.getElementById("info");
   info.innerText = "";
-  
+
   let non_ascii = findNonASCII(window.input_textarea);
   if(non_ascii != null){
     info.innerText += `<stdin>:${non_ascii.position}:parse error at '${non_ascii.character}' expected ASCII character\n`;
@@ -502,6 +503,11 @@ let o_xmv = document.createElement("option");
 o_xmv.appendChild(document.createTextNode("nuXmv"));
 o_xmv.value = 4;
 selector.appendChild(o_xmv);
+
+let o_alloy = document.createElement("option");
+o_alloy.appendChild(document.createTextNode("Alloy"));
+o_alloy.value = 5;
+selector.appendChild(o_alloy);
 
 /* ---------------Start SMT/Z3 --------------- */
 var z3_loaded = false;
@@ -634,6 +640,7 @@ function run_() {
   else if(selector.value == 4) {
     run_nuxmv(editor.getModel().getValue());
   }
+
 };
 
 function save_to_db(code){
@@ -710,6 +717,9 @@ document.getElementById('select_wrapper').addEventListener('change', function() 
     setGrammarTonuXmv();
     loadResourceGuide('xmv-guide.html');
     loadOutputArea('xmv-output.html');
+  }
+  else if (selectedValue == 5) {
+    window.location.href = 'http://localhost:3000'+ "/?check=" + checkMap[selectedValue]
   }
 });
 
@@ -865,7 +875,7 @@ document.getElementById('select-theme').addEventListener('change', function(){
 function findNonASCII(input) {
   const regex = /[^\x00-\x7F]/;
   const match = regex.exec(input);
-  
+
   if (match) {
     return {
       character: match[0],

@@ -1,0 +1,5 @@
+.git
+.meteor/local
+node_modules
+.gitignore
+run.config

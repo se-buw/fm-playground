@@ -4,6 +4,7 @@ test.py
 _felt_cute_might_delete_later/
 flask_session/
 *.tar
+**/data/db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -21,7 +22,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
