@@ -22,7 +22,7 @@ Meteor.methods({
     let meta = "{cmd_i: " + cmd_i + "}"
     const synchronousCall = Meteor.wrapAsync(HTTP.call);
     try {
-      const result = synchronousCall('POST', `http://localhost:8000/api/save-with-meta`, {
+      const result = synchronousCall('POST', `${Meteor.settings.env.FMP_URL}/api/save-with-meta`, {
         data: {
           parent: null,
           check: "ALS",

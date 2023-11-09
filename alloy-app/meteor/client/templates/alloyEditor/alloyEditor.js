@@ -207,7 +207,11 @@ Template.alloyEditor.events({
     },
     'click #exec'() {
         let cmd = document.querySelector('.command-selection select');
-        cmd = cmd.selectedIndex+1;
+        if(cmd != null){
+            cmd = cmd.selectedIndex+1;
+        }else{
+            cmd = -1;
+        }
         executeModel(),
         shareModel(cmd)
     },
@@ -379,8 +383,6 @@ const checkMap = {
     5: "ALS"
 };
 function toolChanged(selectedValue) {
-    var code = textEditor.getValue();
-    sendEditorContent(code);
     var urlParams = new URLSearchParams(window.location.search);
     var permalink = urlParams.get("p");
     if (permalink) {

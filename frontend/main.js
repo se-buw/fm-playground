@@ -631,8 +631,6 @@ document.getElementById('select_wrapper').addEventListener('change', function() 
     loadOutputArea('xmv-output.html');
   }
   else if (selectedValue == 5) {
-    var code = editor.getModel().getValue();
-    // sendEditorContent(code)
     window.location.href = 'http://localhost:3000'+ "/?check=" + checkMap[selectedValue]
   }
 });
@@ -789,33 +787,3 @@ document.getElementById('select-theme').addEventListener('change', function(){
   let selectedTheme = this.value;
   monaco.editor.setTheme(selectedTheme);
 });
-
-// const socket = new WebSocket('ws://localhost:3000'); // Establish WebSocket connection
-
-// socket.addEventListener('message', (event) => {
-//   const receivedContent = event.data;
-//   editor.getModel().setValue(receivedContent);
-// });
-
-// function sendEditorContent(content) {
-//   socket.send(content); // Send content over WebSocket
-// }
-
-// socket.addEventListener('open', (event) => {
-//   console.log('WebSocket connection is now open');
-  
-//   // You can now send data over the WebSocket
-//   socket.send('Hello, server!');
-// });
-
-// socket.addEventListener('message', (event) => {
-//   console.log('Message from server:', event.data);
-// });
-
-// socket.addEventListener('error', (event) => {
-//   console.error('WebSocket error:', event);
-// });
-
-// socket.addEventListener('close', (event) => {
-//   console.log('WebSocket connection closed:', event);
-// });

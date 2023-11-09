@@ -1,6 +1,7 @@
 {
     "env": {
         "API_URL": "http://api:8080",
+        "FMP_URL": "http://fmp-backend:8000",
         "MAX_INSTANCES": 10
     },
     "public": {
