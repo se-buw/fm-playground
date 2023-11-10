@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 db = SQLAlchemy()
 
@@ -33,3 +34,4 @@ def init_app(app):
   with app.app_context():
     print("Creating tables...")
     db.create_all()
+    migrate = Migrate(app, db)
