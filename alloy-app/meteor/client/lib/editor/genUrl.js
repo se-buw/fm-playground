@@ -16,7 +16,7 @@ import { savePositions } from '../visualizer/projection'
 /**
  * Store and share the current model and generate the sharing URLs.
  */
-export function shareModel(cmd_i) {
+export function shareModel(cmd_i, permalink) {
     const themeData = {
         sigSettings: sigSettings.data(),
         relationSettings: relationSettings.data(),
@@ -27,7 +27,7 @@ export function shareModel(cmd_i) {
     }
 
     const modelToShare = textEditor.getValue()
-    Meteor.call('genURL', modelToShare, Session.get('last_id'), themeData, cmd_i, handleShareModel)
+    Meteor.call('genURL', modelToShare, Session.get('last_id'), themeData, cmd_i, permalink, handleShareModel)
 }
 
 /**
@@ -59,6 +59,8 @@ function handleShareModel(err, result) {
 
     Session.set('public-model-url', `${result.public}`)
     Session.set('private-model-url', `${result.private}`)
+    console.log(result)
+    window.history.pushState({}, null, "/?check=ALS&p=" + result.public);
 
     modelShared()
 }

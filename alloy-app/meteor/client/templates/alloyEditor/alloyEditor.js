@@ -210,10 +210,12 @@ Template.alloyEditor.events({
         if(cmd != null){
             cmd = cmd.selectedIndex+1;
         }else{
-            cmd = -1;
+            cmd = 1;
         }
+        var urlParams = new URLSearchParams(window.location.search);
+        var permalink = urlParams.get("p");
         executeModel(),
-        shareModel(cmd)
+        shareModel(cmd, permalink)
     },
     'change .command-selection > select'() {
         cmdChanged()
@@ -242,6 +244,12 @@ Template.alloyEditor.events({
     'click #downloadTree > button': downloadTree,
     'click .clipboardbutton'(evt) {
         copyToClipboard(evt)
+    },
+    'click #upload-btn'() {
+        uploadFile()
+    },
+    'click #download-btn'() {
+        downloadFile()
     }
 })
 
@@ -262,7 +270,6 @@ Template.alloyEditor.onRendered(() => {
     if (Router.current().data && textEditor) {
         // load the model from controller
         const model = Router.current().data()
-        console.log(model)
         // save the loaded model id for later derivations
         Session.set('last_id', model.model_id)
         // whether the followed link was private
@@ -394,3 +401,41 @@ function toolChanged(selectedValue) {
       window.history.pushState({}, null, "/?check=" + checkMap[selectedValue]);
     }
 }
+
+
+function uploadFile() {
+
+    var input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.als';
+  
+    input.onchange = function(e) {
+        var file = e.target.files[0];
+        var reader = new FileReader();
+  
+        reader.onload = function() {
+            textEditor.setValue(reader.result);
+        }
+  
+        reader.readAsText(file);
+    }
+  
+    input.click();
+  }
+
+  function downloadFile() {
+    const content = textEditor.getValue();
+  
+    let filename = "code.als"
+  
+    const blob = new Blob([content], { type: 'text/plain'});
+    const url = window.URL.createObjectURL(blob);
+  
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+

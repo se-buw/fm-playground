@@ -20,7 +20,6 @@ editor = RouteController.extend({
         if (checkParam == "ALS"){
             var p = this.params.query.p
             if (p) {
-              console.log(Model.findOne(p))
                 return Model.findOne(p) 
             }
             // this.render(); 
