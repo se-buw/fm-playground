@@ -17,20 +17,20 @@ Meteor.methods({
   *
   * @return The 'id' of the model link, used in Share Model option
   */
-  genURL(code, currentModelId, themeData, cmd_i) {
+  genURL(code, currentModelId, themeData, cmd_i, p) {
     let permalink;
+    console.log(p)
     let meta = "{cmd_i: " + cmd_i + "}"
     const synchronousCall = Meteor.wrapAsync(HTTP.call);
     try {
       const result = synchronousCall('POST', `${Meteor.settings.env.FMP_URL}/api/save-with-meta`, {
         data: {
-          parent: null,
+          parent: p,
           check: "ALS",
           code: code,
           meta: meta
         }
       });
-      console.log(result);
       permalink = result.data.permalink;
     }
     catch (e) {
@@ -47,7 +47,7 @@ Meteor.methods({
     // insert new model
     const modelId = Model.insert(model)
 
-    console.log(permalink);
+
     // generate the public link
     const publicLinkId = Link.insert({
       _id: permalink,

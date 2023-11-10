@@ -391,13 +391,19 @@ const checkMap = {
 };
 function toolChanged(selectedValue) {
     var urlParams = new URLSearchParams(window.location.search);
+    var baseUrl;
+    if (window.location.hostname == "localhost" || window.location.hostname === '127.0.0.1') {
+        baseUrl = "http://localhost:5000";
+    }else{
+        baseUrl = window.location.origin;
+    }
     var permalink = urlParams.get("p");
     if (permalink) {
       let url = "/?check="+checkMap[selectedValue]+"&p="+permalink;
-      window.location.href = 'http://localhost:5000'+url;
+      window.location.href = baseUrl+url;
       window.history.pushState({}, null, url);
     }else{
-    window.location.href = 'http://localhost:5000' + "/?check=" + checkMap[selectedValue]
+    window.location.href = baseUrl + "/?check=" + checkMap[selectedValue]
       window.history.pushState({}, null, "/?check=" + checkMap[selectedValue]);
     }
 }
