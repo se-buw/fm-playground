@@ -20,4 +20,5 @@ ENV FLASK_ENV=${FLASK_ENV}
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "run:app"]
+RUN chmod a+x ./entrypoint.sh
+ENTRYPOINT [ "./entrypoint.sh" ]
