@@ -1,6 +1,7 @@
-version: '3.8'
+version: '3'
 
 services:
+  # Frontend for limboole, z3, and nuxmv
   frontend:
     build: 
       context: ./frontend
@@ -9,7 +10,8 @@ services:
     networks:
       - my_network
     restart: unless-stopped
-
+  
+  # Application backend
   backend:
     build: 
       context: ./backend
@@ -31,6 +33,25 @@ services:
       - .env
     restart: unless-stopped
   
+  # Alloy application with meteor
+  meteor:
+    image: alloy-app:latest
+    container_name: meteor
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+      - postgres
+    links:
+      - mongo
+      - api
+    env_file:
+      - .env
+    networks:
+      - my_network
+    restart: unless-stopped
+  
+  # Main database
   postgres:
     image: postgres:15.4
     environment:
@@ -48,7 +69,32 @@ services:
       - .env
     networks:
       - my_network
+    restart: unless-stopped
   
+  # Alloy api
+  api:
+    build:
+      context: ./alloy-app/api/
+    container_name: api
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+    restart: unless-stopped
+  
+  # Database for alloy
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    command: mongod --storageEngine=wiredTiger
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - my_network
+    restart: unless-stopped
+
   # Development purpose only
   pgadmin:
     image: dpage/pgadmin4:latest
@@ -62,6 +108,7 @@ services:
 
 volumes:
   postgres_data:
+  mongo_data:
 
 networks:
   my_network:
