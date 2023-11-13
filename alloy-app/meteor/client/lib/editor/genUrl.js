@@ -59,7 +59,6 @@ function handleShareModel(err, result) {
 
     Session.set('public-model-url', `${result.public}`)
     Session.set('private-model-url', `${result.private}`)
-    console.log(result)
     window.history.pushState({}, null, "/?check=ALS&p=" + result.public);
 
     modelShared()
