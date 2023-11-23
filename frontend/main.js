@@ -719,7 +719,7 @@ document.getElementById('select_wrapper').addEventListener('change', function() 
     loadOutputArea('xmv-output.html');
   }
   else if (selectedValue == 5) {
-    window.location.href = 'http://localhost:3000'+ "/?check=" + checkMap[selectedValue]
+    window.location.href = window.location.origin+"/?check=" + checkMap[selectedValue]
   }
 });
 

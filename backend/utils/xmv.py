@@ -27,7 +27,7 @@ def run_nuxmv(code: str):
 
   command = [NU_XMV_PATH, "-dynamic", tmp_file.name] # TODO: Check dynamic ordering
   try:
-    result = subprocess.run(command, capture_output=True, text=True, timeout=5)
+    result = subprocess.run(command, capture_output=True, text=True, timeout=60)
     os.remove(tmp_file.name)
     if result.returncode != 0:
       return prettify_error(result.stderr)
