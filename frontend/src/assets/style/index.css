@@ -1,0 +1,78 @@
+
+
+/* Navbar.css */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Make it cover the entire viewport height */
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3; /* Light gray border */
+  border-top: 8px solid #3498db; /* Blue border on top */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite; /* Apply the spin animation */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+/* Link */
+.link-text {
+  text-decoration: none !important; /* Ensure that MDB styles are overridden */
+  color: inherit; 
+}
+
+.link-text::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+  transform: scaleX(0); /* Initially, no underline */
+  transition: transform 0.3s ease; /* Add a smooth transition effect */
+}
+
+.link-text:hover::before {
+  transform: scaleX(1); /* On hover, show the underline */
+  background-color: #4a525c; 
+}
+
+
+/* Works in WebKit/Blink browsers (e.g., Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px; /* Adjust the width as needed */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Track color */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* Thumb color */
+  border-radius: 6px; /* Rounded corners */
+  border: 3px solid #f1f1f1; /* Border around thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Change color on hover */
+}
+
+
+.full-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}

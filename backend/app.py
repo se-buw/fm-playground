@@ -1,31 +1,32 @@
-import os
 from flask_cors import CORS
-from flask import Flask
 from flask_caching import Cache
-from config import Config
-from utils.db import db, init_app
-from routes import *
 from flask_session import Session
+from flask_login import LoginManager
+
+from config import app, db, api
+from routes.playground import *
+from routes.authentication import *
+from db.models import User, Code, Data
+
+Session(app)
+app.app_context().push()
+CORS(app, supports_credentials=True)
+cache = Cache(app)
+app.register_blueprint(routes)
+app.register_blueprint(auth)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
-app_secret = os.getenv("APP_SECKET_KEY", "secret_key")
-
-
-def create_app():
-  app = Flask(__name__)
-  app.config.from_object(Config)
-  Session(app)
-  init_app(app)
-  app.app_context().push()
-  CORS(app, supports_credentials=True)
-  cache = Cache(app)
-  
-  app.register_blueprint(routes)
-  
-  return app
+@login_manager.user_loader
+def load_user(user_id):
+  """
+  This callback is used to reload the user object from the user ID stored in the session.
+  It should take the unicode ID of a user, and return the corresponding user object.
+  """
+  return User.get(user_id)
 
 
 
 if __name__ == '__main__':
-  app = create_app()
   app.run(port=8000)

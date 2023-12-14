@@ -1,5 +1,6 @@
 from xkcdpass import xkcd_password as xp
-from .db import db, Data
+from config import db
+from db.models import Data
 
 
 all_words = xp.generate_wordlist(wordfile= xp.locate_wordfile(), min_length=3, max_length=6)
