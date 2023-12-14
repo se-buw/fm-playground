@@ -1,4 +1,5 @@
 from .models import db, Data, Code, User
+from sqlalchemy import func
 
 def code_exists_in_db(code: str):
   return db.session.query(Code).filter_by(code=code).first()
@@ -100,12 +101,15 @@ def search_by_query(query, user_id: int = None):
     list: The list of the data matching the query
   """
   search_result = db.session.query(
-      Data.id,
-      Data.time,
-      Data.check_type,
-      Data.permalink,
-      Code.code
-  ).join(Code, Data.code_id == Code.id).order_by(Data.time.desc()).filter(Data.user_id == user_id).filter(Code.code.like(f'%{query}%')).all()
+    Data.id,
+    Data.time,
+    Data.check_type,
+    Data.permalink,
+    Code.code
+).join(Code, Data.code_id == Code.id).order_by(Data.time.desc()).filter(
+    Data.user_id == user_id,
+    func.lower(Code.code).ilike(func.lower(f'%{query}%'))
+).all()
   
 
   data = search_result

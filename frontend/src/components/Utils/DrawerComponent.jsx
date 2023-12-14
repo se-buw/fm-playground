@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import _debounce from 'lodash/debounce';
 import { PiPushPinFill, PiPushPinSlashFill } from "react-icons/pi";
+import { MdRefresh, MdOutlineSearch } from "react-icons/md";
+
 import {
   Drawer,
   List,
   ListItem,
   ListItemButton,
   Typography,
-  Divider
+  Divider,
+  IconButton,
+  InputAdornment, Input
 } from '@mui/material';
 
 import { getHistoryByPage, searchUserHistory, getCodeById } from '../../api/playgroundApi';
@@ -71,7 +75,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * @returns {void}
   */
   const debouncedSearchDataFetch = _debounce(async (query, pageNumber) => {
-    if (query.length < 3) {
+    if (query.length < 1) {
       // clean the search data if the query is less than 3 characters
       setSearchData([]);
       return;
@@ -79,16 +83,16 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
     try {
       setLoading(true);
       searchUserHistory(query)
-      .then((res) => {
-        if (pageNumber === 1) {
-          setSearchData(res.history);
-        } else {
-          setSearchData((prevData) => [...prevData, ...res.history]);
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+        .then((res) => {
+          if (pageNumber === 1) {
+            setSearchData(res.history);
+          } else {
+            setSearchData((prevData) => [...prevData, ...res.history]);
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -110,9 +114,10 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * @returns {void}
   */
   const handleSearchChange = (event) => {
-    const newSearchQuery = event.target.value;
-    setDebouncedSearchQuery(newSearchQuery);
-    setPage(1); // Reset the page number when the search query changes
+      const newSearchQuery = event.target.value;
+      setDebouncedSearchQuery(newSearchQuery);
+      setPage(1); // Reset the page number when the search query changes
+
   };
 
   /**
@@ -146,15 +151,15 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
   const handleItemClick = async (itemId, check) => {
     try {
       await getCodeById(itemId)
-      .then((res) => {
-        const itemContent = res;
-        onItemSelect(check, itemContent.code);
-        setDebouncedSearchQuery('');
-        onClose();
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+        .then((res) => {
+          const itemContent = res;
+          onItemSelect(check, itemContent.code);
+          setDebouncedSearchQuery('');
+          onClose();
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     } catch (error) {
       console.error('Error fetching item content:', error);
     }
@@ -218,18 +223,31 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
           }}
           onScroll={handleScroll}
         >
+          <ListItem className='d-flex justify-content-between mx-auto'>
+            <Typography variant="h5">History</Typography>
+            <div className='d-flex align-items-center'>
+              <IconButton onClick={() => fetchData(1)}>
+                <MdRefresh />
+              </IconButton>
+              <IconButton onClick={handlePinToggle}>
+                {pinned ? <PiPushPinFill /> : <PiPushPinSlashFill />}
+              </IconButton>
+            </div>
+          </ListItem>
           <ListItem>
-            <input type="text" placeholder="Search" onChange={handleSearchChange} />
-            {
-              pinned ?
-                <PiPushPinFill
-                  role='button'
-                  onClick={handlePinToggle}
-                /> : <PiPushPinSlashFill
-                  role='button'
-                  onClick={handlePinToggle}
-                />
-            }
+            <Input
+              type="text"
+              placeholder="Search"
+              onChange={handleSearchChange}
+              fullWidth
+              startAdornment={
+                <InputAdornment position="start">
+                  <IconButton>
+                    <MdOutlineSearch />
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
           </ListItem>
           {debouncedSearchQuery
             ? searchData
