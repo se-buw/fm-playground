@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 
 import { getHistoryByPage, searchUserHistory, getCodeById } from '../../api/playgroundApi';
+import { set } from 'lodash';
 
 /**
  * Display a drawer with the user's history. 
@@ -39,28 +40,21 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * @returns {void}
    */
   const fetchData = async (pageNumber) => {
-    // If it's already loading or no more data to fetch, return early
     if (loading || !hasMoreData) {
       return;
     }
+
     try {
       setLoading(true);
-      await getHistoryByPage(pageNumber)
-        .then((res) => {
-          if (pageNumber === 1) {
-            setData(res.history);
-          } else {
-            // If it's not the first page, append the new data
-            setData((prevData) => [...prevData, ...res.history]);
-          }
-
-          setPage((prevPage) => prevPage + 1);
-          setHasMoreData(res.has_more_data);
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
+      const res = await getHistoryByPage(pageNumber);
+      if (pageNumber === 1) {
+        setData(res.history);
+      } else {
+        setData((prevData) => [...prevData, ...res.history]);
+      }
+      setHasMoreData(res.has_more_data);
+      // Update the page after setting the data
+      setPage((prevPage) => prevPage + 1);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -114,10 +108,9 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * @returns {void}
   */
   const handleSearchChange = (event) => {
-      const newSearchQuery = event.target.value;
-      setDebouncedSearchQuery(newSearchQuery);
-      setPage(1); // Reset the page number when the search query changes
-
+    const newSearchQuery = event.target.value;
+    setDebouncedSearchQuery(newSearchQuery);
+    setPage(1);
   };
 
   /**
@@ -174,6 +167,50 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
   };
 
   /**
+   * Handles the refresh event. When the user clicks on the refresh icon,
+   * it will fetch the first page of the user history and update the data.
+   * @returns {void}
+   */
+  const handleRefresh = async () => {
+    await getHistoryByPage(1)
+      .then((res) => {
+        console.log(res.history)
+        setData((prevData) => [...res.history, ...prevData]);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  };
+
+
+  /**
+   * Remove duplicates from data array
+   * Technically, this is not needed since the API already returns unique data.
+   * But because of async nature of the API, it's possible to get duplicate data someetimes.
+   * @todo Remove this if the API is updated to return unique data.
+   */
+  const uniqueData = Array.from(new Set(data.map((item) => item.id))).map((id) => {
+    return data.find((item) => item.id === id);
+  });
+
+  /**
+   * Remove duplicates from search data array
+   * Technically, this is not needed since the API already returns unique data.
+   * But because of async nature of the API, it's possible to get duplicate data someetimes.
+   * @todo Remove this if the API is updated to return unique data.
+   */
+  const uniqueSearchData = Array.from(new Set(searchData.map((item) => item.id))).map((id) => {
+    return searchData.find((item) => item.id === id);
+  });
+
+
+  useEffect(() => {
+    if (page === 1) {
+      fetchData(page);
+    }
+  }, [page]);
+
+  /**
  * Adds an event listener to the window object to listen for scroll events.
  * Handle scroll event is called when the user scrolls to the bottom of the page.
  */
@@ -226,9 +263,12 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
           <ListItem className='d-flex justify-content-between mx-auto'>
             <Typography variant="h5">History</Typography>
             <div className='d-flex align-items-center'>
-              <IconButton onClick={() => fetchData(1)}>
-                <MdRefresh />
-              </IconButton>
+              {debouncedSearchQuery
+                ? ''
+                : <IconButton onClick={handleRefresh}>
+                  <MdRefresh />
+                </IconButton>
+              }
               <IconButton onClick={handlePinToggle}>
                 {pinned ? <PiPushPinFill /> : <PiPushPinSlashFill />}
               </IconButton>
@@ -250,7 +290,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
             />
           </ListItem>
           {debouncedSearchQuery
-            ? searchData
+            ? uniqueSearchData
               .map((item, index) => (
                 <React.Fragment key={item.id}>
                   <ListItem disablePadding>
@@ -266,7 +306,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
                   {index < data.length - 1 && <Divider />}
                 </React.Fragment>
               ))
-            : data.map((item, index) => (
+            : uniqueData.map((item, index) => (
               <React.Fragment key={item.id}>
                 <ListItem disablePadding>
                   <ListItemButton onClick={() => handleItemClick(item.id, item.check)}>
