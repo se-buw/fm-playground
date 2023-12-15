@@ -13,9 +13,10 @@ app.app_context().push()
 CORS(app, supports_credentials=True)
 cache = Cache(app)
 app.register_blueprint(routes)
-app.register_blueprint(auth)
+app.register_blueprint(authentication)
 login_manager = LoginManager()
 login_manager.init_app(app)
+db.create_all()
 
 
 @login_manager.user_loader
