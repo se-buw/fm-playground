@@ -8,7 +8,6 @@ class User(db.Model, UserMixin):
   __tablename__ = 'users'
   id = db.Column(db.String, primary_key=True, unique=True)
   email = db.Column(db.String())
-  password = db.Column(db.String())
   
   data = db.relationship('Data', backref='users', lazy=True)
   
