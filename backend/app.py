@@ -3,7 +3,7 @@ from flask_caching import Cache
 from flask_session import Session
 from flask_login import LoginManager
 
-from config import app, db, api
+from config import app, db
 from routes.playground import *
 from routes.authentication import *
 from db.models import User, Code, Data

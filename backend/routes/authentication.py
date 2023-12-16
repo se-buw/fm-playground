@@ -2,7 +2,7 @@ from flask import redirect, abort, Blueprint, url_for, session, jsonify
 from authlib.integrations.flask_client import OAuth
 from flask_login import  login_user, logout_user
 from db.models import User
-from config import app, db, api
+from config import app, db
 import os
 
 authentication = Blueprint('authentication', __name__)
