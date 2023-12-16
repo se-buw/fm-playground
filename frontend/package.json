@@ -18,7 +18,6 @@
     "axios": "^1.6.2",
     "lodash": "^4.17.21",
     "mdb-react-ui-kit": "^7.0.0",
-    "mdbreact": "^5.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
