@@ -10,7 +10,6 @@ import Login from './components/Authentication/Login'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
-import Dashboard from './components/User/Dashboard'
 
 const App = () => {
   const [editorValue, setEditorValue] = useState('');
