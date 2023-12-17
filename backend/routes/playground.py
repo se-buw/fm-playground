@@ -3,20 +3,23 @@ sys.path.append("..") # Adds higher directory to python modules path.
 import time
 from datetime import datetime, timedelta
 from flask import Blueprint, request, jsonify, session, make_response, abort
+from flask_login import current_user
 from db.models import db, Data
 from utils import xmv, z3
 from utils.permalink_generator import generate_passphrase
 from db.db_query import *
 import pytz
 from flask_login import current_user
+from utils.logging_utils import *
 aware_datetime = datetime.now(pytz.utc)
+from config import app
 
 routes = Blueprint('routes', __name__)
 
 # Time window for rate limiting
 TIME_WINDOW = 1 # seconds
 
-
+# ------------------ Helper Functions ------------------
 def is_valid_size(code: str) -> bool:
   """Check if the code is less than 1MB
 
@@ -29,10 +32,27 @@ def is_valid_size(code: str) -> bool:
   size_in_bytes = sys.getsizeof(code)
   size_in_mb = size_in_bytes / (1024*1024)
   return size_in_mb <= 1
+# ------------------ Helper Functions ------------------
+
+# ------------------ Logging ------------------
+@routes.before_request
+def before_request():
+  """Log the request before processing  """
+  request.start_time = time.time()
+  app.logger.info(generate_before_request_log(request))
+
+@routes.after_request
+def after_request(response):
+  """Log the response after processing"""
+  app.logger.info(generate_after_request_log(request, response))
+  return response
+# ------------------ Logging ------------------
+
 
 # Index page
 @routes.route('/api/', methods=['GET'])
 def index():
+  # app.logger.info('Index page')
   token = request.headers.get('Authorization')
   if token is None: 
     return jsonify({'result': 'fail', 'message': 'You are not logged in.'}), 401
@@ -45,7 +65,6 @@ def index():
   # return "Request accepted"
   return f'Hello, {current_user.id}! You are logged in.'
   
-
 # Save the code and return the permalink
 # TODO: Separate the redundant functionality with save_with_metadata
 @routes.route('/api/save', methods=['POST'])
@@ -73,7 +92,9 @@ def save():
     response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
     return response
   
+  p_gen_time = time.time()
   permalink = generate_passphrase()
+  app.logger.info(f'Permalink Generation - Permalink: {permalink} Gen Time: {time.time() - p_gen_time}')
   try:
     code_id_in_db = code_exists_in_db(code)
     session['last_request_time'] = current_time
@@ -100,6 +121,7 @@ def save():
     db.session.commit()
   except:
     db.session.rollback()
+    app.logger.error(f'Error saving the code. Permalink: {permalink}')
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
     return response
   
@@ -107,7 +129,6 @@ def save():
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
   return response
   
-
 @routes.route('/api/permalink/', methods=['GET'])
 def get_code():
   c = request.args.get('check').upper()
@@ -188,7 +209,9 @@ def save_with_metadata():
     response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
     return response
 
+  p_gen_time = time.time()
   permalink = generate_passphrase()
+  app.logger.info(f'Permalink Generation - Permalink: {permalink} Gen Time: {time.time() - p_gen_time}')
   try:
     code_id_in_db = code_exists_in_db(code)
     session['last_request_time'] = current_time
@@ -215,13 +238,13 @@ def save_with_metadata():
     db.session.commit()
   except:
     db.session.rollback()
+    app.logger.error(f'Error saving the code. Permalink: {permalink}')
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
     return response
 
   # session['last_request_time'] = current_time
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
   return response
-
 
 @routes.route('/api/histories', methods=['GET'])
 def get_history():
@@ -275,7 +298,7 @@ def search():
   data = search_by_query(query, user_id=user_id)
   return jsonify({'history': data, 'has_more_data': False})
 
-
+# Download the user data
 @routes.route('/api/download-user-data', methods=['GET'])
 def download_user_data():
   user_id = session.get('user_id')
@@ -285,6 +308,7 @@ def download_user_data():
   user, data = get_user_data(user_id)
   return jsonify({'email':user, 'data': data})
 
+# Delete the user profile and all the data
 @routes.route('/api/delete-profile', methods=['DELETE'])
 def delete_profile():
   user_id = session.get('user_id')
@@ -296,7 +320,7 @@ def delete_profile():
   
   return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
 
-
+# Get the history by permalink
 @routes.route('/api/history/<permalink>', methods=['GET'])
 def history_by_permalink(permalink: str):
   user_id = session.get('user_id')

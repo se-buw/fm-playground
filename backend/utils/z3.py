@@ -8,15 +8,24 @@ import concurrent.futures
 MAX_CONCURRENT_REQUESTS = 10 # Maximum number of concurrent subprocesses
 
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) #thread pool with a maximum of max_concurrent threads
-
 code_queue = queue.Queue() # to hold incoming commands
 
 
-def run_z3(code: str):
+def run_z3(code: str) -> str:
+  """
+  Run the code in z3 and return the output.
+  
+  Parameters:
+    code (str): the code to run
+  
+  Returns:
+    str: the output of the code if successful, otherwise the error or timeout message
+  
+  TODO (maybe): Logging the resource usage of the subprocess. Windows: psutil, Linux: resource.getrusage(resource.RUSAGE_CHILDREN)
+  """
   tmp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.smt2')
   tmp_file.write(code.strip())  
   tmp_file.close()
-  print(tmp_file.name)
   command = ["z3", "-smt2", tmp_file.name] 
   try:
     result = subprocess.run(command, capture_output=True, text=True, timeout=5)
