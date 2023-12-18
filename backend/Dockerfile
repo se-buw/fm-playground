@@ -1,22 +1,19 @@
 FROM python:3.10-slim
 
-
 WORKDIR /backend
 
 COPY . /backend 
 
 RUN apt-get update && apt-get install -y
-RUN apt-get install z3 -y
+RUN apt-get install z3 wget -y
 
 RUN pip install --no-cache-dir --upgrade pip setuptools
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV DB_USERNAME: ${DB_USERNAME}
-ENV DB_PASSWORD: ${DB_PASSWORD}
-ENV DB_HOST: ${DB_HOST}
-ENV DB_PORT: ${DB_PORT}
-ENV APP_SECKET_KEY: ${APP_SECKET_KEY}
-ENV FLASK_ENV=${FLASK_ENV}
+RUN chmod +x ./install_nuxmv.sh
+RUN sed -i -e 's/\r$//' install_nuxmv.sh
+RUN ./install_nuxmv.sh
+
 
 EXPOSE 8000
 

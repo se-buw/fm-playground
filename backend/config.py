@@ -22,8 +22,12 @@ app.logger.addHandler(log_handler)
 app.secret_key = os.getenv('APP_SECKET_KEY')
 
 # ------------------ App Config ------------------
-app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
+if os.getenv('FLASK_ENV') == 'development':
+  app.config['DEBUG'] = True
+  app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
+else:
+  app.config['DEBUG'] = False
+  app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['CACHE_TYPE'] = 'simple'
 app.config['SESSION_TYPE'] = 'filesystem'

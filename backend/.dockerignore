@@ -1,2 +1,7 @@
 .venv/
 flask_session/
+.env
+.env.example
+__pycache__
+*.pyc
+nuXmv/

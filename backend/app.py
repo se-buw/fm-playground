@@ -16,7 +16,7 @@ app.register_blueprint(routes)
 app.register_blueprint(authentication)
 login_manager = LoginManager()
 login_manager.init_app(app)
-db.create_all()
+# db.create_all()
 
 
 @login_manager.user_loader
