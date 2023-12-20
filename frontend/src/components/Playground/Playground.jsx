@@ -110,7 +110,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       if (language.value >= 0 && language.value < 3) {
         run_limboole(window.Wrappers[language.value], editorValue)
       } else if (language.value == 3) {
-        console.log('SMT will be executed')
         executeZ3(editorValue)
           .then((res) => {
             setOutput(res.result)
@@ -127,7 +126,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             console.log(err)
           })
       } else if (language.value == 5) {
-        console.log('Alloy will be executed')
+        window.open(`${window.location.origin}/?check=ALS}`)
       }
     } catch (err) {
       console.log(err)

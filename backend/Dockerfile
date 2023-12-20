@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN chmod +x ./install_nuxmv.sh
 RUN sed -i -e 's/\r$//' install_nuxmv.sh
 RUN ./install_nuxmv.sh
+RUN mkdir logs
 
 
 EXPOSE 8000

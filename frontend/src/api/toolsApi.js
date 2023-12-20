@@ -24,7 +24,7 @@ export async function executeNuxmv(code) {
  * @returns result
 * */
 export async function executeZ3(code) {
-  let url = `${API_URL}/z3`;
+  let url = `${API_URL}/run_z3`;
   try {
     const response = await axios.post(url, { code });
     return response.data;
