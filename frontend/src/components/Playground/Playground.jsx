@@ -2,11 +2,10 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
-import { FaFileCirclePlus, FaShareNodes } from "react-icons/fa6";
+import { FaFileCirclePlus } from "react-icons/fa6";
 import { IconButton, Stack } from '@mui/material';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { Tooltip } from 'react-tooltip'
-
 
 import Editor from './Editor.jsx'
 import PlainOutput from './PlainOutput.jsx'
@@ -112,9 +111,14 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
         run_limboole(window.Wrappers[language.value], editorValue)
       } else if (language.value == 3) {
         console.log('SMT will be executed')
+        executeZ3(editorValue)
+          .then((res) => {
+            setOutput(res.result)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       } else if (language.value == 4) {
-        console.log('NuXmv will be executed')
-        let o;
         executeNuxmv(editorValue)
           .then((res) => {
             setOutput(res.result)

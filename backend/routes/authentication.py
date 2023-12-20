@@ -65,7 +65,6 @@ def auth(name):
       email = user['email']
       
     elif name == 'github':
-      # github = oauth.create_client('github')
       token = client.authorize_access_token()
       res = client.get('user', token=token)
       user = res.json()
@@ -73,9 +72,6 @@ def auth(name):
       primary_email = next(filter(lambda x: x['primary'] == True, emails.json()))
       email = primary_email['email']
       unique_id = f"github_{user['id']}"
-      # do something with the token and profile
-      # print(user, token)
-      print(unique_id, email)
       
     local_user = User(
         id=unique_id, email=email
@@ -93,7 +89,7 @@ def auth(name):
     session['user_id'] = unique_id
     login_user(db_user, remember=True)
     
-    return redirect("http://localhost:5173/")
+    return redirect(os.environ.get('FRONTEND_URL'))
   except Exception as e:
     print(f"Error during authentication: {e}")
     return abort(500)

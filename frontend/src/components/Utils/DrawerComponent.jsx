@@ -174,7 +174,6 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
   const handleRefresh = async () => {
     await getHistoryByPage(1)
       .then((res) => {
-        console.log(res.history)
         setData((prevData) => [...res.history, ...prevData]);
       })
       .catch((err) => {

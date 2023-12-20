@@ -25,7 +25,7 @@ const CopyToClipboardBtn = ({ permalink }) => {
   const handleCopyClick = async () => {
     try {
       setOpen(true)
-      await navigator.clipboard.writeText(`http://localhost:5173/?check=${permalink.check}&p=${permalink.permalink}`)
+      await navigator.clipboard.writeText(`${window.location.origin}?check=${permalink.check}&p=${permalink.permalink}`)
     } catch (err) {
       setSnackbarMessage('Failed to copy to clipboard')
     }

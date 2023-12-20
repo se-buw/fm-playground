@@ -196,7 +196,7 @@ export default function Navbar({ setEditorValue, setLanguage }) {
           <FaGithub
             size={40}
             className='github-icon'
-            onClick={() => window.open('https://github.com', '_blank')}
+            onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
             style={{ marginRight: '20px' }}
             role='button'
           />
