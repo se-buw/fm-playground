@@ -1,0 +1,38 @@
+name: CI for GHCR
+
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build and push Docker images
+        env:
+          CR_PAT: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          # List of Dockerfiles to build and push
+          DOCKER_FILES=(
+            "backend/Dockerfile"
+            "frontend/Dockerfile"
+          )
+
+          # Build and push images for each specified Dockerfile
+          for DOCKER_FILE in "${DOCKER_FILES[@]}"; do
+            DIR=$(dirname $DOCKER_FILE)
+            IMAGE_NAME="ghcr.io/fmp-$(basename $DIR)"
+            echo "Building and pushing image $IMAGE_NAME from $DOCKER_FILE..."
+            
+            docker buildx create --use
+            docker login ghcr.io -u ${{ github.repository_owner }} -p $CR_PAT
+            docker buildx build --platform linux/amd64 -t $IMAGE_NAME -f $DOCKER_FILE $DIR
+            docker push $IMAGE_NAME
+          done
