@@ -20,9 +20,9 @@ import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
 import ConfirmModal from '../Utils/ConfirmModal.jsx';
 
 import {
-getCodeByParmalink,
-saveCode
-}from '../../api/playgroundApi.js'
+  getCodeByParmalink,
+  saveCode
+} from '../../api/playgroundApi.js'
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const navigate = useNavigate();
@@ -65,8 +65,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
     const urlParams = new URLSearchParams(window.location.search);
     const checkParam = urlParams.get('check') ? urlParams.get('check') : language.short;
     // Update the URL when permalink changes
-    navigate(permalink !== '' ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
-  }, [permalink, navigate]);
+          navigate(permalink !== '' ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
+      }, [permalink, navigate]);
 
   /**
    * Update the URL with ``check`` type when language changes.
@@ -74,7 +74,11 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    */
   const handleLanguageChange = (newLanguage) => {
     setLanguage(newLanguage)
+    if (newLanguage.short === "ALS") {
+      window.open(`https://alloy.formal-methods.net/?check=ALS`, '_self')
+    } else { 
     window.history.pushState(null, null, `?check=${newLanguage.short}`)
+    }
   }
 
   /**
@@ -85,6 +89,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const loadCode = async (check, permalink) => {
     await getCodeByParmalink(check, permalink)
       .then((res) => {
+        if(!res){
+          alert('Invalid Permalink')
+          window.open(`/?check=SAT`, '_self')
+        }
         setEditorValue(res.code)
       })
       .catch((err) => {
@@ -126,7 +134,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             console.log(err)
           })
       } else if (language.value == 5) {
-        window.open(`${window.location.origin}/?check=ALS}`)
+        console.log('Executing Alloy')
       }
     } catch (err) {
       console.log(err)
@@ -174,8 +182,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    * Reset the parent.
    */
   const handleReset = () => {
-    setEditorValue('') 
-    setOutput('') 
+    setEditorValue('')
+    setOutput('')
     setPermalink('')
     closeModal()
   }
@@ -230,7 +238,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
         selected={language}
       />
       <Tooltip id="playground-tooltip" />
-            <div className="row">
+      <div className="row">
         <div className="col-md-6" ref={inputDivRef} style={{ backgroundColor: 'white' }}>
           <div className='row'>
             <div className='col-md-12 mx-auto mb-2'>

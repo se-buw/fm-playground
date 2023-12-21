@@ -33,7 +33,12 @@ export async function getCodeByParmalink(check, permalink) {
   let url = `${API_URL}/permalink/?check=${check}&p=${permalink}`;
   try {
     const response = await axios.get(url);
-    return response.data;
+    if (response.status === 200) {
+      return response.data;
+    }
+    else {
+      return null;
+    }
   } catch (error) {
     console.log(error);
   }
