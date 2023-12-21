@@ -1,59 +1,33 @@
 version: '3'
-
 services:
-  # Frontend for limboole, z3, and nuxmv
   frontend:
-    build: 
-      context: ./frontend
+    image: ghcr.io/se-buw/fm-playground-frontend:latest
+    container_name: fmp-frontend
+    env_file:
+      - .env
     ports:
-      - "5000:5000"
+      - "5173:5173"
     networks:
       - my_network
     restart: unless-stopped
   
-  # Application backend
   backend:
-    build: 
-      context: ./backend
-    environment:
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      APP_SECKET_KEY: ${APP_SECKET_KEY}
-      FLASK_ENV: ${FLASK_ENV}
+    image: ghcr.io/se-buw/fm-playground-backend:latest
+    container_name: fmp-backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
     depends_on:
       postgres:
         condition: service_healthy
-    ports:
-      - "8000:8000"
-    networks:
-      - my_network
-    env_file:
-      - .env
-    restart: unless-stopped
-  
-  # Alloy application with meteor
-  meteor:
-    image: alloy-app:latest
-    container_name: meteor
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-      - postgres
-    links:
-      - mongo
-      - api
-    env_file:
-      - .env
     networks:
       - my_network
     restart: unless-stopped
   
-  # Main database
   postgres:
     image: postgres:15.4
+    container_name: fmp-db
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -66,16 +40,16 @@ services:
       timeout: 5s
       retries: 5
     env_file:
-      - .env
+          - .env
     networks:
       - my_network
     restart: unless-stopped
   
-  # Alloy api
+  # Alloy API
   api:
     build:
       context: ./alloy-app/api/
-    container_name: api
+    container_name: fmp-alloy-api
     ports:
       - "8080:8080"
     networks:
@@ -84,27 +58,39 @@ services:
   
   # Database for alloy
   mongo:
-    image: mongo:latest
-    container_name: mongo
+    image: mongo:4.4.6
+    container_name: fmp-mongo
     command: mongod --storageEngine=wiredTiger
     volumes:
       - mongo_data:/data/db
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
     networks:
       - my_network
     restart: unless-stopped
-
-  # Development purpose only
-  pgadmin:
-    image: dpage/pgadmin4:latest
+  
+  # Alloy application with meteor
+  meteor:
+    build:
+      context: ./alloy-app/meteor/
+    container_name: fmp-alloy-app
     environment:
-      PGADMIN_DEFAULT_EMAIL: soaib@soaib.com
-      PGADMIN_DEFAULT_PASSWORD: pass123
-    ports:
-      - "5050:80"
+      MONGO_URL: ${MONGO_URL}
+      METEOR_SETTINGS: ${METEOR_SETTINGS}
+      STARTUP_DELAY: ${STARTUP_DELAY}
+    depends_on:
+      - backend
+      - postgres
+      - mongo
+    links:
+      - mongo
+      - api
     networks:
       - my_network
+    restart: unless-stopped
 
 volumes:
   postgres_data:
