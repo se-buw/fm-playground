@@ -14,11 +14,11 @@
     },
     {
       "title": "Validity Example",
-      "link": "https://play.formal-methods.net/?check=val&p=example-1/"
+      "link": "https://play.formal-methods.net/?check=VAL&p=example-1/"
     },
     {
       "title": "Satisfiability Example",
-      "link": "https://play.formal-methods.net/?check=sat&p=example-1"
+      "link": "https://play.formal-methods.net/?check=SAT&p=example-1"
     }
   ],
   "smt2": [
@@ -32,11 +32,11 @@
     },
     {
       "title": "Example 1",
-      "link": "https://play.formal-methods.net/?check=smt&p=example-1"
+      "link": "https://play.formal-methods.net/?check=SMT&p=example-1"
     },
     {
       "title": "Example 2",
-      "link": "https://play.formal-methods.net/?check=smt&p=example-2"
+      "link": "https://play.formal-methods.net/?check=SMT&p=example-2"
     },
     {
       "title": "Lecture Slides on Moodle",
@@ -54,7 +54,7 @@
     },
     {
       "title": "Example 1",
-      "link": "https://play.formal-methods.net/?check=xmv&p=example-1"
+      "link": "https://play.formal-methods.net/?check=XMV&p=example-1"
     }
   ],
   "als": [

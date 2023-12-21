@@ -18,7 +18,7 @@ from config import app
 routes = Blueprint('routes', __name__)
 
 # Time window for rate limiting
-TIME_WINDOW = 1 # seconds
+TIME_WINDOW = 0 # seconds
 
 # ------------------ Helper Functions ------------------
 def is_valid_size(code: str) -> bool:

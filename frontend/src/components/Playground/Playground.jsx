@@ -65,8 +65,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
     const urlParams = new URLSearchParams(window.location.search);
     const checkParam = urlParams.get('check') ? urlParams.get('check') : language.short;
     // Update the URL when permalink changes
-          navigate(permalink !== '' ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
-      }, [permalink, navigate]);
+    navigate(permalink !== '' ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
+  }, [permalink, navigate]);
 
   /**
    * Update the URL with ``check`` type when language changes.
@@ -76,8 +76,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
     setLanguage(newLanguage)
     if (newLanguage.short === "ALS") {
       window.open(`https://alloy.formal-methods.net/?check=ALS`, '_self')
-    } else { 
-    window.history.pushState(null, null, `?check=${newLanguage.short}`)
+    } else {
+      window.history.pushState(null, null, `?check=${newLanguage.short}`)
     }
   }
 
@@ -89,13 +89,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const loadCode = async (check, permalink) => {
     await getCodeByParmalink(check, permalink)
       .then((res) => {
-        if(!res){
+if(!res){
           alert('Invalid Permalink')
           window.open(`/?check=SAT`, '_self')
         }
         else{
-          setEditorValue(res.code)
-        }
+        setEditorValue(res.code)
+}
       })
       .catch((err) => {
         console.log(err)
@@ -112,12 +112,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       setIsExecuting(true);
       await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
         .then((res) => {
-          if (!res) {
-            alert('There was an error saving the code. Please check if the code is too long.')
-          }
-          else{
-            setEditorValue(res.code)
-          }
+          setPermalink(res)
         })
         .catch((err) => {
           console.log(err)
