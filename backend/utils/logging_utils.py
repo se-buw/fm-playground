@@ -18,7 +18,7 @@ def generate_before_request_log(request) -> str:
   request_url = request.url
   user_agent = request.user_agent.string
   
-  message = f"REQUEST - User: {user} Method: {request_method} URL: {request_url} System Resource: {generate_system_resource_log()} User Agent: {user_agent}" 
+  message = f"REQUEST - User: {user} | Method: {request_method} | URL: {request_url} | System Resource: {generate_system_resource_log()} | User Agent: {user_agent}" 
   
   return message
   
@@ -35,7 +35,7 @@ def generate_after_request_log(request, response) -> str:
   response_status = response.status
   elapsed_time = time.time() - request.start_time
   
-  message = f"RESPONSE - Status: {response_status} System Resource: {generate_system_resource_log()} Elapsed Time: {elapsed_time}" 
+  message = f"RESPONSE - Status: {response_status} | System Resource: {generate_system_resource_log()} | Response Time: {elapsed_time}" 
   
   return message
   

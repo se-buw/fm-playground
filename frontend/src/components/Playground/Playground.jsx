@@ -93,7 +93,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
           alert('Invalid Permalink')
           window.open(`/?check=SAT`, '_self')
         }
-        setEditorValue(res.code)
+        else{
+          setEditorValue(res.code)
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -110,7 +112,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       setIsExecuting(true);
       await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
         .then((res) => {
-          setPermalink(res)
+          if (!res) {
+            alert('There was an error saving the code. Please check if the code is too long.')
+          }
+          else{
+            setEditorValue(res.code)
+          }
         })
         .catch((err) => {
           console.log(err)

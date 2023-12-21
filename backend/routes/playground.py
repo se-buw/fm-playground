@@ -1,17 +1,18 @@
 import sys
 sys.path.append("..") # Adds higher directory to python modules path.
 import time
+import pytz
 from datetime import datetime, timedelta
+aware_datetime = datetime.now(pytz.utc)
+
 from flask import Blueprint, request, jsonify, session, make_response, abort
 from flask_login import current_user
+
 from db.models import db, Data
+from db.db_query import *
 from utils import xmv, z3
 from utils.permalink_generator import generate_passphrase
-from db.db_query import *
-import pytz
-from flask_login import current_user
 from utils.logging_utils import *
-aware_datetime = datetime.now(pytz.utc)
 from config import app
 
 routes = Blueprint('routes', __name__)
@@ -31,6 +32,8 @@ def is_valid_size(code: str) -> bool:
   """
   size_in_bytes = sys.getsizeof(code)
   size_in_mb = size_in_bytes / (1024*1024)
+  if size_in_mb > 1:
+    app.logger.error(f'Code is too large. Size: {size_in_mb}MB')
   return size_in_mb <= 1
 # ------------------ Helper Functions ------------------
 
@@ -52,7 +55,6 @@ def after_request(response):
 # Index page
 @routes.route('/api/', methods=['GET'])
 def index():
-  # app.logger.info('Index page')
   token = request.headers.get('Authorization')
   if token is None: 
     return jsonify({'result': 'fail', 'message': 'You are not logged in.'}), 401
@@ -62,7 +64,6 @@ def index():
     return abort(429) # Too Many Requests
 
   session['last_request_time'] = current_time
-  # return "Request accepted"
   return f'Hello, {current_user.id}! You are logged in.'
   
 # Save the code and return the permalink
@@ -87,7 +88,7 @@ def save():
   
   last_request_time = session.get('last_request_time')
  
-  # Allow one request per 5 seconds and same check
+  # Allow one request per 1 seconds and same check
   if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
     response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
     return response
@@ -107,7 +108,6 @@ def save():
     else: # Exist: Use the existing code id
       code_id = code_id_in_db.id
 
-
     new_data = Data( 
                 time= datetime.now(), 
                 session_id=session_id, 
@@ -120,12 +120,12 @@ def save():
     db.session.add(new_data)
     db.session.commit()
   except:
-    db.session.rollback()
     app.logger.error(f'Error saving the code. Permalink: {permalink}')
+    db.session.rollback()
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
     return response
   
-  # session['last_request_time'] = current_time
+  session['last_request_time'] = current_time
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
   return response
   
@@ -156,6 +156,7 @@ def run_nuxmv():
     res = xmv.process_commands(code)
     response = make_response(jsonify({'result': res}), 200)
   except:
+    app.logger.error(f"Error running NuXMV. | Payload: {code} | Error: {sys.exc_info()[0]} ")
     response = make_response(jsonify({'result': "Error running nuXmv. Server is busy. Please try again"}), 503)
 
   return response
@@ -179,6 +180,7 @@ def run_z3():
     res = z3.process_commands(code)
     response = make_response(jsonify({'result': res}), 200)
   except:
+    app.logger.error(f"Error running Z3. | Payload: {code} | Error: {sys.exc_info()[0]} ")
     response = make_response(jsonify({'result': "Error running Z3. Server is busy. Please try again"}), 503)
   
   return response
@@ -224,7 +226,6 @@ def save_with_metadata():
     else: # Exist: Use the existing code id
       code_id = code_id_in_db.id
 
-
     new_data = Data(
                 time= datetime.now(),
                 session_id=session_id,
@@ -237,12 +238,12 @@ def save_with_metadata():
     db.session.add(new_data)
     db.session.commit()
   except:
-    db.session.rollback()
     app.logger.error(f'Error saving the code. Permalink: {permalink}')
+    db.session.rollback()
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
     return response
 
-  # session['last_request_time'] = current_time
+  session['last_request_time'] = current_time
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
   return response
 

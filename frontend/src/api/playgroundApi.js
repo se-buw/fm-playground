@@ -69,7 +69,12 @@ export async function saveCode(code, check, parent) {
   let url = `${API_URL}/save`;
   try {
     const response = await axiosAuth.post(url, { code, check, parent});
-    return response.data;
+    if (response.status === 200) {
+      return response.data;
+    }
+    else {
+      return null;
+    }
   } catch (error) {
     console.log(error);
   }
