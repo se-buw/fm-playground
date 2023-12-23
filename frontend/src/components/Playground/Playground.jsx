@@ -28,7 +28,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const navigate = useNavigate();
   const [permalink, setPermalink] = useState('') // contains `check` and `permalink` parameters
   const [output, setOutput] = useState('') // contains the output of the tool
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const storedTheme = localStorage.getItem('theme');
+    return storedTheme === 'vs-dark';
+  });
   const [isExecuting, setIsExecuting] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const inputDivRef = useRef();
@@ -67,6 +70,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
     // Update the URL when permalink changes
     navigate(permalink !== '' ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
   }, [permalink, navigate]);
+
+  /**
+   * Update the theme in the local storage when the theme changes.
+   */
+  useEffect(() => {
+    localStorage.setItem('theme', isDarkTheme ? 'vs-dark' : 'vs');
+  }, [isDarkTheme]);
 
   /**
    * Update the URL with ``check`` type when language changes.
@@ -352,7 +362,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             <div className='col-md-12'>
               <PlainOutput
                 code={output}
-                height= {isFullScreen ? '80vh' : '60vh'}
+                height={isFullScreen ? '80vh' : '60vh'}
                 onChange={handleOutputChange} />
             </div>
           </div>
