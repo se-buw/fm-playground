@@ -4,8 +4,7 @@ import {
   MDBContainer,
   MDBCard,
   MDBCardBody,
-  MDBIcon,
-  MDBInput,
+  MDBIcon
 }
   from 'mdb-react-ui-kit';
 import AuthContext from '../../contexts/AuthContext';
@@ -23,12 +22,13 @@ function Login() {
   }
   return (
     <MDBContainer className='d-flex justify-content-center align-items-center' style={{ height: '100vh' }}>
+      <MDBCard className='shadow-5' style={{ width: '25rem' }}>
+        <div className='text-center mt-3'>
+          <img src='logo_se.png' alt='SE Logo' style={{ width: '75px', height: '75px' }} />
+        </div>
+        <h5 className='mx-auto mt-3'>Login with your identity provider</h5>
 
-      <MDBCard className='shadow-5' style={{ width: '30rem' }}>
-        <h3 className='mx-auto mt-5'>Login with your identity provider</h3>
-
-        <MDBCardBody className='p-5 shadow-5 text-center'>
-
+        <MDBCardBody className='p-5 py-4 shadow-5 text-center'>
           <MDBBtn
             style={{ backgroundColor: '#dd4b39' }}
             onClick={handleGoogleLogin}

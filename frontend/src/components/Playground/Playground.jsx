@@ -89,13 +89,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const loadCode = async (check, permalink) => {
     await getCodeByParmalink(check, permalink)
       .then((res) => {
-if(!res){
+        if (!res) {
           alert('Invalid Permalink')
           window.open(`/?check=SAT`, '_self')
         }
-        else{
-        setEditorValue(res.code)
-}
+        else {
+          setEditorValue(res.code)
+        }
       })
       .catch((err) => {
         console.log(err)
@@ -279,11 +279,13 @@ if(!res){
                     <>
                       {handleDownload()}
                     </>
-                    <IconButton color="light"
-                      data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="Copy Permalink">
-                      <CopyToClipboardBtn permalink={permalink} />
-                    </IconButton>
+                    {permalink &&
+                      <IconButton color="light"
+                        data-tooltip-id="playground-tooltip"
+                        data-tooltip-content="Copy Permalink">
+                        <CopyToClipboardBtn permalink={permalink} />
+                      </IconButton>
+                    }
                     <IconButton
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Change theme"
