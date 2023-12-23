@@ -134,16 +134,15 @@ window.Wrappers = [
 
 
 function run_limboole(wrapper, code) {
-  window.input_textarea = "a -> b";
   const info = document.getElementById("info");
   info.innerText = "";
 
-  // let non_ascii = findNonASCII(window.input_textarea);
-  // if(non_ascii != null){
-  //   info.innerText += `<stdin>:${non_ascii.position}:parse error at '${non_ascii.character}' expected ASCII character\n`;
-  //   run_button_enable();
-  //   return;
-  // }
+  let non_ascii = findNonASCII(code);
+  if(non_ascii != null){
+    info.innerText += `<stdin>:${non_ascii.position}:parse error at '${non_ascii.character}' can not parse ASCII character\n`;
+    run_button_enable();
+    return;
+  }
 
   wrapper.run.bind(wrapper)(
     code,
@@ -154,6 +153,20 @@ function run_limboole(wrapper, code) {
       info.innerText += line + "\n";
     }
   );
+}
+
+function findNonASCII(input) {
+  const regex = /[^\x00-\x7F]/;
+  const match = regex.exec(input);
+  
+  if (match) {
+    return {
+      character: match[0],
+      position: match.index
+    };
+  }else{
+    return null;
+  }
 }
 
 export default run_limboole;
