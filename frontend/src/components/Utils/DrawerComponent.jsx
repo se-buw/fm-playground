@@ -188,9 +188,11 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * But because of async nature of the API, it's possible to get duplicate data someetimes.
    * @todo Remove this if the API is updated to return unique data.
    */
-  const uniqueData = Array.from(new Set(data.map((item) => item.id))).map((id) => {
-    return data.find((item) => item.id === id);
-  });
+  const uniqueData = (data ?? []).length > 0
+    ? Array.from(new Set(data.map((item) => item.id))).map((id) => {
+      return data.find((item) => item.id === id);
+    })
+    : [];
 
   /**
    * Remove duplicates from search data array
@@ -198,9 +200,11 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * But because of async nature of the API, it's possible to get duplicate data someetimes.
    * @todo Remove this if the API is updated to return unique data.
    */
-  const uniqueSearchData = Array.from(new Set(searchData.map((item) => item.id))).map((id) => {
-    return searchData.find((item) => item.id === id);
-  });
+  const uniqueSearchData = (searchData ?? []).length > 0
+    ? Array.from(new Set(searchData.map((item) => item.id))).map((id) => {
+      return searchData.find((item) => item.id === id);
+    })
+    : [];
 
 
   useEffect(() => {

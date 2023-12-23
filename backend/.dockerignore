@@ -5,3 +5,4 @@ flask_session/
 __pycache__
 *.pyc
 nuXmv/
+logs/
