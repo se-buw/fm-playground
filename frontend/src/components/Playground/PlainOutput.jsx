@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const PlainOutput = ({ code, onChange }) => {
+const PlainOutput = ({ code, onChange, height }) => {
   const [internalCode, setInternalCode] = useState(code);
 
   /**
@@ -27,7 +27,12 @@ const PlainOutput = ({ code, onChange }) => {
     <pre
       id='info'
       contentEditable={false}
-      style={{ backgroundColor: '#f4f4f4', padding: '1em', borderRadius: '8px', height: '60vh', whiteSpace: 'pre-wrap' }}
+      style={{ 
+        backgroundColor: '#f4f4f4', 
+        padding: '1em', 
+        borderRadius: '8px', 
+        height: height, 
+        whiteSpace: 'pre-wrap' }}
       onInput={handleChange}
       dangerouslySetInnerHTML={{ __html: internalCode }}
     />

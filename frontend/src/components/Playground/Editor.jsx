@@ -95,7 +95,7 @@ const CodeEditor = (props) => {
     <>
       <div className="App">
         <Editor
-          height="60vh"
+          height={props.height}
           width="100%"
           language={props.language.id}
           defaultValue="Write your code here"

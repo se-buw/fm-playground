@@ -313,6 +313,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               </div>
             </div>
             <Editor
+              height={isFullScreen ? '80vh' : '60vh'}
               setEditorValue={setEditorValue}
               editorValue={editorValue}
               language={language}
@@ -349,11 +350,11 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               </div>
             </div>
             <div className='col-md-12'>
-              <PlainOutput code={output} onChange={handleOutputChange} />
+              <PlainOutput
+                code={output}
+                height= {isFullScreen ? '80vh' : '60vh'}
+                onChange={handleOutputChange} />
             </div>
-            {/* <div className='col-md-12'>
-              <PermalinkVisualization permalink={permalink} />
-            </div> */}
           </div>
         </div>
       </div>
