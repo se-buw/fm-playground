@@ -1,7 +1,14 @@
-![Website](https://img.shields.io/website?url=https%3A%2F%2Fplay.formal-methods.net%2F&label=play.formal-methods.net)
-![GitHub repo size](https://img.shields.io/github/repo-size/se-buw/fm-playground)
-![GitHub issues](https://img.shields.io/github/issues/se-buw/fm-playground)
-![GitHub License](https://img.shields.io/github/license/se-buw/fm-playground)
+<div align="center">
+  <img src="./frontend/public/logo_se.png" width="100px" />
+  <h1>FM Playground</h1>
+  <a href="https://play.formal-methods.net/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fplay.formal-methods.net%2F&label=play.formal-methods.net" alt="FM Playground"></a>
+  <img alt="GitHub Repository size" src="https://img.shields.io/github/repo-size/se-buw/fm-playground">
+  <img src="https://img.shields.io/github/issues/se-buw/fm-playground" alt="GitHub issues">
+  <img src="https://img.shields.io/github/license/se-buw/fm-playground" alt="GitHub License">
+  <hr>
+</div>
+
+
 
 
 # FM Playground
