@@ -2,7 +2,7 @@ import sys
 sys.path.append("..") # Adds higher directory to python modules path.
 import time
 import pytz
-from datetime import datetime, timedelta
+from datetime import datetime
 aware_datetime = datetime.now(pytz.utc)
 
 from flask import Blueprint, request, jsonify, session, make_response, abort
@@ -13,12 +13,9 @@ from db.db_query import *
 from utils import xmv, z3
 from utils.permalink_generator import generate_passphrase
 from utils.logging_utils import *
-from config import app
+from config import app, limiter
 
 routes = Blueprint('routes', __name__)
-
-# Time window for rate limiting
-TIME_WINDOW = 0 # seconds
 
 # ------------------ Helper Functions ------------------
 def is_valid_size(code: str) -> bool:
@@ -58,17 +55,12 @@ def index():
   token = request.headers.get('Authorization')
   if token is None: 
     return jsonify({'result': 'fail', 'message': 'You are not logged in.'}), 401
-  current_time = datetime.now(pytz.utc)
-  last_request_time = session.get('last_request_time')
-  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
-    return abort(429) # Too Many Requests
-
-  session['last_request_time'] = current_time
   return f'Hello, {current_user.id}! You are logged in.'
   
 # Save the code and return the permalink
 # TODO: Separate the redundant functionality with save_with_metadata
 @routes.route('/api/save', methods=['POST'])
+@limiter.limit("2/second", error_message="You've already made a request recently.")
 def save():
   user_id = session.get('user_id')
   current_time = datetime.now(pytz.utc)
@@ -86,19 +78,11 @@ def save():
     response = make_response(jsonify({'result': "The code is too large."}), 413)
     return response
   
-  last_request_time = session.get('last_request_time')
- 
-  # Allow one request per 1 seconds and same check
-  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
-    response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
-    return response
-  
   p_gen_time = time.time()
   permalink = generate_passphrase()
   app.logger.info(f'Permalink Generation - Permalink: {permalink} Gen Time: {time.time() - p_gen_time}')
   try:
     code_id_in_db = code_exists_in_db(code)
-    session['last_request_time'] = current_time
     session_id = session.sid
     if code_id_in_db is None: # New: Save the code
       new_code = Code(code=code)
@@ -138,20 +122,15 @@ def get_code():
   return response
 
 @routes.route('/api/run_nuxmv', methods=['POST'])
+@limiter.limit("1/second", error_message="You've already made a request recently.")
 def run_nuxmv():
   data = request.get_json()
   code = data['code']
-  current_time = datetime.now(pytz.utc)
 
   # Check if the code is too large
   if not is_valid_size(code):
     return {'error': "The code is too large."}, 413
 
-  last_request_time = session.get('last_request_time')
-
-  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
-    response = make_response(jsonify({'error': "You've already made a request recently."}), 429)
-    return response
   try:
     res = xmv.process_commands(code)
     response = make_response(jsonify({'result': res}), 200)
@@ -165,17 +144,11 @@ def run_nuxmv():
 def run_z3():
   data = request.get_json()
   code = data['code']
-  current_time = datetime.now(pytz.utc)
 
   # Check if the code is too large
   if not is_valid_size(code):
     return {'error': "The code is too large."}, 413
 
-  last_request_time = session.get('last_request_time')
-
-  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
-    response = make_response(jsonify({'error': "You've already made a request recently."}), 429)
-    return response
   try:
     res = z3.process_commands(code)
     response = make_response(jsonify({'result': res}), 200)
@@ -188,8 +161,8 @@ def run_z3():
 # TODO: Fix this route. probably merge with save
 # TODO: Separate the redundant functionality
 @routes.route('/api/save-with-metadata', methods=['POST'])
+@limiter.limit("2/second", error_message="You've already made a request recently.")
 def save_with_metadata():
-  current_time = datetime.now(pytz.utc)
   data = request.get_json()
   check_type = data['check']
   code = data['code']
@@ -204,19 +177,11 @@ def save_with_metadata():
     response = make_response(jsonify({'result': "The code is too large."}), 413)
     return response
 
-  last_request_time = session.get('last_request_time')
-
-  # Allow one request per 5 seconds and same check
-  if last_request_time is not None and current_time - last_request_time < timedelta(seconds=TIME_WINDOW):
-    response = make_response(jsonify({'result': "You've already made a request recently."}), 429)
-    return response
-
   p_gen_time = time.time()
   permalink = generate_passphrase()
   app.logger.info(f'Permalink Generation - Permalink: {permalink} Gen Time: {time.time() - p_gen_time}')
   try:
     code_id_in_db = code_exists_in_db(code)
-    session['last_request_time'] = current_time
     session_id = session.sid
     if code_id_in_db is None: # New: Save the code
       new_code = Code(code=code)
@@ -243,7 +208,6 @@ def save_with_metadata():
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
     return response
 
-  session['last_request_time'] = current_time
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
   return response
 
