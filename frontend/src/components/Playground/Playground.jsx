@@ -18,6 +18,7 @@ import { executeNuxmv, executeZ3 } from '../../api/toolsApi.js'
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
 import ConfirmModal from '../Utils/ConfirmModal.jsx';
+import NuxmvCopyrightNotice from '../Utils/NuxmvCopyrightNotice.jsx';
 
 import {
   getCodeByParmalink,
@@ -25,18 +26,20 @@ import {
 } from '../../api/playgroundApi.js'
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
+  const inputDivRef = useRef();  // contains the reference to the editor area
+  const outputDivRef = useRef(); // contains the reference to the output area
+
   const [permalink, setPermalink] = useState('') // contains `check` and `permalink` parameters
   const [output, setOutput] = useState('') // contains the output of the tool
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const storedTheme = localStorage.getItem('theme');
     return storedTheme === 'vs-dark';
-  });
-  const [isExecuting, setIsExecuting] = useState(false);
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const inputDivRef = useRef();
-  const outputDivRef = useRef();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  }); // contains the theme of the editor.
+  const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
+  const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
+  const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
+  const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
 
   /**
    * Load the code and language from the URL.
@@ -236,12 +239,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
         element.msRequestFullscreen();
       }
     }
-
     setIsFullScreen(!isFullScreen);
   };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openModal = () => setIsNewSpecModalOpen(true); // open the new spec modal
+  const closeModal = () => setIsNewSpecModalOpen(false); // close the new spec modal
+  const toggleNuxmvModal = () => setIsNuxmvModalOpen(!isNuxmvModalOpen); // toggle the Nuxmv copyrigth notice modal
 
   return (
     <div className="container">
@@ -273,11 +276,11 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                       />
                     </IconButton>
                     <ConfirmModal
-                      isOpen={isModalOpen}
+                      isOpen={isNewSpecModalOpen}
                       onClose={closeModal}
                       title='New Spec'
                       message={`Are you sure? 
-                              This will reset the editor, output areas, and the permalink.`}
+                              This will reset the editor and the output areas`}
                       onConfirm={handleReset}
                     />
                     <IconButton color="light"
@@ -344,7 +347,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
         <div className='col-md-6' ref={outputDivRef} style={{ backgroundColor: 'white' }}>
           <div className='row'>
             <div className='col-md-12'>
-              <div className='d-flex justify-content-between mb-3'>
+            <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>
                 <h2>Output</h2>
                 <IconButton color='light' onClick={() => { toggleFullScreen(2) }}>
                   {isFullScreen ?
@@ -359,6 +362,21 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                 </IconButton>
               </div>
             </div>
+            {language.id === 'xmv' &&
+
+            <div className='col-md-12'>
+              <a 
+              style={{ cursor: 'pointer', textDecoration: 'underline'  }}
+              role='button'
+              onClick={toggleNuxmvModal}>
+                <NuxmvCopyrightNotice
+                  isNuxmvModalOpen={isNuxmvModalOpen}
+                  setIsNuxmvModalOpen={setIsNuxmvModalOpen}
+                  toggleNuxmvModal={toggleNuxmvModal}
+                />Nuxmv Copyright Notice
+              </a>
+            </div>
+            }
             <div className='col-md-12'>
               <PlainOutput
                 code={output}
