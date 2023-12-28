@@ -14,7 +14,7 @@ export async function executeNuxmv(code) {
     const response = await axios.post(url, { code });
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
@@ -29,7 +29,7 @@ export async function executeZ3(code) {
     const response = await axios.post(url, { code });
     return response.data;
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 } 
 

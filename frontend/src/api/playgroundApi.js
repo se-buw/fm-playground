@@ -36,11 +36,8 @@ export async function getCodeByParmalink(check, permalink) {
     if (response.status === 200) {
       return response.data;
     }
-    else {
-      return null;
-    }
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 
@@ -70,13 +67,10 @@ export async function saveCode(code, check, parent) {
   try {
     const response = await axiosAuth.post(url, { code, check, parent});
     if (response.status === 200) {
-      return response.data;
-    }
-    else {
-      return null;
+      return response;
     }
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 

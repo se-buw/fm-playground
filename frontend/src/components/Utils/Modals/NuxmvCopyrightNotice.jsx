@@ -31,7 +31,7 @@ const NuxmvCopyrightNotice = ({
     <>
       <MDBModal
         open={isNuxmvModalOpen}
-        setopen={setIsNuxmvModalOpen}
+        setOpen={setIsNuxmvModalOpen}
         tabIndex="-1"
       >
         <MDBModalDialog>

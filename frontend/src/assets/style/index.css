@@ -76,3 +76,16 @@
   height: 100%;
   z-index: 9999;
 }
+
+.message-modal-content {
+  animation: fadeInOut 0.3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

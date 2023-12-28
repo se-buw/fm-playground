@@ -17,8 +17,9 @@ import run_limboole from '../../assets/js/limboole'
 import { executeNuxmv, executeZ3 } from '../../api/toolsApi.js'
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
-import ConfirmModal from '../Utils/ConfirmModal.jsx';
-import NuxmvCopyrightNotice from '../Utils/NuxmvCopyrightNotice.jsx';
+import ConfirmModal from '../Utils/Modals/ConfirmModal.jsx';
+import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.jsx';
+import MessageModal from '../Utils/Modals/MessageModal.jsx';
 
 import {
   getCodeByParmalink,
@@ -26,7 +27,7 @@ import {
 } from '../../api/playgroundApi.js'
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const inputDivRef = useRef();  // contains the reference to the editor area
   const outputDivRef = useRef(); // contains the reference to the output area
 
@@ -40,6 +41,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
+  const [errorMessage, setErrorMessage] = useState(null); // contains the error messages from the API.
+  const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
 
   /**
    * Load the code and language from the URL.
@@ -101,35 +104,32 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    */
   const loadCode = async (check, permalink) => {
     await getCodeByParmalink(check, permalink)
-      .then((res) => {
-        if (!res) {
-          alert('Invalid Permalink')
-          window.open(`/?check=SAT`, '_self')
-        }
-        else {
-          setEditorValue(res.code)
-        }
+    .then((res) => {
+        setEditorValue(res.code)
       })
       .catch((err) => {
-        console.log(err)
+        alert("Permaling not found. Redirecting...")
+        window.open(`/?check=SAT`, '_self')
       })
   }
 
   /**
    * Execute the tool and save the code to the database.
-   * @todo: Add handling for parent 
-   * @todo: Add handling for tool execution
+   * Code will be saved in the database no matter what the result of the tool is.
+   * Save code returns the permalink of the code. The permalink is then used to update the URL.
+   * Then the output is updated with the result of the tool.
+   * If error occurs, the error modal is opened.
    */
   const handleToolExecution = async () => {
     try {
       setIsExecuting(true);
-      await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
-        .then((res) => {
-          setPermalink(res)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      const response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
+      if (response) {
+        setPermalink(response.data)
+      }
+      else {
+        showErrorModal('Something went wrong. Please try again later.')
+      }
       if (language.value >= 0 && language.value < 3) {
         run_limboole(window.Wrappers[language.value], editorValue)
       } else if (language.value == 3) {
@@ -138,7 +138,15 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             setOutput(res.result)
           })
           .catch((err) => {
-            console.log(err)
+            if (err.response.status === 503) {
+              showErrorModal(err.response.data.result)
+            }
+            else if (err.response.status === 429) {
+              showErrorModal("Slow down! You are making too many requests. Please try again later.")
+            }
+            else {
+              showErrorModal(`Something went wrong. Please try again later.${err.message}`)
+            }
           })
       } else if (language.value == 4) {
         executeNuxmv(editorValue)
@@ -146,13 +154,29 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             setOutput(res.result)
           })
           .catch((err) => {
-            console.log(err)
+            if (err.response.status === 503) {
+              showErrorModal(err.response.data.result)
+            }
+            else if (err.response.status === 429) {
+              showErrorModal("Slow down! You are making too many requests. Please try again later.")
+            }
+            else {
+              showErrorModal(`Something went wrong. Please try again later.${err.message}`)
+            }
           })
       } else if (language.value == 5) {
         console.log('Executing Alloy')
       }
     } catch (err) {
-      console.log(err)
+      if (err.code === "ERR_NETWORK") {
+        showErrorModal('Network Error. Please check your internet connection.')
+      }
+      else if (err.response.status === 413) {
+        showErrorModal('Code too long. Please reduce the size of the code.')
+      }
+      else {
+        showErrorModal(`Something went wrong. Please try again later.+${err.message}`)
+      }
     } finally {
       setIsExecuting(false);
     }
@@ -244,7 +268,27 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
 
   const openModal = () => setIsNewSpecModalOpen(true); // open the new spec modal
   const closeModal = () => setIsNewSpecModalOpen(false); // close the new spec modal
-  const toggleNuxmvModal = () => setIsNuxmvModalOpen(!isNuxmvModalOpen); // toggle the Nuxmv copyrigth notice modal
+
+  /**
+   * Display the error modal with the error message. 
+   * This function is called when an error occurs in the API.
+   * @param {string} message - The error message to be displayed in the modal.
+   * @returns 
+   */
+  const showErrorModal = (message) => {
+    setErrorMessage(message);
+    setIsErrorMessageModalOpen(true);
+  };
+
+  /**
+   * Hide the error modal.
+   * This function is called when the user clicks on the close button of the error modal.
+   * @returns
+   */
+  const hideErrorModal = () => {
+    setErrorMessage(null);
+    setIsErrorMessageModalOpen(!isErrorMessageModalOpen);
+  };
 
   return (
     <div className="container">
@@ -347,7 +391,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
         <div className='col-md-6' ref={outputDivRef} style={{ backgroundColor: 'white' }}>
           <div className='row'>
             <div className='col-md-12'>
-            <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>
+              <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>
                 <h2>Output</h2>
                 <IconButton color='light' onClick={() => { toggleFullScreen(2) }}>
                   {isFullScreen ?
@@ -362,21 +406,24 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                 </IconButton>
               </div>
             </div>
-            {language.id === 'xmv' &&
-
-            <div className='col-md-12'>
-              <a 
-              style={{ cursor: 'pointer', textDecoration: 'underline'  }}
-              role='button'
-              onClick={toggleNuxmvModal}>
-                <NuxmvCopyrightNotice
-                  isNuxmvModalOpen={isNuxmvModalOpen}
-                  setIsNuxmvModalOpen={setIsNuxmvModalOpen}
-                  toggleNuxmvModal={toggleNuxmvModal}
-                />Nuxmv Copyright Notice
-              </a>
-            </div>
-            }
+            {language.id === 'xmv' && (
+              <div className='col-md-12'>
+                <a
+                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  role='button'
+                  onClick={() => setIsNuxmvModalOpen(true)}>
+                  Nuxmv Copyright Notice
+                </a>
+                {/* Render the modal conditionally */}
+                {isNuxmvModalOpen && (
+                  <NuxmvCopyrightNotice
+                    isNuxmvModalOpen={isNuxmvModalOpen}
+                    setIsNuxmvModalOpen={setIsNuxmvModalOpen}
+                    toggleNuxmvModal={() => setIsNuxmvModalOpen(!isNuxmvModalOpen)}
+                  />
+                )}
+              </div>
+            )}
             <div className='col-md-12'>
               <PlainOutput
                 code={output}
@@ -387,6 +434,15 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
         </div>
       </div>
       <Guides id={language.id} />
+      {errorMessage && (
+        <MessageModal
+          isErrorMessageModalOpen={isErrorMessageModalOpen}
+          setIsErrorMessageModalOpen={hideErrorModal}
+          toggleErrorMessageModal={hideErrorModal}
+          title="Error"
+          errorMessage={errorMessage}
+        />
+      )}
     </div>
   )
 }
