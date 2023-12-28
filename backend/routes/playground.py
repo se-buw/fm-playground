@@ -122,7 +122,7 @@ def get_code():
   return response
 
 @routes.route('/api/run_nuxmv', methods=['POST'])
-@limiter.limit("1/second", error_message="You've already made a request recently.")
+@limiter.limit("1/second")
 def run_nuxmv():
   data = request.get_json()
   code = data['code']
@@ -141,6 +141,7 @@ def run_nuxmv():
   return response
 
 @routes.route('/api/run_z3', methods=['POST'])
+@limiter.limit("1/second")
 def run_z3():
   data = request.get_json()
   code = data['code']
