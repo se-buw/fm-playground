@@ -37,7 +37,7 @@ const NuxmvCopyrightNotice = ({
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Nuxmv Copyright Notice</MDBModalTitle>
+              <MDBModalTitle>nuXmv Copyright Notice</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"

@@ -412,7 +412,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                   style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   role='button'
                   onClick={() => setIsNuxmvModalOpen(true)}>
-                  Nuxmv Copyright Notice
+                  nuXmv Copyright Notice
                 </a>
                 {/* Render the modal conditionally */}
                 {isNuxmvModalOpen && (
