@@ -4,7 +4,6 @@ import {
   MDBNavbar,
   MDBNavbarBrand,
   MDBBtn,
-  MDBNavbarLink,
   MDBNavbarNav,
   MDBNavbarToggler,
   MDBIcon,
@@ -31,6 +30,7 @@ import axiosAuth from '../../api/axiosAuth.js';
  * @returns 
  */
 export default function Navbar({ setEditorValue, setLanguage }) {
+  const isMobile = window.innerWidth = window.matchMedia('(max-width: 767px)').matches;
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [openNavRight, setOpenNavRight] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
@@ -81,7 +81,7 @@ export default function Navbar({ setEditorValue, setLanguage }) {
 
   const handleUserProfileDelete = async () => {
     try {
-      
+
       await deleteProfile()
         .then((res) => {
           console.log(res)
@@ -154,24 +154,22 @@ export default function Navbar({ setEditorValue, setLanguage }) {
               <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>
                 {isLoggedIn ? (
                   <>
-                    {/* <MDBBtn rounded color='primary' onClick={handleDrawerOpen}>History</MDBBtn> */}
-                    <MDBNavbarLink
-                      className='link-text me-2'
-                      active aria-current
+                    <MDBBtn
+                      className='mb-2 mb-lg-0 me-lg-2 justify-content-center'
                       onClick={handleDrawerOpen}
-                      style={{ position: 'relative' }}
+                      style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
                     >History
-                    </MDBNavbarLink>
+                    </MDBBtn>
                     <DrawerComponent isOpen={isDrawerOpen} onClose={handleDrawerClose} onItemSelect={handleDrawerItemClick} />
-                    <MDBDropdown className='btn-group' >
+                    <MDBDropdown className='btn-group' style={{ width: 'auto', display: 'flex', alignItems: 'center' }} >
                       <MDBBtn
                         color='danger'
                         onClick={handleLogout}
                       >
                         Logout
                       </MDBBtn>
-                      <MDBDropdownToggle split color='dark'></MDBDropdownToggle>
-                      <MDBDropdownMenu >
+                      <MDBDropdownToggle split color='dark' style={{ flex: '0' }}></MDBDropdownToggle>
+                      <MDBDropdownMenu style={{ minWidth: '200px' }}>
                         <MDBDropdownItem
                           link
                           onClick={handleUserDataDownload}
@@ -189,6 +187,13 @@ export default function Navbar({ setEditorValue, setLanguage }) {
                   <MDBBtn rounded color='primary' href='/login'>Login</MDBBtn>
                 )}
 
+                {isMobile && (
+                  <MDBBtn
+                    color='light'
+                    onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                  ><FaGithub size={24} style={{ marginRight: '5px' }} />
+                  </MDBBtn>
+                )}
               </MDBNavbarNav>
             </MDBCollapse>
 
@@ -200,6 +205,7 @@ export default function Navbar({ setEditorValue, setLanguage }) {
             style={{ marginRight: '20px' }}
             role='button'
           />
+
         </MDBNavbar>
 
         {/* Snackbar component */}
