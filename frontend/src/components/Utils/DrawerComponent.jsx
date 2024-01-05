@@ -31,10 +31,13 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
   const [hasMoreData, setHasMoreData] = useState(true); // contains the state for checking if there's more data to fetch
   const [searchData, setSearchData] = useState([]); // contains the search data
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(''); // contains the debounced search query
+  const [selectedItemId, setSelectedItemId] = useState(null); // contains the selected item id. This is used to highlight the selected item of the history
   const drawerRef = useRef(null);
 
   /**
    * Fetches the user history from the API. 
+   * If the page number is 1, it will set the data to the fetched data. Otherwise, it will append the data to the existing data.
+   * hasMoreData is used to check if there's more data to fetch.
    * @param {number} pageNumber - The page number to fetch
    * @returns {void}
    */
@@ -148,6 +151,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
           const itemContent = res;
           onItemSelect(itemContent.check, itemContent.permalink, itemContent.code);
           onClose();
+          setSelectedItemId(itemId);
         })
         .catch((err) => {
           console.log(err)
@@ -296,7 +300,9 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
               .map((item, index) => (
                 <React.Fragment key={item.id}>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={() => handleItemClick(item.id, item.check)}>
+                    <ListItemButton
+                      selected={selectedItemId === item.id}
+                      onClick={() => handleItemClick(item.id, item.check)}>
                       <div>
                         <Typography variant="subtitle1">
                           {item.time} - <span style={{ color: 'gray' }}>{item.check}</span>
@@ -311,7 +317,9 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
             : uniqueData.map((item, index) => (
               <React.Fragment key={item.id}>
                 <ListItem disablePadding>
-                  <ListItemButton onClick={() => handleItemClick(item.id, item.check)}>
+                  <ListItemButton
+                    selected={selectedItemId === item.id}
+                    onClick={() => handleItemClick(item.id, item.check)}>
                     <div>
                       <Typography variant="subtitle1">
                         {item.time} - <span style={{ color: 'gray' }}>{item.check}</span>
