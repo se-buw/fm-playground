@@ -116,8 +116,12 @@ export default function Navbar({ setEditorValue, setLanguage }) {
   const handleDrawerItemClick = (check, code) => {
     setEditorValue(code);
     setLanguage(Options.find(option => option.short === check));
+    // Clean the output area when a new item is loaded from the history. 
+    // FIXME: Better approach would be to handle this using useState hook in the Output component.
+    //But limboole is setting the output from web-assembly. We need to handle this when we refactor the code for Alloy.
+    const info = document.getElementById("info");
+    info.innerText = "";
   };
-
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -205,7 +209,6 @@ export default function Navbar({ setEditorValue, setLanguage }) {
             style={{ marginRight: '20px' }}
             role='button'
           />
-
         </MDBNavbar>
 
         {/* Snackbar component */}

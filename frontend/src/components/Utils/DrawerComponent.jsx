@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 
 import { getHistoryByPage, searchUserHistory, getCodeById } from '../../api/playgroundApi';
-import { set } from 'lodash';
 
 /**
  * Display a drawer with the user's history. 
