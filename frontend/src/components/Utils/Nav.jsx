@@ -110,8 +110,9 @@ export default function Navbar({ setEditorValue, setLanguage }) {
 
   /**
    * Handle the drawer item click. Update the state in the Playground component to set the code in the Editor
-   * @param {*} check 
-   * @param {*} code 
+   * @param {*} check  - The short name of the tool.
+   * @param {*} permalink - The for the specification.
+   * @param {*} code - Specification code.
    */
   const handleDrawerItemClick = (check, permalink, code) => {
     setEditorValue(code);

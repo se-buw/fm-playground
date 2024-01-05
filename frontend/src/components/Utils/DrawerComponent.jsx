@@ -147,7 +147,6 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
         .then((res) => {
           const itemContent = res;
           onItemSelect(itemContent.check, itemContent.permalink, itemContent.code);
-          setDebouncedSearchQuery('');
           onClose();
         })
         .catch((err) => {
