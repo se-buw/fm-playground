@@ -1,15 +1,15 @@
-import React from 'react';
-import CodeDisplay from './PlainOutput'; 
+// import React from 'react';
+// import CodeDisplay from './PlainOutput'; 
 
-const App = () => {
-  const exampleCode = "";
+// const Output = () => {
+//   const exampleCode = "";
 
-  return (
-    <div>
-      <CodeDisplay 
-      code={exampleCode} />
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <CodeDisplay 
+//       code={exampleCode} />
+//     </div>
+//   );
+// };
 
-export default App;
+// export default Output;
