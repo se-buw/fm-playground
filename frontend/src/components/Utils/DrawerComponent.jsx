@@ -136,6 +136,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * it will fetch the item content from the API and call the callback function
    * with the code.
    * @param {number} itemId - The item id (Data table id)
+   * @param {string} permalink - The item permalink (Data table permalink)
    * @param {string} check - The check name (Check type: Limboole, NuXmv, etc.)
    * @returns {void}
    * @todo Add error handling
@@ -145,7 +146,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
       await getCodeById(itemId)
         .then((res) => {
           const itemContent = res;
-          onItemSelect(check, itemContent.code);
+          onItemSelect(itemContent.check, itemContent.permalink, itemContent.code);
           setDebouncedSearchQuery('');
           onClose();
         })

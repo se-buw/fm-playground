@@ -113,9 +113,10 @@ export default function Navbar({ setEditorValue, setLanguage }) {
    * @param {*} check 
    * @param {*} code 
    */
-  const handleDrawerItemClick = (check, code) => {
+  const handleDrawerItemClick = (check, permalink, code) => {
     setEditorValue(code);
     setLanguage(Options.find(option => option.short === check));
+    window.history.pushState(null, null, `/?check=${check}&p=${permalink}`);
     // Clean the output area when a new item is loaded from the history. 
     // FIXME: Better approach would be to handle this using useState hook in the Output component.
     //But limboole is setting the output from web-assembly. We need to handle this when we refactor the code for Alloy.

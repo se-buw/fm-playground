@@ -249,7 +249,7 @@ def get_code_by_id(data_id: int):
   
   data = get_code_by_data_id(data_id)
   if data:
-    return jsonify({'result': 'success', 'code': data.code})
+    return jsonify({'result': 'success', 'code': data.code, 'check': data.check_type, 'permalink': data.permalink})
   
   return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
 

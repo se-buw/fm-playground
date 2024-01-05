@@ -44,7 +44,7 @@ export async function getCodeByParmalink(check, permalink) {
 /**
  * Return code by id
  * @param {*} id data item id
- * @returns 
+ * @returns {json} {code, check, permalink}
  */
 export async function getCodeById(id) {
   let url = `${API_URL}/code/${id}`;

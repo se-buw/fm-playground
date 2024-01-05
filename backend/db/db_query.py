@@ -83,7 +83,11 @@ def get_code_by_data_id(data_id: int):
   Returns:
     Code: The code object
   """
-  return db.session.query(Code).join(Data, Data.code_id == Code.id).filter(Data.id == data_id).first()
+  return db.session.query(
+      Data.check_type,
+      Data.permalink,
+      Code.code
+    ).join(Data, Data.code_id == Code.id).filter(Data.id == data_id).first()
 
 
 def search_by_query(query, user_id: int = None):
