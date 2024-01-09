@@ -104,13 +104,39 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    */
   const loadCode = async (check, permalink) => {
     await getCodeByParmalink(check, permalink)
-    .then((res) => {
+      .then((res) => {
         setEditorValue(res.code)
       })
       .catch((err) => {
         alert("Permaling not found. Redirecting...")
         window.open(`/?check=SAT`, '_self')
       })
+  }
+
+  /**
+   * Find the first non-ascii character in the string.
+   * Return the character and its index (line and column)
+   * If no non-ascii character is found, return -1.
+   * This function is used to check if the code contains non-ascii characters.
+   * @param {*} str 
+   * @returns -1 if no non-ascii character is found, otherwise return the character and its index (line, column).
+   */
+  const findNonAscii = (str) => {
+    const regex = /[^\x00-\x7F]/g;
+    const match = regex.exec(str);
+    // find match line and column
+    let line = 0;
+    let column = 1;
+    let index = 0;
+    while (index !== -1) {
+      index = str.indexOf('\n', index + 1);
+      if (index < match.index) {
+        line++;
+      }
+    }
+    column = match.index - str.lastIndexOf('\n', match.index);
+    // if match is found, return the character and its index, otherwise return -1
+    return match ? { char: match[0], index: match.index, line, column } : -1;
   }
 
   /**
@@ -130,6 +156,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       else {
         showErrorModal('Something went wrong. Please try again later.')
       }
+      const nonAsciiIndex = findNonAscii(editorValue)
+      if (nonAsciiIndex !== -1) {
+        showErrorModal(`The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.`)
+        return
+      }
+
       if (language.value >= 0 && language.value < 3) {
         run_limboole(window.Wrappers[language.value], editorValue)
       } else if (language.value == 3) {
