@@ -124,19 +124,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const findNonAscii = (str) => {
     const regex = /[^\x00-\x7F]/g;
     const match = regex.exec(str);
-    // find match line and column
-    let line = 0;
-    let column = 1;
-    let index = 0;
-    while (index !== -1) {
-      index = str.indexOf('\n', index + 1);
-      if (index < match.index) {
-        line++;
-      }
-    }
-    column = match.index - str.lastIndexOf('\n', match.index);
-    // if match is found, return the character and its index, otherwise return -1
-    return match ? { char: match[0], index: match.index, line, column } : -1;
+    if (!match) return -1;
+    // find the line and column and the non-ascii character
+    const line = (str.substring(0, match.index).match(/\n/g) || []).length + 1;
+    const column = match.index - str.lastIndexOf('\n', match.index);
+    const char = match[0];
+    return { line, column, char };
   }
 
   /**
