@@ -14,6 +14,7 @@ import { alloyConf, alloyLang } from '../../assets/languages/alloy'
 const CodeEditor = (props) => {
   const editorRef = useRef(null) // editor reference
   const [internalEditorValue, setInternalEditorValue] = useState(props.editorValue);
+  const [language, setLanguage] = useState(props.language.id);
 
   /**
   * Sets the editor value when the editorValue prop changes.
@@ -21,6 +22,13 @@ const CodeEditor = (props) => {
   useEffect(() => {
     setInternalEditorValue(props.editorValue);
   }, [props.editorValue]);
+
+  /**
+   * Sets the language when the language prop changes.
+  */
+  useEffect(() => {
+    setLanguage(props.language.id);
+  }, [props.language.id]);
 
 
   /**
@@ -54,10 +62,6 @@ const CodeEditor = (props) => {
     monaco.languages.register({ id: 'als' })
     monaco.languages.setMonarchTokensProvider('als', alloyLang)
     monaco.languages.setLanguageConfiguration('als', alloyConf)
-
-    // set limboole as default language
-    monaco.editor.setModelLanguage(editor.getModel(), 'limboole');
-
   }
 
   /**
@@ -90,14 +94,13 @@ const CodeEditor = (props) => {
     props.setEditorValue(newCode)
   }
 
-
   return (
     <>
       <div className="App">
         <Editor
           height={props.height}
           width="100%"
-          language={props.language.id}
+          language={language}
           defaultValue="Write your code here"
           value={internalEditorValue}
           theme={props.theme}
