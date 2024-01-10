@@ -158,4 +158,11 @@ Contributions are welcome!  Please refer to the [contributing guidelines](CONTRI
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE). 
+
+### Third-Party Licenses
+
+- Limboole - https://github.com/maximaximal/limboole/blob/master/LICENSE
+- Z3 - https://github.com/Z3Prover/z3/blob/master/LICENSE.txt
+- nuXmv - https://nuxmv.fbk.eu/downloads/LICENSE.txt
+- Alloy - https://github.com/AlloyTools/org.alloytools.alloy/blob/master/LICENSE
