@@ -261,23 +261,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
 
   /**
    * Toggle the full screen mode of the editor and output areas.
-   * @todo: Fix the size, position and alignment of the editor and output areas in full screen mode.
-   * @param {*} div: 1 for editor and 2 for output
+   * @param {*} div: 'input' or 'output'
    */
   const toggleFullScreen = (div) => {
-    const element = { 1: inputDivRef.current, 2: outputDivRef.current }[div];
+    const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div];
 
-    if (isFullScreen) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
-    } else {
+    if (!document.fullscreenElement) {
+      // Enter fullscreen mode
       if (element.requestFullscreen) {
         element.requestFullscreen();
       } else if (element.mozRequestFullScreen) {
@@ -287,9 +277,41 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       } else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
       }
+      setIsFullScreen(true);
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+      setIsFullScreen(false);
     }
-    setIsFullScreen(!isFullScreen);
   };
+
+  /**
+   * Add event listeners for full screen mode.
+   * This is useful if the user presses the escape key to exit the full screen mode instead of clicking on the exit button.
+   */
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullScreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
+    document.addEventListener('msfullscreenchange', handleFullScreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullScreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullScreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullScreenChange);
+    };
+  }, []);
 
   const openModal = () => setIsNewSpecModalOpen(true); // open the new spec modal
   const closeModal = () => setIsNewSpecModalOpen(false); // close the new spec modal
@@ -378,7 +400,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                         moonColor="#000"
                       />
                     </IconButton>
-                    <IconButton color='light' onClick={() => { toggleFullScreen(1) }}>
+                    <IconButton color='light' onClick={() => { toggleFullScreen('input') }}>
                       {isFullScreen ?
                         <AiOutlineFullscreenExit color='black'
                           data-tooltip-id="playground-tooltip"
@@ -418,7 +440,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             <div className='col-md-12'>
               <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>
                 <h2>Output</h2>
-                <IconButton color='light' onClick={() => { toggleFullScreen(2) }}>
+                <IconButton color='light' onClick={() => { toggleFullScreen('output') }}>
                   {isFullScreen ?
                     <AiOutlineFullscreenExit color='black'
                       data-tooltip-id="playground-tooltip"
