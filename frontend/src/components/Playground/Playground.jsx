@@ -140,6 +140,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    * If error occurs, the error modal is opened.
    */
   const handleToolExecution = async () => {
+    setOutput('')
     try {
       setIsExecuting(true);
       const response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
