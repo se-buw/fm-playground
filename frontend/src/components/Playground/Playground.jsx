@@ -157,10 +157,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
 
       if (language.value >= 0 && language.value < 3) {
         run_limboole(window.Wrappers[language.value], editorValue)
+        setIsExecuting(false);
       } else if (language.value == 3) {
         executeZ3(editorValue)
           .then((res) => {
             setOutput(res.result)
+            setIsExecuting(false);
           })
           .catch((err) => {
             if (err.response.status === 503) {
@@ -169,14 +171,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             else if (err.response.status === 429) {
               showErrorModal("Slow down! You are making too many requests. Please try again later.")
             }
-            else {
-              showErrorModal(`Something went wrong. Please try again later.${err.message}`)
-            }
+            setIsExecuting(false);
           })
       } else if (language.value == 4) {
         executeNuxmv(editorValue)
           .then((res) => {
             setOutput(res.result)
+            setIsExecuting(false);
           })
           .catch((err) => {
             if (err.response.status === 503) {
@@ -185,9 +186,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             else if (err.response.status === 429) {
               showErrorModal("Slow down! You are making too many requests. Please try again later.")
             }
-            else {
-              showErrorModal(`Something went wrong. Please try again later.${err.message}`)
-            }
+            setIsExecuting(false);
           })
       } else if (language.value == 5) {
         console.log('Executing Alloy')
@@ -200,10 +199,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
         showErrorModal('Code too long. Please reduce the size of the code.')
       }
       else {
-        showErrorModal(`Something went wrong. Please try again later.+${err.message}`)
+        showErrorModal(`Something went wrong. Please try again later.${err.message}`)
       }
-    } finally {
-      setIsExecuting(false);
     }
   }
 
