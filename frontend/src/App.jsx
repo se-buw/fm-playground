@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import './assets/style/index.css'
 
@@ -12,17 +12,26 @@ import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
 
 const App = () => {
-  const [editorValue, setEditorValue] = useState('');
-  const [language, setLanguage] = useState(Options[1])
+  const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
+  const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language')) || Options[1]);
   const handleEditorValueChange = (code) => {
     setEditorValue(code);
   };
   const handleLanguageChange = (newLanguage) => {
     setLanguage(newLanguage)
   }
+
+  useEffect(() => {
+    localStorage.setItem('editorValue', editorValue);
+  }, [editorValue]);
+
+  useEffect(() => {
+    localStorage.setItem('language', JSON.stringify(language));
+  }, [language]);
+
+
   return (
     <AuthProvider>
-
       <div>
         <Nav
           setEditorValue={setEditorValue}
@@ -31,7 +40,6 @@ const App = () => {
         <Router>
           <Routes>
             <Route element={<ProtectedRoutes />} >
-              {/* <Route path="/dashboard" exact element={<Dashboard />} /> */}
             </Route>
             <Route path="/" element={<Playground
               editorValue={editorValue}
