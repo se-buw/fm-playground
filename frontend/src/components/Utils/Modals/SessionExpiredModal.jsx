@@ -11,10 +11,13 @@ import {
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
 
-export default function App() {
+import { useAuth } from '../../../contexts/AuthContext';
+
+const SessionExpiredModal = () => {
   const [timeoutModal, setTimeoutModal] = useState(false);
   const [state, setState] = useState('Active')
-  
+  const { isLoggedIn } = useAuth();
+
   const handleIdle = () => {
     setTimeoutModal(false)
     window.location.reload()
@@ -36,7 +39,7 @@ export default function App() {
 
   return (
     <>
-     {state === 'Idle' && (
+     {state === 'Idle' && isLoggedIn && (
         <MDBModal
           open={timeoutModal}
           tabIndex="-1"
@@ -69,3 +72,6 @@ export default function App() {
     </>
   )
 }
+
+
+export default SessionExpiredModal;

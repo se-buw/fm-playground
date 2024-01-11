@@ -22,7 +22,7 @@ import CustomSnackbar from './Modals/CustomSnackbar.jsx';
 import ConfirmModal from './Modals/ConfirmModal.jsx';
 import { downloadUserData, deleteProfile } from '../../api/playgroundApi.js';
 import axiosAuth from '../../api/axiosAuth.js';
-import IdleTimer from './IdleTimer.jsx'
+import SessionExpiredModal from  './Modals/SessionExpiredModal.jsx'
 
 /**
  * Display the header and navigation bar.
@@ -139,7 +139,7 @@ export default function Navbar({ setEditorValue, setLanguage }) {
         Are you sure you want to delete your profile?`}
         onConfirm={handleUserProfileDelete}
       />
-      <IdleTimer />
+        <SessionExpiredModal />
       <header className='fixed-top'>
         <MDBNavbar expand='lg' light bgColor='light'>
           <MDBContainer >
