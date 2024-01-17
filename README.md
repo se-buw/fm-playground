@@ -13,12 +13,12 @@
 
 # FM Playground
 
-A Formal Method playground for limboole, z3, nuXmv and Alloy. This project is a part of the  Formal Methods course at the Bauhaus-Universität Weimar. It is a web application that allows users to run formal methods tools in the browser. 
+This is the minimal template to start working with the FM Playground. 
+This branch contains only an editor, plain output area, and a command-line tool execution - it does not have any database integration.
 
 ## Requirements
 - Python >= 3.9.0
 - Node >= 18.0.0
-- PostgreSQL >= 15.0
 - Docker >= 20.10.0 (optional)
 - Docker Compose >= 1.27.0 (optional)
 
