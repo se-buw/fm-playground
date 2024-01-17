@@ -17,143 +17,25 @@ This is the minimal template to start working with the FM Playground.
 This branch contains only an editor, plain output area, and a command-line tool execution - it does not have any database integration.
 
 ## Requirements
-- Python >= 3.9.0
-- Node >= 18.0.0
-- Docker >= 20.10.0 (optional)
+- Python >= 3.9.0 - [https://www.python.org/downloads/](https://www.python.org/downloads/)
+- Node >= 18.0.0 - [https://nodejs.org/en/download](https://nodejs.org/en/download)
+- Docker >= 20.10.0 (optional) - [https://docs.docker.com/engine/install/](https://docs.docker.com/engine/install/)
 - Docker Compose >= 1.27.0 (optional)
 
 
 ## Getting Started
 
 ### Installation
+- Clone the repository: `git clone -b minimal-template https://github.com/se-buw/fm-playground.git`
+- Run-
+  - Windows: `run.bat`
+  - Unix: `run.sh` 
+- The backend will run on `http://127.0.0.1:8000`
+- The frontend will run on `http://127.0.0.1:5173`
 
-- [Frontend](frontend/README.md)
-- [Backend](backend/README.md)
 
 ### Docker
 
-- [Frontend](frontend/README.md#docker)
-- [Backend](backend/README.md#docker)
-
-### Docker Compose
-
-- Copy the `.env.example` file to `.env` and update the environment variables as needed:
-```bash
-cp .env.example .env
-```
-- Run the following command:
-```bash
-docker-compose up -d
-```
-
-```yml
-version: '3'
-services:
-  frontend:
-    image: ghcr.io/se-buw/fm-playground-frontend:latest
-    container_name: fmp-frontend
-    env_file:
-      - .env
-    ports:
-      - "5173:5173"
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  backend:
-    image: ghcr.io/se-buw/fm-playground-backend:latest
-    container_name: fmp-backend
-    env_file:
-      - .env
-    ports:
-      - "8000:8000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  postgres:
-    image: postgres:15.4
-    container_name: fmp-db
-    environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    env_file:
-          - .env
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  # Alloy API
-  api:
-    build:
-      context: ./alloy-app/api/
-    container_name: fmp-alloy-api
-    ports:
-      - "8080:8080"
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  # Database for alloy
-  mongo:
-    image: mongo:4.4.6
-    container_name: fmp-mongo
-    command: mongod --storageEngine=wiredTiger
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  # Alloy application with meteor
-  meteor:
-    build:
-      context: ./alloy-app/meteor/
-    container_name: fmp-alloy-app
-    environment:
-      MONGO_URL: ${MONGO_URL}
-      METEOR_SETTINGS: ${METEOR_SETTINGS}
-      STARTUP_DELAY: ${STARTUP_DELAY}
-    depends_on:
-      - backend
-      - postgres
-      - mongo
-    links:
-      - mongo
-      - api
-    networks:
-      - my_network
-    restart: unless-stopped
-
-volumes:
-  postgres_data:
-  mongo_data:
-
-networks:
-  my_network:
-    driver: bridge
-```
-
-
-## Contributing
-
-Contributions are welcome!  Please refer to the [contributing guidelines](CONTRIBUTING.md) for detailed instructions.
 
 
 ## License

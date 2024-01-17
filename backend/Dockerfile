@@ -5,14 +5,11 @@ WORKDIR /backend
 COPY . /backend 
 
 RUN apt-get update && apt-get install -y
-RUN apt-get install z3 wget gcc libc6-dev -y
+RUN apt-get install wget gcc libc6-dev -y
 
 RUN pip install --no-cache-dir --upgrade pip setuptools
 RUN pip install --no-cache-dir -r requirements.txt
 
-RUN chmod +x ./install_nuxmv.sh
-RUN sed -i -e 's/\r$//' install_nuxmv.sh
-RUN ./install_nuxmv.sh
 RUN mkdir logs
 
 
