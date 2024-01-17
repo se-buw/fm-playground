@@ -12,8 +12,9 @@ CORS(app, supports_credentials=True)
 cache = Cache(app)
 app.register_blueprint(routes)
 
-
-
+@app.route('/' , methods=['GET']) 
+def index():
+  return 'Hello World!'
 
 if __name__ == '__main__':
   app.run(port=8000)
