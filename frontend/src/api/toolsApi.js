@@ -8,8 +8,8 @@ const API_URL = import.meta.env.VITE_FMP_API_URL;
  * @param {*} code
  * @returns result
  */
-export async function executeNuxmv(code) {
-  let url = `${API_URL}/run_nuxmv`;
+export async function executeCmdTool(code) {
+  let url = `${API_URL}/run-cmd-tool`;
   try {
     const response = await axios.post(url, { code });
     return response.data;
@@ -18,18 +18,5 @@ export async function executeNuxmv(code) {
   }
 }
 
-/**
- * Execute z3 in the server and return the result
- * @param {*} code
- * @returns result
-* */
-export async function executeZ3(code) {
-  let url = `${API_URL}/run_z3`;
-  try {
-    const response = await axios.post(url, { code });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-} 
+
 
