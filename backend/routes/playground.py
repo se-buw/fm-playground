@@ -161,7 +161,7 @@ def run_z3():
 
 # TODO: Fix this route. probably merge with save
 # TODO: Separate the redundant functionality
-@routes.route('/api/save-with-metadata', methods=['POST'])
+@routes.route('/api/save-with-meta', methods=['POST'])
 @limiter.limit("2/second", error_message="You've already made a request recently.")
 def save_with_metadata():
   data = request.get_json()
