@@ -4,7 +4,7 @@ import { limbooleConf, limbooleLang } from '../../assets/languages/limboole'
 import { smt2Conf, smt2Lang, smt2ComplitionProvider } from '../../assets/languages/smt2'
 import { nuxmvConf, nuxmvLang } from '../../assets/languages/nuxmv'
 import { alloyConf, alloyLang } from '../../assets/languages/alloy'
-
+import { spectraConf, spectraLang } from '../../assets/languages/spectra';
 
 /**
  * Code editor component.
@@ -62,6 +62,28 @@ const CodeEditor = (props) => {
     monaco.languages.register({ id: 'als' })
     monaco.languages.setMonarchTokensProvider('als', alloyLang)
     monaco.languages.setLanguageConfiguration('als', alloyConf)
+
+    // register spectra language
+    monaco.languages.register({ id: 'spectra' })
+    monaco.languages.setMonarchTokensProvider('spectra', spectraLang)
+    monaco.languages.setLanguageConfiguration('spectra', spectraConf)
+    
+    monaco.editor.defineTheme('spectraTheme', {
+      base: props.theme === 'vs-dark' ? 'vs-dark' : 'vs', // 'vs-dark' or 'vs'
+      inherit: true, // inherit the base theme
+      rules: [
+        { token: 'system', foreground: '189BCC', fontStyle: 'bold'},
+        { token: 'environment', foreground: '0CD806', fontStyle: 'bold'},
+        { token: 'reg', foreground: 'FF00FF'},
+      
+      ], // red comments
+      colors: {
+        'editor.foreground': props.theme === 'vs-dark' ? '#FFFFFF' : '#000000',
+        'editor.background': props.theme === 'vs-dark' ? '#000000' : '#FFFFFF',
+      },
+    });
+
+    monaco.editor.setTheme('spectraTheme');
   }
 
   /**
@@ -82,8 +104,6 @@ const CodeEditor = (props) => {
   function setEditorValue(value, event) {
     editorRef.current.setValue(value)
   }
-
-
 
   /**
    * Handles the code change event.

@@ -10,8 +10,9 @@ const Options = [
   { id: "limboole", value: "1", label: "Limboole Satisfiability", short: "SAT" },
   { id: "limboole", value: "2", label: "Limboole QBF Satisfiability", short: "QBF" },
   { id: "smt2",  value: "3", label: "SMT", short: "SMT" },
-  { id: "xmv",  value: "4", label: "NUXMV", short: "XMV" },
-  { id: "als",  value: "5", label: "Alloy", short: "ALS" }
+  { id: "xmv",  value: "4", label: "nuXmv", short: "XMV" },
+  { id: "als",  value: "5", label: "Alloy", short: "ALS" },
+  { id: "spectra",  value: "6", label: "Spectra", short: "SPECTRA" }
 ];
 
 export default Options;

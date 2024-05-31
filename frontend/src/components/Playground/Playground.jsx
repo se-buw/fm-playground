@@ -388,7 +388,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                         <CopyToClipboardBtn permalink={permalink} />
                       </IconButton>
                     }
-                    <IconButton
+                    {/* <IconButton
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Change theme"
                     >
@@ -397,7 +397,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                         onChange={handleToggleTheme}
                         moonColor="#000"
                       />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton color='light' onClick={() => { toggleFullScreen('input') }}>
                       {isFullScreen ?
                         <AiOutlineFullscreenExit color='black'
