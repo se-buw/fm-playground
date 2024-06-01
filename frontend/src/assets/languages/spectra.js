@@ -60,7 +60,7 @@ const spectraLang = {
   ],
 
   // we include these common regular expressions
-  symbols: /([\.]{2})|([=><!:&\|\+\-\*\/,;]+)/,
+  symbols: /([\.\.])|([=&gt;&lt;!:\&amp;\|\+\-\*\/,;]+)/,
 
   // C# style strings
   escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
@@ -78,7 +78,7 @@ const spectraLang = {
       [/(regexp|regtest)\b/, 'reg'],
 
       // operators
-      [/@symbols/, { cases: { '@operators': 'keyword' } }],
+      // [/@symbols/, { cases: { '@operators': 'keyword' } }],
 
       // identifiers and keywords
       [/[a-zA-Z_][\w$]*/, {
@@ -91,6 +91,10 @@ const spectraLang = {
 
       // whitespace
       { include: '@whitespace' },
+      // comments
+      [/\/\*/, 'comment', '@comment'],
+      [/\/\/.*$/, 'comment'],
+      [/\s*--.*$/, 'comment'],
 
       // delimiters and operators
       [/[{}()\[\]]/, '@brackets'],
