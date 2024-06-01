@@ -21,6 +21,8 @@ import ConfirmModal from '../Utils/Modals/ConfirmModal.jsx';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.jsx';
 import MessageModal from '../Utils/Modals/MessageModal.jsx';
 
+import SpectraCliOptions from './SpectraCliOptions.jsx';
+
 import {
   getCodeByParmalink,
   saveCode
@@ -422,6 +424,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               setLanguage={setLanguage}
               theme={isDarkTheme ? 'vs-dark' : 'vs'}
             />
+            {language.id === 'spectra' && 
+              <SpectraCliOptions />
+            }
             <MDBBtn
               className='mx-auto my-3'
               style={{ width: '95%' }}
