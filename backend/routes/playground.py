@@ -10,7 +10,7 @@ from flask_login import current_user
 
 from db.models import db, Data
 from db.db_query import *
-from utils import xmv, z3
+from utils import xmv, z3, spectra
 from utils.permalink_generator import generate_passphrase
 from utils.logging_utils import *
 from config import app, limiter
@@ -157,6 +157,25 @@ def run_z3():
     app.logger.error(f"Error running Z3. | Payload: {code} | Error: {sys.exc_info()[0]} ")
     response = make_response(jsonify({'result': "Error running Z3. Server is busy. Please try again"}), 503)
   
+  return response
+
+@routes.route('/api/run_spectra', methods=['POST'])
+@limiter.limit("1/second")
+def run_spectra():
+  data = request.get_json()
+  code = data['code']
+  command = data['command']
+  # Check if the code is too large
+  if not is_valid_size(code):
+    return {'error': "The code is too large."}, 413
+
+  try:
+    res = spectra.process_commands(code, command)
+    response = make_response(jsonify({'result': res}), 200)
+  except:
+    app.logger.error(f"Error running Spectra. | Payload: {code} | Error: {sys.exc_info()[0]} ")
+    response = make_response(jsonify({'result': "Error running Spectra. Server is busy. Please try again"}), 503)
+
   return response
 
 # TODO: Fix this route. probably merge with save

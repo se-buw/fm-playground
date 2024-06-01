@@ -14,7 +14,7 @@ import Options from '../../assets/config/AvailableTools.js'
 import FileUploadButton from '../Utils/FileUpload.jsx'
 import FileDownload from '../Utils/FileDownload.jsx'
 import run_limboole from '../../assets/js/limboole'
-import { executeNuxmv, executeZ3 } from '../../api/toolsApi.js'
+import { executeNuxmv, executeZ3, executeSpectra } from '../../api/toolsApi.js'
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
 import ConfirmModal from '../Utils/Modals/ConfirmModal.jsx';
@@ -193,6 +193,21 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
           })
       } else if (language.value == 5) {
         console.log('Executing Alloy')
+      } else if (language.value == 6) {
+        executeSpectra(editorValue, 'check_realizability')
+          .then((res) => {
+            setOutput(res.result)
+            setIsExecuting(false);
+          })
+          .catch((err) => {
+            if (err.response.status === 503) {
+              showErrorModal(err.response.data.result)
+            }
+            else if (err.response.status === 429) {
+              showErrorModal("Slow down! You are making too many requests. Please try again later.")
+            }
+            setIsExecuting(false);
+          })
       }
     } catch (err) {
       if (err.code === "ERR_NETWORK") {
@@ -424,7 +439,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               setLanguage={setLanguage}
               theme={isDarkTheme ? 'vs-dark' : 'vs'}
             />
-            {language.id === 'spectra' && 
+            {language.id === 'spectra' &&
               <SpectraCliOptions />
             }
             <MDBBtn

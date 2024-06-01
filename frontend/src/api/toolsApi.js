@@ -33,3 +33,18 @@ export async function executeZ3(code) {
   }
 } 
 
+/**
+ * Execute spectra in the server and return the result
+ * @param {*} code spectra specification
+ * @param {*} command command to execute e.g. check_realizability, synthesize_controller, etc.
+ * @returns result 
+ */
+export async function executeSpectra(code, command) {
+  let url = `${API_URL}/run_spectra`;
+  try {
+    const response = await axios.post(url, { code, command});
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
