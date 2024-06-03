@@ -41,8 +41,13 @@ def run_spectra(code: str, check: str) -> str:
     return f"<i style='color: red;'>Timeout: Process timed out after 60 seconds.</i>"
   
 def prettify_output(stdout: str):
-  res = stdout.split('Result:')[1].split('\n')
-  return '\n'.join(res)
+  if 'Result:' in stdout:
+    res = stdout.split('Result:')[1].split('\n')
+    return '\n'.join(res)
+  elif 'Error:' in stdout:
+    res = stdout.split('Error: ')[1].split('\n')
+    res = '\n'.join(res)
+    return f"<i style='color: red;'>{res}\n</i>"
 
 def prettify_error(stderr: str):
   return f"<i style='color: red;'>{stderr}</i>"
