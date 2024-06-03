@@ -81,13 +81,16 @@ export async function saveCode(code, check, parent) {
  * @param {json} metadata
  * @returns permalink
  */
-export async function saveCodeWithMetadata(code, check, metadata) {
-  let url = `${API_URL}/save-with-metadata`;
+export async function saveCodeWithMetadata(code, check, parent, metadata) {
+  let url = `${API_URL}/save-with-meta`;
+  let meta = `{cmd: ${metadata}}`;
   try {
-    const response = await axios.post(url, { code, check, metadata });
-    return response.data;
+    const response = await axios.post(url, { code, check, parent, meta });
+    if (response.status === 200) {
+      return response;
+    }
   } catch (error) {
-    console.log(error);
+    throw error;
   }
 }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 
 
-const SpectraCliOptions = () => {
+const SpectraCliOptions = ({setSpectraCliOption }) => {
   const options = [
     { value: 'check_realizability', label: 'Check Realizability' },
     { value: 'synthesize_controller', label: 'Synthesize Controller' },
@@ -11,6 +11,11 @@ const SpectraCliOptions = () => {
     { value: 'check_well_separation', label: 'Check well-separation' },
     { value: 'non_well_separated_core', label: 'Non-well-separated core' },
   ]
+
+  const handleOptionChange = (selectedOption) => {
+    console.log(selectedOption.value)
+    setSpectraCliOption(selectedOption.value)
+  }
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
@@ -26,6 +31,7 @@ const SpectraCliOptions = () => {
           isRtl={false}
           isSearchable={true}
           options={options}
+          onChange={handleOptionChange}
         />
       </div>
     </div>

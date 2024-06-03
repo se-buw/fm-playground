@@ -25,7 +25,8 @@ import SpectraCliOptions from './SpectraCliOptions.jsx';
 
 import {
   getCodeByParmalink,
-  saveCode
+  saveCode,
+  saveCodeWithMetadata
 } from '../../api/playgroundApi.js'
 
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
@@ -48,6 +49,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const [errorMessage, setErrorMessage] = useState(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
   const [lineToHighlight, setLineToHighlight] = useState(null); // contains the line to highlight in the editor.
+  const [spectraCliOption, setSpectraCliOption] = useState('check_realizability'); // contains the selected option for the Spectra cli tool.
 
   /**
    * Load the code and language from the URL.
@@ -146,7 +148,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
     setOutput('')
     try {
       setIsExecuting(true);
-      const response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
+      let response;
+      if (language.id === 'spectra') {
+        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, spectraCliOption)
+      } else{
+        response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
+      }
+
       if (response) {
         setPermalink(response.data)
       }
@@ -451,7 +459,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               setLineToHighlight={handleLineHighlight}
             />
             {language.id === 'spectra' &&
-              <SpectraCliOptions />
+              <SpectraCliOptions
+                setSpectraCliOption={setSpectraCliOption}
+              />
             }
             <MDBBtn
               className='mx-auto my-3'
