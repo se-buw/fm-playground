@@ -28,6 +28,8 @@ import {
   saveCode
 } from '../../api/playgroundApi.js'
 
+import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
+
 const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef();  // contains the reference to the editor area
@@ -45,6 +47,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
   const [errorMessage, setErrorMessage] = useState(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
+  const [lineToHighlight, setLineToHighlight] = useState(null); // contains the line to highlight in the editor.
 
   /**
    * Load the code and language from the URL.
@@ -84,7 +87,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    */
   useEffect(() => {
     localStorage.setItem('theme', isDarkTheme ? 'vs-dark' : 'vs');
-  }, [isDarkTheme]);
+  }, [isDarkTheme]); 
 
   /**
    * Update the URL with ``check`` type when language changes.
@@ -101,8 +104,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
 
   /**
    * Load the code from the api. 
-   * @param {*} check 
-   * @param {*} permalink 
    */
   const loadCode = async (check, permalink) => {
     await getCodeByParmalink(check, permalink)
@@ -160,6 +161,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
 
       if (language.value >= 0 && language.value < 3) {
         run_limboole(window.Wrappers[language.value], editorValue)
+        setLineToHighlight(getLineToHighlight(document.getElementById('info').innerText, language.id))
         setIsExecuting(false);
       } else if (language.value == 3) {
         executeZ3(editorValue)
@@ -179,6 +181,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       } else if (language.value == 4) {
         executeNuxmv(editorValue)
           .then((res) => {
+            setLineToHighlight(getLineToHighlight(res.result, language.id))
             setOutput(res.result)
             setIsExecuting(false);
           })
@@ -196,6 +199,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       } else if (language.value == 6) {
         executeSpectra(editorValue, 'check_realizability')
           .then((res) => {
+            setLineToHighlight(getLineToHighlight(res.result, language.id))
             setOutput(res.result)
             setIsExecuting(false);
           })
@@ -269,6 +273,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
 
   /**
    * Toggle the theme of the editor.
+   * TODO: FIX this with custom theme colors.
    */
   const handleToggleTheme = () => {
     setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
@@ -350,6 +355,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const hideErrorModal = () => {
     setErrorMessage(null);
     setIsErrorMessageModalOpen(!isErrorMessageModalOpen);
+  };
+
+  const handleLineHighlight = (line) => {
+    setLineToHighlight(line);
   };
 
   return (
@@ -438,6 +447,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               language={language}
               setLanguage={setLanguage}
               theme={isDarkTheme ? 'vs-dark' : 'vs'}
+              lineToHighlight={lineToHighlight}
+              setLineToHighlight={handleLineHighlight}
             />
             {language.id === 'spectra' &&
               <SpectraCliOptions />

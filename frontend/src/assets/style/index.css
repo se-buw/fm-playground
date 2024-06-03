@@ -96,3 +96,10 @@
     display: none;
   }
 }
+
+.lineHighlight {
+  background-color: rgba(255, 255, 0, 0.2); /* Yellow background */
+}
+.lineHighlightGlyph {
+  background-color: yellow; /* Yellow margin */
+}

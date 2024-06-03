@@ -15,6 +15,7 @@ const CodeEditor = (props) => {
   const editorRef = useRef(null) // editor reference
   const [internalEditorValue, setInternalEditorValue] = useState(props.editorValue);
   const [language, setLanguage] = useState(props.language.id);
+  const [decorationIds, setDecorationIds] = useState([]);
 
   /**
   * Sets the editor value when the editorValue prop changes.
@@ -30,6 +31,27 @@ const CodeEditor = (props) => {
     setLanguage(props.language.id);
   }, [props.language.id]);
 
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      if (props.lineToHighlight !== null && props.lineToHighlight !== -1) {
+        const decorations = [{
+          range: new monaco.Range(props.lineToHighlight, 1, props.lineToHighlight, 1),
+          options: {
+            isWholeLine: true,
+            className: 'lineHighlight',
+            glyphMarginClassName: 'lineHighlightGlyph'
+          }
+        }];
+        const newDecorationIds = editor.deltaDecorations(decorationIds, decorations);
+        setDecorationIds(newDecorationIds);
+      } else {
+        // Remove all decorations
+        const newDecorationIds = editor.deltaDecorations(decorationIds, []);
+        setDecorationIds(newDecorationIds);
+      }
+    }
+  }, [props.lineToHighlight]);
 
   /**
    * Handles the editor did mount event. On mount, registers all the languages. 
@@ -67,15 +89,15 @@ const CodeEditor = (props) => {
     monaco.languages.register({ id: 'spectra' })
     monaco.languages.setMonarchTokensProvider('spectra', spectraLang)
     monaco.languages.setLanguageConfiguration('spectra', spectraConf)
-    
+
     monaco.editor.defineTheme('spectraTheme', {
       base: props.theme === 'vs-dark' ? 'vs-dark' : 'vs', // 'vs-dark' or 'vs'
       inherit: true, // inherit the base theme
       rules: [
-        { token: 'system', foreground: '189BCC', fontStyle: 'bold'},
-        { token: 'environment', foreground: '0CD806', fontStyle: 'bold'},
-        { token: 'reg', foreground: 'FF00FF'},
-      
+        { token: 'system', foreground: '189BCC', fontStyle: 'bold' },
+        { token: 'environment', foreground: '0CD806', fontStyle: 'bold' },
+        { token: 'reg', foreground: 'FF00FF' },
+
       ], // red comments
       colors: {
         'editor.foreground': props.theme === 'vs-dark' ? '#FFFFFF' : '#000000',
@@ -112,6 +134,7 @@ const CodeEditor = (props) => {
    */
   const handleCodeChange = (newCode) => {
     props.setEditorValue(newCode)
+    props.setLineToHighlight(null)
   }
 
   return (
