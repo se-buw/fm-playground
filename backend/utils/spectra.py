@@ -3,6 +3,8 @@ import subprocess
 import tempfile
 import queue
 import concurrent.futures
+import shutil
+import glob
 
 SPECTRA_PATH = "lib/spectra-cli.jar"
 MAX_CONCURRENT_REQUESTS = 10 # Maximum number of concurrent subprocesses
@@ -23,15 +25,34 @@ def run_spectra(code: str, check: str) -> str:
     str: the output of the code if successful, otherwise the error or timeout message
   """
   tmp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix=".spectra")
-  tmp_file.write(code.strip())  
+  tmp_file.write(code.strip().replace('\r\n', '\n'))  
   tmp_file.close()
-  print(tmp_file.name)
+  
+  ## ==== Copy pattern files to the temp directory ====
+  tmp_dir = os.path.dirname(tmp_file.name)
+  pattern_files = glob.glob('lib/patterns/*')
+  for file in pattern_files:
+    dest = os.path.join(tmp_dir, os.path.basename(file))
+    if not os.path.exists(dest):
+      shutil.copy(file, tmp_dir)
 
-  # TODO: Add the check command to the spectra command after (re)-implementing the spectra cli
-  # TODO: Configure CUDD and other dynamic options available in the spectra cli
-  command = ['java', '-jar', SPECTRA_PATH, '-i', tmp_file.name, '--jtlv']
+  ## ==== Run the spectra commands ====
+  if check == 'check-realizability':
+    command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'check-realizability', '-i', tmp_file.name]
+  elif check == 'concrete-controller':
+    command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'concrete-controller', '-i', tmp_file.name]
+  elif check == 'concrete-counter-strategy':
+    command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'concrete-counter-strategy', '-i', tmp_file.name]
+  elif check == 'unrealizable-core':
+    command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'unrealizable-core', '-i', tmp_file.name]
+  elif check == 'check-well-sep':
+    command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'check-well-sep', '-i', tmp_file.name]
+  elif check == 'non-well-sep-core':
+    command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'non-well-sep-core', '-i', tmp_file.name]
+  
   try:
     result = subprocess.run(command, capture_output=True, text=True, timeout=60)
+    print(result)
     os.remove(tmp_file.name)
     if result.returncode != 0:
       return prettify_error(result.stderr)
@@ -45,9 +66,7 @@ def prettify_output(stdout: str):
     res = stdout.split('Result:')[1].split('\n')
     return '\n'.join(res)
   elif 'Error:' in stdout:
-    res = stdout.split('Error: ')[1].split('\n')
-    res = '\n'.join(res)
-    return f"<i style='color: red;'>{res}\n</i>"
+    return f"<i style='color: red;'>{stdout}\n</i>"
 
 def prettify_error(stderr: str):
   return f"<i style='color: red;'>{stderr}</i>"
