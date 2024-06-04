@@ -6,6 +6,7 @@ COPY . /backend
 
 RUN apt-get update && apt-get install -y
 RUN apt-get install z3 wget gcc libc6-dev -y
+RUN apt-get install openjdk-17-jdk -y
 
 RUN pip install --no-cache-dir --upgrade pip setuptools
 RUN pip install --no-cache-dir -r requirements.txt
