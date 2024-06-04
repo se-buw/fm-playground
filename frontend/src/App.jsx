@@ -11,16 +11,23 @@ import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
 import '../src/assets/style/App.css'
+import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
   const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language')) || Options[1]);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
   const handleEditorValueChange = (code) => {
     setEditorValue(code);
   };
   const handleLanguageChange = (newLanguage) => {
     setLanguage(newLanguage)
   }
+
+  const handleToggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
 
   useEffect(() => {
     localStorage.setItem('editorValue', editorValue);
@@ -29,6 +36,11 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem('language', JSON.stringify(language));
   }, [language]);
+
+  useEffect(() => {
+    const theme = isDarkTheme ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [isDarkTheme]);
 
 
   return (
@@ -52,6 +64,10 @@ const App = () => {
             <Route path="*" element={<Missing />} />
           </Routes>
         </Router>
+        <DarkModeSwitch
+          checked={!isDarkTheme}
+          onChange={handleToggleTheme}
+        />
         <Footer />
       </div>
     </AuthProvider>
