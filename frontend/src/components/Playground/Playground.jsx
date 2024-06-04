@@ -31,6 +31,8 @@ import {
 
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 
+import '../../assets/style/Playground.css'
+
 const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef();  // contains the reference to the editor area
@@ -371,14 +373,14 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container Playground">
       <Tools
         onChange={handleLanguageChange}
         selected={language}
       />
       <Tooltip id="playground-tooltip" />
-      <div className="row">
-        <div className="col-md-6" ref={inputDivRef} style={{ backgroundColor: 'white' }}>
+      <div className="row Playground">
+        <div className="col-md-6" ref={inputDivRef}>
           <div className='row'>
             <div className='col-md-12 mx-auto mb-2'>
               <div className='d-flex justify-content-between'>
@@ -475,7 +477,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             </MDBBtn>
           </div>
         </div>
-        <div className='col-md-6' ref={outputDivRef} style={{ backgroundColor: 'white' }}>
+        <div className='col-md-6' ref={outputDivRef} >
           <div className='row'>
             <div className='col-md-12'>
               <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>

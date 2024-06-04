@@ -10,6 +10,7 @@ import Login from './components/Authentication/Login'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
+import '../src/assets/style/App.css'
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
@@ -32,7 +33,7 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <div>
+      <div className='App' data-theme="dark">
         <Nav
           setEditorValue={setEditorValue}
           setLanguage={setLanguage}

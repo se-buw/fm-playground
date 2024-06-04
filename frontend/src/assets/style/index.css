@@ -1,4 +1,29 @@
+:root{
+  --background-color: #ffffff;
+  --foreground-color: #343a40;
+  --primary-text-color: #212529;
+  --secondary-text-color: #495057;
+  --output-box-color: #f4f4f4;
+  --border-color: #ced4da;
+  --select-hover: #f8f9fa;
+}
 
+[data-theme="dark"]{
+  --background-color: #343a40;
+  --foreground-color: #f8f9fa;
+  --primary-text-color: #f8f9fa;
+  --secondary-text-color: #ced4da;
+  --output-box-color: #252729;
+  --border-color: #495057;
+  --select-hover: #495057;
+}
+
+html {
+  background-color: var(--background-color) !important;
+}
+element.style {
+  background-color: #343a40 !important;
+}
 
 /* Navbar.css */
 .loading-container {

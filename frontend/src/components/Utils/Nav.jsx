@@ -23,6 +23,7 @@ import ConfirmModal from './Modals/ConfirmModal.jsx';
 import { downloadUserData, deleteProfile } from '../../api/playgroundApi.js';
 import axiosAuth from '../../api/axiosAuth.js';
 import SessionExpiredModal from  './Modals/SessionExpiredModal.jsx'
+import '../../assets/style/Nav.css';
 
 /**
  * Display the header and navigation bar.
@@ -130,7 +131,7 @@ export default function Navbar({ setEditorValue, setLanguage }) {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div>
+    <div className='Nav'>
       <ConfirmModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -140,11 +141,11 @@ export default function Navbar({ setEditorValue, setLanguage }) {
         onConfirm={handleUserProfileDelete}
       />
         <SessionExpiredModal />
-      <header className='fixed-top'>
-        <MDBNavbar expand='lg' light bgColor='light'>
+      <header className='fixed-top header'>
+        <MDBNavbar expand='lg'>
           <MDBContainer >
             <MDBNavbarBrand href={window.location.origin}>
-              <h2 className='bold'>FM Playground</h2>
+              <h2 className='bold header'>FM Playground</h2>
             </MDBNavbarBrand>
 
             <MDBNavbarToggler

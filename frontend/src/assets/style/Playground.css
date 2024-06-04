@@ -1,0 +1,55 @@
+.Playground {
+  background-color: var(--background-color);
+  color: var(--primary-text-color)
+}
+
+.play-area {
+  background-color: var(--background-color);
+  color: var(--primary-text-color)
+}
+
+.plain-output-box {
+  background-color: var(--output-box-color);
+  padding: '1em';
+}
+
+.react-select-container {
+  .select__control {
+    background-color: var(--background-color);
+    border-color: var(--border-color);
+    transition: none;
+
+    &:hover {
+      border-color: var(--border-color);
+    }
+  }
+
+  .select__menu {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+  }
+
+  .select__option {
+    background-color: var(--background-color);
+
+    &:hover {
+      background-color: var(--select-hover);
+    }
+  }
+
+  .select__indicator-separator {
+    background-color: var(--border-color);
+  }
+
+  .select__placeholder,
+  .select__single-value {
+    color: var(--primary-text-color);
+  }
+}
+
+.tools{
+  background-color: var(--background-color);
+  color: var(--primary-text-color);
+  margin-top: 100px;
+  margin-bottom: 20px;
+}

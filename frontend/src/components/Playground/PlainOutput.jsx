@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../../assets/style/Playground.css'
 
 const PlainOutput = ({ code, onChange, height }) => {
   const [internalCode, setInternalCode] = useState(code);
@@ -26,10 +27,9 @@ const PlainOutput = ({ code, onChange, height }) => {
   return (
     <pre
       id='info'
+      className='plain-output-box'
       contentEditable={false}
       style={{ 
-        backgroundColor: '#f4f4f4', 
-        padding: '1em', 
         borderRadius: '8px', 
         height: height, 
         whiteSpace: 'pre-wrap' }}

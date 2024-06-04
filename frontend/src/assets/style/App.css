@@ -1,0 +1,4 @@
+.App{
+    background-color: var(--background-color) !important;
+    color: var(--primary-text-color)
+}
