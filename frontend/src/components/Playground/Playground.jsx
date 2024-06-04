@@ -48,8 +48,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
   const [errorMessage, setErrorMessage] = useState(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
-  const [lineToHighlight, setLineToHighlight] = useState(null); // contains the line to highlight in the editor.
-  const [spectraCliOption, setSpectraCliOption] = useState('check_realizability'); // contains the selected option for the Spectra cli tool.
+  const [lineToHighlight, setLineToHighlight] = useState([])
+  const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
 
   /**
    * Load the code and language from the URL.
@@ -174,6 +174,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       } else if (language.value == 3) {
         executeZ3(editorValue)
           .then((res) => {
+            setLineToHighlight(getLineToHighlight(res.result, language.id))
             setOutput(res.result)
             setIsExecuting(false);
           })
@@ -205,7 +206,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       } else if (language.value == 5) {
         console.log('Executing Alloy')
       } else if (language.value == 6) {
-        executeSpectra(editorValue, 'check_realizability')
+        executeSpectra(editorValue, spectraCliOption)
           .then((res) => {
             setLineToHighlight(getLineToHighlight(res.result, language.id))
             setOutput(res.result)

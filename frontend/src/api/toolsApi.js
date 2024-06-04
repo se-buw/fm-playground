@@ -42,7 +42,7 @@ export async function executeZ3(code) {
 export async function executeSpectra(code, command) {
   let url = `${API_URL}/run_spectra`;
   try {
-    const response = await axios.post(url, { code, command});
+    const response = await axios.post(url, {code: code, command: command});
     return response.data;
   } catch (error) {
     throw error;

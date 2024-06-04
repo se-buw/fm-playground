@@ -1,67 +1,33 @@
 
-function getLineToHighlightLimboole (result) {
-    let lineToHighlight = -1;
-    let lines = result.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-        // if line i contians 'error' and '<stdin>' then it is the line to highlight
-        if (lines[i].includes('error') && lines[i].includes('<stdin>')) {
-            // split the line by ':' and get the second part
-            let parts = lines[i].split(':');
-            // get the line number from the second part
-            lineToHighlight = parseInt(parts[1]);
-            break;
-        }
-    }
-    return lineToHighlight;
+function getLineToHighlightLimboole(result) {
+  return result.split('\n')
+    .filter(line => line.includes('error') && line.includes('<stdin>'))
+    .map(line => parseInt(line.split(':')[1]))
+    .filter(line => !isNaN(line));
 }
 
 
 function getLineToHighlightSmt2(result) {
-    let lineToHighlight = -1;
-    let lines = result.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i].includes('error')) {
-            // split the line by 'line ' and get the second part
-            let parts = lines[i].split('line ');
-            // get the line number from the second part
-            if (parts.length > 1) {
-                lineToHighlight = parseInt(parts[1]);
-            }
-            break; 
-        }
-    }
-    return lineToHighlight;
+  return result.split('\n')
+      .filter(line => line.includes('error') && line.includes('line '))
+      .map(line => parseInt(line.split('line ')[1]))
+      .filter(line => !isNaN(line));
 }
 
-
-function getLineToHighlightXmv (result) {
-    let lineToHighlight = -1;
-    let lines = result.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i].includes('error')) {
-            // split the line by 'line ' and get the second part
-            let parts = lines[i].split('line ');
-            // get the line number from the second part
-            if (parts.length > 1) {
-                lineToHighlight = parseInt(parts[1]);
-            }
-            break; 
-        }
-    }
-    return lineToHighlight;
+function getLineToHighlightXmv(result) {
+  return result.split('\n')
+      .filter(line => line.includes('error') && line.includes('line '))
+      .map(line => parseInt(line.split('line ')[1]))
+      .filter(line => !isNaN(line));
 }
 
-// TODO: Implement getLineToHighlightSpectra after fixing the Spectra cli tool
-function getLineToHighlightSpectra (result) {
-    let lineToHighlight = -1;
-    let lines = result.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-        if (lines[i].includes('error')) {
-            lineToHighlight = i;
-            break;
-        }
-    }
-    return lineToHighlight;
+function getLinesToHighlightSpectra(result) {
+  const regex = /<\s*([\d\s]+)\s*>/;
+  const match = result.match(regex);
+  if (match) {
+    return match[1].split(/\s+/).filter(Boolean).map(Number);
+  }
+  return [];
 }
 
 
@@ -72,13 +38,13 @@ function getLineToHighlightSpectra (result) {
  * @returns 
  */
 export function getLineToHighlight(result, toolId) {
-    if (toolId === 'limboole') {
-        return getLineToHighlightLimboole(result);
-    } else if (toolId === 'smt2') {
-        return getLineToHighlightSmt2(result);
-    } else if (toolId === 'xmv') {
-        return getLineToHighlightXmv(result);
-    } else if (toolId === 'spectra') {
-        return getLineToHighlightSpectra(result);
-    }
+  if (toolId === 'limboole') {
+    return getLineToHighlightLimboole(result);
+  } else if (toolId === 'smt2') {
+    return getLineToHighlightSmt2(result);
+  } else if (toolId === 'xmv') {
+    return getLineToHighlightXmv(result);
+  } else if (toolId === 'spectra') {
+    return getLinesToHighlightSpectra(result);
+  }
 }

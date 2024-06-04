@@ -34,15 +34,17 @@ const CodeEditor = (props) => {
   useEffect(() => {
     if (editorRef.current) {
       const editor = editorRef.current;
-      if (props.lineToHighlight !== null && props.lineToHighlight !== -1) {
-        const decorations = [{
-          range: new monaco.Range(props.lineToHighlight, 1, props.lineToHighlight, 1),
-          options: {
-            isWholeLine: true,
-            className: 'lineHighlight',
-            glyphMarginClassName: 'lineHighlightGlyph'
-          }
-        }];
+      if (props.lineToHighlight !== null && props.lineToHighlight.length > 0) {
+        const decorations = props.lineToHighlight.map(line => {
+          return {
+            range: new window.monaco.Range(line, 1, line, 1),
+            options: {
+              isWholeLine: true,
+              className: 'lineHighlight',
+              glyphMarginClassName: 'lineHighlightGlyph'
+            }
+          };
+        });
         const newDecorationIds = editor.deltaDecorations(decorationIds, decorations);
         setDecorationIds(newDecorationIds);
       } else {
