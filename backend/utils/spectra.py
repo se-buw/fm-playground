@@ -63,10 +63,17 @@ def run_spectra(code: str, check: str) -> str:
   
 def prettify_output(stdout: str):
   if 'Result:' in stdout:
-    res = stdout.split('Result:')[1].split('\n')
-    return '\n'.join(res)
+    res = stdout.split('Result: ')[1:]
+    output = ""
+    for r in res:
+      output += f"Result: {r}\n"
+    return output
   elif 'Error:' in stdout:
-    return f"<i style='color: red;'>{stdout}\n</i>"
+    res = stdout.split('Error: ')[1:]
+    output = ""
+    for r in res:
+      output += f"Error: {r}\n"
+    return f"<i style='color: red;'>{output}\n</i>"
 
 def prettify_error(stderr: str):
   return f"<i style='color: red;'>{stderr}</i>"
