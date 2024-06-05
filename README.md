@@ -3,17 +3,16 @@
   <h1>FM Playground</h1>
   <a href="https://play.formal-methods.net/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fplay.formal-methods.net%2F&label=play.formal-methods.net" alt="FM Playground"></a>
   <img alt="GitHub Repository size" src="https://img.shields.io/github/repo-size/se-buw/fm-playground">
+  <img alt="Total Lines" src="https://tokei.rs/b1/github/se-buw/fm-playground">
   <img src="https://img.shields.io/github/issues/se-buw/fm-playground" alt="GitHub issues">
   <img src="https://img.shields.io/github/license/se-buw/fm-playground" alt="GitHub License">
   <hr>
 </div>
 
 
-
-
 # FM Playground
 
-A Formal Method playground for limboole, z3, nuXmv and Alloy. This project is a part of the  Formal Methods course at the Bauhaus-Universität Weimar. It is a web application that allows users to run formal methods tools in the browser. 
+A Formal Method playground for limboole, z3, nuXmv, Alloy, and Spectra. This project is a part of the  Formal Methods course at the Bauhaus-Universität Weimar. It is a web application that allows users to run formal methods tools in the browser. 
 
 ## Requirements
 - Python >= 3.9.0
@@ -166,3 +165,4 @@ This project is licensed under the [MIT License](LICENSE).
 - Z3 - https://github.com/Z3Prover/z3/blob/master/LICENSE.txt
 - nuXmv - https://nuxmv.fbk.eu/downloads/LICENSE.txt
 - Alloy - https://github.com/AlloyTools/org.alloytools.alloy/blob/master/LICENSE
+- Spectra - https://github.com/SpectraSynthesizer/spectra-synt/blob/master/LICENSE
