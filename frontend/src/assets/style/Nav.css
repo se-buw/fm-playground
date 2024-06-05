@@ -2,3 +2,27 @@
     background-color: var(--background-color);
     color: var(--primary-text-color);
 }
+
+.navbar-nav{
+    /* direction right to left */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+/* on the smaller screen */
+@media (max-width: 768px){
+    .navbar-nav{
+        flex-direction: column;
+        justify-content:space-between;
+    }
+}
+
+.navbar-toggler{
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+}

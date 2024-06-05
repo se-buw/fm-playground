@@ -97,7 +97,7 @@ const CodeEditor = (props) => {
     monaco.languages.setLanguageConfiguration('spectra', spectraConf)
 
     monaco.editor.defineTheme('spectraTheme', {
-      base: props.theme === 'vs-dark' ? 'vs-dark' : 'vs', // 'vs-dark' or 'vs'
+      base: props.editorTheme === 'vs-dark' ? 'vs-dark' : 'vs', // 'vs-dark' or 'vs'
       inherit: true, // inherit the base theme
       rules: [
         { token: 'system', foreground: '189BCC', fontStyle: 'bold' },
@@ -106,8 +106,8 @@ const CodeEditor = (props) => {
 
       ], // red comments
       colors: {
-        'editor.foreground': props.theme === 'vs-dark' ? '#FFFFFF' : '#000000',
-        'editor.background': props.theme === 'vs-dark' ? '#000000' : '#FFFFFF',
+        'editor.foreground': props.editorTheme === 'vs-dark' ? '#FFFFFF' : '#000000',
+        'editor.background': props.editorTheme === 'vs-dark' ? '#000000' : '#FFFFFF',
       },
     });
 

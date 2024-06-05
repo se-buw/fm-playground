@@ -11,17 +11,19 @@ import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
 import '../src/assets/style/App.css'
-import { DarkModeSwitch } from 'react-toggle-dark-mode';
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
   const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language')) || Options[1]);
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const storedTheme = localStorage.getItem('isDarkTheme');
-    console.log(storedTheme)
+    return storedTheme === 'true';
+  });
+  const [editorTheme, setEditorTheme] = useState(() => {
+    const storedTheme = localStorage.getItem('editorTheme');
+    console.log(storedTheme);
     return storedTheme;
   });
-  const editorTheme = isDarkTheme ? 'vs-dark' : 'vs';
 
   const handleEditorValueChange = (code) => {
     setEditorValue(code);
@@ -31,7 +33,11 @@ const App = () => {
   }
 
   const handleToggleTheme = () => {
-    setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
+    setIsDarkTheme((prevIsDarkTheme) => {
+      const newTheme = !prevIsDarkTheme;
+      localStorage.setItem('isDarkTheme', newTheme);
+      return newTheme;
+    });
   };
 
 
@@ -46,6 +52,14 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem('isDarkTheme', isDarkTheme ? 'true' : 'false');
     const theme = isDarkTheme ? 'dark' : 'light';
+    if(theme === 'dark'){
+      setEditorTheme('vs-dark');
+      localStorage.setItem('editorTheme', 'vs-dark');
+    }else{
+      setEditorTheme('vs');
+      localStorage.setItem('editorTheme', 'vs');
+    }
+    // setEditorTheme(theme);
     document.documentElement.setAttribute('data-theme', theme);
   }, [isDarkTheme]);
 
@@ -74,10 +88,7 @@ const App = () => {
             <Route path="*" element={<Missing />} />
           </Routes>
         </Router>
-        <DarkModeSwitch
-          checked={isDarkTheme}
-          onChange={handleToggleTheme}
-        />
+        
         <Footer />
       </div>
     </AuthProvider>

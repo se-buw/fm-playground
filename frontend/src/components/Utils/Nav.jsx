@@ -22,8 +22,9 @@ import CustomSnackbar from './Modals/CustomSnackbar.jsx';
 import ConfirmModal from './Modals/ConfirmModal.jsx';
 import { downloadUserData, deleteProfile } from '../../api/playgroundApi.js';
 import axiosAuth from '../../api/axiosAuth.js';
-import SessionExpiredModal from  './Modals/SessionExpiredModal.jsx'
+import SessionExpiredModal from './Modals/SessionExpiredModal.jsx'
 import '../../assets/style/Nav.css';
+import Toggle from './Toggle.jsx'
 
 /**
  * Display the header and navigation bar.
@@ -140,14 +141,28 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
         Are you sure you want to delete your profile?`}
         onConfirm={handleUserProfileDelete}
       />
-        <SessionExpiredModal />
+      <SessionExpiredModal />
       <header className='fixed-top header'>
         <MDBNavbar expand='lg'>
           <MDBContainer >
             <MDBNavbarBrand href={window.location.origin}>
               <h2 className='bold header'>FM Playground</h2>
             </MDBNavbarBrand>
-
+            {!isMobile &&
+              <MDBNavbarNav >
+              <Toggle
+                isDarkTheme={isDarkTheme}
+                setIsDarkTheme={setIsDarkTheme}
+              />
+              <FaGithub
+                size={40}
+                className='github-icon'
+                onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                style={{ marginRight: '20px' }}
+                role='button'
+              />
+            </MDBNavbarNav>
+            }
             <MDBNavbarToggler
               type='button'
               aria-expanded='false'
@@ -156,10 +171,7 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
             >
               <MDBIcon icon='bars' fas />
             </MDBNavbarToggler>
-
-
             <MDBCollapse navbar open={openNavRight}>
-
               <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>
                 {isLoggedIn ? (
                   <>
@@ -196,17 +208,17 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
                   <MDBBtn rounded color='primary' href='/login'>Login</MDBBtn>
                 )}
 
-                {isMobile && (
+                {/* {isMobile && (
                   <MDBBtn
                     color='light'
                     onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
                   ><FaGithub size={24} style={{ marginRight: '5px' }} />
                   </MDBBtn>
-                )}
+                )} */}
               </MDBNavbarNav>
             </MDBCollapse>
-
           </MDBContainer>
+
           <FaGithub
             size={40}
             className='github-icon'
