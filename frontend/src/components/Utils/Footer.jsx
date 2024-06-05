@@ -1,5 +1,6 @@
 import React from 'react';
 import { MDBFooter } from 'mdb-react-ui-kit';
+import '../../assets/style/Footer.css';
 
 /**
  * Display the footer.
@@ -8,7 +9,7 @@ import { MDBFooter } from 'mdb-react-ui-kit';
 const Footer = () => {
   return (
     <MDBFooter  className='text-center text-lg-left mt-5'>
-      <div className='text-center p-3'>
+      <div className='text-center p-3 footer-text'>
       Privacy Policy: 
       This website logs the specifications and options, which may be analyzed and made public for research purposes. 
       Do not share confidential information.

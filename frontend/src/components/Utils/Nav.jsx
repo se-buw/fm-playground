@@ -148,21 +148,11 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
             <MDBNavbarBrand href={window.location.origin}>
               <h2 className='bold header'>FM Playground</h2>
             </MDBNavbarBrand>
-            {!isMobile &&
-              <MDBNavbarNav >
-              <Toggle
-                isDarkTheme={isDarkTheme}
-                setIsDarkTheme={setIsDarkTheme}
-              />
-              <FaGithub
-                size={40}
-                className='github-icon'
-                onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                style={{ marginRight: '20px' }}
-                role='button'
-              />
-            </MDBNavbarNav>
+
+            {isMobile && 
+              <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
             }
+
             <MDBNavbarToggler
               type='button'
               aria-expanded='false'
@@ -176,13 +166,13 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
                 {isLoggedIn ? (
                   <>
                     <MDBBtn
-                      className='mb-2 mb-lg-0 me-lg-2 justify-content-center'
+                      className='navbar-option-button'
                       onClick={handleDrawerOpen}
                       style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
                     >History
                     </MDBBtn>
                     <DrawerComponent isOpen={isDrawerOpen} onClose={handleDrawerClose} onItemSelect={handleDrawerItemClick} />
-                    <MDBDropdown className='btn-group' style={{ width: 'auto', display: 'flex', alignItems: 'center' }} >
+                    <MDBDropdown className='btn-group navbar-option-button' style={{ width: 'auto', display: 'flex', alignItems: 'center' }} >
                       <MDBBtn
                         color='danger'
                         onClick={handleLogout}
@@ -208,17 +198,21 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
                   <MDBBtn rounded color='primary' href='/login'>Login</MDBBtn>
                 )}
 
-                {/* {isMobile && (
-                  <MDBBtn
-                    color='light'
+                {isMobile && (
+                  <button
+                    color='navbar-option-button'
                     onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                  ><FaGithub size={24} style={{ marginRight: '5px' }} />
-                  </MDBBtn>
-                )} */}
+                    style={{backgroundColor: 'transparent', border: 'none', display: 'flex', alignItems: 'center'}}
+                  ><FaGithub size={24} />
+                  </button>
+                )}
               </MDBNavbarNav>
             </MDBCollapse>
           </MDBContainer>
 
+          <div className='toggle-icon'>
+            <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+          </div>
           <FaGithub
             size={40}
             className='github-icon'

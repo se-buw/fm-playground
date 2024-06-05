@@ -1,5 +1,6 @@
 import React from 'react';
 import data from '../../assets/config/Guides.json';
+import '../../assets/style/Playground.css';
 
 /**
  * Display the guides for the selected tool.
@@ -26,7 +27,7 @@ const Guides = ({ id }) => {
       <div className="row">
         {guideData.map((item, index) => (
           <div key={index} className="col-md-4" style={{ marginBottom: '8px' }}>
-            <div className="card">
+            <div className="card guide-box">
               <div className="card-body">
                 <h5 className="card-title">{<a target="_blank" rel="noopener noreferrer" href={item.link}>{item.title} </a>}</h5>
               </div>

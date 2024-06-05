@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import MessageModal from './Modals/MessageModal';
+import '../../assets/style/Playground.css';
 
 /**
  * Upload a file.
@@ -58,7 +59,7 @@ const FileUploadButton = ({ onFileSelect }) => {
   return (
     <div>
       <div onClick={handleButtonClick}>
-        <FaUpload color='black' />
+        <FaUpload className='playground-icon' />
       </div>
       <input
         type='file'

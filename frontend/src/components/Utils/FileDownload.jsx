@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaDownload } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
+import '../../assets/style/Playground.css';
 /**
  * Download a file.
  * @param {*} content - The content of the file
@@ -23,9 +24,9 @@ const FileDownload = ({ content, fileName, fileExtension }) => {
 
   return (
 
-    <IconButton color="light" onClick={handleDownload}>
+    <IconButton onClick={handleDownload}>
       <FaDownload
-        color='black'
+        className='playground-icon'
         role='button'
         data-tooltip-id="playground-tooltip"
         data-tooltip-content="Download file" />

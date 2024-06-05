@@ -5,6 +5,7 @@ import { smt2Conf, smt2Lang, smt2ComplitionProvider } from '../../assets/languag
 import { nuxmvConf, nuxmvLang } from '../../assets/languages/nuxmv'
 import { alloyConf, alloyLang } from '../../assets/languages/alloy'
 import { spectraConf, spectraLang } from '../../assets/languages/spectra';
+import '../../assets/style/Playground.css'
 
 /**
  * Code editor component.
@@ -104,11 +105,8 @@ const CodeEditor = (props) => {
         { token: 'environment', foreground: '0CD806', fontStyle: 'bold' },
         { token: 'reg', foreground: 'FF00FF' },
 
-      ], // red comments
-      colors: {
-        'editor.foreground': props.editorTheme === 'vs-dark' ? '#FFFFFF' : '#000000',
-        'editor.background': props.editorTheme === 'vs-dark' ? '#000000' : '#FFFFFF',
-      },
+      ],
+      colors: {},
     });
 
     monaco.editor.setTheme('spectraTheme');
@@ -145,7 +143,7 @@ const CodeEditor = (props) => {
 
   return (
     <>
-      <div className="App">
+      <div className="custom-code-editor">
         <Editor
           height={props.height}
           width="100%"

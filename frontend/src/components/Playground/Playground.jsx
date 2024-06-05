@@ -33,7 +33,7 @@ import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 
 import '../../assets/style/Playground.css'
 
-const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme}) => {
+const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef();  // contains the reference to the editor area
   const outputDivRef = useRef(); // contains the reference to the output area
@@ -153,7 +153,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       let response;
       if (language.id === 'spectra') {
         response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, spectraCliOption)
-      } else{
+      } else {
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
       }
 
@@ -296,7 +296,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
    */
   const toggleFullScreen = (div) => {
     const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div];
-
+    const theme = localStorage.getItem('isDarkTheme') === 'true' ? 'dark' : 'light';
+    console.log(theme)
     if (!document.fullscreenElement) {
       // Enter fullscreen mode
       if (element.requestFullscreen) {
@@ -308,6 +309,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       } else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
       }
+      document.documentElement.setAttribute('data-theme', theme);
       setIsFullScreen(true);
     } else {
       if (document.exitFullscreen) {
@@ -319,6 +321,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
       }
+      document.documentElement.setAttribute('data-theme', theme);
       setIsFullScreen(false);
     }
   };
@@ -380,7 +383,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       />
       <Tooltip id="playground-tooltip" />
       <div className="row Playground">
-        <div className="col-md-6" ref={inputDivRef}>
+        <div className="col-md-6 Playground" ref={inputDivRef}>
           <div className='row'>
             <div className='col-md-12 mx-auto mb-2'>
               <div className='d-flex justify-content-between'>
@@ -391,13 +394,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                 <div>
                   <Stack direction="row" spacing={1}>
                     <IconButton
-                      color="light"
                       onClick={openModal}
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="New Spec"
                     >
                       <FaFileCirclePlus
-                        color='black'
+                        className='playground-icon'
                         role='button'
                       />
                     </IconButton>
@@ -409,7 +411,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                               This will reset the editor and the output areas`}
                       onConfirm={handleReset}
                     />
-                    <IconButton color="light"
+                    <IconButton
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Upload file"
                     >
@@ -419,7 +421,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                       {handleDownload()}
                     </>
                     {permalink &&
-                      <IconButton color="light"
+                      <IconButton
                         data-tooltip-id="playground-tooltip"
                         data-tooltip-content="Copy Permalink">
                         <CopyToClipboardBtn permalink={permalink} />
@@ -437,11 +439,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                     </IconButton> */}
                     <IconButton color='light' onClick={() => { toggleFullScreen('input') }}>
                       {isFullScreen ?
-                        <AiOutlineFullscreenExit color='black'
+                        <AiOutlineFullscreenExit
+                          className='playground-icon'
                           data-tooltip-id="playground-tooltip"
                           data-tooltip-content="Exit"
                         />
-                        : <AiOutlineFullscreen color='black'
+                        : <AiOutlineFullscreen
+                          className='playground-icon'
                           data-tooltip-id="playground-tooltip"
                           data-tooltip-content="Fullscreen"
                         />}
@@ -478,18 +482,20 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             </MDBBtn>
           </div>
         </div>
-        <div className='col-md-6' ref={outputDivRef} >
+        <div className='col-md-6 Playground' ref={outputDivRef} >
           <div className='row'>
             <div className='col-md-12'>
               <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>
                 <h2>Output</h2>
-                <IconButton color='light' onClick={() => { toggleFullScreen('output') }}>
+                <IconButton onClick={() => { toggleFullScreen('output') }}>
                   {isFullScreen ?
-                    <AiOutlineFullscreenExit color='black'
+                    <AiOutlineFullscreenExit
+                      className='playground-icon'
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Exit"
                     />
-                    : <AiOutlineFullscreen color='black'
+                    : <AiOutlineFullscreen
+                      className='playground-icon'
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Fullscreen"
                     />}

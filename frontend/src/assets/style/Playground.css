@@ -1,23 +1,28 @@
 .Playground {
   background-color: var(--background-color);
-  color: var(--primary-text-color)
+  color: var(--primary-text-color);
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
 }
 
 .play-area {
   background-color: var(--background-color);
-  color: var(--primary-text-color)
+  color: var(--primary-text-color);
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
 }
 
 .plain-output-box {
   background-color: var(--output-box-color);
-  padding: '1em';
+  border: 1px thin var(--border-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px; /* Adjust the value as needed */
 }
+
 
 .react-select-container {
   .select__control {
     background-color: var(--background-color);
     border-color: var(--border-color);
-    transition: none;
+    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
 
     &:hover {
       border-color: var(--border-color);
@@ -26,11 +31,15 @@
 
   .select__menu {
     background-color: var(--background-color);
+    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
     border: 1px solid var(--border-color);
+
   }
 
   .select__option {
+    color: inherit;
     background-color: var(--background-color);
+    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
 
     &:hover {
       background-color: var(--select-hover);
@@ -45,11 +54,45 @@
   .select__single-value {
     color: var(--primary-text-color);
   }
+
+  .select__single-value {
+    color: var(--primary-text-color);
+  }
 }
 
-.tools{
+.tools {
   background-color: var(--background-color);
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
   color: var(--primary-text-color);
   margin-top: 100px;
   margin-bottom: 20px;
+}
+
+.playground-icon {
+  color: var(--primary-text-color);
+
+}
+
+.custom-code-editor{
+  background-color: var(--editor-background-color);
+  border: 1px thin var(--border-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+}
+
+.guide-box{
+  background-color: var(--editor-background-color);
+  padding: '1em';
+  border: 1px thin var(--border-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+}
+
+.lineHighlight {
+  background-color: rgba(255, 255, 0, 0.2); /* Yellow background */
+}
+.lineHighlightGlyph {
+  background-color: yellow; /* Yellow margin */
 }
