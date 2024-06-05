@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { FaFileCirclePlus } from "react-icons/fa6";
 import { IconButton, Stack } from '@mui/material';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { Tooltip } from 'react-tooltip'
-
 import Editor from './Editor.jsx'
 import PlainOutput from './PlainOutput.jsx'
 import Tools from './Tools.jsx'
@@ -20,17 +18,13 @@ import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
 import ConfirmModal from '../Utils/Modals/ConfirmModal.jsx';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.jsx';
 import MessageModal from '../Utils/Modals/MessageModal.jsx';
-
 import SpectraCliOptions from './SpectraCliOptions.jsx';
-
 import {
   getCodeByParmalink,
   saveCode,
   saveCodeWithMetadata
 } from '../../api/playgroundApi.js'
-
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
-
 import '../../assets/style/Playground.css'
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
@@ -40,10 +34,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
 
   const [permalink, setPermalink] = useState('') // contains `check` and `permalink` parameters
   const [output, setOutput] = useState('') // contains the output of the tool
-  // const [isDarkTheme, setIsDarkTheme] = useState(() => {
-  //   const storedTheme = localStorage.getItem('theme');
-  //   return storedTheme === 'vs-dark';
-  // }); // contains the theme of the editor.
   const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
@@ -85,13 +75,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
     // Update the URL when permalink changes
     navigate(permalink !== '' ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
   }, [permalink, navigate]);
-
-  /**
-   * Update the theme in the local storage when the theme changes.
-   */
-  // useEffect(() => {
-  //   localStorage.setItem('theme', isDarkTheme ? 'vs-dark' : 'vs');
-  // }, [isDarkTheme]); 
 
   /**
    * Update the URL with ``check`` type when language changes.
@@ -283,21 +266,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   }
 
   /**
-   * Toggle the theme of the editor.
-   * TODO: FIX this with custom theme colors.
-   */
-  // const handleToggleTheme = () => {
-  //   setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
-  // };
-
-  /**
    * Toggle the full screen mode of the editor and output areas.
    * @param {*} div: 'input' or 'output'
    */
   const toggleFullScreen = (div) => {
     const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div];
     const theme = localStorage.getItem('isDarkTheme') === 'true' ? 'dark' : 'light';
-    console.log(theme)
     if (!document.fullscreenElement) {
       // Enter fullscreen mode
       if (element.requestFullscreen) {
@@ -427,16 +401,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                         <CopyToClipboardBtn permalink={permalink} />
                       </IconButton>
                     }
-                    {/* <IconButton
-                      data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="Change theme"
-                    >
-                      <DarkModeSwitch
-                        checked={!isDarkTheme}
-                        onChange={handleToggleTheme}
-                        moonColor="#000"
-                      />
-                    </IconButton> */}
                     <IconButton color='light' onClick={() => { toggleFullScreen('input') }}>
                       {isFullScreen ?
                         <AiOutlineFullscreenExit
@@ -452,7 +416,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                     </IconButton>
                   </Stack>
                 </div>
-
               </div>
             </div>
             <Editor
@@ -461,7 +424,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               editorValue={editorValue}
               language={language}
               setLanguage={setLanguage}
-              // theme={isDarkTheme ? 'vs-dark' : 'vs'}
               lineToHighlight={lineToHighlight}
               setLineToHighlight={handleLineHighlight}
               editorTheme={editorTheme}

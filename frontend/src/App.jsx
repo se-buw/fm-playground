@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import './assets/style/index.css'
-
 import { AuthProvider } from './contexts/AuthContext'
 import Nav from './components/Utils/Nav'
 import Footer from './components/Utils/Footer'
@@ -10,6 +8,7 @@ import Login from './components/Authentication/Login'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
+import './assets/style/index.css'
 import '../src/assets/style/App.css'
 
 const App = () => {
@@ -21,7 +20,6 @@ const App = () => {
   });
   const [editorTheme, setEditorTheme] = useState(() => {
     const storedTheme = localStorage.getItem('editorTheme');
-    console.log(storedTheme);
     return storedTheme;
   });
 
@@ -59,7 +57,6 @@ const App = () => {
       setEditorTheme('vs');
       localStorage.setItem('editorTheme', 'vs');
     }
-    // setEditorTheme(theme);
     document.documentElement.setAttribute('data-theme', theme);
   }, [isDarkTheme]);
 
