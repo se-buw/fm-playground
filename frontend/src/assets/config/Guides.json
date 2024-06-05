@@ -74,5 +74,15 @@
       "title": "Tutorial for Alloy Analyzer 4.0",
       "link": "https://alloytools.org/tutorials/online/"
     }
+  ],
+  "spectra": [
+    {
+      "title": "Video Tutorial",
+      "link": "https://www.youtube.com/playlist?list=PLGyeoukah9Nbx1QquUmZGdLulFZIsiRlZ"
+    },
+    {
+      "title": "Examples",
+      "link": "https://smlab.cs.tau.ac.il/syntech/examples/index.html"
+    }
   ]
 }
