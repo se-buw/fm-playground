@@ -33,17 +33,17 @@ import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 
 import '../../assets/style/Playground.css'
 
-const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
+const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme}) => {
   const navigate = useNavigate();
   const inputDivRef = useRef();  // contains the reference to the editor area
   const outputDivRef = useRef(); // contains the reference to the output area
 
   const [permalink, setPermalink] = useState('') // contains `check` and `permalink` parameters
   const [output, setOutput] = useState('') // contains the output of the tool
-  const [isDarkTheme, setIsDarkTheme] = useState(() => {
-    const storedTheme = localStorage.getItem('theme');
-    return storedTheme === 'vs-dark';
-  }); // contains the theme of the editor.
+  // const [isDarkTheme, setIsDarkTheme] = useState(() => {
+  //   const storedTheme = localStorage.getItem('theme');
+  //   return storedTheme === 'vs-dark';
+  // }); // contains the theme of the editor.
   const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
@@ -89,9 +89,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   /**
    * Update the theme in the local storage when the theme changes.
    */
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkTheme ? 'vs-dark' : 'vs');
-  }, [isDarkTheme]); 
+  // useEffect(() => {
+  //   localStorage.setItem('theme', isDarkTheme ? 'vs-dark' : 'vs');
+  // }, [isDarkTheme]); 
 
   /**
    * Update the URL with ``check`` type when language changes.
@@ -286,9 +286,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    * Toggle the theme of the editor.
    * TODO: FIX this with custom theme colors.
    */
-  const handleToggleTheme = () => {
-    setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
-  };
+  // const handleToggleTheme = () => {
+  //   setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
+  // };
 
   /**
    * Toggle the full screen mode of the editor and output areas.
@@ -457,9 +457,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               editorValue={editorValue}
               language={language}
               setLanguage={setLanguage}
-              theme={isDarkTheme ? 'vs-dark' : 'vs'}
+              // theme={isDarkTheme ? 'vs-dark' : 'vs'}
               lineToHighlight={lineToHighlight}
               setLineToHighlight={handleLineHighlight}
+              editorTheme={editorTheme}
             />
             {language.id === 'spectra' &&
               <SpectraCliOptions

@@ -31,7 +31,7 @@ import '../../assets/style/Nav.css';
  * @param {*} setLanguage - The callback function to set the language in the Editor. 
  * @returns 
  */
-export default function Navbar({ setEditorValue, setLanguage }) {
+export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIsDarkTheme }) {
   const isMobile = window.innerWidth = window.matchMedia('(max-width: 767px)').matches;
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [openNavRight, setOpenNavRight] = useState(false);

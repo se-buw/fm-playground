@@ -16,7 +16,13 @@ import { DarkModeSwitch } from 'react-toggle-dark-mode';
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
   const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language')) || Options[1]);
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    const storedTheme = localStorage.getItem('isDarkTheme');
+    console.log(storedTheme)
+    return storedTheme;
+  });
+  const editorTheme = isDarkTheme ? 'vs-dark' : 'vs';
+
   const handleEditorValueChange = (code) => {
     setEditorValue(code);
   };
@@ -25,7 +31,7 @@ const App = () => {
   }
 
   const handleToggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
+    setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
   };
 
 
@@ -38,6 +44,7 @@ const App = () => {
   }, [language]);
 
   useEffect(() => {
+    localStorage.setItem('isDarkTheme', isDarkTheme ? 'true' : 'false');
     const theme = isDarkTheme ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', theme);
   }, [isDarkTheme]);
@@ -45,10 +52,12 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <div className='App' data-theme="dark">
+      <div className='App' data-theme={isDarkTheme ? 'dark' : 'light'}>
         <Nav
           setEditorValue={setEditorValue}
           setLanguage={setLanguage}
+          isDarkTheme={isDarkTheme} 
+          setIsDarkTheme={setIsDarkTheme}
         />
         <Router>
           <Routes>
@@ -59,13 +68,14 @@ const App = () => {
               setEditorValue={setEditorValue}
               language={language}
               setLanguage={setLanguage}
+              editorTheme={editorTheme}
             />} />
             <Route path="/login" exact element={<Login />} />
             <Route path="*" element={<Missing />} />
           </Routes>
         </Router>
         <DarkModeSwitch
-          checked={!isDarkTheme}
+          checked={isDarkTheme}
           onChange={handleToggleTheme}
         />
         <Footer />

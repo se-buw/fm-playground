@@ -21,7 +21,7 @@ const SpectraCliOptions = ({setSpectraCliOption }) => {
       <p style={{ marginRight: '10px', marginTop: '5px' }}>Command:</p>
       <div style={{ width: '70%' }}>
         <Select
-          className="basic-single"
+          className="basic-single react-select-container"
           classNamePrefix="select"
           defaultValue={options[0]}
           isDisabled={false}

@@ -16,6 +16,10 @@ const CodeEditor = (props) => {
   const [internalEditorValue, setInternalEditorValue] = useState(props.editorValue);
   const [language, setLanguage] = useState(props.language.id);
   const [decorationIds, setDecorationIds] = useState([]);
+  const [editorTheme, setEditorTheme] = useState(()=> {
+    const storedTheme = localStorage.getItem('isDarkTheme');
+    return storedTheme ? 'vs-dark' : 'vs';
+  });
 
   /**
   * Sets the editor value when the editorValue prop changes.
@@ -148,7 +152,7 @@ const CodeEditor = (props) => {
           language={language}
           defaultValue="Write your code here"
           value={internalEditorValue}
-          theme={props.theme}
+          theme={props.editorTheme}
           options={{
             minimap: {
               enabled: false,
