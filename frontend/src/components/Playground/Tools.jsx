@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Options from '../../assets/config/AvailableTools'
+import '../../assets/style/Playground.css'
 
 import Select from 'react-select';
 
@@ -12,9 +13,9 @@ const Tools = (props) => {
   const [options, setOptions] = useState(Options);
 
   return (
-      <div style={{  marginTop: '100px', marginBottom: '20px' }}>     {/* TODO: fix this  */}
+      <div className='tools'>     {/* TODO: fix this  */}
         <Select
-          className="basic-single"
+          className="basic-single react-select-container"
           classNamePrefix="select"
           defaultValue={options[1]}
           isDisabled={false}

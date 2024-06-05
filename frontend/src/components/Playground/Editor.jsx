@@ -5,6 +5,7 @@ import { smt2Conf, smt2Lang, smt2ComplitionProvider } from '../../assets/languag
 import { nuxmvConf, nuxmvLang } from '../../assets/languages/nuxmv'
 import { alloyConf, alloyLang } from '../../assets/languages/alloy'
 import { spectraConf, spectraLang } from '../../assets/languages/spectra';
+import '../../assets/style/Playground.css'
 
 /**
  * Code editor component.
@@ -16,6 +17,10 @@ const CodeEditor = (props) => {
   const [internalEditorValue, setInternalEditorValue] = useState(props.editorValue);
   const [language, setLanguage] = useState(props.language.id);
   const [decorationIds, setDecorationIds] = useState([]);
+  const [editorTheme, setEditorTheme] = useState(()=> {
+    const storedTheme = localStorage.getItem('isDarkTheme');
+    return storedTheme ? 'vs-dark' : 'vs';
+  });
 
   /**
   * Sets the editor value when the editorValue prop changes.
@@ -93,18 +98,15 @@ const CodeEditor = (props) => {
     monaco.languages.setLanguageConfiguration('spectra', spectraConf)
 
     monaco.editor.defineTheme('spectraTheme', {
-      base: props.theme === 'vs-dark' ? 'vs-dark' : 'vs', // 'vs-dark' or 'vs'
+      base: props.editorTheme === 'vs-dark' ? 'vs-dark' : 'vs', // 'vs-dark' or 'vs'
       inherit: true, // inherit the base theme
       rules: [
         { token: 'system', foreground: '189BCC', fontStyle: 'bold' },
         { token: 'environment', foreground: '0CD806', fontStyle: 'bold' },
         { token: 'reg', foreground: 'FF00FF' },
 
-      ], // red comments
-      colors: {
-        'editor.foreground': props.theme === 'vs-dark' ? '#FFFFFF' : '#000000',
-        'editor.background': props.theme === 'vs-dark' ? '#000000' : '#FFFFFF',
-      },
+      ],
+      colors: {},
     });
 
     monaco.editor.setTheme('spectraTheme');
@@ -141,14 +143,14 @@ const CodeEditor = (props) => {
 
   return (
     <>
-      <div className="App">
+      <div className="custom-code-editor">
         <Editor
           height={props.height}
           width="100%"
           language={language}
           defaultValue="Write your code here"
           value={internalEditorValue}
-          theme={props.theme}
+          theme={props.editorTheme}
           options={{
             minimap: {
               enabled: false,

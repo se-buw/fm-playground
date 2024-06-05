@@ -31,17 +31,19 @@ import {
 
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 
-const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
+import '../../assets/style/Playground.css'
+
+const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef();  // contains the reference to the editor area
   const outputDivRef = useRef(); // contains the reference to the output area
 
   const [permalink, setPermalink] = useState('') // contains `check` and `permalink` parameters
   const [output, setOutput] = useState('') // contains the output of the tool
-  const [isDarkTheme, setIsDarkTheme] = useState(() => {
-    const storedTheme = localStorage.getItem('theme');
-    return storedTheme === 'vs-dark';
-  }); // contains the theme of the editor.
+  // const [isDarkTheme, setIsDarkTheme] = useState(() => {
+  //   const storedTheme = localStorage.getItem('theme');
+  //   return storedTheme === 'vs-dark';
+  // }); // contains the theme of the editor.
   const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
@@ -87,9 +89,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   /**
    * Update the theme in the local storage when the theme changes.
    */
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkTheme ? 'vs-dark' : 'vs');
-  }, [isDarkTheme]); 
+  // useEffect(() => {
+  //   localStorage.setItem('theme', isDarkTheme ? 'vs-dark' : 'vs');
+  // }, [isDarkTheme]); 
 
   /**
    * Update the URL with ``check`` type when language changes.
@@ -151,7 +153,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       let response;
       if (language.id === 'spectra') {
         response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, spectraCliOption)
-      } else{
+      } else {
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
       }
 
@@ -284,9 +286,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    * Toggle the theme of the editor.
    * TODO: FIX this with custom theme colors.
    */
-  const handleToggleTheme = () => {
-    setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
-  };
+  // const handleToggleTheme = () => {
+  //   setIsDarkTheme((prevIsDarkTheme) => !prevIsDarkTheme);
+  // };
 
   /**
    * Toggle the full screen mode of the editor and output areas.
@@ -294,7 +296,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
    */
   const toggleFullScreen = (div) => {
     const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div];
-
+    const theme = localStorage.getItem('isDarkTheme') === 'true' ? 'dark' : 'light';
+    console.log(theme)
     if (!document.fullscreenElement) {
       // Enter fullscreen mode
       if (element.requestFullscreen) {
@@ -306,6 +309,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       } else if (element.msRequestFullscreen) {
         element.msRequestFullscreen();
       }
+      document.documentElement.setAttribute('data-theme', theme);
       setIsFullScreen(true);
     } else {
       if (document.exitFullscreen) {
@@ -317,6 +321,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
       } else if (document.msExitFullscreen) {
         document.msExitFullscreen();
       }
+      document.documentElement.setAttribute('data-theme', theme);
       setIsFullScreen(false);
     }
   };
@@ -371,14 +376,14 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
   };
 
   return (
-    <div className="container">
+    <div className="container Playground">
       <Tools
         onChange={handleLanguageChange}
         selected={language}
       />
       <Tooltip id="playground-tooltip" />
-      <div className="row">
-        <div className="col-md-6" ref={inputDivRef} style={{ backgroundColor: 'white' }}>
+      <div className="row Playground">
+        <div className="col-md-6 Playground" ref={inputDivRef}>
           <div className='row'>
             <div className='col-md-12 mx-auto mb-2'>
               <div className='d-flex justify-content-between'>
@@ -389,13 +394,12 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                 <div>
                   <Stack direction="row" spacing={1}>
                     <IconButton
-                      color="light"
                       onClick={openModal}
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="New Spec"
                     >
                       <FaFileCirclePlus
-                        color='black'
+                        className='playground-icon'
                         role='button'
                       />
                     </IconButton>
@@ -407,7 +411,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                               This will reset the editor and the output areas`}
                       onConfirm={handleReset}
                     />
-                    <IconButton color="light"
+                    <IconButton
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Upload file"
                     >
@@ -417,7 +421,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                       {handleDownload()}
                     </>
                     {permalink &&
-                      <IconButton color="light"
+                      <IconButton
                         data-tooltip-id="playground-tooltip"
                         data-tooltip-content="Copy Permalink">
                         <CopyToClipboardBtn permalink={permalink} />
@@ -435,11 +439,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
                     </IconButton> */}
                     <IconButton color='light' onClick={() => { toggleFullScreen('input') }}>
                       {isFullScreen ?
-                        <AiOutlineFullscreenExit color='black'
+                        <AiOutlineFullscreenExit
+                          className='playground-icon'
                           data-tooltip-id="playground-tooltip"
                           data-tooltip-content="Exit"
                         />
-                        : <AiOutlineFullscreen color='black'
+                        : <AiOutlineFullscreen
+                          className='playground-icon'
                           data-tooltip-id="playground-tooltip"
                           data-tooltip-content="Fullscreen"
                         />}
@@ -455,9 +461,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
               editorValue={editorValue}
               language={language}
               setLanguage={setLanguage}
-              theme={isDarkTheme ? 'vs-dark' : 'vs'}
+              // theme={isDarkTheme ? 'vs-dark' : 'vs'}
               lineToHighlight={lineToHighlight}
               setLineToHighlight={handleLineHighlight}
+              editorTheme={editorTheme}
             />
             {language.id === 'spectra' &&
               <SpectraCliOptions
@@ -475,18 +482,20 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage }) => {
             </MDBBtn>
           </div>
         </div>
-        <div className='col-md-6' ref={outputDivRef} style={{ backgroundColor: 'white' }}>
+        <div className='col-md-6 Playground' ref={outputDivRef} >
           <div className='row'>
             <div className='col-md-12'>
               <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>
                 <h2>Output</h2>
-                <IconButton color='light' onClick={() => { toggleFullScreen('output') }}>
+                <IconButton onClick={() => { toggleFullScreen('output') }}>
                   {isFullScreen ?
-                    <AiOutlineFullscreenExit color='black'
+                    <AiOutlineFullscreenExit
+                      className='playground-icon'
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Exit"
                     />
-                    : <AiOutlineFullscreen color='black'
+                    : <AiOutlineFullscreen
+                      className='playground-icon'
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Fullscreen"
                     />}

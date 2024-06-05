@@ -22,7 +22,9 @@ import CustomSnackbar from './Modals/CustomSnackbar.jsx';
 import ConfirmModal from './Modals/ConfirmModal.jsx';
 import { downloadUserData, deleteProfile } from '../../api/playgroundApi.js';
 import axiosAuth from '../../api/axiosAuth.js';
-import SessionExpiredModal from  './Modals/SessionExpiredModal.jsx'
+import SessionExpiredModal from './Modals/SessionExpiredModal.jsx'
+import '../../assets/style/Nav.css';
+import Toggle from './Toggle.jsx'
 
 /**
  * Display the header and navigation bar.
@@ -30,7 +32,7 @@ import SessionExpiredModal from  './Modals/SessionExpiredModal.jsx'
  * @param {*} setLanguage - The callback function to set the language in the Editor. 
  * @returns 
  */
-export default function Navbar({ setEditorValue, setLanguage }) {
+export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIsDarkTheme }) {
   const isMobile = window.innerWidth = window.matchMedia('(max-width: 767px)').matches;
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const [openNavRight, setOpenNavRight] = useState(false);
@@ -130,7 +132,7 @@ export default function Navbar({ setEditorValue, setLanguage }) {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div>
+    <div className='Nav'>
       <ConfirmModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -139,13 +141,17 @@ export default function Navbar({ setEditorValue, setLanguage }) {
         Are you sure you want to delete your profile?`}
         onConfirm={handleUserProfileDelete}
       />
-        <SessionExpiredModal />
-      <header className='fixed-top'>
-        <MDBNavbar expand='lg' light bgColor='light'>
+      <SessionExpiredModal />
+      <header className='fixed-top header'>
+        <MDBNavbar expand='lg'>
           <MDBContainer >
             <MDBNavbarBrand href={window.location.origin}>
-              <h2 className='bold'>FM Playground</h2>
+              <h2 className='bold header'>FM Playground</h2>
             </MDBNavbarBrand>
+
+            {isMobile && 
+              <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+            }
 
             <MDBNavbarToggler
               type='button'
@@ -155,21 +161,18 @@ export default function Navbar({ setEditorValue, setLanguage }) {
             >
               <MDBIcon icon='bars' fas />
             </MDBNavbarToggler>
-
-
             <MDBCollapse navbar open={openNavRight}>
-
               <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>
                 {isLoggedIn ? (
                   <>
                     <MDBBtn
-                      className='mb-2 mb-lg-0 me-lg-2 justify-content-center'
+                      className='navbar-option-button'
                       onClick={handleDrawerOpen}
                       style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
                     >History
                     </MDBBtn>
                     <DrawerComponent isOpen={isDrawerOpen} onClose={handleDrawerClose} onItemSelect={handleDrawerItemClick} />
-                    <MDBDropdown className='btn-group' style={{ width: 'auto', display: 'flex', alignItems: 'center' }} >
+                    <MDBDropdown className='btn-group navbar-option-button' style={{ width: 'auto', display: 'flex', alignItems: 'center' }} >
                       <MDBBtn
                         color='danger'
                         onClick={handleLogout}
@@ -196,16 +199,20 @@ export default function Navbar({ setEditorValue, setLanguage }) {
                 )}
 
                 {isMobile && (
-                  <MDBBtn
-                    color='light'
+                  <button
+                    color='navbar-option-button'
                     onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                  ><FaGithub size={24} style={{ marginRight: '5px' }} />
-                  </MDBBtn>
+                    style={{backgroundColor: 'transparent', border: 'none', display: 'flex', alignItems: 'center'}}
+                  ><FaGithub size={24} />
+                  </button>
                 )}
               </MDBNavbarNav>
             </MDBCollapse>
-
           </MDBContainer>
+
+          <div className='toggle-icon'>
+            <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+          </div>
           <FaGithub
             size={40}
             className='github-icon'

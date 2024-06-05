@@ -9,6 +9,7 @@ import React from 'react';
 import { Snackbar } from '@mui/material'
 import { useState } from 'react'
 import { FaShareNodes  } from "react-icons/fa6";
+import '../../assets/style/Playground.css';
 
 
 
@@ -39,7 +40,7 @@ const CopyToClipboardBtn = ({ permalink }) => {
     <>
       <FaShareNodes 
         role='button'
-        color='black'
+        className='playground-icon'
         onClick={handleCopyClick}
       />
 

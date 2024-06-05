@@ -1,0 +1,5 @@
+.App{
+    background-color: var(--background-color) !important;
+    color: var(--primary-text-color);
+    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+}
