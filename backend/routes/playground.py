@@ -183,6 +183,9 @@ def run_spectra():
 @routes.route('/api/save-with-meta', methods=['POST'])
 @limiter.limit("2/second", error_message="You've already made a request recently.")
 def save_with_metadata():
+  # Get user information
+  user_id = session.get('user_id')
+  current_time = datetime.now(pytz.utc)
   data = request.get_json()
   check_type = data['check']
   code = data['code']
@@ -218,7 +221,8 @@ def save_with_metadata():
                 check_type=check_type,
                 permalink=permalink,
                 meta=metadata,
-                code_id=code_id
+                code_id=code_id,
+                user_id=user_id
               )
     db.session.add(new_data)
     db.session.commit()
@@ -228,6 +232,7 @@ def save_with_metadata():
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
     return response
 
+  session['last_request_time'] = current_time
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
   return response
 

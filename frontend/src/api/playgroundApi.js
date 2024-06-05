@@ -85,7 +85,7 @@ export async function saveCodeWithMetadata(code, check, parent, metadata) {
   let url = `${API_URL}/save-with-meta`;
   let meta = `{cmd: ${metadata}}`;
   try {
-    const response = await axios.post(url, { code, check, parent, meta });
+    const response = await axiosAuth.post(url, { code, check, parent, meta });
     if (response.status === 200) {
       return response;
     }
