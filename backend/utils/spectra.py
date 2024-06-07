@@ -7,9 +7,8 @@ import shutil
 import glob
 
 SPECTRA_PATH = "lib/spectra-cli.jar"
-MAX_CONCURRENT_REQUESTS = 10 # Maximum number of concurrent subprocesses
-
-executor = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) #thread pool with a maximum of max_concurrent threads
+MAX_CONCURRENT_REQUESTS = 10 
+executor = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) 
 code_queue = queue.Queue()
 
 def run_spectra(code: str, check: str) -> str:
@@ -26,8 +25,7 @@ def run_spectra(code: str, check: str) -> str:
   """
   tmp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix=".spectra")
   tmp_file.write(code.strip().replace('\r\n', '\n'))  
-  tmp_file.close()
-  
+  tmp_file.close() 
   ## ==== Copy pattern files to the temp directory ====
   tmp_dir = os.path.dirname(tmp_file.name)
   pattern_files = glob.glob('lib/patterns/*')
@@ -35,7 +33,6 @@ def run_spectra(code: str, check: str) -> str:
     dest = os.path.join(tmp_dir, os.path.basename(file))
     if not os.path.exists(dest):
       shutil.copy(file, tmp_dir)
-
   ## ==== Run the spectra commands ====
   if check == 'check-realizability':
     command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'check-realizability', '-i', tmp_file.name]
@@ -49,10 +46,8 @@ def run_spectra(code: str, check: str) -> str:
     command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'check-well-sep', '-i', tmp_file.name]
   elif check == 'non-well-sep-core':
     command = ['java', '-Djava.library.path=./lib', '-jar', SPECTRA_PATH, '-a', 'non-well-sep-core', '-i', tmp_file.name]
-  
   try:
     result = subprocess.run(command, capture_output=True, text=True, timeout=60)
-    print(result)
     os.remove(tmp_file.name)
     if result.returncode != 0:
       return prettify_error(result.stderr)
