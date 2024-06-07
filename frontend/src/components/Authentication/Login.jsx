@@ -8,10 +8,10 @@ import {
 }
   from 'mdb-react-ui-kit';
 import AuthContext from '../../contexts/AuthContext';
+import '../../assets/style/Login.css';
 
 function Login() {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
-
 
   function handleGoogleLogin() {
     window.open(`${import.meta.env.VITE_FMP_API_URL}/login/google`, '_self')
@@ -22,15 +22,15 @@ function Login() {
   }
   return (
     <MDBContainer className='d-flex justify-content-center align-items-center' style={{ height: '100vh' }}>
-      <MDBCard className='shadow-5' style={{ width: '25rem' }}>
+      <MDBCard className='log-in-card'>
         <div className='text-center mt-3'>
-          <img src='logo_se.png' alt='SE Logo' style={{ width: '75px', height: '75px' }} />
+          <img src='logo_se.png' alt='SE Logo'  className="logo" />
         </div>
         <h5 className='mx-auto mt-3'>Login with your identity provider</h5>
-
-        <MDBCardBody className='p-5 py-4 shadow-5 text-center'>
+        <hr />
+        <MDBCardBody className='py-2 text-center'>
           <MDBBtn
-            style={{ backgroundColor: '#dd4b39' }}
+            className='google-btn'
             onClick={handleGoogleLogin}
           >
             <MDBIcon className='me-2' fab icon='google' /> Login with Google
@@ -38,7 +38,7 @@ function Login() {
           <br />
           <br />
           <MDBBtn
-            style={{ backgroundColor: '#000000' }}
+            className='github-btn '
             onClick={handleGithubLogin}
           >
             <MDBIcon className='me-2' fab icon='github' /> Login with Github

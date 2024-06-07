@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import _debounce from 'lodash/debounce';
 import { PiPushPinFill, PiPushPinSlashFill } from "react-icons/pi";
 import { MdRefresh, MdOutlineSearch } from "react-icons/md";
-
 import {
   Drawer,
   List,
@@ -13,8 +12,9 @@ import {
   IconButton,
   InputAdornment, Input
 } from '@mui/material';
-
 import { getHistoryByPage, searchUserHistory, getCodeById } from '../../api/playgroundApi';
+import '../../assets/style/Drawer.css';
+import '../../assets/style/Playground.css';
 
 /**
  * Display a drawer with the user's history. 
@@ -272,11 +272,11 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
               {debouncedSearchQuery
                 ? ''
                 : <IconButton onClick={handleRefresh}>
-                  <MdRefresh />
+                  <MdRefresh className='playground-icon' />
                 </IconButton>
               }
               <IconButton onClick={handlePinToggle}>
-                {pinned ? <PiPushPinFill /> : <PiPushPinSlashFill />}
+                {pinned ? <PiPushPinFill className='playground-icon' /> : <PiPushPinSlashFill className='playground-icon' />}
               </IconButton>
             </div>
           </ListItem>
@@ -289,7 +289,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
               startAdornment={
                 <InputAdornment position="start">
                   <IconButton>
-                    <MdOutlineSearch />
+                    <MdOutlineSearch className='playground-icon' />
                   </IconButton>
                 </InputAdornment>
               }

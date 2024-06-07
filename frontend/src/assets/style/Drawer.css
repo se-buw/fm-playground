@@ -1,0 +1,42 @@
+/* Drawer Styles */
+.MuiDrawer-paper {
+  background-color: var(--drawer-background-color) !important;
+  color: var(--primary-text-color) !important;
+  width: 300px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* List Styles */
+.MuiList-root {
+  overflow-y: auto;
+  max-height: calc(100vh - 56px);
+}
+
+/* Input Styles */
+.MuiInputBase-root {
+  color: var(--primary-text-color) !important;
+}
+
+/* Typography Styles */
+.MuiTypography-root {
+  color: var(--primary-text-color) !important;
+}
+
+/* Divider Styles */
+.MuiDivider-root {
+  background-color: var(--divider-color) !important;
+}
+
+/* IconButton Styles */
+.MuiButtonBase-root {
+  color: var(--secondary-text-color) !important;
+}
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-background-color);
+}
