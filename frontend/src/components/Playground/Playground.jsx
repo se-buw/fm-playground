@@ -13,6 +13,7 @@ import FileUploadButton from '../Utils/FileUpload.jsx'
 import FileDownload from '../Utils/FileDownload.jsx'
 import run_limboole from '../../assets/js/limboole'
 import { executeNuxmv, executeZ3, executeSpectra } from '../../api/toolsApi.js'
+import runZ3WASM from '../../assets/js/runZ3WASM.js';
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
 import ConfirmModal from '../Utils/Modals/ConfirmModal.jsx';
@@ -157,21 +158,19 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
         setLineToHighlight(getLineToHighlight(document.getElementById('info').innerText, language.id))
         setIsExecuting(false);
       } else if (language.value == 3) {
-        executeZ3(editorValue)
-          .then((res) => {
-            setLineToHighlight(getLineToHighlight(res.result, language.id))
-            setOutput(res.result)
+        // executeZ3(editorValue)
+        runZ3WASM(editorValue).then((res) => {
+          if(res.error) {
+            showErrorModal(res.error)
+          }else{
+            setLineToHighlight(getLineToHighlight(res.output, language.id))
+            setOutput(res.output);
             setIsExecuting(false);
-          })
-          .catch((err) => {
-            if (err.response.status === 503) {
-              showErrorModal(err.response.data.result)
-            }
-            else if (err.response.status === 429) {
-              showErrorModal("Slow down! You are making too many requests. Please try again later.")
-            }
-            setIsExecuting(false);
-          })
+          }
+        }).catch((err) => {
+          showErrorModal(err.message)
+          setIsExecuting(false);
+        })   
       } else if (language.value == 4) {
         executeNuxmv(editorValue)
           .then((res) => {
