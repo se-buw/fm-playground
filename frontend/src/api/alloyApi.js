@@ -22,11 +22,12 @@ export async function getInstances(code, commandIndex, currentModelId) {
   try {
     const response = await axios.post(url, {
       model: code,
-      numberOfInstances: MAX_INSTANCES,
+      numberOfInstances: 20,
       commandIndex: commandIndex,
       sessionId: currentModelId,
     });
-    return response.data;
+    console.log(response)
+    return response;
   } catch (error) {
     console.log(error);
   }

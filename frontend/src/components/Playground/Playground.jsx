@@ -28,6 +28,8 @@ import {
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
 
+import {getInstances}  from '../../api/alloyApi.js';
+
 const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef();  // contains the reference to the editor area
@@ -83,11 +85,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
    */
   const handleLanguageChange = (newLanguage) => {
     setLanguage(newLanguage)
-    if (newLanguage.short === "ALS") {
-      window.open(`https://alloy.formal-methods.net/?check=ALS`, '_self')
-    } else {
-      window.history.pushState(null, null, `?check=${newLanguage.short}`)
-    }
+    window.history.pushState(null, null, `?check=${newLanguage.short}`)
   }
 
   /**
@@ -160,9 +158,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       } else if (language.value == 3) {
         // executeZ3(editorValue)
         runZ3WASM(editorValue).then((res) => {
-          if(res.error) {
+          if (res.error) {
             showErrorModal(res.error)
-          }else{
+          } else {
             setLineToHighlight(getLineToHighlight(res.output, language.id))
             setOutput(res.output);
             setIsExecuting(false);
@@ -170,7 +168,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
         }).catch((err) => {
           showErrorModal(err.message)
           setIsExecuting(false);
-        })   
+        })
       } else if (language.value == 4) {
         executeNuxmv(editorValue)
           .then((res) => {
@@ -188,7 +186,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           })
       } else if (language.value == 5) {
-        console.log('Executing Alloy')
+        getInstances(editorValue, 0, "").then((res) => {
+          setOutput(res.data[0].check)
+          setIsExecuting(false);
+        })
       } else if (language.value == 6) {
         executeSpectra(editorValue, spectraCliOption)
           .then((res) => {
