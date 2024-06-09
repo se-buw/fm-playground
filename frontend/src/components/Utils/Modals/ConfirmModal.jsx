@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   MDBBtn,
   MDBModal,
@@ -9,7 +9,7 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
-
+import '../../../assets/style/Modal.css'
 
 const ConfirmModal = ({ isOpen, onClose, title, message, onConfirm }) => {
   const toggleOpen = () => onClose();
@@ -27,13 +27,13 @@ const ConfirmModal = ({ isOpen, onClose, title, message, onConfirm }) => {
         onClose={toggleOpen}
         tabIndex='-1'>
         <MDBModalDialog>
-          <MDBModalContent>
-            <MDBModalHeader>
-              <MDBModalTitle>{title}</MDBModalTitle>
+          <MDBModalContent className='model-content'>
+            <MDBModalHeader className='modal-header'>
+              <MDBModalTitle className='modal-title'>{title}</MDBModalTitle>
               <MDBBtn className='btn-close' color='none' onClick={toggleOpen}></MDBBtn>
             </MDBModalHeader>
-            <MDBModalBody> <p>{message}</p></MDBModalBody>
-            <MDBModalFooter>
+            <MDBModalBody className='modal-body'> <p>{message}</p></MDBModalBody>
+            <MDBModalFooter className='modal-footer'>
               <MDBBtn color='secondary' onClick={toggleOpen}>
                 Close
               </MDBBtn>
