@@ -133,6 +133,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   const handleToolExecution = async () => {
     setOutput('')
     try {
+      // Pre execution checks
       setIsExecuting(true);
       let response;
       if (language.id === 'spectra') {
@@ -152,13 +153,14 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
         showErrorModal(`The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.`)
         return
       }
-
+      // Execute the tools
       if (language.value >= 0 && language.value < 3) {
         run_limboole(window.Wrappers[language.value], editorValue)
         setLineToHighlight(getLineToHighlight(document.getElementById('info').innerText, language.id))
         setIsExecuting(false);
-      } else if (language.value == 3) {
-        // executeZ3(editorValue)
+      } 
+      // Try to execute Z3 wasm. If it fails, fallback to the API
+      else if (language.value == 3) {
         runZ3WASM(editorValue).then((res) => {
           if(res.error) {
             showErrorModal(res.error)
@@ -168,10 +170,29 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           }
         }).catch((err) => {
-          showErrorModal(err.message)
+          if(err.message.includes("SharedArrayBuffer is not defined")){
+            // Z3 is not supported in the current browser. Fallback to the API
+            executeZ3(editorValue).then((res) => {
+              setLineToHighlight(getLineToHighlight(res.result, language.id))
+              setOutput(res.result)
+              setIsExecuting(false);
+            }).catch((err) => {
+              if (err.response.status === 503) {
+                showErrorModal(err.response.data.result)
+              }
+              else if (err.response.status === 429) {
+                showErrorModal("Slow down! You are making too many requests. Please try again later.")
+              }
+              setIsExecuting(false);
+            })
+          }else{
+            showErrorModal(err.message)
+          }
           setIsExecuting(false);
         })   
-      } else if (language.value == 4) {
+      } 
+      // nuXmv execution
+      else if (language.value == 4) {
         executeNuxmv(editorValue)
           .then((res) => {
             setLineToHighlight(getLineToHighlight(res.result, language.id))
@@ -187,9 +208,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             }
             setIsExecuting(false);
           })
-      } else if (language.value == 5) {
+      } 
+      // TODO: Not implemented yet. Forwards to old alloy 
+      else if (language.value == 5) {
         console.log('Executing Alloy')
-      } else if (language.value == 6) {
+      } 
+      // Spectra execution
+      else if (language.value == 6) {
         executeSpectra(editorValue, spectraCliOption)
           .then((res) => {
             setLineToHighlight(getLineToHighlight(res.result, language.id))
