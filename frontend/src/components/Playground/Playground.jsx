@@ -27,8 +27,8 @@ import {
 } from '../../api/playgroundApi.js'
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
-
 import {getInstances}  from '../../api/alloyApi.js';
+import AlloyOutput from './alloy/AlloyOutput.jsx';
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
   const navigate = useNavigate();
@@ -483,10 +483,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               </div>
             )}
             <div className='col-md-12'>
-              <PlainOutput
-                code={output}
-                height={isFullScreen ? '80vh' : '60vh'}
-                onChange={handleOutputChange} />
+              <AlloyOutput/>
             </div>
           </div>
         </div>
