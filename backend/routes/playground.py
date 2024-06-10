@@ -1,10 +1,11 @@
 import sys
+import requests
 sys.path.append("..") # Adds higher directory to python modules path.
 import time
 import pytz
 from datetime import datetime
 aware_datetime = datetime.now(pytz.utc)
-from flask import Blueprint, request, jsonify, session, make_response, abort
+from flask import Blueprint, request, jsonify, session, make_response
 from flask_login import current_user
 from db.models import db, Data
 from db.db_query import *
@@ -283,3 +284,25 @@ def history_by_permalink(permalink: str):
   if data:
     return jsonify({'history': data}), 200
   return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
+
+
+## --------- Alloy -------------
+@routes.route('/api/getAlloyInstance/<int:cmd>', methods=['POST'])
+def get_alloy_instance_by_cmd(cmd: int):
+  # Send request to the spring boot
+  data = request.get_json()
+  code = data['code']
+  command = cmd
+  print(code)
+  url = f'http://localhost:8080/instance/{command}'
+  data = {'code': code}
+  headers = {
+        'Content-Type': 'application/json'
+    }
+  try:
+    response = requests.post(url, json=data, headers=headers)
+    print(response.json())
+    return jsonify(response.json()), response.status_code
+  except requests.exceptions.RequestException as e:
+    return jsonify({'error': str(e)}), 500
+  
