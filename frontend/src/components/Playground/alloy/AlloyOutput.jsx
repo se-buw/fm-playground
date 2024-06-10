@@ -11,28 +11,32 @@ const AlloyOutput = ({ code, onChange, height }) => {
     { data: { source: "b", target: "a", label: "Edge AB/A" } }
   ]);
 
-  const [layout, setLayout] = useState({ name: "grid" });
+  const [layout, setLayout] = useState({ name: "breadthfirst" });
   const [stylesheet, setStylesheet] = useState([
     {
-      selector: "node",
+      selector: 'node',
       style: {
-        width: 20,
-        height: 20,
-        label: "data(label)"
+        width: 80,
+        height: 40,
+        'background-color': 'orange', // Change node background color to orange
+        'shape': 'roundrectangle', // Set node shape to rectangle
+        label: 'data(label)',
+        'text-valign': 'center',
+        'text-halign': 'center'
       }
     },
     {
-      selector: "edge",
+      selector: 'edge',
       style: {
         width: 3,
-        "line-color": "#ccc",
-        "target-arrow-color": "#ccc",
-        "target-arrow-shape": "triangle", // Indicates direction with an arrow
-        "curve-style": "bezier", // Ensures the edge is a straight line with an arrow
-        label: "data(label)", // Display edge label
-        "text-rotation": "autorotate",
-        "font-size": 10,
-        "text-margin-y": -10
+        'line-color': '#ccc',
+        'target-arrow-color': '#ccc',
+        'target-arrow-shape': 'triangle',
+        'curve-style': 'bezier',
+        label: 'data(relationship)',
+        'text-rotation': 'autorotate',
+        'font-size': 10,
+        'text-margin-y': -10
       }
     }
   ]);
@@ -41,8 +45,8 @@ const AlloyOutput = ({ code, onChange, height }) => {
     <CytoscapeComponent
       elements={elements}
       style={{
-        width: "600px",
-        height: "600px",
+        width: "1000px",
+        height: "1000px",
         border: "1px solid black"
       }}
       layout={layout}
