@@ -31,7 +31,8 @@ public class AlloyInstanceController {
     static Map<String, StoredSolution> instances = new LinkedHashMap<>();
 
     @PostMapping("/instance/{cmd}")
-    public String postMethodName(@RequestBody String code, @PathVariable int cmd) throws IOException {
+    public String postMethodName(@RequestBody InstanceRequest instanceRequest, @PathVariable int cmd) throws IOException {
+        String code = instanceRequest.getCode();
         // parse Alloy file from code variable
         CompModule module = CompUtil.parseEverything_fromString(A4Reporter.NOP, code);
 
