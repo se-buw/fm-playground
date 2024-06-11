@@ -1,12 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
+import { getAlloyNextInstance } from '../../../api/toolsApi';
 
-const AlloyOutput = ({alloyGraphElements, height}) => {
+const AlloyOutput = ({ alloyGraphElements, setAlloyGraphElements, alloySpecId, height }) => {
+  useEffect(() => {
+    setAlloyGraphElements(alloyGraphElements);
+  }, [alloyGraphElements]);
+
+  const handleNextInstance = () => {
+    getAlloyNextInstance(alloySpecId)
+      .then((data) => {
+        console.log(data)
+        setAlloyGraphElements(data.elements);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   return (
-    <AlloyCytoscapeGraph
-      alloyGraphElements={alloyGraphElements}
-      height={height}
-    />
+    <div>
+      <AlloyCytoscapeGraph
+        alloyGraphElements={alloyGraphElements}
+        height={height}
+      />
+      <button
+      onClick={handleNextInstance}
+      >
+        Next
+      </button>
+    </div>
   );
 };
 

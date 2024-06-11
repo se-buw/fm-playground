@@ -45,6 +45,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   const [lineToHighlight, setLineToHighlight] = useState([])
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyGraphElements, setAlloyGraphElements] = useState([]); // contains the elements for the Alloy graph.
+  const [alloySpecId, setAlloySpecId] = useState('')
+  
   /**
    * Load the code and language from the URL.
    */
@@ -186,8 +188,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
           })
       } else if (language.value == 5) {
         getAlloyGraphData(editorValue, 0).then((res) => {
-          // console.log(res)
+          console.log(res.specId[0])
           setAlloyGraphElements(res.elements)
+          setAlloySpecId(res.specId[0])
           setOutput(res.result)
           setIsExecuting(false);
         }).catch((err) => {
@@ -490,6 +493,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             <div className='col-md-12'>
               <AlloyOutput
                 alloyGraphElements={alloyGraphElements}
+                setAlloyGraphElements={setAlloyGraphElements}
+                alloySpecId={alloySpecId}
                 height={isFullScreen ? '80vh' : '60vh'}
               />
             </div>

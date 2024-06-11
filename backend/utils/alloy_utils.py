@@ -8,8 +8,9 @@ def get_graph_data(alloy_instance: json):
   if "field" not in alloy_instance["alloy"]["instance"]:
     sigs = alloy_instance["alloy"]["instance"]["sig"]
     for sig in sigs:
-      if 'this/' in sig['label']:
-        print(sig)
+      if 'this/' in sig['label'] and 'atom' in sig:
+        atom = sig['atom']['label']
+        nodes.add(atom.replace('$',''))
   else:
     fields = alloy_instance["alloy"]["instance"]["field"]
     if "tuple" in fields:
@@ -34,6 +35,8 @@ def get_graph_data(alloy_instance: json):
         )
     else:
       for field in fields:
+        if 'tuple' not in field:
+          continue
         tuples = field.get("tuple")
         label = field.get("label")
         if field.get("tuple") is None:
@@ -64,11 +67,11 @@ def get_graph_data(alloy_instance: json):
   return json.dumps({"elements": elements, "specId": specId})
 
 
-def get_alloy_data():
-    with open("0.json") as f:
-        data = json.load(f)
-    return data
+# def get_alloy_data():
+#     with open("0.json") as f:
+#         data = json.load(f)
+#     return data
 
 
-alloy_instance = get_alloy_data()
-print(get_graph_data(alloy_instance))
+# alloy_instance = get_alloy_data()
+# print(get_graph_data(alloy_instance))

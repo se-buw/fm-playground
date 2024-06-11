@@ -308,3 +308,22 @@ def get_alloy_instance_by_cmd(cmd: int):
   except requests.exceptions.RequestException as e:
     return jsonify({'error': str(e)}), 500
   
+@routes.route('/api/getAlloyNextInstance', methods=['POST'])
+def get_alloy_next_instance():
+  # Send request to the spring boot
+  data = request.get_json()
+  print(data)
+  specId = data['specId']
+  url = 'http://localhost:8080/nextInstance'
+  data = specId
+  headers = {
+        'Content-Type': 'application/text'
+    }
+  try:
+    response = requests.post(url, data, headers=headers)
+    from utils.alloy_utils import get_graph_data
+    if response.status_code == 200:
+      return jsonify(get_graph_data(response.json())), response.status_code
+    return jsonify(response.json()), response.status_code
+  except requests.exceptions.RequestException as e:
+    return jsonify({'error': str(e)}), 500

@@ -60,3 +60,14 @@ export async function getAlloyGraphData(code, cmd) {
     throw error;
   }
 }
+
+export async function getAlloyNextInstance(specId) {
+  let url = `${API_URL}/getAlloyNextInstance`;
+  try {
+    const response = await axios.post(url, { specId });
+    let data = JSON.parse(response.data);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
