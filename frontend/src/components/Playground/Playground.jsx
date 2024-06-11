@@ -12,7 +12,7 @@ import Options from '../../assets/config/AvailableTools.js'
 import FileUploadButton from '../Utils/FileUpload.jsx'
 import FileDownload from '../Utils/FileDownload.jsx'
 import run_limboole from '../../assets/js/limboole'
-import { executeNuxmv, executeZ3, executeSpectra } from '../../api/toolsApi.js'
+import { executeNuxmv, executeZ3, executeSpectra, getAlloyGraphData } from '../../api/toolsApi.js'
 import runZ3WASM from '../../assets/js/runZ3WASM.js';
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
@@ -27,7 +27,6 @@ import {
 } from '../../api/playgroundApi.js'
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
-import {getInstances}  from '../../api/alloyApi.js';
 import AlloyOutput from './alloy/AlloyOutput.jsx';
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
@@ -45,7 +44,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
   const [lineToHighlight, setLineToHighlight] = useState([])
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
-
+  const [alloyGraphElements, setAlloyGraphElements] = useState([]); // contains the elements for the Alloy graph.
   /**
    * Load the code and language from the URL.
    */
@@ -186,9 +185,15 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           })
       } else if (language.value == 5) {
-        getInstances(editorValue, 0, "").then((res) => {
-          setOutput(res.data[0].check)
+        getAlloyGraphData(editorValue, 0).then((res) => {
+          // console.log(res)
+          setAlloyGraphElements(res.elements)
+          setOutput(res.result)
           setIsExecuting(false);
+        }).catch((err) => {
+          if (err.response.status === 503) {
+            showErrorModal(err.response.data.result)
+          }
         })
       } else if (language.value == 6) {
         executeSpectra(editorValue, spectraCliOption)
@@ -483,7 +488,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               </div>
             )}
             <div className='col-md-12'>
-              <AlloyOutput/>
+              <AlloyOutput
+                alloyGraphElements={alloyGraphElements}
+                height={isFullScreen ? '80vh' : '60vh'}
+              />
             </div>
           </div>
         </div>
