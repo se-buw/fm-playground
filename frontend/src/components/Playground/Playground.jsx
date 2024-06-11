@@ -445,6 +445,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               <AlloyCmdOptions
                 editorValue={editorValue}
                 alloyCmdOption={alloyCmdOption}
+                setAlloyCmdOption={setAlloyCmdOption}
                 setAlloySelectedCmd={setAlloySelectedCmd}
               />
             }
