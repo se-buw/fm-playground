@@ -28,6 +28,7 @@ import {
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput.jsx';
+import AlloyCmdOptions from './alloy/AlloyCmdOptions.jsx';
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
   const navigate = useNavigate();
@@ -46,7 +47,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyGraphElements, setAlloyGraphElements] = useState([]); // contains the elements for the Alloy graph.
   const [alloySpecId, setAlloySpecId] = useState('')
-  
+  const [alloyCmdOption, setAlloyCmdOption] = useState([]); // contains the selected option for the Alloy cli tool.
+  const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   /**
    * Load the code and language from the URL.
    */
@@ -187,11 +189,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           })
       } else if (language.value == 5) {
-        getAlloyGraphData(editorValue, 0).then((res) => {
-          console.log(res.specId[0])
+        getAlloyGraphData(editorValue, alloySelectedCmd).then((res) => {
           setAlloyGraphElements(res.elements)
           setAlloySpecId(res.specId[0])
-          setOutput(res.result)
           setIsExecuting(false);
         }).catch((err) => {
           if (err.response.status === 503) {
@@ -439,6 +439,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             {language.id === 'spectra' &&
               <SpectraCliOptions
                 setSpectraCliOption={setSpectraCliOption}
+              />
+            }
+            {language.id === 'als' && 
+              <AlloyCmdOptions
+                editorValue={editorValue}
+                alloyCmdOption={alloyCmdOption}
+                setAlloySelectedCmd={setAlloySelectedCmd}
               />
             }
             <MDBBtn
