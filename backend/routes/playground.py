@@ -301,7 +301,9 @@ def get_alloy_instance_by_cmd(cmd: int):
     }
   try:
     response = requests.post(url, json=data, headers=headers)
-    print(response.json())
+    from utils.alloy_utils import get_graph_data
+    if response.status_code == 200:
+      return jsonify(get_graph_data(response.json())), response.status_code
     return jsonify(response.json()), response.status_code
   except requests.exceptions.RequestException as e:
     return jsonify({'error': str(e)}), 500
