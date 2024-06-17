@@ -1,6 +1,10 @@
 import json
+import time
 
 def get_graph_data(alloy_instance: json):
+  fn = time.strftime("%Y%m%d-%H%M%S")
+  with open(f"logs/{fn}.json", "w") as f:
+    json.dump(alloy_instance, f, indent=2)
   nodes = set()
   edges = []
 
@@ -22,9 +26,6 @@ def get_graph_data(alloy_instance: json):
           search_nested_dict(i)
     search_nested_dict(d)
 
-  if 'sig' in alloy_instance["alloy"]["instance"]:
-    get_atoms_from_sig(alloy_instance["alloy"]["instance"]["sig"])
-  
   def process_field(field):
     relation = field.get('label')
     tuple_field = field.get('tuple', {})
@@ -61,21 +62,29 @@ def get_graph_data(alloy_instance: json):
                     if source_label:
                         nodes.add(source_label.replace('$', ''))
 
-  if 'field' in alloy_instance["alloy"]["instance"]:
+  
+  if 'instance' in alloy_instance["alloy"] and isinstance(alloy_instance["alloy"]["instance"], dict):  
+    if 'sig' in alloy_instance["alloy"]["instance"]:
+      get_atoms_from_sig(alloy_instance["alloy"]["instance"]["sig"])
+    if 'field' in alloy_instance["alloy"]["instance"]:
       fields = alloy_instance["alloy"]["instance"]["field"]
       if isinstance(fields, list):
         for field in fields:
           process_field(field)
       else:
         process_field(fields)
-  # else:
-  #     for instance in alloy_instance["alloy"]["instance"]:
-  #       fields = instance["field"]
-  #       if isinstance(fields, list):
-  #         for field in fields:
-  #           process_field(field)
-  #       else:
-  #         process_field(fields)
+  elif 'instance' in alloy_instance["alloy"] and isinstance(alloy_instance["alloy"]["instance"], list):
+    instances = alloy_instance["alloy"]["instance"]
+    for instance in instances:
+      if 'sig' in instance:
+        get_atoms_from_sig(instance["sig"])
+      if 'field' in instance:
+        fields = instance["field"]
+        if isinstance(fields, list):
+          for field in fields:
+            process_field(field)
+        else:
+          process_field(fields)
   print(nodes)
   print(edges)
   node_list = [{"data": {"id": node, "label": node}} for node in nodes]
