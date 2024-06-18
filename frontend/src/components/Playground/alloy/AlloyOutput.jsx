@@ -5,6 +5,7 @@ import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
 import { getAlloyNextInstance } from '../../../api/toolsApi';
 import PlainOutput from '../PlainOutput';
+import {getLineToHighlight} from '../../../assets/js/lineHighlightingUtil';
 import { 
   getGraphData, 
   parseAlloyErrorMessage, 
@@ -13,7 +14,7 @@ import {
 
 
 
-const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen }) => {
+const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, setLineToHighlight }) => {
   const [alloyTraceIndex, setalloyTraceIndex] = useState(0);
   const [alloySpecId, setAlloySpecId] = useState(null);
   const [alloyVizGraph, setAlloyVizGraph] = useState([]);
@@ -65,8 +66,11 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen }) 
         setIsInstance(false);
         setAlloyErrorMessage("No instance found");
       } else if (alloyInstance["error"].includes("Syntax error")) {
+        setIsInstance(false);
         setAlloyErrorMessage(parseAlloyErrorMessage(alloyInstance["error"]));
+        setLineToHighlight(getLineToHighlight(alloyInstance["error"], 'alloy'));
       } else {
+        setIsInstance(false);
         setAlloyPlainMessage(alloyInstance["error"]);
       }
     }

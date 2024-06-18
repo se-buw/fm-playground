@@ -504,6 +504,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                   setAlloyInstance={setAlloyInstance}
                   height={isFullScreen ? '80vh' : '60vh'}
                   isFullScreen={isFullScreen}
+                  setLineToHighlight={setLineToHighlight}
                 />
               ) : (
                 <PlainOutput
