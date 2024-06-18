@@ -5,12 +5,13 @@ import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
 import { getAlloyNextInstance } from '../../../api/toolsApi';
 import PlainOutput from '../PlainOutput';
-import {getLineToHighlight} from '../../../assets/js/lineHighlightingUtil';
-import { 
-  getGraphData, 
-  parseAlloyErrorMessage, 
-  getTraceLengthAndBackloop 
+import { getLineToHighlight } from '../../../assets/js/lineHighlightingUtil';
+import {
+  getGraphData,
+  parseAlloyErrorMessage,
+  getTraceLengthAndBackloop
 } from '../../../assets/js/alloyUtils';
+import '../../../assets/style/AlloyOutput.css';
 
 
 
@@ -49,13 +50,13 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
         const { traceLength, backloop } = getTraceLengthAndBackloop(instances[alloyTraceIndex]);
         setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
         setAlloyVizGraph(graphData);
-        setAlloyTraceLoop(`Trace Length: ${traceLength} Backloop: ${backloop}`)
+        setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
       } else {
         const graphData = getGraphData(instances[0]);
         const { traceLength, backloop } = getTraceLengthAndBackloop(instances[0]);
         setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
         setAlloyVizGraph(graphData);
-        setAlloyTraceLoop(`Trace Length: ${traceLength} Backloop: ${backloop}`)
+        setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
       }
       setIsTemporal(instances.some((instance) => instance["mintrace"] !== -1));
 
@@ -111,22 +112,22 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
           />
           <div>
             <pre
-              className='plain-output-box'
+              className='plain-alloy-message-box'
               contentEditable={false}
-              style={{ 
-                borderRadius: '8px', 
-                textAlign: 'center',
-                whiteSpace: 'pre-wrap' }}
+              style={{
+                height: alloyPlainMessage ? 'auto' : '35px',
+              }}
               dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + ' | ' + alloyTraceLoop : alloyTraceLoop }}
             />
           </div>
           <div
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}
           >
             {alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance &&
               <MDBBtn
                 color="success"
                 onClick={handleNextInstance}
+                style={{ position: 'absolute', left: 0 }}
               >{isTemporal ? "Next Trace" : "Next Instance"}
               </MDBBtn>
             }
@@ -143,7 +144,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
                   />
                 </IconButton>
                 <MDBInput
-                  style={{ width: '50px', textAlign: 'center'}}
+                  style={{ width: '50px', textAlign: 'center' }}
                   type="text"
                   readonly
                   value={alloyTraceIndex} />

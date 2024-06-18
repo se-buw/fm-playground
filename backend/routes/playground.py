@@ -320,6 +320,10 @@ def get_alloy_next_instance():
   }
   try:
     response = requests.post(url, data, headers=headers)
+    import json
+    fn = time.strftime("%Y%m%d-%H%M%S")
+    with open(f"logs/{fn}.json", "w") as f:
+      json.dump(response.json(), f, indent=2)
     return jsonify(response.json()), response.status_code
   except requests.exceptions.RequestException as e:
     return jsonify({'error': str(e)}), 500

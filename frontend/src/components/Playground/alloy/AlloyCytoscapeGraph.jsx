@@ -27,12 +27,11 @@ const AlloyCytoscapeGraph = ({alloyVizGraph, height}) => {
 
   return (
     <CytoscapeComponent
+    className='alloy-viz-area'
       elements={alloyVizGraph}
       style={{
         width: "100%",
         height: height,
-        border: "1px solid black",
-        borderRadius: '10px'
       }}
       layout={layout}
       stylesheet={stylesheet}
