@@ -14,6 +14,8 @@ from utils.permalink_generator import generate_passphrase
 from utils.logging_utils import *
 from config import app, limiter
 
+ALLOY_API_URL = os.getenv('ALLOY_API_URL')
+
 routes = Blueprint('routes', __name__)
 
 # ------------------ Helper Functions ------------------
@@ -289,41 +291,35 @@ def history_by_permalink(permalink: str):
 ## --------- Alloy -------------
 @routes.route('/api/getAlloyInstance/<int:cmd>', methods=['POST'])
 def get_alloy_instance_by_cmd(cmd: int):
-  # Send request to the spring boot
   data = request.get_json()
   code = data['code']
   command = cmd
-  print(code)
-  url = f'http://localhost:8080/instance/{command}'
+  url = f'{ALLOY_API_URL}/instance/{command}'
   data = {'code': code}
   headers = {
-        'Content-Type': 'application/json'
-    }
+    'Content-Type': 'application/json'
+  }
   try:
     response = requests.post(url, json=data, headers=headers)
-    from utils.alloy_utils import get_graph_data
-    if response.status_code == 200:
-      return jsonify(get_graph_data(response.json())), response.status_code
+    import json
+    fn = time.strftime("%Y%m%d-%H%M%S")
+    with open(f"logs/{fn}.json", "w") as f:
+      json.dump(response.json(), f, indent=2)
     return jsonify(response.json()), response.status_code
   except requests.exceptions.RequestException as e:
     return jsonify({'error': str(e)}), 500
   
 @routes.route('/api/getAlloyNextInstance', methods=['POST'])
 def get_alloy_next_instance():
-  # Send request to the spring boot
   data = request.get_json()
-  print(data)
   specId = data['specId']
-  url = 'http://localhost:8080/nextInstance'
+  url = f'{ALLOY_API_URL}/nextInstance'
   data = specId
   headers = {
-        'Content-Type': 'application/text'
-    }
+    'Content-Type': 'application/text'
+  }
   try:
     response = requests.post(url, data, headers=headers)
-    from utils.alloy_utils import get_graph_data
-    if response.status_code == 200:
-      return jsonify(get_graph_data(response.json())), response.status_code
     return jsonify(response.json()), response.status_code
   except requests.exceptions.RequestException as e:
     return jsonify({'error': str(e)}), 500
