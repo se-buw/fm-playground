@@ -50,12 +50,11 @@ export async function executeSpectra(code, command) {
 }
 
 
-export async function getAlloyGraphData(code, cmd) {
+export async function getAlloyInstance(code, cmd) {
   let url = `${API_URL}/getAlloyInstance/${cmd}`;
   try {
     const response = await axios.post(url, { code });
-    let data = JSON.parse(response.data);
-    return data;
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -65,8 +64,7 @@ export async function getAlloyNextInstance(specId) {
   let url = `${API_URL}/getAlloyNextInstance`;
   try {
     const response = await axios.post(url, { specId });
-    let data = JSON.parse(response.data);
-    return data;
+    return response.data;
   } catch (error) {
     throw error;
   }
