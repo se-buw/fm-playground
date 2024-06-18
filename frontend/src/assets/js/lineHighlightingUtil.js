@@ -30,6 +30,15 @@ function getLinesToHighlightSpectra(result) {
   return [];
 }
 
+function getLinesToHighlightAlloy(result) {
+  const regex = /line (\d+)/;
+  const match = result.match(regex);
+  if (match) {
+    return [parseInt(match[1])];
+  }
+  return [];
+}
+
 
 /**
  * Get the line number to highlight in the code editor.
@@ -46,5 +55,7 @@ export function getLineToHighlight(result, toolId) {
     return getLineToHighlightXmv(result);
   } else if (toolId === 'spectra') {
     return getLinesToHighlightSpectra(result);
+  }else if (toolId === 'alloy') {
+    return getLinesToHighlightAlloy(result);
   }
 }

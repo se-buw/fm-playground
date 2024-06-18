@@ -37,20 +37,42 @@ export function getGraphData(alloyInstance) {
       if (typeof t === 'object' && t !== null) {
         const atoms = t['atom'] || [];
         if (atoms.length >= 2) {
-          const sourceLabel = atoms[0]['label'];
-          const targetLabel = atoms[1]['label'];
-          if (sourceLabel && targetLabel) {
-            nodes.add(sourceLabel.replace('$', ''));
-            nodes.add(targetLabel.replace('$', ''));
-            edges.push({
-              "data": {
-                "id": `${sourceLabel}_${targetLabel}`,
-                "label": relation,
-                "source": sourceLabel.replace('$', ''),
-                "target": targetLabel.replace('$', ''),
-                "relationship": relation,
+          if (atoms.length > 2) { // Nested relation according to official Alloy 
+            const sourceLabel = atoms[0]['label'];
+            const targetLabel = atoms[atoms.length - 1]['label'];
+            if (sourceLabel && targetLabel) {
+              nodes.add(sourceLabel.replace('$', ''));
+              nodes.add(targetLabel.replace('$', ''));
+              for (let i = 1; i < atoms.length - 1; i++) {
+                const nodeLabel = atoms[i]['label'];
+                edges.push({
+                  "data": {
+                    "id": `${sourceLabel}_${targetLabel}_${relation}_[${nodeLabel.replace('$', '')}]`,
+                    "label": `${relation} [${nodeLabel.replace('$', '')}]`,
+                    "source": sourceLabel.replace('$', ''),
+                    "target": targetLabel.replace('$', ''),
+                    "relationship": `${relation} [${nodeLabel.replace('$', '')}]`,
+                  }
+                });
               }
-            });
+            }
+
+          } else {
+            const sourceLabel = atoms[0]['label'];
+            const targetLabel = atoms[1]['label'];
+            if (sourceLabel && targetLabel) {
+              nodes.add(sourceLabel.replace('$', ''));
+              nodes.add(targetLabel.replace('$', ''));
+              edges.push({
+                "data": {
+                  "id": `${sourceLabel}_${targetLabel}`,
+                  "label": relation,
+                  "source": sourceLabel.replace('$', ''),
+                  "target": targetLabel.replace('$', ''),
+                  "relationship": relation,
+                }
+              });
+            }
           }
         } else if (Array.isArray(t)) {
           for (const atom of t) {
@@ -79,4 +101,24 @@ export function getGraphData(alloyInstance) {
   const nodeList = Array.from(nodes).map(node => ({ "data": { "id": node, "label": node } }));
   const elements = nodeList.concat(edges);
   return elements;
+}
+
+export function parseAlloyErrorMessage(error) {
+  let message = '';
+  if (error.includes('Syntax error') && error.includes('.als') && error.includes('line')) {
+    message = error.replace(/ in .+\.als/, '');
+  }
+  return message;
+}
+
+export function getTraceLengthAndBackloop(alloyInstance) {
+  let traceLength = null;
+  let backloop = null;
+  if ('tracelength' in alloyInstance) {
+    traceLength = alloyInstance['tracelength'];
+  }
+  if ('backloop' in alloyInstance) {
+    backloop = alloyInstance['backloop'];
+  }
+  return { traceLength, backloop };
 }
