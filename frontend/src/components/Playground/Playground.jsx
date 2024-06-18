@@ -188,6 +188,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           })
       } else if (language.value == 5) {
+        setAlloyInstance([])
         getAlloyInstance(editorValue, alloySelectedCmd).then((res) => {
           setAlloyInstance(res)
           setIsExecuting(false);
@@ -439,7 +440,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                 setSpectraCliOption={setSpectraCliOption}
               />
             }
-            {language.id === 'als' && 
+            {language.id === 'als' &&
               <AlloyCmdOptions
                 editorValue={editorValue}
                 alloyCmdOption={alloyCmdOption}
@@ -497,11 +498,20 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               </div>
             )}
             <div className='col-md-12'>
-              <AlloyOutput
-                alloyInstance={alloyInstance}
-                setAlloyInstance={setAlloyInstance}
-                height={isFullScreen ? '80vh' : '60vh'}
-              />
+              {language.id === 'als' ? (
+                <AlloyOutput
+                  alloyInstance={alloyInstance}
+                  setAlloyInstance={setAlloyInstance}
+                  height={isFullScreen ? '80vh' : '60vh'}
+                  isFullScreen={isFullScreen}
+                />
+              ) : (
+                <PlainOutput
+                  code={output}
+                  height={isFullScreen ? '80vh' : '60vh'}
+                  onChange={handleOutputChange} />
+              )}
+
             </div>
           </div>
         </div>
