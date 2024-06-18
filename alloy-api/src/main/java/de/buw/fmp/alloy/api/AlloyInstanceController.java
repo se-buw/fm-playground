@@ -50,14 +50,19 @@ public class AlloyInstanceController {
         A4Solution instance = TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, module.getAllSigs(), module.getAllCommands().get(cmd), options);
 
         String specId = null;
-        if (instance.satisfiable()) {
-            // generate a unieuq id for the instance
-            do {
-                specId = Long.toHexString(Double.doubleToLongBits(Math.random()));
-            } while (instances.containsKey(specId));
-            // store the instance in the instances map
-            instances.put(specId, new StoredSolution(instance));
+        if (!instance.satisfiable()) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "No instance found");
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
         }
+        
+        // generate a unieuq id for the instance
+        do {
+            specId = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        } while (instances.containsKey(specId));
+        // store the instance in the instances map
+        instances.put(specId, new StoredSolution(instance));
 
         File tmpFile = File.createTempFile("alloy_instance", ".xml");
         tmpFile.deleteOnExit();
@@ -79,10 +84,14 @@ public class AlloyInstanceController {
         A4Solution instance = storedSolution.getSolution();
 
         instance = instance.next();
-        if (instance.satisfiable()) {
-            storedSolution.setSolution(instance);
+        if (!instance.satisfiable()) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "No more instances");
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
         }
-
+        
+        storedSolution.setSolution(instance);
         File tmpFile = File.createTempFile("alloy_instance", ".xml");
         tmpFile.deleteOnExit();
         instance.writeXML(tmpFile.getAbsolutePath());
