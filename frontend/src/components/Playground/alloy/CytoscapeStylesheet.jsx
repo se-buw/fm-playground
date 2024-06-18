@@ -6,11 +6,16 @@ const generateColor = () => {
   for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)]
   }
-  
+
   return color;
 };
 
+const getCssVariable = (variable) => {
+  return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
+};
+
 const CytoscapeStylesheet = (uniqueRelationships) => {
+  const primaryTextColor = getCssVariable('--primary-text-color');
   const styles = [
     {
       selector: 'node',
@@ -33,6 +38,7 @@ const CytoscapeStylesheet = (uniqueRelationships) => {
         'target-arrow-shape': 'triangle',
         'curve-style': 'bezier',
         label: 'data(relationship)',
+        color: primaryTextColor,
         'text-rotation': 'autorotate',
         'font-size': 18,
         'text-margin-x': -15,
