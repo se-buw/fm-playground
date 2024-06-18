@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import CytoscapeComponent from "react-cytoscapejs";
 import CytoscapeStylesheet from './CytoscapeStylesheet';
 
-const AlloyCytoscapeGraph = ({alloyGraphElements, height}) => {
+const AlloyCytoscapeGraph = ({alloyVizGraph, height}) => {
   const cyRef = React.useRef(null);
   const [layout, setLayout] = useState({ name: "breadthfirst" });
   const [stylesheet, setStylesheet] = useState([]);
@@ -15,19 +15,19 @@ const AlloyCytoscapeGraph = ({alloyGraphElements, height}) => {
     }
     const uniqueRels = [
       ...new Set(
-        alloyGraphElements
+        alloyVizGraph
           .filter((element) => element.data.relationship)
           .map((element) => element.data.relationship)
       ),
     ];
     setUniqueRelationships(uniqueRels);
     setStylesheet(CytoscapeStylesheet(uniqueRels));
-  }, [alloyGraphElements]);
+  }, [alloyVizGraph]);
 
 
   return (
     <CytoscapeComponent
-      elements={alloyGraphElements}
+      elements={alloyVizGraph}
       style={{
         width: "100%",
         height: height,

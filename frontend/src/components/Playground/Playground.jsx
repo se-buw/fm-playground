@@ -12,7 +12,7 @@ import Options from '../../assets/config/AvailableTools.js'
 import FileUploadButton from '../Utils/FileUpload.jsx'
 import FileDownload from '../Utils/FileDownload.jsx'
 import run_limboole from '../../assets/js/limboole'
-import { executeNuxmv, executeZ3, executeSpectra, getAlloyGraphData } from '../../api/toolsApi.js'
+import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi.js'
 import runZ3WASM from '../../assets/js/runZ3WASM.js';
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
@@ -45,8 +45,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
   const [lineToHighlight, setLineToHighlight] = useState([])
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
-  const [alloyGraphElements, setAlloyGraphElements] = useState([]); // contains the elements for the Alloy graph.
-  const [alloySpecId, setAlloySpecId] = useState('')
+  const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
   const [alloyCmdOption, setAlloyCmdOption] = useState([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   /**
@@ -189,9 +188,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           })
       } else if (language.value == 5) {
-        getAlloyGraphData(editorValue, alloySelectedCmd).then((res) => {
-          setAlloyGraphElements(res.elements)
-          setAlloySpecId(res.specId[0])
+        getAlloyInstance(editorValue, alloySelectedCmd).then((res) => {
+          setAlloyInstance(res)
           setIsExecuting(false);
         }).catch((err) => {
           if (err.response.status === 503) {
@@ -500,9 +498,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             )}
             <div className='col-md-12'>
               <AlloyOutput
-                alloyGraphElements={alloyGraphElements}
-                setAlloyGraphElements={setAlloyGraphElements}
-                alloySpecId={alloySpecId}
+                alloyInstance={alloyInstance}
+                setAlloyInstance={setAlloyInstance}
                 height={isFullScreen ? '80vh' : '60vh'}
               />
             </div>
