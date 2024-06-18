@@ -1,5 +1,3 @@
-import React from 'react'
-
 const generateColor = () => {
   let letters = '0123456789ABCDEF'
   let color = '#'

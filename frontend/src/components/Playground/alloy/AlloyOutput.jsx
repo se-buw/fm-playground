@@ -121,13 +121,12 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
             />
           </div>
           <div
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}
+            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
           >
             {alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance &&
               <MDBBtn
                 color="success"
                 onClick={handleNextInstance}
-                style={{ position: 'absolute', left: 0 }}
               >{isTemporal ? "Next Trace" : "Next Instance"}
               </MDBBtn>
             }
