@@ -137,6 +137,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       let response;
       if (language.id === 'spectra') {
         response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, spectraCliOption)
+      } else if(language.id === 'als') {
+        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, (alloySelectedCmd +1))
       } else {
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
       }
