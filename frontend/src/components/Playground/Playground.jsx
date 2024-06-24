@@ -12,7 +12,7 @@ import Options from '../../assets/config/AvailableTools.js'
 import FileUploadButton from '../Utils/FileUpload.jsx'
 import FileDownload from '../Utils/FileDownload.jsx'
 import run_limboole from '../../assets/js/limboole'
-import { executeNuxmv, executeZ3, executeSpectra } from '../../api/toolsApi.js'
+import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi.js'
 import runZ3WASM from '../../assets/js/runZ3WASM.js';
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
@@ -27,6 +27,8 @@ import {
 } from '../../api/playgroundApi.js'
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
+import AlloyOutput from './alloy/AlloyOutput.jsx';
+import AlloyCmdOptions from './alloy/AlloyCmdOptions.jsx';
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
   const navigate = useNavigate();
@@ -43,7 +45,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
   const [lineToHighlight, setLineToHighlight] = useState([])
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
-
+  const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
+  const [alloyCmdOption, setAlloyCmdOption] = useState([]); // contains the selected option for the Alloy cli tool.
+  const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   /**
    * Load the code and language from the URL.
    */
@@ -83,11 +87,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
    */
   const handleLanguageChange = (newLanguage) => {
     setLanguage(newLanguage)
-    if (newLanguage.short === "ALS") {
-      window.open(`https://alloy.formal-methods.net/?check=ALS`, '_self')
-    } else {
-      window.history.pushState(null, null, `?check=${newLanguage.short}`)
-    }
+    window.history.pushState(null, null, `?check=${newLanguage.short}`)
   }
 
   /**
@@ -138,6 +138,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       let response;
       if (language.id === 'spectra') {
         response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, spectraCliOption)
+      } else if(language.id === 'als') {
+        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, (alloySelectedCmd +1))
       } else {
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
       }
@@ -158,13 +160,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
         run_limboole(window.Wrappers[language.value], editorValue)
         setLineToHighlight(getLineToHighlight(document.getElementById('info').innerText, language.id))
         setIsExecuting(false);
-      } 
+      }
       // Try to execute Z3 wasm. If it fails, fallback to the API
       else if (language.value == 3) {
         runZ3WASM(editorValue).then((res) => {
-          if(res.error) {
+          if (res.error) {
             showErrorModal(res.error)
-          }else{
+          } else {
             setLineToHighlight(getLineToHighlight(res.output, language.id))
             setOutput(res.output);
             setIsExecuting(false);
@@ -190,7 +192,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
           }
           setIsExecuting(false);
         })   
-      } 
+      }
       // nuXmv execution
       else if (language.value == 4) {
         executeNuxmv(editorValue)
@@ -208,13 +210,17 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             }
             setIsExecuting(false);
           })
-      } 
-      // TODO: Not implemented yet. Forwards to old alloy 
-      else if (language.value == 5) {
-        console.log('Executing Alloy')
-      } 
-      // Spectra execution
-      else if (language.value == 6) {
+      } else if (language.value == 5) {
+        setAlloyInstance([])
+        getAlloyInstance(editorValue, alloySelectedCmd).then((res) => {
+          setAlloyInstance(res)
+          setIsExecuting(false);
+        }).catch((err) => {
+          if (err.response.status === 503) {
+            showErrorModal(err.response.data.result)
+          }
+        })
+      } else if (language.value == 6) {
         executeSpectra(editorValue, spectraCliOption)
           .then((res) => {
             setLineToHighlight(getLineToHighlight(res.result, language.id))
@@ -457,6 +463,14 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                 setSpectraCliOption={setSpectraCliOption}
               />
             }
+            {language.id === 'als' &&
+              <AlloyCmdOptions
+                editorValue={editorValue}
+                alloyCmdOption={alloyCmdOption}
+                setAlloyCmdOption={setAlloyCmdOption}
+                setAlloySelectedCmd={setAlloySelectedCmd}
+              />
+            }
             <MDBBtn
               className='mx-auto my-3'
               style={{ width: '95%' }}
@@ -507,10 +521,21 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               </div>
             )}
             <div className='col-md-12'>
-              <PlainOutput
-                code={output}
-                height={isFullScreen ? '80vh' : '60vh'}
-                onChange={handleOutputChange} />
+              {language.id === 'als' ? (
+                <AlloyOutput
+                  alloyInstance={alloyInstance}
+                  setAlloyInstance={setAlloyInstance}
+                  height={isFullScreen ? '80vh' : '60vh'}
+                  isFullScreen={isFullScreen}
+                  setLineToHighlight={setLineToHighlight}
+                />
+              ) : (
+                <PlainOutput
+                  code={output}
+                  height={isFullScreen ? '80vh' : '60vh'}
+                  onChange={handleOutputChange} />
+              )}
+
             </div>
           </div>
         </div>

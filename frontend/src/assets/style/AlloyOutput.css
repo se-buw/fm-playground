@@ -1,0 +1,19 @@
+.plain-alloy-message-box {
+  background-color: var(--output-box-color);
+  border: 1px thin var(--border-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-size: 1em;
+  text-align: center;
+}
+
+.alloy-viz-area{
+  background-color: var(--output-box-color);
+  border: 1px thin var(--border-color);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
