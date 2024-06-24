@@ -1,1 +1,0 @@
-This folder contains [Meteor methods](https://docs.meteor.com/api/methods.html) essentially those methods that the client can call on the server side using meteor's default websocket system. 
