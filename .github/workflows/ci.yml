@@ -15,7 +15,7 @@ jobs:
       - name: Build and push Backend
         run: |
           cd backend
-          docker build -t ghcr.io/${{ github.repository }}-backend:latest .
+          docker build --build-arg VITE_FMP_API_URL=https://play.formal-methods.net/api -t ghcr.io/${{ github.repository }}-backend:latest .
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
           docker push ghcr.io/${{ github.repository }}-backend:latest
       
@@ -26,9 +26,9 @@ jobs:
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
           docker push ghcr.io/${{ github.repository }}-frontend:latest
 
-      # - name: Build and push Alloy API
-      #   run: |
-      #     cd alloy-app/api
-      #     docker build -t ghcr.io/${{ github.repository }}-alloy-api:latest .
-      #     echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-      #     docker push ghcr.io/${{ github.repository }}-alloy-api:latest
+      - name: Build and push Alloy API
+        run: |
+          cd alloy-api
+          docker build -t ghcr.io/${{ github.repository }}-alloy-api:latest .
+          echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
+          docker push ghcr.io/${{ github.repository }}-alloy-api:latest
