@@ -33,9 +33,18 @@ export function getGraphData(alloyInstance) {
     const label = field['label'];
     // relationship is computed from the field label and the types of the atoms
     const atomTypes = [];
-    // collect type elements in field['types'] types 
-    for (const type of field['types']['type'] || {}) {
-      atomTypes.push(type['ID']);
+    // check length of types array
+    if (field['types']['type']) {
+      // collect type elements in field['types'] types 
+      for (const type of field['types']['type'] || {}) {
+        atomTypes.push(type['ID']);
+      }
+    } else {
+      for (const obj of field['types'] || {}) {
+        for (const type of obj['type'] || {}) {
+          atomTypes.push(type['ID']);
+        }
+      }
     }
     const relationship = field['label'] + ' (' + atomTypes.join('_') + ')';
     const tupleField = field['tuple'] || {};
@@ -112,7 +121,7 @@ export function getGraphData(alloyInstance) {
 
 export function parseAlloyErrorMessage(error) {
   let message = '';
-  if (error.includes('Syntax error') && error.includes('.als') && error.includes('line')) {
+  if (error.includes('error') && error.includes('.als') && error.includes('line')) {
     message = error.replace(/ in .+\.als/, '');
   }
   return message;

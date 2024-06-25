@@ -77,7 +77,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
       if (alloyInstance["error"].includes("No instance found")) {
         setIsInstance(false);
         setAlloyErrorMessage("No instance found");
-      } else if (alloyInstance["error"].includes("Syntax error")) {
+      } else if (alloyInstance["error"]) {
         setIsInstance(false);
         setAlloyErrorMessage(parseAlloyErrorMessage(alloyInstance["error"]));
         setLineToHighlight(getLineToHighlight(alloyInstance["error"], 'alloy'));
