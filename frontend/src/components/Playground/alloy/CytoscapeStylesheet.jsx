@@ -1,11 +1,18 @@
-const generateColor = () => {
-  let letters = '0123456789ABCDEF'
-  let color = '#'
-  for (let i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)]
-  }
+const generateColor = (relationship) => {
 
-  return color;
+  // Generate a color based on the relationship name
+  const hashCode = (s) => {
+    return s.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+  };
+  // Generate a color based on the hash code of the relationship name
+  const color = Math.abs(hashCode(relationship));
+  const r = (color & 0xff0000) >> 16;
+  const g = (color & 0x00ff00) >> 8;
+  const b = color & 0x0000ff;
+  return `rgb(${r}, ${g}, ${b})`;
 };
 
 const getCssVariable = (variable) => {
@@ -35,7 +42,7 @@ const CytoscapeStylesheet = (uniqueRelationships) => {
         'target-arrow-color': 'blue',
         'target-arrow-shape': 'triangle',
         'curve-style': 'bezier',
-        label: 'data(relationship)',
+        label: 'data(label)',
         color: primaryTextColor,
         'text-rotation': 'autorotate',
         'font-size': 18,
@@ -45,7 +52,7 @@ const CytoscapeStylesheet = (uniqueRelationships) => {
   ];
 
   uniqueRelationships.forEach((relationship) => {
-    const color = generateColor();
+    const color = generateColor(relationship);
     styles.push({
       selector: `edge[relationship="${relationship}"]`,
       style: {

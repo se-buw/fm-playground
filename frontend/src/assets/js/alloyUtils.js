@@ -30,7 +30,14 @@ export function getGraphData(alloyInstance) {
   }
 
   function processField(field) {
-    const relation = field['label'];
+    const label = field['label'];
+    // relationship is computed from the field label and the types of the atoms
+    const atomTypes = [];
+    // collect type elements in field['types'] types 
+    for (const type of field['types']['type'] || {}) {
+      atomTypes.push(type['ID']);
+    }
+    const relationship = field['label'] + ' (' + atomTypes.join('_') + ')';
     const tupleField = field['tuple'] || {};
     const tuples = Array.isArray(tupleField) ? tupleField : [tupleField];
     for (const t of tuples) {
@@ -47,11 +54,11 @@ export function getGraphData(alloyInstance) {
                 const nodeLabel = atoms[i]['label'];
                 edges.push({
                   "data": {
-                    "id": `${sourceLabel}_${targetLabel}_${relation}_[${nodeLabel.replace('$', '')}]`,
-                    "label": `${relation} [${nodeLabel.replace('$', '')}]`,
+                    "id": `${sourceLabel}_${targetLabel}_${label}_[${nodeLabel.replace('$', '')}]`,
+                    "label": `${label} [${nodeLabel.replace('$', '')}]`,
                     "source": sourceLabel.replace('$', ''),
                     "target": targetLabel.replace('$', ''),
-                    "relationship": `${relation} [${nodeLabel.replace('$', '')}]`,
+                    "relationship": relationship,
                   }
                 });
               }
@@ -66,10 +73,10 @@ export function getGraphData(alloyInstance) {
               edges.push({
                 "data": {
                   "id": `${sourceLabel}_${targetLabel}`,
-                  "label": relation,
+                  "label": label,
                   "source": sourceLabel.replace('$', ''),
                   "target": targetLabel.replace('$', ''),
-                  "relationship": relation,
+                  "relationship": relationship,
                 }
               });
             }

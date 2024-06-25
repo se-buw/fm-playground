@@ -45,21 +45,32 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
       setAlloySpecId(specId);
       setIsInstance(true);
       const instances = Array.isArray(alloy["instance"]) ? alloy["instance"] : [alloy["instance"]];
-      if (instances.length > 1 && alloyTraceIndex < instances.length) {
-        const graphData = getGraphData(instances[alloyTraceIndex]);
-        const { traceLength, backloop } = getTraceLengthAndBackloop(instances[alloyTraceIndex]);
+      setIsTemporal(instances.some((instance) => instance["mintrace"] !== -1));
+      const { traceLength, backloop } = getTraceLengthAndBackloop(instances[0]);
+      if (instances.length > 1) {
+        var instanceIndexToShow;
+        if (alloyTraceIndex < instances.length) {
+          instanceIndexToShow = alloyTraceIndex;
+        } else {
+          const m = (alloyTraceIndex - traceLength) % (traceLength - backloop);
+          instanceIndexToShow = backloop + m;
+        }
+        const graphData = getGraphData(instances[instanceIndexToShow]);
         setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
         setAlloyVizGraph(graphData);
-        setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
+        if (isTemporal)
+          setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
+        else
+          setAlloyTraceLoop('');
       } else {
         const graphData = getGraphData(instances[0]);
-        const { traceLength, backloop } = getTraceLengthAndBackloop(instances[0]);
         setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
         setAlloyVizGraph(graphData);
-        setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
+        if (isTemporal)
+          setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
+        else
+          setAlloyTraceLoop('');
       }
-      setIsTemporal(instances.some((instance) => instance["mintrace"] !== -1));
-
     }
     else if (alloyInstance && "error" in alloyInstance) {
       setAlloyVizGraph([]);
@@ -75,7 +86,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
         setAlloyPlainMessage(alloyInstance["error"]);
       }
     }
-  }, [alloyInstance, alloyTraceIndex]);
+  }, [alloyInstance, alloyTraceIndex, isTemporal]);
 
   const handleNextInstance = () => {
     getAlloyNextInstance(alloySpecId)
@@ -117,7 +128,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
               style={{
                 height: alloyPlainMessage ? 'auto' : '35px',
               }}
-              dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + ' | ' + alloyTraceLoop : alloyTraceLoop }}
+              dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + (alloyTraceLoop ? ' | ' + alloyTraceLoop : '') : alloyTraceLoop }}
             />
           </div>
           <div
