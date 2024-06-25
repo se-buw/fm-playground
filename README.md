@@ -3,7 +3,6 @@
   <h1>FM Playground</h1>
   <a href="https://play.formal-methods.net/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fplay.formal-methods.net%2F&label=play.formal-methods.net" alt="FM Playground"></a>
   <img alt="GitHub Repository size" src="https://img.shields.io/github/repo-size/se-buw/fm-playground">
-  <img alt="Total Lines" src="https://tokei.rs/b1/github/se-buw/fm-playground">
   <img src="https://img.shields.io/github/issues/se-buw/fm-playground" alt="GitHub issues">
   <img src="https://img.shields.io/github/license/se-buw/fm-playground" alt="GitHub License">
   <hr>
@@ -49,7 +48,10 @@ docker-compose up -d
 version: '3'
 services:
   frontend:
-    image: ghcr.io/se-buw/fm-playground-frontend:latest
+    build: 
+      context: ./frontend
+      args:
+        VITE_FMP_API_URL: http://localhost:8000/api
     container_name: fmp-frontend
     env_file:
       - .env
@@ -60,7 +62,8 @@ services:
     restart: unless-stopped
   
   backend:
-    image: ghcr.io/se-buw/fm-playground-backend:latest
+    build: 
+      context: ./backend
     container_name: fmp-backend
     env_file:
       - .env
@@ -93,10 +96,9 @@ services:
       - my_network
     restart: unless-stopped
   
-  # Alloy API
-  api:
+  alloy-api:
     build:
-      context: ./alloy-app/api/
+      context: ./alloy-api
     container_name: fmp-alloy-api
     ports:
       - "8080:8080"
@@ -104,45 +106,9 @@ services:
       - my_network
     restart: unless-stopped
   
-  # Database for alloy
-  mongo:
-    image: mongo:4.4.6
-    container_name: fmp-mongo
-    command: mongod --storageEngine=wiredTiger
-    volumes:
-      - mongo_data:/data/db
-    ports:
-      - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  # Alloy application with meteor
-  meteor:
-    build:
-      context: ./alloy-app/meteor/
-    container_name: fmp-alloy-app
-    environment:
-      MONGO_URL: ${MONGO_URL}
-      METEOR_SETTINGS: ${METEOR_SETTINGS}
-      STARTUP_DELAY: ${STARTUP_DELAY}
-    depends_on:
-      - backend
-      - postgres
-      - mongo
-    links:
-      - mongo
-      - api
-    networks:
-      - my_network
-    restart: unless-stopped
 
 volumes:
   postgres_data:
-  mongo_data:
 
 networks:
   my_network:
