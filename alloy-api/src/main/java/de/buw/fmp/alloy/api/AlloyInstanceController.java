@@ -3,6 +3,10 @@ package de.buw.fmp.alloy.api;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.mit.csail.sdg.alloy4.A4Reporter;
+import edu.mit.csail.sdg.alloy4.Pos;
+import edu.mit.csail.sdg.ast.Command;
+import edu.mit.csail.sdg.ast.ExprConstant;
+import edu.mit.csail.sdg.ast.ExprVar;
 import edu.mit.csail.sdg.parser.CompModule;
 import edu.mit.csail.sdg.parser.CompUtil;
 import edu.mit.csail.sdg.translator.A4Options;
@@ -31,9 +35,10 @@ public class AlloyInstanceController {
     static Map<String, StoredSolution> instances = new LinkedHashMap<>();
 
     @PostMapping("/instance/{cmd}")
-    public String postMethodName(@RequestBody InstanceRequest instanceRequest, @PathVariable int cmd) throws IOException {
+    public String getInstance(@RequestBody InstanceRequest instanceRequest, @PathVariable int cmd) throws IOException {
         String code = instanceRequest.getCode();
         CompModule module = null;
+        // parse Alloy file from code variable
         try {
             module = CompUtil.parseEverything_fromString(A4Reporter.NOP, code);
         } catch (Exception e) {
@@ -43,11 +48,15 @@ public class AlloyInstanceController {
             obj.put("status", HttpStatus.BAD_REQUEST.value());
             return obj.toString();
         }
-        // parse Alloy file from code variable
+
+        Command runCommand = module.getAllCommands().get(cmd);
+        if (cmd == 0 && hasDefaultCommand(module)) {
+            runCommand = new Command(Pos.UNKNOWN, ExprConstant.TRUE, "FMPlayDefault", false, 4, 4, 4, -1, -1, -1, null, null, ExprConstant.TRUE, null);
+        };
 
         A4Options options = new A4Options();
         // get the first instance of the Alloy file
-        A4Solution instance = TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, module.getAllSigs(), module.getAllCommands().get(cmd), options);
+        A4Solution instance = TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, module.getAllSigs(), runCommand, options);
 
         String specId = null;
         if (!instance.satisfiable()) {
@@ -78,8 +87,18 @@ public class AlloyInstanceController {
         return jsonPrettyPrintString;
     }
 
+    private boolean hasDefaultCommand(CompModule module) {
+        if (module.getAllCommands().size() == 1) {
+            Command cmd = module.getAllCommands().get(0);
+            if (Pos.UNKNOWN.equals(cmd.pos)) {
+                return true;
+            }            
+        }
+        return false;
+    }
+
     @PostMapping("/nextInstance")
-    public String postMethodName(@RequestBody String specId) throws IOException {
+    public String getNextInstance(@RequestBody String specId) throws IOException {
         StoredSolution storedSolution = instances.get(specId);
         A4Solution instance = storedSolution.getSolution();
 
