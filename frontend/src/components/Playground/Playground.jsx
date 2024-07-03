@@ -149,10 +149,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       }
       else {
         showErrorModal('Something went wrong. Please try again later.')
+        setIsExecuting(false);
       }
       const nonAsciiIndex = findNonAscii(editorValue)
       if (nonAsciiIndex !== -1) {
-        showErrorModal(`The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.`)
+        setLineToHighlight([nonAsciiIndex.line])
+        setOutput(`The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.`)
+        setIsExecuting(false);
         return
       }
       // Execute the tools
