@@ -138,8 +138,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       let response;
       if (language.id === 'spectra') {
         response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, spectraCliOption)
-      } else if(language.id === 'als') {
-        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, (alloySelectedCmd +1))
+      } else if (language.id === 'als') {
+        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, (alloySelectedCmd + 1))
       } else {
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
       }
@@ -154,7 +154,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       const nonAsciiIndex = findNonAscii(editorValue)
       if (nonAsciiIndex !== -1) {
         setLineToHighlight([nonAsciiIndex.line])
-        setOutput(`The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.`)
+        setOutput(`<i style='color: red;'>The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.</i>`)
         setIsExecuting(false);
         return
       }
@@ -175,7 +175,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           }
         }).catch((err) => {
-          if(err.message.includes("SharedArrayBuffer is not defined")){
+          if (err.message.includes("SharedArrayBuffer is not defined")) {
             // Z3 is not supported in the current browser. Fallback to the API
             executeZ3(editorValue).then((res) => {
               setLineToHighlight(getLineToHighlight(res.result, language.id))
@@ -190,11 +190,11 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               }
               setIsExecuting(false);
             })
-          }else{
+          } else {
             showErrorModal(err.message)
           }
           setIsExecuting(false);
-        })   
+        })
       }
       // nuXmv execution
       else if (language.value == 4) {

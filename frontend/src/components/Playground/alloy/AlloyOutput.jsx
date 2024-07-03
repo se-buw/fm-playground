@@ -24,6 +24,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
   const [alloyErrorMessage, setAlloyErrorMessage] = useState('');
   const [alloyPlainMessage, setAlloyPlainMessage] = useState('');
   const [alloyTraceLoop, setAlloyTraceLoop] = useState('');
+  const [lastInstance, setLastInstance] = useState([]);
 
   /**
    * Update the Alloy instance in the state when the API response is received
@@ -39,7 +40,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
    * @param {Object} alloyInstance - The Alloy instance object
    */
   useEffect(() => {
-    if (alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance) {
+    if (alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance) { // if there is an instance
       const alloy = alloyInstance["alloy"];
       const specId = alloyInstance["specId"][0] || alloyInstance["specId"];
       setAlloySpecId(specId);
@@ -58,30 +59,37 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
         const graphData = getGraphData(instances[instanceIndexToShow]);
         setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
         setAlloyVizGraph(graphData);
+        setLastInstance(graphData);
         if (isTemporal)
           setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
         else
-          setAlloyTraceLoop('');
-      } else {
-        const graphData = getGraphData(instances[0]);
-        setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
-        setAlloyVizGraph(graphData);
+        setAlloyTraceLoop('');
+    } else { // instance found but empty
+      const graphData = getGraphData(instances[0]);
+      setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
+      setAlloyVizGraph(graphData);
+      setLastInstance(graphData);
         if (isTemporal)
           setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
         else
           setAlloyTraceLoop('');
       }
     }
-    else if (alloyInstance && "error" in alloyInstance) {
+    else if (alloyInstance && "error" in alloyInstance) { // instance not found and error message is present
       setAlloyVizGraph([]);
-      if (alloyInstance["error"].includes("No instance found")) {
+      if (alloyInstance["error"].includes("No instance found")) { // error for no instance found for the given command
         setIsInstance(false);
         setAlloyErrorMessage("No instance found");
-      } else if (alloyInstance["error"]) {
+      }else if(alloyInstance["error"].includes("No more instances")) { // when we reach the last instance, keep the last instance in the graph and show the message
+        setIsInstance(true);
+        setAlloyVizGraph(lastInstance);
+        setAlloyPlainMessage("No more instances");
+      }
+      else if (alloyInstance["error"]) { // other errors like syntax error, type error etc.
         setIsInstance(false);
         setAlloyErrorMessage(parseAlloyErrorMessage(alloyInstance["error"]));
         setLineToHighlight(getLineToHighlight(alloyInstance["error"], 'alloy'));
-      } else {
+      } else { // unknown error
         setIsInstance(false);
         setAlloyPlainMessage(alloyInstance["error"]);
       }
