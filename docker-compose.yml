@@ -4,6 +4,7 @@ services:
     build: 
       context: ./frontend
       args:
+        NODE_ENV: development
         VITE_FMP_API_URL: http://localhost:8000/api
     container_name: fmp-frontend
     env_file:

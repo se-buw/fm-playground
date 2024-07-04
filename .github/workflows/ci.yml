@@ -22,7 +22,7 @@ jobs:
       - name: Build and push Frontend
         run: |
           cd frontend
-          docker build -t ghcr.io/${{ github.repository }}-frontend:latest .
+          docker build --build-arg VITE_FMP_API_URL=https://play.formal-methods.net/api -t ghcr.io/${{ github.repository }}-frontend:latest .
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
           docker push ghcr.io/${{ github.repository }}-frontend:latest
 
