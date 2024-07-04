@@ -6,7 +6,7 @@ from flask_compress import Compress
 from config import app, db
 from routes.playground import *
 from routes.authentication import *
-from db.models import User, Code, Data
+from db.models import User
 
 Session(app)
 app.app_context().push()
@@ -17,7 +17,7 @@ app.register_blueprint(routes)
 app.register_blueprint(authentication)
 login_manager = LoginManager()
 login_manager.init_app(app)
-# db.create_all()
+db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
