@@ -24,10 +24,17 @@ function getLineToHighlightXmv(result) {
 function getLinesToHighlightSpectra(result) {
   const regex = /<\s*([\d\s]+)\s*>/;
   const match = result.match(regex);
+  // Regex for line error
+  const errorRegex = /XtextSyntaxDiagnostic: null:(\d+)/g;
+  const errorMatches = Array.from(result.matchAll(errorRegex));
+  const lines = [];
   if (match) {
-    return match[1].split(/\s+/).filter(Boolean).map(Number);
+    lines.push(...match[1].split(/\s+/).filter(Boolean).map(Number));
   }
-  return [];
+  if (errorMatches && errorMatches.length > 0) {
+    errorMatches.forEach(errorMatch => lines.push(parseInt(errorMatch[1])));
+  }
+  return lines;
 }
 
 function getLinesToHighlightAlloy(result) {
