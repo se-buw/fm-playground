@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { MDBBtn, MDBInput } from 'mdb-react-ui-kit';
+import { TbBinaryTree } from "react-icons/tb";
+import { CiViewTable } from "react-icons/ci";
+import {
+  MDBBtn,
+  MDBInput,
+  MDBTabs,
+  MDBTabsItem,
+  MDBTabsLink,
+  MDBTabsContent,
+  MDBTabsPane
+} from 'mdb-react-ui-kit';
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
 import { getAlloyNextInstance } from '../../../api/toolsApi';
 import PlainOutput from '../PlainOutput';
@@ -13,8 +23,6 @@ import {
 } from '../../../assets/js/alloyUtils';
 import '../../../assets/style/AlloyOutput.css';
 
-
-
 const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, setLineToHighlight }) => {
   const [alloyTraceIndex, setalloyTraceIndex] = useState(0);
   const [alloySpecId, setAlloySpecId] = useState(null);
@@ -25,6 +33,8 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
   const [alloyPlainMessage, setAlloyPlainMessage] = useState('');
   const [alloyTraceLoop, setAlloyTraceLoop] = useState('');
   const [lastInstance, setLastInstance] = useState([]);
+  const [alloyTabularInstance, setAlloyTabularInstance] = useState('');
+  const [activeTab, setActiveTab] = useState('graph');
 
   /**
    * Update the Alloy instance in the state when the API response is received
@@ -63,12 +73,12 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
         if (isTemporal)
           setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
         else
-        setAlloyTraceLoop('');
-    } else { // instance found but empty
-      const graphData = getGraphData(instances[0]);
-      setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
-      setAlloyVizGraph(graphData);
-      setLastInstance(graphData);
+          setAlloyTraceLoop('');
+      } else { // instance found but empty
+        const graphData = getGraphData(instances[0]);
+        setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
+        setAlloyVizGraph(graphData);
+        setLastInstance(graphData);
         if (isTemporal)
           setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
         else
@@ -80,7 +90,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
       if (alloyInstance["error"].includes("No instance found")) { // error for no instance found for the given command
         setIsInstance(false);
         setAlloyErrorMessage("No instance found");
-      }else if(alloyInstance["error"].includes("No more instances")) { // when we reach the last instance, keep the last instance in the graph and show the message
+      } else if (alloyInstance["error"].includes("No more instances")) { // when we reach the last instance, keep the last instance in the graph and show the message
         setIsInstance(true);
         setAlloyVizGraph(lastInstance);
         setAlloyPlainMessage("No more instances");
@@ -93,6 +103,11 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
         setIsInstance(false);
         setAlloyPlainMessage(alloyInstance["error"]);
       }
+    }
+
+    // Tabular instance
+    if (alloyInstance && "tabularInstance" in alloyInstance) {
+      setAlloyTabularInstance(alloyInstance["tabularInstance"][0]);
     }
   }, [alloyInstance, alloyTraceIndex, isTemporal]);
 
@@ -121,14 +136,40 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
     setAlloyErrorMessage(value);
   }
 
+  const handleTabClick = (tabValue) => {
+    if (tabValue === activeTab) return;
+    setActiveTab(tabValue);
+  }
+
+
   return (
     <div>
       {isInstance ? (
         <div>
-          <AlloyCytoscapeGraph
-            alloyVizGraph={alloyVizGraph}
-            height={height}
-          />
+          <MDBTabs justify >
+            <MDBTabsItem>
+              <MDBTabsLink onClick={() => handleTabClick('graph')} active={activeTab === 'graph'}><TbBinaryTree /> Viz</MDBTabsLink>
+            </MDBTabsItem>
+            <MDBTabsItem>
+              <MDBTabsLink onClick={() => handleTabClick('tabular')} active={activeTab === 'tabular'}><CiViewTable /> Table</MDBTabsLink>
+            </MDBTabsItem>
+          </MDBTabs>
+
+          <MDBTabsContent>
+            <MDBTabsPane open={activeTab === 'graph'}>
+              <AlloyCytoscapeGraph
+                alloyVizGraph={alloyVizGraph}
+                height={isFullScreen ? '80vh' : '57vh'}
+              />
+            </MDBTabsPane>
+            <MDBTabsPane open={activeTab === 'tabular'}>
+              <PlainOutput
+                code={alloyTabularInstance}
+                height={isFullScreen ? '80vh' : '57vh'}
+                onChange={() => { }} />
+            </MDBTabsPane>
+          </MDBTabsContent>
+
           <div>
             <pre
               className='plain-alloy-message-box'

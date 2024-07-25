@@ -17,3 +17,23 @@
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
 }
+
+
+.nav-tabs .nav-link {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  /* border: 1px thin red; */
+  font: 1em sans-serif;
+  padding-top: 0;
+  padding-bottom: 0.4em;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--text-color);
+  background-color: var(--hover-color);
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--text-color);
+  background-color: var(--active-color);
+}
