@@ -152,7 +152,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
         setIsExecuting(false);
       }
       const nonAsciiIndex = findNonAscii(editorValue)
-      if (nonAsciiIndex !== -1) {
+      if (nonAsciiIndex !== -1 && language.value < 3) {
         setLineToHighlight([nonAsciiIndex.line])
         setOutput(`<i style='color: red;'>The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.</i>`)
         setIsExecuting(false);
