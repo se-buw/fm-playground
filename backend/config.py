@@ -35,7 +35,11 @@ app.secret_key = os.getenv('APP_SECKET_KEY')
 # ------------------ App Config ------------------
 if os.getenv('FLASK_ENV') == 'development':
   app.config['DEBUG'] = True
-  app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
+  use_sqlite = os.getenv('USE_SQLITE', False)
+  if use_sqlite:
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///fmp.db"
+  else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/postgres"
 else:
   app.config['DEBUG'] = False
   app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
