@@ -54,13 +54,13 @@ export function getGraphData(alloyInstance) {
         const atoms = t['atom'] || [];
         if (atoms.length >= 2) {
           if (atoms.length > 2) { // Nested relation according to official Alloy 
-            const sourceLabel = atoms[0]['label'];
-            const targetLabel = atoms[atoms.length - 1]['label'];
+            const sourceLabel = atoms[0]['label'].toString();
+            const targetLabel = atoms[atoms.length - 1]['label'].toString();
             if (sourceLabel && targetLabel) {
               nodes.add(sourceLabel.replace('$', ''));
               nodes.add(targetLabel.replace('$', ''));
               for (let i = 1; i < atoms.length - 1; i++) {
-                const nodeLabel = atoms[i]['label'];
+                const nodeLabel = atoms[i]['label'].toString();
                 edges.push({
                   "data": {
                     "id": `${sourceLabel}_${targetLabel}_${label}_[${nodeLabel.replace('$', '')}]`,
@@ -74,8 +74,8 @@ export function getGraphData(alloyInstance) {
             }
 
           } else {
-            const sourceLabel = atoms[0]['label'];
-            const targetLabel = atoms[1]['label'];
+            const sourceLabel = atoms[0]['label'].toString();
+            const targetLabel = atoms[1]['label'].toString();
             if (sourceLabel && targetLabel) {
               nodes.add(sourceLabel.replace('$', ''));
               nodes.add(targetLabel.replace('$', ''));
@@ -93,7 +93,7 @@ export function getGraphData(alloyInstance) {
         } else if (Array.isArray(t)) {
           for (const atom of t) {
             if (typeof atom === 'object' && atom !== null) {
-              const sourceLabel = atom['label'];
+              const sourceLabel = atom['label'].toString();
               if (sourceLabel) {
                 nodes.add(sourceLabel.replace('$', ''));
               }
@@ -123,6 +123,10 @@ export function parseAlloyErrorMessage(error) {
   let message = '';
   if (error.includes('error') && error.includes('.als') && error.includes('line')) {
     message = error.replace(/ in .+\.als/, '');
+  }else if (error.includes('The required JNI library cannot be found')) {
+    message = 'The required JNI library cannot be found.';
+  } else {
+    message = error;
   }
   return message;
 }
