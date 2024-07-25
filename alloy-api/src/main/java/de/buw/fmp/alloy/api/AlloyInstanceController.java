@@ -34,6 +34,13 @@ public class AlloyInstanceController {
 
     static Map<String, StoredSolution> instances = new LinkedHashMap<>();
 
+    public static A4Options getOptions() {
+        A4Options opt = new A4Options();
+        String osName = System.getProperty("os.name").toLowerCase();
+        opt.solver = osName.contains("linux") ? A4Options.SatSolver.MiniSatJNI : A4Options.SatSolver.SAT4J;
+        return opt;
+      }
+
     @PostMapping("/instance/{cmd}")
     public String getInstance(@RequestBody InstanceRequest instanceRequest, @PathVariable int cmd) throws IOException {
         String code = instanceRequest.getCode();
@@ -54,9 +61,18 @@ public class AlloyInstanceController {
             runCommand = new Command(Pos.UNKNOWN, ExprConstant.TRUE, "FMPlayDefault", false, 4, 4, 4, -1, -1, -1, null, null, ExprConstant.TRUE, null);
         };
 
-        A4Options options = new A4Options();
+        A4Options options = getOptions();
         // get the first instance of the Alloy file
-        A4Solution instance = TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, module.getAllSigs(), runCommand, options);
+        A4Solution instance;
+        try {
+            instance = TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, module.getAllSigs(), runCommand, options);            
+        } catch (Exception e) {
+            // return error message as JSON with http status code 400
+            JSONObject obj = new JSONObject();
+            obj.put("error", e.toString());
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
 
         String specId = null;
         if (!instance.satisfiable()) {
@@ -82,6 +98,8 @@ public class AlloyInstanceController {
         if (specId != null) {
             xmlJSONObj.append("specId", specId);
         }
+        String tabularInstance = instance.format();
+        xmlJSONObj.append("tabularInstance", tabularInstance);
         String jsonPrettyPrintString = xmlJSONObj.toString(4);
         
         return jsonPrettyPrintString;
@@ -100,6 +118,13 @@ public class AlloyInstanceController {
     @PostMapping("/nextInstance")
     public String getNextInstance(@RequestBody String specId) throws IOException {
         StoredSolution storedSolution = instances.get(specId);
+        if (storedSolution == null) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "No instance found, possibly cleaned up in the meantime");
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
         A4Solution instance = storedSolution.getSolution();
 
         instance = instance.next();
@@ -119,6 +144,8 @@ public class AlloyInstanceController {
         JSONObject xmlJSONObj = XML.toJSONObject(instanceContent);
 
         xmlJSONObj.append("specId", specId);
+        String tabularInstance = instance.format();
+        xmlJSONObj.append("tabularInstance", tabularInstance);
         String jsonPrettyPrintString = xmlJSONObj.toString(4);
         
         return jsonPrettyPrintString;
