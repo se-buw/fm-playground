@@ -21,12 +21,7 @@ import java.io.File;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.json.JSONObject;
@@ -77,8 +72,13 @@ public class AlloyInstanceController {
         A4Solution instance;
         SafeList<Sig> sigs = module.getAllSigs();
         try {
-            final Command finalRunCommand = runCommand;
-            instance = runTimed(() -> TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, sigs, finalRunCommand, options), TIME_OUT);            
+            Command finalRunCommand = runCommand;
+            instance = runTimed(new InstanceRunner() {
+                @Override
+                public A4Solution runInstance() {
+                    return TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, sigs, finalRunCommand, options);
+                }
+            }, TIME_OUT);
         } catch (Exception e) {
             // return error message as JSON with http status code 400
             JSONObject obj = new JSONObject();
@@ -148,7 +148,12 @@ public class AlloyInstanceController {
 
         try {
             final A4Solution finalInstance = instance;
-            instance = runTimed(() -> finalInstance.next(), TIME_OUT);
+            instance = runTimed(new InstanceRunner() {
+                @Override
+                public A4Solution runInstance() {
+                    return finalInstance.next();
+                }
+            }, TIME_OUT);
         } catch (Exception e) {
             JSONObject obj = new JSONObject();
             String message = e.getMessage();
@@ -190,22 +195,26 @@ public class AlloyInstanceController {
         instances.entrySet().removeIf(entry -> currentTime - entry.getValue().getLastAccessed() > 3600000);
     }
 
-    public A4Solution runTimed(Callable<A4Solution> callable, int seconds) throws Exception {        
-        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-        Future<A4Solution> task = executor.submit(callable);
-        A4Solution instance = null;
-        try {
-            instance = task.get(seconds, TimeUnit.SECONDS);
-        } catch(InterruptedException | TimeoutException e) {
-            task.cancel(true);
-            throw e;
-        } catch (ExecutionException e) {
-            throw e;
+    public A4Solution runTimed(InstanceRunner r, int seconds) throws InterruptedException, ExecutionException, TimeoutException {
+        Thread t = new Thread(r);
+        t.start();
+        Thread.sleep(seconds * 1000);
+        t.stop();
+        if (r.instance == null) {
+            throw new TimeoutException("Analysis timed out after " + seconds + " seconds.");
         }
+        return r.instance;
+    }
 
-        executor.shutdown();
+    private abstract class InstanceRunner implements Runnable {
+        private A4Solution instance;
 
-        return instance;
+        public abstract A4Solution runInstance();
+
+        @Override
+        public void run() {
+            instance = runInstance();        
+        }
     }
     
 }
