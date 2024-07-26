@@ -3,6 +3,7 @@ import { IconButton } from '@mui/material';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { TbBinaryTree } from "react-icons/tb";
 import { CiViewTable } from "react-icons/ci";
+import { CiTextAlignLeft } from "react-icons/ci";
 import {
   MDBBtn,
   MDBInput,
@@ -34,6 +35,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
   const [alloyTraceLoop, setAlloyTraceLoop] = useState('');
   const [lastInstance, setLastInstance] = useState([]);
   const [alloyTabularInstance, setAlloyTabularInstance] = useState('');
+  const [alloyTextInstance, setAlloyTextInstance] = useState('');
   const [activeTab, setActiveTab] = useState('graph');
 
   /**
@@ -109,6 +111,11 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
     if (alloyInstance && "tabularInstance" in alloyInstance) {
       setAlloyTabularInstance(alloyInstance["tabularInstance"][0]);
     }
+
+    // Tabular instance
+    if (alloyInstance && "textInstance" in alloyInstance) {
+      setAlloyTextInstance(alloyInstance["textInstance"][0]);
+    }
   }, [alloyInstance, alloyTraceIndex, isTemporal]);
 
   const handleNextInstance = () => {
@@ -153,6 +160,9 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
             <MDBTabsItem>
               <MDBTabsLink onClick={() => handleTabClick('tabular')} active={activeTab === 'tabular'}><CiViewTable /> Table</MDBTabsLink>
             </MDBTabsItem>
+            <MDBTabsItem>
+              <MDBTabsLink onClick={() => handleTabClick('text')} active={activeTab === 'text'}><CiTextAlignLeft /> Text</MDBTabsLink>
+            </MDBTabsItem>
           </MDBTabs>
 
           <MDBTabsContent>
@@ -165,6 +175,13 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
             <MDBTabsPane open={activeTab === 'tabular'}>
               <PlainOutput
                 code={alloyTabularInstance}
+                height={isFullScreen ? '80vh' : '57vh'}
+                onChange={() => { }} />
+            </MDBTabsPane>
+
+            <MDBTabsPane open={activeTab === 'text'}>
+              <PlainOutput
+                code={alloyTextInstance}
                 height={isFullScreen ? '80vh' : '57vh'}
                 onChange={() => { }} />
             </MDBTabsPane>
