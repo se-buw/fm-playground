@@ -4,9 +4,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.alloy4.Pos;
+import edu.mit.csail.sdg.alloy4.SafeList;
 import edu.mit.csail.sdg.ast.Command;
 import edu.mit.csail.sdg.ast.ExprConstant;
-import edu.mit.csail.sdg.ast.ExprVar;
+import edu.mit.csail.sdg.ast.Sig;
 import edu.mit.csail.sdg.parser.CompModule;
 import edu.mit.csail.sdg.parser.CompUtil;
 import edu.mit.csail.sdg.translator.A4Options;
@@ -20,6 +21,13 @@ import java.io.File;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import org.json.JSONObject;
 import org.json.XML;
@@ -32,12 +40,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 public class AlloyInstanceController {
 
+    public static int TIME_OUT = 60;
+
     static Map<String, StoredSolution> instances = new LinkedHashMap<>();
 
     public static A4Options getOptions() {
         A4Options opt = new A4Options();
-        String osName = System.getProperty("os.name").toLowerCase();
-        opt.solver = osName.contains("linux") ? A4Options.SatSolver.MiniSatJNI : A4Options.SatSolver.SAT4J;
+        // String osName = System.getProperty("os.name").toLowerCase();
+        // opt.solver = osName.contains("linux") ? A4Options.SatSolver.MiniSatJNI : A4Options.SatSolver.SAT4J;
+        opt.solver = A4Options.SatSolver.SAT4J;
         return opt;
       }
 
@@ -56,7 +67,7 @@ public class AlloyInstanceController {
             return obj.toString();
         }
 
-        Command runCommand = module.getAllCommands().get(cmd);
+        Command runCommand = module.getAllCommands().get(cmd);        
         if (cmd == 0 && hasDefaultCommand(module)) {
             runCommand = new Command(Pos.UNKNOWN, ExprConstant.TRUE, "FMPlayDefault", false, 4, 4, 4, -1, -1, -1, null, null, ExprConstant.TRUE, null);
         };
@@ -64,12 +75,18 @@ public class AlloyInstanceController {
         A4Options options = getOptions();
         // get the first instance of the Alloy file
         A4Solution instance;
+        SafeList<Sig> sigs = module.getAllSigs();
         try {
-            instance = TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, module.getAllSigs(), runCommand, options);            
+            final Command finalRunCommand = runCommand;
+            instance = runTimed(() -> TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, sigs, finalRunCommand, options), TIME_OUT);            
         } catch (Exception e) {
             // return error message as JSON with http status code 400
             JSONObject obj = new JSONObject();
-            obj.put("error", e.toString());
+            String message = e.getMessage();
+            if (e instanceof TimeoutException) {
+                message = "Analysis timed out after " + TIME_OUT + " seconds.";
+            } 
+            obj.put("error", message);
             obj.put("status", HttpStatus.BAD_REQUEST.value());
             return obj.toString();
         }
@@ -100,6 +117,8 @@ public class AlloyInstanceController {
         }
         String tabularInstance = instance.format();
         xmlJSONObj.append("tabularInstance", tabularInstance);
+        String textInstance = instance.toString();
+        xmlJSONObj.append("textInstance", textInstance);
         String jsonPrettyPrintString = xmlJSONObj.toString(4);
         
         return jsonPrettyPrintString;
@@ -127,7 +146,19 @@ public class AlloyInstanceController {
 
         A4Solution instance = storedSolution.getSolution();
 
-        instance = instance.next();
+        try {
+            final A4Solution finalInstance = instance;
+            instance = runTimed(() -> finalInstance.next(), TIME_OUT);
+        } catch (Exception e) {
+            JSONObject obj = new JSONObject();
+            String message = e.getMessage();
+            if (e instanceof TimeoutException) {
+                message = "Analysis timed out after " + TIME_OUT + " seconds.";
+            } 
+            obj.put("error", message);
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
         if (!instance.satisfiable()) {
             JSONObject obj = new JSONObject();
             obj.put("error", "No more instances");
@@ -146,8 +177,10 @@ public class AlloyInstanceController {
         xmlJSONObj.append("specId", specId);
         String tabularInstance = instance.format();
         xmlJSONObj.append("tabularInstance", tabularInstance);
+        String textInstance = instance.toString();
+        xmlJSONObj.append("textInstance", textInstance);
         String jsonPrettyPrintString = xmlJSONObj.toString(4);
-        
+
         return jsonPrettyPrintString;
     }
 
@@ -155,6 +188,24 @@ public class AlloyInstanceController {
     public void removeOlsInstances() {
         long currentTime = System.currentTimeMillis();
         instances.entrySet().removeIf(entry -> currentTime - entry.getValue().getLastAccessed() > 3600000);
+    }
+
+    public A4Solution runTimed(Callable<A4Solution> callable, int seconds) throws Exception {        
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        Future<A4Solution> task = executor.submit(callable);
+        A4Solution instance = null;
+        try {
+            instance = task.get(seconds, TimeUnit.SECONDS);
+        } catch(InterruptedException | TimeoutException e) {
+            task.cancel(true);
+            throw e;
+        } catch (ExecutionException e) {
+            throw e;
+        }
+
+        executor.shutdown();
+
+        return instance;
     }
     
 }
