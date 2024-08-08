@@ -37,6 +37,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
   const [alloyTabularInstance, setAlloyTabularInstance] = useState('');
   const [alloyTextInstance, setAlloyTextInstance] = useState('');
   const [activeTab, setActiveTab] = useState('graph');
+  const [isNextInstanceExecuting, setIsNextInstanceExecuting] = useState(false);
 
   /**
    * Update the Alloy instance in the state when the API response is received
@@ -119,13 +120,16 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
   }, [alloyInstance, alloyTraceIndex, isTemporal]);
 
   const handleNextInstance = () => {
+    setIsNextInstanceExecuting(true);
     getAlloyNextInstance(alloySpecId)
       .then((data) => {
         setAlloyInstance(data);
         setalloyTraceIndex(0);
+        setIsNextInstanceExecuting(false);
       })
       .catch((error) => {
         console.log(error);
+        setIsNextInstanceExecuting(false);
       });
   }
 
@@ -204,7 +208,10 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
               <MDBBtn
                 color="success"
                 onClick={handleNextInstance}
-              >{isTemporal ? "Next Trace" : "Next Instance"}
+                disabled={isNextInstanceExecuting}
+              >
+                {isNextInstanceExecuting ? "Computing..." : isTemporal ? "Next Trace" : "Next Instance"}
+                {/* {isTemporal ? "Next Trace" : "Next Instance"} */}
               </MDBBtn>
             }
             {isTemporal &&
