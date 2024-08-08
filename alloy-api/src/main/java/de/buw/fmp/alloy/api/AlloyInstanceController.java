@@ -21,7 +21,6 @@ import java.io.File;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import org.json.JSONObject;
@@ -36,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class AlloyInstanceController {
 
     public static int TIME_OUT = 60;
+    public static int MAX_RUNNING = 10;
+
+    protected static int running = 0;
 
     static Map<String, StoredSolution> instances = new LinkedHashMap<>();
 
@@ -79,13 +81,10 @@ public class AlloyInstanceController {
                     return TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, sigs, finalRunCommand, options);
                 }
             }, TIME_OUT);
-        } catch (Exception e) {
+        } catch (Throwable t) {
             // return error message as JSON with http status code 400
             JSONObject obj = new JSONObject();
-            String message = e.getMessage();
-            if (e instanceof TimeoutException) {
-                message = "Analysis timed out after " + TIME_OUT + " seconds.";
-            } 
+            String message = t.getMessage();
             obj.put("error", message);
             obj.put("status", HttpStatus.BAD_REQUEST.value());
             return obj.toString();
@@ -154,12 +153,9 @@ public class AlloyInstanceController {
                     return finalInstance.next();
                 }
             }, TIME_OUT);
-        } catch (Exception e) {
+        } catch (Throwable t) {
             JSONObject obj = new JSONObject();
-            String message = e.getMessage();
-            if (e instanceof TimeoutException) {
-                message = "Analysis timed out after " + TIME_OUT + " seconds.";
-            } 
+            String message = t.getMessage();
             obj.put("error", message);
             obj.put("status", HttpStatus.BAD_REQUEST.value());
             return obj.toString();
@@ -195,25 +191,42 @@ public class AlloyInstanceController {
         instances.entrySet().removeIf(entry -> currentTime - entry.getValue().getLastAccessed() > 3600000);
     }
 
-    public A4Solution runTimed(InstanceRunner r, int seconds) throws InterruptedException, ExecutionException, TimeoutException {
+    public A4Solution runTimed(InstanceRunner r, int seconds) throws Throwable {
+
+        if (running >= MAX_RUNNING) {
+            throw new RuntimeException("Too many instances running. Please try again later.");
+        }
         Thread t = new Thread(r);
         t.start();
-        Thread.sleep(seconds * 1000);
-        t.stop();
-        if (r.instance == null) {
+        
+        // wait for the thread to finish or timeout
+        running++;
+        t.join(seconds * 1000);
+        running--;
+
+        if (t.isAlive()) {            
+            t.stop();
             throw new TimeoutException("Analysis timed out after " + seconds + " seconds.");
+        }
+        if (r.instance == null) {
+            throw r.reasonForFailing;
         }
         return r.instance;
     }
 
     private abstract class InstanceRunner implements Runnable {
         private A4Solution instance;
+        private Throwable reasonForFailing;
 
         public abstract A4Solution runInstance();
 
         @Override
         public void run() {
-            instance = runInstance();        
+            try {                
+                instance = runInstance();
+            } catch (Throwable t) {
+                reasonForFailing = t;
+            }
         }
     }
     

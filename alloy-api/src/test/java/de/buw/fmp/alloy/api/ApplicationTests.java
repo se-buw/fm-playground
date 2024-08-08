@@ -1,5 +1,6 @@
 package de.buw.fmp.alloy.api;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -7,12 +8,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class ApplicationTests {
 
+	final String shortCode = "sig A {}";
 	final String longCode = "sig Person {spouse: Person, shaken: set Person}\r\n" + //
 				"one sig Jocelyn, Hilary extends Person {}\r\n" + //
 				"\r\n" + //
@@ -48,15 +51,20 @@ class ApplicationTests {
 				"run Puzzle for exactly 1000 Person, 15 int\r\n" + //
 				"";
 
+	@BeforeEach
+	void setUp() {
+		AlloyInstanceController.instances.clear();
+	}
+
 	@Test
 	void contextLoads() {
-		AlloyInstanceController.TIME_OUT = 10;
+		AlloyInstanceController.TIME_OUT = 5;
 
 		AlloyInstanceController controller = new AlloyInstanceController();
 		InstanceRequest request = new InstanceRequest();
 		// Command@73 "Run Default for 4 but 4 int, 4 seq expect 1"
 		// request.setCode("sig A {}");
-		request.setCode("sig A {}");
+		request.setCode(shortCode);
 		List<String> instanceList = new ArrayList<>();		
 		String result = "";
 		try {
@@ -85,7 +93,7 @@ class ApplicationTests {
 
 	@Test
 	void longRunningCodeTest() {
-		AlloyInstanceController.TIME_OUT = 10;
+		AlloyInstanceController.TIME_OUT = 5;
 		AlloyInstanceController controller = new AlloyInstanceController();
 		InstanceRequest request = new InstanceRequest();
 		request.setCode(longCode);
@@ -97,5 +105,128 @@ class ApplicationTests {
 		}
 		assertTrue(result.contains("error") && result.contains("timed out"));
 
+	}
+
+	@Test
+	void shortRunningCodeTest() {
+		AlloyInstanceController.TIME_OUT = 5;
+		AlloyInstanceController controller = new AlloyInstanceController();
+		InstanceRequest request = new InstanceRequest();
+		request.setCode(shortCode);
+		String result = "";
+		long start = System.currentTimeMillis();
+		try {
+			result = controller.getInstance(request, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		long duration = System.currentTimeMillis() - start;
+		assertTrue(duration < 2000);
+		assertFalse(result.contains("error"));
+	}
+
+	@Test
+	void lessThanMaxRunningTest() {
+		AlloyInstanceController.MAX_RUNNING = 10;
+		AlloyInstanceController.running = 0;
+		AlloyInstanceController controller = new AlloyInstanceController();
+		InstanceRequest request = new InstanceRequest();
+		request.setCode(shortCode);
+		String result = "";
+		try {
+			result = controller.getInstance(request, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertFalse(result.contains("error"));
+	}
+
+	
+	@Test
+	void moreThanMaxRunningTest() {
+		AlloyInstanceController.MAX_RUNNING = 10;
+		AlloyInstanceController.running = 10;
+		AlloyInstanceController controller = new AlloyInstanceController();
+		InstanceRequest request = new InstanceRequest();
+		request.setCode(shortCode);
+		String result = "";
+		try {
+			result = controller.getInstance(request, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertTrue(result.contains("error") && result.contains("Too many instances running."));
+	}
+
+	@Test
+	void updateRunningTest() {
+		AlloyInstanceController.MAX_RUNNING = 10;
+		AlloyInstanceController.running = 0;
+		AlloyInstanceController controller = new AlloyInstanceController();
+		InstanceRequest request = new InstanceRequest();
+		request.setCode(shortCode);
+		String result = "";		
+		try {
+			result = controller.getInstance(request, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertEquals(AlloyInstanceController.running, 0);
+
+		String specId = AlloyInstanceController.instances.keySet().iterator().next();
+		assertTrue(result.contains(specId));
+		try {
+			result = controller.getNextInstance(specId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertFalse(result.contains("error"));
+		assertEquals(AlloyInstanceController.running, 0);		
+	}
+
+	@Test
+	void updateRunningTimeoutTest() {
+		AlloyInstanceController.TIME_OUT = 1;
+		AlloyInstanceController.MAX_RUNNING = 10;
+		AlloyInstanceController.running = 0;
+
+		AlloyInstanceController controller = new AlloyInstanceController();
+		InstanceRequest request = new InstanceRequest();
+		request.setCode(longCode);
+		String result = "";
+		try {
+			result = controller.getInstance(request, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		assertTrue(result.contains("error") && result.contains("timed out"));
+		assertEquals(AlloyInstanceController.running, 0);
+
+	}
+
+
+	@Test
+	void increaseRunningTest() throws InterruptedException {
+		AlloyInstanceController.TIME_OUT = 2;
+		AlloyInstanceController.MAX_RUNNING = 10;
+		AlloyInstanceController.running = 0;
+
+		AlloyInstanceController controller = new AlloyInstanceController();
+		InstanceRequest request = new InstanceRequest();
+		request.setCode(longCode);
+		// execute get instance in a thread
+		Thread t = new Thread(() -> {
+			try {
+				controller.getInstance(request, 0);
+			} catch (Exception e) {
+				fail(e);
+			}
+		});
+		t.start();
+		// give it some time to get to Alloy execution
+		Thread.sleep(1000);
+		assertEquals(AlloyInstanceController.running, 1);
+		t.join();
+		assertEquals(AlloyInstanceController.running, 0);
 	}
 }
