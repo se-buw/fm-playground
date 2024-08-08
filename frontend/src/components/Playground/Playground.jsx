@@ -222,6 +222,10 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
           if (err.response.status === 503) {
             showErrorModal(err.response.data.result)
           }
+          else if (err.response.status === 429) {
+            showErrorModal("Slow down! You are making too many requests. Please try again later.")
+          }
+          setIsExecuting(false);
         })
       } else if (language.value == 6) {
         executeSpectra(editorValue, spectraCliOption)
@@ -276,7 +280,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
     const queryParams = new URLSearchParams(useLocation().search);
     const p = queryParams.get('p');
     const fileName = p ? p : 'code';
-    const fileExtension = language.short == 'SMT' ? 'smt2' : language.short == 'XMV' ? 'smv' : language.short == 'als' ? 'als' : 'txt';
+    const fileExtension = language.short == 'SMT' ? 'smt2' : language.short == 'XMV' ? 'smv' : language.short == 'SPECTRA' ? 'spectra' : language.short == 'als' ? 'als' : 'txt';
     return <FileDownload content={content} fileName={fileName} fileExtension={fileExtension} />;
   };
 
