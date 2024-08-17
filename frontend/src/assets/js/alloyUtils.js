@@ -1,6 +1,7 @@
 export function getGraphData(alloyInstance) {
   const nodes = new Set();
   const edges = [];
+  const subsetSigs = new Set();
 
   function getAtomsFromSig(d) {
     function searchNestedDict(d) {
@@ -27,6 +28,21 @@ export function getGraphData(alloyInstance) {
       }
     }
     searchNestedDict(d);
+
+    // Handle Subset sigs. Issue #9
+    const varSigs = d
+      .filter(item => item.var === "yes" && item.atom)
+      .flatMap(item => {
+        const atoms = Array.isArray(item.atom) ? item.atom : [item.atom];
+        return atoms.map(atomItem => ({
+          atom: atomItem.label.replace('$', ''),  // Remove the $ symbol
+          label: item.label,
+        }));
+      });
+    varSigs.forEach(item => {
+      subsetSigs.add(item);
+    });
+
   }
 
   function processField(field) {
@@ -116,6 +132,25 @@ export function getGraphData(alloyInstance) {
 
   const nodeList = Array.from(nodes).map(node => ({ "data": { "id": node, "label": node } }));
   const elements = nodeList.concat(edges);
+
+  // Handle Subset sigs. Issue #9
+  const atomLabelMap = new Map();
+  subsetSigs.forEach(item => {
+    // Group labels by atom
+    if (atomLabelMap.has(item.atom)) {
+      atomLabelMap.get(item.atom).push(item.label);
+    } else {
+      atomLabelMap.set(item.atom, [item.label]);
+    }
+  });
+  elements.forEach(element => {
+    const id = element.data.id;
+    if (atomLabelMap.has(id)) {
+      const labels = atomLabelMap.get(id);
+      // Update the element's label by concatenating all related labels
+      element.data.label = `${id} (${labels.join(', ')})`;
+    }
+  });
   return elements;
 }
 
@@ -123,7 +158,7 @@ export function parseAlloyErrorMessage(error) {
   let message = '';
   if (error.includes('error') && error.includes('.als') && error.includes('line')) {
     message = error.replace(/ in .+\.als/, '');
-  }else if (error.includes('The required JNI library cannot be found')) {
+  } else if (error.includes('The required JNI library cannot be found')) {
     message = 'The required JNI library cannot be found.';
   } else {
     message = error;
