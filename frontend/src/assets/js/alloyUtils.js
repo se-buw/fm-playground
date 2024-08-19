@@ -31,13 +31,19 @@ export function getGraphData(alloyInstance) {
 
     // Handle Subset sigs. Issue #9
     const varSigs = d
-      .filter(item => item.var === "yes" && item.atom)
+      .filter(item => item.atom)
       .flatMap(item => {
         const atoms = Array.isArray(item.atom) ? item.atom : [item.atom];
-        return atoms.map(atomItem => ({
-          atom: atomItem.label.replace('$', ''),  // Remove the $ symbol
-          label: item.label,
-        }));
+        return atoms
+          .filter(atomItem => 
+            // check if atom label contiains $ and item label contains /
+            !(String(atomItem.label).includes('$')) || !(item.label.includes('/')) || 
+            (atomItem.label.split('$')[0] !== item.label.split('/').pop())
+          )
+          .map(atomItem => ({
+            atom: (String(atomItem.label).includes('$')) ? atomItem.label.replace('$', '') : String(atomItem.label),
+            label: item.label,
+          }));
       });
     varSigs.forEach(item => {
       subsetSigs.add(item);
