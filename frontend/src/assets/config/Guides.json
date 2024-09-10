@@ -1,6 +1,14 @@
 {
   "limboole": [
     {
+      "title": "Validity Example",
+      "link": "https://play.formal-methods.net/?check=VAL&p=fringe-lapdog-scale-among"
+    },
+    {
+      "title": "Satisfiability Example",
+      "link": "https://play.formal-methods.net/?check=SAT&p=sloped-chair-yeast-vowed"
+    },
+    {
       "title": "How to use limboole",
       "link": "https://raw.githubusercontent.com/maximaximal/limboole/master/README"
     },
@@ -11,17 +19,17 @@
     {
       "title": "Lecture Slides on Moodle",
       "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
-    },
-    {
-      "title": "Validity Example",
-      "link": "https://play.formal-methods.net/?check=VAL&p=example-1"
-    },
-    {
-      "title": "Satisfiability Example",
-      "link": "https://play.formal-methods.net/?check=SAT&p=example-1"
     }
   ],
   "smt2": [
+    {
+      "title": "Example: Dog, Cat, Mouse",
+      "link": "https://play.formal-methods.net/?check=SMT&p=relock-clever-parcel-envy"
+    },
+    {
+      "title": "Example: Drinker's Paradox",
+      "link": "https://play.formal-methods.net/?check=SMT&p=unrest-viable-math-tall"
+    },
     {
       "title": "SMTLIB Tutorial",
       "link": "https://microsoft.github.io/z3guide/docs/logic/intro"
@@ -31,19 +39,15 @@
       "link": "https://smtlib.github.io/jSMTLIB/SMTLIBTutorial.pdf"
     },
     {
-      "title": "Example 1",
-      "link": "https://play.formal-methods.net/?check=SMT&p=example-1"
-    },
-    {
-      "title": "Example 2",
-      "link": "https://play.formal-methods.net/?check=SMT&p=example-2"
-    },
-    {
       "title": "Lecture Slides on Moodle",
       "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
     }
   ],
   "xmv": [
+    {
+      "title": "Example: Traffic",
+      "link": "https://play.formal-methods.net/?check=XMV&p=example-1"
+    },
     {
       "title": "NuSMV 2.6 Tutorial",
       "link": "https://nusmv.fbk.eu/tutorial/v26/tutorial.pdf"
@@ -51,13 +55,13 @@
     {
       "title": "NuSMV Manual",
       "link": "https://nusmv.fbk.eu/userman/v26/nusmv.pdf"
-    },
-    {
-      "title": "Example 1",
-      "link": "https://play.formal-methods.net/?check=XMV&p=example-1"
     }
   ],
   "als": [
+    {
+      "title": "Example: Traffic Light",
+      "link": "https://play.formal-methods.net/?check=ALS&p=bobble-payday-oboe-banana"
+    },
     {
       "title": "Alloy",
       "link": "https://alloytools.org/"
@@ -73,7 +77,7 @@
     {
       "title": "Tutorial for Alloy Analyzer 4.0",
       "link": "https://alloytools.org/tutorials/online/"
-    }
+    }    
   ],
   "spectra": [
     {
