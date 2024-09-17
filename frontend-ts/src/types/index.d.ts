@@ -19,3 +19,16 @@ interface Tool {
 interface AvailableTools {
   [key: string]: Tool;
 }
+
+interface PlaygroundMonacoEditorProps {
+  editorValue: string;
+  lineToHighlight?: number[];
+  editorTheme?: string;
+  language: {
+    id: string;
+  };
+}
+
+interface Window {
+  monaco: typeof monaco;
+}

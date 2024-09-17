@@ -6,49 +6,125 @@
       "dropdownLabel": "Limboole Validity",
       "dropdownValue": "0",
       "extension": ".limboole",
-      "shortName": "VAL"
+      "shortName": "VAL",
+
+      "language": {
+        "tokenProvider": {
+          "token": "limbooleLang",
+          "path": "../../assets/languages/limboole"
+        },
+        "languageConfiguration":{
+          "configuration": "limbooleConf",
+          "path": "../../assets/languages/limboole"
+        }
+      }
     },
     "limbooleSatisfiability": {
       "name": "Limboole",
       "dropdownLabel": "Limboole Satisfiability",
       "dropdownValue": "1",
       "extension": ".limboole",
-      "shortName": "SAT"
+      "shortName": "SAT",
+      "language": {
+        "tokenProvider": {
+          "token": "limbooleLang",
+          "path": "../../assets/languages/limboole"
+        },
+        "languageConfiguration":{
+          "configuration": "limbooleConf",
+          "path": "../../assets/languages/limboole"
+        }
+      }
     },
     "limbooleQBF": {
       "name": "Limboole",
       "dropdownLabel": "Limboole QBF Satisfiability",
       "dropdownValue": "2",
       "extension": ".limboole",
-      "shortName": "QBF"
+      "shortName": "QBF",
+      "language": {
+        "tokenProvider": {
+          "token": "limbooleLang",
+          "path": "../../assets/languages/limboole"
+        },
+        "languageConfiguration":{
+          "configuration": "limbooleConf",
+          "path": "../../assets/languages/limboole"
+        }
+      }
     },
     "smt": {
       "name": "SMT",
       "dropdownLabel": "SMT",
       "dropdownValue": "3",
       "extension": ".smt2",
-      "shortName": "SMT"
+      "shortName": "SMT",
+
+      "language": {
+        "tokenProvider": {
+          "token": "smt2Lang",
+          "path": "../../assets/languages/smt2"
+        },
+        "languageConfiguration":{
+          "configuration": "smt2Conf",
+          "path": "../../assets/languages/smt2"
+        }
+      }
     },
     "nuxmv": {
       "name": "nuXmv",
       "dropdownLabel": "nuXmv",
       "dropdownValue": "4",
       "extension": ".smv",
-      "shortName": "XMV"
+      "shortName": "XMV",
+
+      "language": {
+        "tokenProvider": {
+          "token": "nuxmvLang",
+          "path": "../../assets/languages/nuxmv"
+        },
+        "languageConfiguration":{
+          "configuration": "nuxmvConf",
+          "path": "../../assets/languages/nuxmv"
+        }
+      }
     },
     "alloy": {
       "name": "Alloy",
       "dropdownLabel": "Alloy",
       "dropdownValue": "5",
       "extension": ".als",
-      "shortName": "ALS"
+      "shortName": "ALS",
+
+      "language": {
+        "tokenProvider": {
+          "token": "alloyLang",
+          "path": "../../assets/languages/alloy"
+        },
+        "languageConfiguration":{
+          "configuration": "alloyConf",
+          "path": "../../assets/languages/alloy"
+        }
+      }
+
     },
     "spectra": {
       "name": "Spectra",
       "dropdownLabel": "Spectra",
       "dropdownValue": "6",
       "extension": ".spectra",
-      "shortName": "SPECTRA"
+      "shortName": "SPECTRA",
+
+      "language": {
+        "tokenProvider": {
+          "token": "spectraLang",
+          "path": "../../assets/languages/spectra"
+        },
+        "languageConfiguration":{
+          "configuration": "spectraConf",
+          "path": "../../assets/languages/spectra"
+        }
+      }
     }
   }
 }
