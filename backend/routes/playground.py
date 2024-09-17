@@ -307,7 +307,7 @@ def get_alloy_instance_by_cmd(cmd: int):
     return jsonify({'error': str(e)}), 500
   
 @routes.route('/api/getAlloyNextInstance', methods=['POST'])
-@limiter.limit("1/second")
+@limiter.limit("2/second")
 def get_alloy_next_instance():
   data = request.get_json()
   specId = data['specId']

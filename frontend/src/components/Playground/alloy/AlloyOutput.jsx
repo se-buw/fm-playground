@@ -34,6 +34,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
   const [alloyPlainMessage, setAlloyPlainMessage] = useState('');
   const [alloyTraceLoop, setAlloyTraceLoop] = useState('');
   const [lastInstance, setLastInstance] = useState([]);
+  const [isLastInstance, setIsLastInstance] = useState(false);
   const [alloyTabularInstance, setAlloyTabularInstance] = useState('');
   const [alloyTextInstance, setAlloyTextInstance] = useState('');
   const [activeTab, setActiveTab] = useState('graph');
@@ -46,6 +47,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
     setAlloyInstance(alloyInstance);
     setAlloySpecId(alloyInstance.specId);
     setalloyTraceIndex(0);
+    setIsLastInstance(false);
   }, [alloyInstance]);
 
   /**
@@ -123,6 +125,13 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
     setIsNextInstanceExecuting(true);
     getAlloyNextInstance(alloySpecId)
       .then((data) => {
+        if (data["error"] && data["error"].includes("No more instances")) {
+          setAlloyInstance(alloyInstance);
+          setIsLastInstance(true);
+          setalloyTraceIndex(0);
+          setIsNextInstanceExecuting(false);
+          return;
+        }
         setAlloyInstance(data);
         setalloyTraceIndex(0);
         setIsNextInstanceExecuting(false);
@@ -208,7 +217,7 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
               <MDBBtn
                 color="success"
                 onClick={handleNextInstance}
-                disabled={isNextInstanceExecuting}
+                disabled={isNextInstanceExecuting || isLastInstance}
               >
                 {isNextInstanceExecuting ? "Computing..." : isTemporal ? "Next Trace" : "Next Instance"}
                 {/* {isTemporal ? "Next Trace" : "Next Instance"} */}

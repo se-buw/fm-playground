@@ -9,19 +9,31 @@
 </div>
 
 
-# FM Playground
-
 A Formal Method playground for limboole, z3, nuXmv, Alloy, and Spectra. This project is a part of the  Formal Methods course at the Bauhaus-Universität Weimar. It is a web application that allows users to run formal methods tools in the browser. 
 
-## Requirements
+## Overview and Examples
+
+We started a small overview of the features of the FM Playground and how to use it. The video playlist is available on [YouTube](https://youtu.be/ItNVFcuxeCo)
+
+
+<div align="center">
+
+  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ItNVFcuxeCo/0.jpg)](https://youtu.be/ItNVFcuxeCo)
+
+</div>
+
+For more updates, examples, and tutorials, please visit the [formal-methods.net](https://formal-methods.net) website.
+
+## Development 
+
+### Requirements
 - Python >= 3.9.0
 - Node >= 18.0.0
-- PostgreSQL >= 15.0
+- PostgreSQL >= 15.0 (optional) - use sqlite3 for development
 - Docker >= 20.10.0 (optional)
 - Docker Compose >= 1.27.0 (optional)
 
 
-## Getting Started
 
 ### Installation
 
@@ -44,76 +56,6 @@ cp .env.example .env
 docker-compose up -d
 ```
 
-```yml
-version: '3'
-services:
-  frontend:
-    build: 
-      context: ./frontend
-      args:
-        VITE_FMP_API_URL: http://localhost:8000/api
-    container_name: fmp-frontend
-    env_file:
-      - .env
-    ports:
-      - "5173:5173"
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  backend:
-    build: 
-      context: ./backend
-    container_name: fmp-backend
-    env_file:
-      - .env
-    ports:
-      - "8000:8000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  postgres:
-    image: postgres:15.4
-    container_name: fmp-db
-    environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    env_file:
-          - .env
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-  alloy-api:
-    build:
-      context: ./alloy-api
-    container_name: fmp-alloy-api
-    ports:
-      - "8080:8080"
-    networks:
-      - my_network
-    restart: unless-stopped
-  
-
-volumes:
-  postgres_data:
-
-networks:
-  my_network:
-    driver: bridge
-```
 
 
 ## Contributing

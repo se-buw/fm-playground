@@ -31,7 +31,9 @@ const CytoscapeStylesheet = (uniqueRelationships) => {
         shape: 'roundrectangle',
         'text-valign': 'center',
         'text-halign': 'center',
-        label: 'data(label)',
+        'text-wrap': 'wrap',
+        'text-max-width': '80px', 
+        label: 'data(label)', 
       },
     },
     {
