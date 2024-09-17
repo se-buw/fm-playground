@@ -1,17 +1,54 @@
 {
-  "limboole": {
-    "name": "Limboole"
-  },
-  "smt": {
-    "name": "SMT"
-  },
-  "nuxmv": {
-    "name": "NuXMV"
-  },
-  "alloy": {
-    "name": "Alloy"
-  },
-  "spectra": {
-    "name": "Spectra"
+  "title": "FM Playground",
+  "tools": {
+    "limbooleValidity": {
+      "name": "Limboole",
+      "dropdownLabel": "Limboole Validity",
+      "dropdownValue": "0",
+      "extension": ".limboole",
+      "shortName": "VAL"
+    },
+    "limbooleSatisfiability": {
+      "name": "Limboole",
+      "dropdownLabel": "Limboole Satisfiability",
+      "dropdownValue": "1",
+      "extension": ".limboole",
+      "shortName": "SAT"
+    },
+    "limbooleQBF": {
+      "name": "Limboole",
+      "dropdownLabel": "Limboole QBF Satisfiability",
+      "dropdownValue": "2",
+      "extension": ".limboole",
+      "shortName": "QBF"
+    },
+    "smt": {
+      "name": "SMT",
+      "dropdownLabel": "SMT",
+      "dropdownValue": "3",
+      "extension": ".smt2",
+      "shortName": "SMT"
+    },
+    "nuxmv": {
+      "name": "nuXmv",
+      "dropdownLabel": "nuXmv",
+      "dropdownValue": "4",
+      "extension": ".smv",
+      "shortName": "XMV"
+    },
+    "alloy": {
+      "name": "Alloy",
+      "dropdownLabel": "Alloy",
+      "dropdownValue": "5",
+      "extension": ".als",
+      "shortName": "ALS"
+    },
+    "spectra": {
+      "name": "Spectra",
+      "dropdownLabel": "Spectra",
+      "dropdownValue": "6",
+      "extension": ".spectra",
+      "shortName": "SPECTRA"
+    }
   }
 }
