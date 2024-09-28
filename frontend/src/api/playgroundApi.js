@@ -2,6 +2,7 @@ import axios from "axios";
 import axiosAuth from "./axiosAuth";
 
 const API_URL = import.meta.env.VITE_FMP_API_URL
+const FMP_VERSION = import.meta.env.VITE_FMP_VERSION
 
 export default axios.create({
   withCredentials: true,
@@ -61,6 +62,7 @@ export async function getCodeById(id) {
  * @param {*} code
  * @param {*} check
  * @returns permalink
+ * // FIXME: Probably we don't need this anymore. We can use saveCodeWithMetadata instead
  */
 export async function saveCode(code, check, parent) {
   let url = `${API_URL}/save`;
@@ -83,7 +85,11 @@ export async function saveCode(code, check, parent) {
  */
 export async function saveCodeWithMetadata(code, check, parent, metadata) {
   let url = `${API_URL}/save-with-meta`;
-  let meta = `{cmd: ${metadata}}`;
+  const md = {
+    ...metadata,
+    "fmp-version": FMP_VERSION
+  }
+  let meta = JSON.stringify(md);
   try {
     const response = await axiosAuth.post(url, { code, check, parent, meta });
     if (response.status === 200) {

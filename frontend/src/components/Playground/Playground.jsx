@@ -23,8 +23,7 @@ import MessageModal from '../Utils/Modals/MessageModal.jsx';
 import SpectraCliOptions from './SpectraCliOptions.jsx';
 import {
   getCodeByParmalink,
-  saveCode,
-  saveCodeWithMetadata
+  saveCodeWithMetadata,
 } from '../../api/playgroundApi.js'
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
@@ -138,11 +137,13 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       setIsExecuting(true);
       let response;
       if (language.id === 'spectra') {
-        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, spectraCliOption)
+        const metadata = { 'cli_option': spectraCliOption }
+        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, metadata)
       } else if (language.id === 'als') {
-        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, (alloySelectedCmd + 1))
+        const metadata = { 'cmd': alloySelectedCmd + 1}
+        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, metadata)
       } else {
-        response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null)
+        response = await saveCodeWithMetadata(editorValue, language.short, permalink.permalink ? permalink.permalink : null, null)
       }
 
       if (response) {

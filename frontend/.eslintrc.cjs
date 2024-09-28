@@ -21,5 +21,6 @@ module.exports = {
     'no-unused-vars': 'off', // Disable the no-unused-vars rule
     'react-hooks/rules-of-hooks': 'off', // Disable the rule globally
     'no-control-regex': 'off', // Disable the no-control-regex rule
+    'no-useless-catch': 'off', // Disable the no-useless-catch rule
   },
 }
