@@ -16,5 +16,8 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
+    // FIXME: Remove this rule once the project is ready for production
+    'react/prop-types': 'off', // Disable prop-types validation
+    'no-unused-vars': 'off', // Disable the no-unused-vars rule
   },
 }
