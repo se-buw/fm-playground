@@ -209,10 +209,10 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
               </MDBNavbarNav>
             </MDBCollapse>
           </MDBContainer>
-
-          <div className='toggle-icon'>
+          {/* FIXME: Enable Dark mode once moved all the LSP */}
+          {/* <div className='toggle-icon'>
             <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-          </div>
+          </div> */}
           <FaGithub
             size={40}
             className='github-icon'

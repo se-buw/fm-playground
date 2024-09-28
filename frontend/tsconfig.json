@@ -2,18 +2,21 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
     "jsx": "react-jsx",
     "allowJs": true,
     "checkJs": false,
-    "isolatedModules": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "build"]
+  // "exclude": ["node_modules", "build"]
 }

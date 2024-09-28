@@ -6,6 +6,7 @@ import { IconButton, Stack } from '@mui/material';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { Tooltip } from 'react-tooltip'
 import Editor from './Editor.jsx'
+import LimbooleEditor from './LimbooleEditor';
 import PlainOutput from './PlainOutput.jsx'
 import Tools from './Tools.jsx'
 import Options from '../../assets/config/AvailableTools.js'
@@ -455,16 +456,25 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                 </div>
               </div>
             </div>
-            <Editor
-              height={isFullScreen ? '80vh' : '60vh'}
-              setEditorValue={setEditorValue}
-              editorValue={editorValue}
-              language={language}
-              setLanguage={setLanguage}
-              lineToHighlight={lineToHighlight}
-              setLineToHighlight={handleLineHighlight}
-              editorTheme={editorTheme}
-            />
+            {language.id === 'limboole' ?
+              <LimbooleEditor 
+                height={isFullScreen ? '80vh' : '60vh'}
+                setEditorValue={setEditorValue}
+                editorValue={editorValue}
+                editorTheme={editorTheme}
+              />
+              :
+              <Editor
+                height={isFullScreen ? '80vh' : '60vh'}
+                setEditorValue={setEditorValue}
+                editorValue={editorValue}
+                language={language}
+                setLanguage={setLanguage}
+                lineToHighlight={lineToHighlight}
+                setLineToHighlight={handleLineHighlight}
+                editorTheme={editorTheme}
+              />
+            }
             {language.id === 'spectra' &&
               <SpectraCliOptions
                 setSpectraCliOption={setSpectraCliOption}
