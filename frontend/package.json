@@ -44,6 +44,7 @@
     "z3-solver": "^4.12.2"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.9",
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.2.0",

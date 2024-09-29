@@ -16,22 +16,28 @@ import { getHistoryByPage, searchUserHistory, getCodeById } from '../../api/play
 import '../../assets/style/Drawer.css';
 import '../../assets/style/Playground.css';
 
-/**
- * Display a drawer with the user's history. 
- * @param {*} isOpen - The state of the drawer
- * @param {*} onClose - The callback function to close the drawer
- * @param {*} onItemSelect - The callback function to select an item from the drawer
- * @returns 
- */
-const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
-  const [data, setData] = useState([]); // contains the user history 
+interface DrawerComponentProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onItemSelect: (check: string, permalink: string, code: string) => void;
+}
+
+const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onItemSelect }) => {
+  interface HistoryItem {
+    id: number;
+    time: string;
+    check: string;
+    code: string;
+  }
+  
+  const [data, setData] = useState<HistoryItem[]>([]); // contains the user history 
   const [page, setPage] = useState(1); // contains the current page number for history pagination
   const [loading, setLoading] = useState(false); // contains the loading state for history pagination
   const [pinned, setPinned] = useState(false); // contains the pinned state for the drawer
   const [hasMoreData, setHasMoreData] = useState(true); // contains the state for checking if there's more data to fetch
-  const [searchData, setSearchData] = useState([]); // contains the search data
+  const [searchData, setSearchData] = useState<HistoryItem[]>([]); // contains the search data
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(''); // contains the debounced search query
-  const [selectedItemId, setSelectedItemId] = useState(null); // contains the selected item id. This is used to highlight the selected item of the history
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null); // contains the selected item id. This is used to highlight the selected item of the history
   const drawerRef = useRef(null);
 
   /**
@@ -41,7 +47,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * @param {number} pageNumber - The page number to fetch
    * @returns {void}
    */
-  const fetchData = async (pageNumber) => {
+  const fetchData = async (pageNumber: number): Promise<void> => {
     if (loading || !hasMoreData) {
       return;
     }
@@ -86,7 +92,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
             setSearchData((prevData) => [...prevData, ...res.history]);
           }
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           console.log(err)
         })
     } catch (error) {
@@ -99,7 +105,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
   /**
    * Fetches the user history with search query from the API.
    */
-  const searchDataFetch = async (pageNumber) => {
+  const searchDataFetch = async (pageNumber: number) => {
     debouncedSearchDataFetch(debouncedSearchQuery, pageNumber);
   };
 
@@ -109,7 +115,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * @param {object} event - The event object
    * @returns {void}
   */
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const newSearchQuery = event.target.value;
     setDebouncedSearchQuery(newSearchQuery);
     setPage(1);
@@ -144,16 +150,16 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
    * @returns {void}
    * @todo Add error handling
   */
-  const handleItemClick = async (itemId, check) => {
+  const handleItemClick = async (itemId: number, check: string) => {
     try {
       await getCodeById(itemId)
-        .then((res) => {
+        .then((res: { check: string; permalink: string; code: string }) => {
           const itemContent = res;
           onItemSelect(itemContent.check, itemContent.permalink, itemContent.code);
           onClose();
           setSelectedItemId(itemId);
         })
-        .catch((err) => {
+        .catch((err: unknown) => {
           console.log(err)
         })
     } catch (error) {
@@ -248,7 +254,7 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
       open={isOpen}
       onClose={onClose}
       ModalProps={{ disableScrollLock: true }}
-      width={300}
+      // width={300} // FIXME: Remove if no issue found
       sx={{
         flexShrink: 0,
         '& .MuiDrawer-paper': {
@@ -298,16 +304,18 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
           {debouncedSearchQuery
             ? uniqueSearchData
               .map((item, index) => (
-                <React.Fragment key={item.id}>
+                <React.Fragment key={item?.id}>
                   <ListItem disablePadding>
                     <ListItemButton
-                      selected={selectedItemId === item.id}
-                      onClick={() => handleItemClick(item.id, item.check)}>
+                      selected={item && selectedItemId === item.id}
+                      onClick={() => item && handleItemClick(item.id, item.check)}>
                       <div>
                         <Typography variant="subtitle1">
-                          {item.time} - <span style={{ color: 'gray' }}>{item.check}</span>
+                          {item && `${item.time} -`} <span style={{ color: 'gray' }}>{item?.check}</span>
                         </Typography>
-                        <Typography variant="subtitle1"> <code>{item.code}</code></Typography>
+                        {item && (
+                          <Typography variant="subtitle1"> <code>{item.code}</code></Typography>
+                        )}
                       </div>
                     </ListItemButton>
                   </ListItem>
@@ -315,17 +323,17 @@ const DrawerComponent = ({ isOpen, onClose, onItemSelect }) => {
                 </React.Fragment>
               ))
             : uniqueData.map((item, index) => (
-              <React.Fragment key={item.id}>
+              <React.Fragment key={item?.id}>
                 <ListItem disablePadding>
                   <ListItemButton
-                    selected={selectedItemId === item.id}
-                    onClick={() => handleItemClick(item.id, item.check)}>
+                    selected={selectedItemId === item?.id}
+                    onClick={() => item && handleItemClick(item.id, item.check)}>
                     <div>
                       <Typography variant="subtitle1">
-                        {item.time} - <span style={{ color: 'gray' }}>{item.check}</span>
+                        {item?.time} - <span style={{ color: 'gray' }}>{item?.check}</span>
                       </Typography>
 
-                      <Typography variant="subtitle1"> <code>{item.code}</code></Typography>
+                      <Typography variant="subtitle1"> <code>{item?.code}</code></Typography>
                     </div>
                   </ListItemButton>
                 </ListItem>
