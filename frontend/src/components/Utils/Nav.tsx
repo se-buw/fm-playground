@@ -26,15 +26,19 @@ import SessionExpiredModal from './Modals/SessionExpiredModal'
 import '../../assets/style/Nav.css';
 import Toggle from './Toggle';
 
-/**
- * Display the header and navigation bar.
- * @param {*} setEditorValue - The callback function to set the code in the Editor.
- * @param {*} setLanguage - The callback function to set the language in the Editor. 
- * @returns 
- */
-export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIsDarkTheme }) {
-  const isMobile = window.innerWidth = window.matchMedia('(max-width: 767px)').matches;
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+
+interface NavbarProps {
+  setEditorValue: (value: string) => void;
+  setLanguage: (language: any) => void; // Replace 'any' with the appropriate type if known
+  isDarkTheme: boolean;
+  setIsDarkTheme: (value: boolean) => void;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ setEditorValue, setLanguage, isDarkTheme, setIsDarkTheme }) => {
+  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  const authContext = useContext(AuthContext);
+  const isLoggedIn = authContext?.isLoggedIn ?? false;
+  const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => {});
   const [openNavRight, setOpenNavRight] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -117,15 +121,17 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
    * @param {*} permalink - The for the specification.
    * @param {*} code - Specification code.
    */
-  const handleDrawerItemClick = (check, permalink, code) => {
+  const handleDrawerItemClick = (check: string, permalink: string, code: string) => {
     setEditorValue(code);
     setLanguage(Options.find(option => option.short === check));
-    window.history.pushState(null, null, `/?check=${check}&p=${permalink}`);
+    window.history.pushState(null, '', `/?check=${check}&p=${permalink}`);
     // Clean the output area when a new item is loaded from the history. 
     // FIXME: Better approach would be to handle this using useState hook in the Output component.
     //But limboole is setting the output from web-assembly. We need to handle this when we refactor the code for Alloy.
     const info = document.getElementById("info");
-    info.innerText = "";
+    if (info) {
+      info.innerText = "";
+    }
   };
 
   const openModal = () => setIsModalOpen(true);
@@ -231,3 +237,5 @@ export default function Navbar({ setEditorValue, setLanguage, isDarkTheme, setIs
     </div>
   );
 }
+
+export default Navbar;

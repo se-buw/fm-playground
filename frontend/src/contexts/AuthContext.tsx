@@ -45,11 +45,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   )
 }
 
-AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
-}
-
-
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
