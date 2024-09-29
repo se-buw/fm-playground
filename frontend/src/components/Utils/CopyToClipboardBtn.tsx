@@ -1,21 +1,20 @@
-/**
- * @file CopyToClipboardBtn.jsx
- * @description CopyToClipboardBtn.jsx is a button that copies the permalink to the clipboard
- * @param {Object} permalink - The permalink object that contains the check and permalink parameters
- * @returns {JSX.Element} - Rendered CopyToClipboardBtn.jsx component
- */
-
 import React from 'react';
 import { Snackbar } from '@mui/material'
 import { useState } from 'react'
-import { FaShareNodes  } from "react-icons/fa6";
+import { FaShareNodes } from "react-icons/fa6";
 import '../../assets/style/Playground.css';
 
 
+interface CoopyToClipboardBtnProps {
+  permalink: {
+    check: string;
+    permalink: string;
+  }
+}
 
-const CopyToClipboardBtn = ({ permalink }) => {
+const CopyToClipboardBtn: React.FC<CoopyToClipboardBtnProps> = ({ permalink }) => {
   const [open, setOpen] = useState(false);
-  const [snackbarPosition, setSnackbarPosition] = useState({ vertical: 'top', horizontal: 'center' });
+  const [snackbarPosition, setSnackbarPosition] = useState<{ vertical: 'top' | 'bottom'; horizontal: 'left' | 'center' | 'right' }>({ vertical: 'top', horizontal: 'center' });
   const [snackbarMessage, setSnackbarMessage] = useState('Copied to clipboard');
 
   /**
@@ -38,7 +37,7 @@ const CopyToClipboardBtn = ({ permalink }) => {
 
   return (
     <>
-      <FaShareNodes 
+      <FaShareNodes
         role='button'
         className='playground-icon'
         onClick={handleCopyClick}
