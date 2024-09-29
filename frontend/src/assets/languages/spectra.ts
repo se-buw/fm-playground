@@ -1,4 +1,6 @@
-const spectraConf = {
+import * as monaco from 'monaco-editor';
+
+const spectraConf: monaco.languages.LanguageConfiguration = {
   comments: {
     lineComment: "//",
   },
@@ -16,7 +18,7 @@ const spectraConf = {
 };
 
 /* Spectra language definition (borrowed from monaco editor languages) */
-const spectraLang = {
+const spectraLang : monaco.languages.IMonarchLanguage= {
 
   // Set defaultToken to invalid to see what you do not tokenize yet
   // defaultToken: 'invalid',
@@ -54,9 +56,9 @@ const spectraLang = {
   ],
 
   brackets: [
-    ['(', ')', 'delimiter.parenthesis'],
-    ['{', '}', 'delimiter.curly'],
-    ['[', ']', 'delimiter.square']
+    { open: '(', close: ')', token: 'delimiter.parenthesis'},
+    { open: '{', close: '}', token: 'delimiter.curly'},
+    { open: '[', close: ']', token: 'delimiter.square'}
   ],
 
   // we include these common regular expressions

@@ -7,16 +7,27 @@ import { alloyConf, alloyLang } from '../../assets/languages/alloy'
 import { spectraConf, spectraLang } from '../../assets/languages/spectra';
 import '../../assets/style/Playground.css'
 
-/**
- * Code editor component.
- * @param {*} props 
- * @returns 
- */
-const CodeEditor = (props) => {
-  const editorRef = useRef(null) // editor reference
+import * as monacoEditor from 'monaco-editor';
+import type { LanguageProps } from './Tools';
+
+interface BasicCodeEditorProps {
+  height: string;
+  setEditorValue: (value: string) => void;
+  editorValue: string;
+  language: LanguageProps
+  setLanguage: (language: LanguageProps) => void;
+  lineToHighlight: number[];
+  setLineToHighlight: (line: number[]) => void;
+  editorTheme: string;
+}
+
+const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps) => {
+  
+  
+  const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null); // editor reference
   const [internalEditorValue, setInternalEditorValue] = useState(props.editorValue);
   const [language, setLanguage] = useState(props.language.id);
-  const [decorationIds, setDecorationIds] = useState([]);
+  const [decorationIds, setDecorationIds] = useState<string[]>([]);
 
   /**
   * Sets the editor value when the editorValue prop changes.
@@ -64,7 +75,7 @@ const CodeEditor = (props) => {
    * @param {*} monaco  
    * @todo Add autocomplete for the languages (monaco.languages.registerCompletionItemProvider)
    */
-  function handleEditorDidMount(editor, monaco) {
+  function handleEditorDidMount(editor: monacoEditor.editor.IStandaloneCodeEditor, monaco: typeof monacoEditor) {
     editorRef.current = editor
     editorRef.current.focus()
     // register limboole language
@@ -109,7 +120,7 @@ const CodeEditor = (props) => {
   }
 
   useEffect(() => {
-    if(editorRef.current){
+    if (editorRef.current) {
       handleEditorDidMount(editorRef.current, window.monaco)
     }
   }, [props.editorTheme]);

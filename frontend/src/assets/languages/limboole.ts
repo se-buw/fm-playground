@@ -1,4 +1,6 @@
-const limbooleConf = {
+import * as monacoEditor from 'monaco-editor';
+
+const limbooleConf: monacoEditor.languages.LanguageConfiguration = {
   comments: {
     lineComment: "%",
   },
@@ -11,7 +13,7 @@ const limbooleConf = {
   ],
 };
 
-const limbooleLang = {
+const limbooleLang: monacoEditor.languages.IMonarchLanguage = {
 
   operators: [
     '<->', '->', '<-', '&','|', '/', '!',

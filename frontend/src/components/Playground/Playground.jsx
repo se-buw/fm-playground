@@ -5,7 +5,7 @@ import { FaFileCirclePlus } from "react-icons/fa6";
 import { IconButton, Stack } from '@mui/material';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { Tooltip } from 'react-tooltip'
-import Editor from './Editor.jsx'
+import Editor from './Editor';
 import LimbooleEditor from './LimbooleEditor';
 import PlainOutput from './PlainOutput';
 import Tools from './Tools';

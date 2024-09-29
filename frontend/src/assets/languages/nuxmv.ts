@@ -1,6 +1,8 @@
-const alloyConf = {
+import * as monaco from 'monaco-editor';
+
+const nuxmvConf: monaco.languages.LanguageConfiguration = {
   comments: {
-    lineComment: "//",
+    lineComment: "--",
   },
   brackets: [['{', '}'], ['[', ']'], ['(', ')']],
   autoClosingPairs: [
@@ -13,21 +15,26 @@ const alloyConf = {
     { open: '[', close: ']' },
     { open: '(', close: ')' }
   ],
-}
+};
 
-const alloyLang = {
+
+const nuxmvLang: monaco.languages.IMonarchLanguage = {
 
   keywords: [
-    'one', 'lone', 'none', 'some', 'abstract', 'all', 'iff', 'but', 'else', 'extends', 'set', 'implies', 
-    'module', 'open', 'and', 'disj', 'for', 'in', 'no', 'or', 'as', 'Int', 'String', 'sum', 'exactly', 
-    'iden', 'let', 'not', 'univ', 'enum', 'var', 'steps', 'always', 'historically', 'eventually', 'once', 
-    'after', 'before', 'until', 'since', 'releases', 'triggered', 'check', 'fact', 'sig', 'fun', 'pred', 
-    'assert', 'run',
+    '@F~', '@O~', 'A', 'ABF', 'ABG', 'abs', 'AF', 'AG', 'array','ASSIGN', 'at next', 'at last', 'AX, bool',
+    'boolean', 'BU', 'case', 'Clock', 'clock', 'COMPASSION', 'COMPID', 'COMPUTE', 'COMPWFF', 'CONSTANTS',
+    'CONSTARRAY','CONSTRAINT', 'cos', 'count', 'CTLSPEC', 'CTLWFF', 'DEFINE', 'E', 'EBF', 'EBG', 'EF', 'EG', 'esac',
+    'EX', 'exp', 'extend', 'F', 'FAIRNESS', 'FALSE', 'floor', 'FROZENVAR', 'FUN', 'G', 'H', 'IN', 'in', 'INIT', 'init',
+    'Integer', 'integer', 'INVAR', 'INVARSPEC', 'ISA', 'ITYPE', 'IVAR', 'JUSTICE', 'ln', 'LTLSPEC', 'LTLWFF',
+    'MAX', 'max', 'MDEFINE', 'MIN', 'min', 'MIRROR', 'mod', 'MODULE', 'NAME', 'next', 'NEXTWFF', 'noncontinuous',
+    'O', 'of', 'PRED', 'PREDICATES', 'pi', 'pow', 'PSLSPEC', 'PARSYNTH', 'READ', 'Real', 'real', 'resize', 'S', 'SAT',
+    'self', 'signed', 'SIMPWFF', 'sin', 'sizeof', 'SPEC', 'swconst', 'T', 'tan', 'time', 'time since', 'time until',
+    'toint', 'TRANS', 'TRUE', 'typeof', 'U', 'union', 'unsigned', 'URGENT', 'uwconst', 'V', 'VALID', 'VAR', 'Word',
+    'word', 'word1', 'WRITE', 'X', 'xnor', 'xor', 'X~ Y', 'Y~', 'Z'
   ],
 
   operators: [
-    '=>', '<=>', '++', '=<', '->', '>=', '||', '<:', ':>', '&&', '!=', '+', '-', '&', '.', '~', '*', '^',
-    '!', '#',
+    '=', '>', '<', '<=', '>=', '!=',
   ],
 
   // we include these common regular expressions
@@ -70,9 +77,9 @@ const alloyLang = {
 
     comment: [
       [/[^\/*]+/, 'comment' ],
-      [/\/\*/,    'comment', '@push' ],    // nested comment
-      ["\\*/",    'comment', '@pop'  ],
-      [/[\/*]/,   'comment' ]
+      [/\/\--/,    'comment', '@push' ], // nested comments
+      ["\\/",    'comment', '@pop'  ],
+      [/[\/*]/,   'comment' ],
     ],
 
     string: [
@@ -83,12 +90,12 @@ const alloyLang = {
     ],
 
     whitespace: [
-      [/[ \t\r\n]+/, 'white'],
-      [/\/\*/,       'comment', '@comment' ],
-      [/\/\/.*$/,    'comment'],
+      [/[ \t\v\f\r\n]+/, 'white'],
+      [/\/\--/,       'comment', '@comment' ],
       [/\s*--.*$/,    'comment'],
     ],
   },
 };
 
-export { alloyConf, alloyLang };
+
+export { nuxmvConf, nuxmvLang };

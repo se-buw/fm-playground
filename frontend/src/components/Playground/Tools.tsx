@@ -4,7 +4,7 @@ import '../../assets/style/Playground.css'
 
 import Select from 'react-select';
 
-interface LanguageProps {
+export type LanguageProps = {
   id: string;
   value: string;
   label: string;

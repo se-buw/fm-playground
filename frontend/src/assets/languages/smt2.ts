@@ -1,4 +1,6 @@
-const smt2Conf = {
+import * as monaco from 'monaco-editor';
+
+const smt2Conf: monaco.languages.LanguageConfiguration = {
   comments: {
     lineComment: ";",
   },
@@ -12,7 +14,7 @@ const smt2Conf = {
 };
 
 /* SMT2 language definition (borrowed from monaco editor languages) */
-const smt2Lang = {
+const smt2Lang: monaco.languages.IMonarchLanguage = {
 
   // Set defaultToken to invalid to see what you do not tokenize yet
   // defaultToken: 'invalid',
@@ -44,9 +46,9 @@ const smt2Lang = {
   ],
 
   brackets: [
-    ['(',')','delimiter.parenthesis'],
-    ['{','}','delimiter.curly'],
-    ['[',']','delimiter.square']
+    { open: '(', close: ')', token: 'delimiter.parenthesis' },
+    { open: '{', close: '}', token: 'delimiter.curly'},
+    { open: '[', close: ']', token: 'delimiter.square'}
   ],
 
   // we include these common regular expressions
@@ -114,7 +116,7 @@ const smt2Lang = {
   },
 };
 
-function createDependencyProposals(range) {
+function createDependencyProposals(range: monaco.Range): monaco.languages.CompletionItem[] {
 	// returning a static list of proposals, not even looking at the prefix (filtering is done by the Monaco editor),
 	// here you could do a server side lookup
 	return [
@@ -172,14 +174,15 @@ function createDependencyProposals(range) {
 
 const smt2ComplitionProvider = {
   // triggerCharacters: ['=', '&gt;', '&lt;', '&lt;=', '&gt;=', '=&gt;', '+', '-', '*', '/'],
-  provideCompletionItems: function(model, position) {
+  provideCompletionItems: function(model: monaco.editor.ITextModel, 
+    position: monaco.Position): monaco.languages.CompletionList {
       var word = model.getWordUntilPosition(position);
-      var range = {
-          startLineNumber: position.lineNumber,
-          endLineNumber: position.lineNumber,
-          startColumn: word.startColumn,
-          endColumn: word.endColumn
-      };
+      var range = new monaco.Range(
+          position.lineNumber,
+          word.startColumn,
+          position.lineNumber,
+          word.endColumn
+      );
       return {
           suggestions: createDependencyProposals(range)
       };
