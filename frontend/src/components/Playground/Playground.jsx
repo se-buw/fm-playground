@@ -18,7 +18,7 @@ import runZ3WASM from '../../assets/js/runZ3WASM.js';
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
 import ConfirmModal from '../Utils/Modals/ConfirmModal';
-import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.jsx';
+import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice';
 import MessageModal from '../Utils/Modals/MessageModal';
 import SpectraCliOptions from './SpectraCliOptions.jsx';
 import {

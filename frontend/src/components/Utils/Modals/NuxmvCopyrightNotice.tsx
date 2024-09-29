@@ -10,19 +10,14 @@ import {
   MDBModalFooter,
 } from "mdb-react-ui-kit";
 
-/**
- * This component displays the Nuxmv CopyRight Notice.
- * According to the Nuxmv License, this notice must be displayed to the user.
- * @see {@link https://nuxmv.fbk.eu/downloads/LICENSE.txt} § 1
- * ... That you will not remove any Copyright or other notices from the Software.
- * We separate this notice from the output area to prettify the output.
- * User can still see the notice by clicking the "Nuxmv CopyRight Notice" button.
- * @param isNuxmvModalOpen - A boolean value that indicates whether the Nuxmv CopyRight Notice is open or not.
- * @param setIsNuxmvModalOpen - A function that sets the value of isNuxmvModalOpen.
- * @param toggleNuxmvModal - A function that toggles the value of isNuxmvModalOpen.
- * @returns A React Fragment that displays the Nuxmv CopyRight Notice.
- */
-const NuxmvCopyrightNotice = ({
+
+interface NuxmvCopyrightNoticeProps {
+  isNuxmvModalOpen: boolean;
+  setIsNuxmvModalOpen: (value: boolean) => void;
+  toggleNuxmvModal: () => void;
+}
+
+const NuxmvCopyrightNotice: React.FC<NuxmvCopyrightNoticeProps> = ({
   isNuxmvModalOpen,
   setIsNuxmvModalOpen,
   toggleNuxmvModal,
