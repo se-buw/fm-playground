@@ -10,8 +10,16 @@ import {
   MDBModalFooter,
 } from "mdb-react-ui-kit";
 
+interface MessageModalProps {
+  isErrorMessageModalOpen: boolean;
+  setIsErrorMessageModalOpen: (value: boolean) => void;
+  toggleErrorMessageModal: () => void;
+  title: string;
+  errorMessage: string;
+}
 
-const MessageModal = ({
+
+const MessageModal: React.FC<MessageModalProps> = ({
   isErrorMessageModalOpen,
   setIsErrorMessageModalOpen,
   toggleErrorMessageModal,

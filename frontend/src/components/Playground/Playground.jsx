@@ -19,7 +19,7 @@ import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
 import ConfirmModal from '../Utils/Modals/ConfirmModal';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.jsx';
-import MessageModal from '../Utils/Modals/MessageModal.jsx';
+import MessageModal from '../Utils/Modals/MessageModal';
 import SpectraCliOptions from './SpectraCliOptions.jsx';
 import {
   getCodeByParmalink,
