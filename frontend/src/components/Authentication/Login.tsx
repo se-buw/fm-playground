@@ -1,4 +1,3 @@
-import React, { useContext } from 'react';
 import {
   MDBBtn,
   MDBContainer,
@@ -7,12 +6,9 @@ import {
   MDBIcon
 }
   from 'mdb-react-ui-kit';
-import AuthContext from '../../contexts/AuthContext';
 import '../../assets/style/Login.css';
 
 function Login() {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
-
   function handleGoogleLogin() {
     window.open(`${import.meta.env.VITE_FMP_API_URL}/login/google`, '_self')
   }
