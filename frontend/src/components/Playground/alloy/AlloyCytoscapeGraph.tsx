@@ -2,11 +2,16 @@ import React, {useEffect, useState} from 'react'
 import CytoscapeComponent from "react-cytoscapejs";
 import CytoscapeStylesheet from './CytoscapeStylesheet';
 
-const AlloyCytoscapeGraph = ({alloyVizGraph, height}) => {
-  const cyRef = React.useRef(null);
+interface AlloyCytoscapeGraphProps {
+  alloyVizGraph: any[];
+  height: string;
+}
+
+const AlloyCytoscapeGraph: React.FC<AlloyCytoscapeGraphProps> = ({alloyVizGraph, height}) => {
+  const cyRef = React.useRef<cytoscape.Core| null>(null);
   const [layout, setLayout] = useState({ name: "breadthfirst" });
-  const [stylesheet, setStylesheet] = useState([]);
-  const [uniqueRelationships, setUniqueRelationships] = useState('');
+  const [stylesheet, setStylesheet] = useState<cytoscape.Stylesheet[]>([]);
+  const [uniqueRelationships, setUniqueRelationships] = useState<any[]>([]);
 
   useEffect(() => {
     if (cyRef.current) {
@@ -21,7 +26,7 @@ const AlloyCytoscapeGraph = ({alloyVizGraph, height}) => {
       ),
     ];
     setUniqueRelationships(uniqueRels);
-    setStylesheet(CytoscapeStylesheet(uniqueRels));
+    setStylesheet(CytoscapeStylesheet(uniqueRels) as cytoscape.Stylesheet[]);
   }, [alloyVizGraph]);
 
 

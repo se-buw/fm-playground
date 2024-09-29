@@ -1,7 +1,7 @@
-const generateColor = (relationship) => {
+const generateColor = (relationship: string) => {
 
   // Generate a color based on the relationship name
-  const hashCode = (s) => {
+  const hashCode = (s: string) => {
     return s.split('').reduce((a, b) => {
       a = ((a << 5) - a) + b.charCodeAt(0);
       return a & a;
@@ -15,11 +15,11 @@ const generateColor = (relationship) => {
   return `rgb(${r}, ${g}, ${b})`;
 };
 
-const getCssVariable = (variable) => {
+const getCssVariable = (variable: string) => {
   return getComputedStyle(document.documentElement).getPropertyValue(variable).trim();
 };
 
-const CytoscapeStylesheet = (uniqueRelationships) => {
+const CytoscapeStylesheet = (uniqueRelationships: string[]) => {
   const primaryTextColor = getCssVariable('--primary-text-color');
   const styles = [
     {
@@ -58,8 +58,16 @@ const CytoscapeStylesheet = (uniqueRelationships) => {
     styles.push({
       selector: `edge[relationship="${relationship}"]`,
       style: {
+        width: 5,
         'line-color': color,
         'target-arrow-color': color,
+        'target-arrow-shape': 'triangle',
+        'curve-style': 'bezier',
+        label: 'data(label)',
+        color: primaryTextColor,
+        'text-rotation': 'autorotate',
+        'font-size': 18,
+        'text-margin-x': -15,
       },
     });
   });

@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import Select from 'react-select';
+import Select, { SingleValue } from 'react-select';
 
-const AlloyCmdOptions = ({ editorValue, alloyCmdOption, setAlloyCmdOption, setAlloySelectedCmd }) => {
+interface AlloyCmdOptionsProps {
+  editorValue: string;
+  alloyCmdOption: { value: number, label: string }[];
+  setAlloyCmdOption: (options: { value: number, label: string }[]) => void;
+  setAlloySelectedCmd: (index: number) => void;
+}
 
-  const findIndexByValue = (cmdOptionValue) => {
+const AlloyCmdOptions: React.FC<AlloyCmdOptionsProps> = ({ editorValue, alloyCmdOption, setAlloyCmdOption, setAlloySelectedCmd }) => {
+
+  const findIndexByValue = (cmdOptionValue: number) => {
     return alloyCmdOption.findIndex((option) => option.value === cmdOptionValue)
   }
 
@@ -22,7 +29,9 @@ const AlloyCmdOptions = ({ editorValue, alloyCmdOption, setAlloyCmdOption, setAl
     }
   }, [editorValue])
 
-  const handleOptionChange = (selectedOption) => {
+  
+  
+  const handleOptionChange = (selectedOption: SingleValue<{ value: number, label: string }>) => {
     if (selectedOption) {
       setAlloySelectedCmd(findIndexByValue(selectedOption.value))
     }

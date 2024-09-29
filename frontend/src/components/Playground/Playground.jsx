@@ -27,8 +27,8 @@ import {
 } from '../../api/playgroundApi.js'
 import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
-import AlloyOutput from './alloy/AlloyOutput.jsx';
-import AlloyCmdOptions from './alloy/AlloyCmdOptions.jsx';
+import AlloyOutput from './alloy/AlloyOutput';
+import AlloyCmdOptions from './alloy/AlloyCmdOptions';
 
 const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
   const navigate = useNavigate();
@@ -544,7 +544,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                 <AlloyOutput
                   alloyInstance={alloyInstance}
                   setAlloyInstance={setAlloyInstance}
-                  height={isFullScreen ? '80vh' : '60vh'}
+                  // height={isFullScreen ? '80vh' : '60vh'}
                   isFullScreen={isFullScreen}
                   setLineToHighlight={setLineToHighlight}
                 />

@@ -24,16 +24,23 @@ import {
 } from '../../../assets/js/alloyUtils';
 import '../../../assets/style/AlloyOutput.css';
 
-const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, setLineToHighlight }) => {
+interface AlloyOutputProps {
+  alloyInstance: any;
+  setAlloyInstance: (instance: any) => void; // TODO: Check the type of instance
+  isFullScreen: boolean;
+  setLineToHighlight: (line: number[]) => void;
+}
+
+const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstance, isFullScreen, setLineToHighlight }) => {
   const [alloyTraceIndex, setalloyTraceIndex] = useState(0);
   const [alloySpecId, setAlloySpecId] = useState(null);
-  const [alloyVizGraph, setAlloyVizGraph] = useState([]);
+  const [alloyVizGraph, setAlloyVizGraph] = useState<{ data: { id: any; label: any; } }[]>([]);
   const [isTemporal, setIsTemporal] = useState(false);
   const [isInstance, setIsInstance] = useState(true);
   const [alloyErrorMessage, setAlloyErrorMessage] = useState('');
   const [alloyPlainMessage, setAlloyPlainMessage] = useState('');
   const [alloyTraceLoop, setAlloyTraceLoop] = useState('');
-  const [lastInstance, setLastInstance] = useState([]);
+  const [lastInstance, setLastInstance] = useState<{ data: { id: any; label: any; } }[]>([]);
   const [isLastInstance, setIsLastInstance] = useState(false);
   const [alloyTabularInstance, setAlloyTabularInstance] = useState('');
   const [alloyTextInstance, setAlloyTextInstance] = useState('');
@@ -152,11 +159,11 @@ const AlloyOutput = ({ alloyInstance, setAlloyInstance, height, isFullScreen, se
     }
   }
 
-  const handleAlloyErrorMessageChange = (value) => {
+  const handleAlloyErrorMessageChange = (value: string) => {
     setAlloyErrorMessage(value);
   }
 
-  const handleTabClick = (tabValue) => {
+  const handleTabClick = (tabValue: string) => {
     if (tabValue === activeTab) return;
     setActiveTab(tabValue);
   }
