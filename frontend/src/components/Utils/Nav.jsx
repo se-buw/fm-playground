@@ -19,7 +19,7 @@ import { FaGithub } from 'react-icons/fa'
 import DrawerComponent from './DrawerComponent';
 import Options from '../../assets/config/AvailableTools.js'
 import CustomSnackbar from './Modals/CustomSnackbar.jsx';
-import ConfirmModal from './Modals/ConfirmModal.jsx';
+import ConfirmModal from './Modals/ConfirmModal';
 import { downloadUserData, deleteProfile } from '../../api/playgroundApi.js';
 import axiosAuth from '../../api/axiosAuth.js';
 import SessionExpiredModal from './Modals/SessionExpiredModal.jsx'

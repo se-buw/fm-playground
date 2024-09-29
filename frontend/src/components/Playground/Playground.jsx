@@ -17,7 +17,7 @@ import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../..
 import runZ3WASM from '../../assets/js/runZ3WASM.js';
 import Guides from '../Utils/Guides.jsx';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn.jsx';
-import ConfirmModal from '../Utils/Modals/ConfirmModal.jsx';
+import ConfirmModal from '../Utils/Modals/ConfirmModal';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.jsx';
 import MessageModal from '../Utils/Modals/MessageModal.jsx';
 import SpectraCliOptions from './SpectraCliOptions.jsx';

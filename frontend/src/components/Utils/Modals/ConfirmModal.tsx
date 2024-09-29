@@ -11,7 +11,15 @@ import {
 } from 'mdb-react-ui-kit';
 import '../../../assets/style/Modal.css'
 
-const ConfirmModal = ({ isOpen, onClose, title, message, onConfirm }) => {
+interface ConfirmModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  message: string;
+  onConfirm: () => void;
+}
+
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, title, message, onConfirm }) => {
   const toggleOpen = () => onClose();
   const handleConfirm = () => {
     toggleOpen(); // Close the modal
