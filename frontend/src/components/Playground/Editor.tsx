@@ -21,6 +21,11 @@ interface BasicCodeEditorProps {
   editorTheme: string;
 }
 
+interface BasicCodeEditorValueParams {
+  value: string;
+  event: monacoEditor.editor.IModelContentChangedEvent;
+}
+
 const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps) => {
   
   
@@ -130,9 +135,13 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
    * @param {*} value 
    * @param {*} event 
    */
-  function getEditorValue(value, event) {
-    editorRef.current.getValue()
-    props.setEditorValue(editorRef.current.getValue())
+  
+
+  function getEditorValue({ value, event }: BasicCodeEditorValueParams) {
+    if (editorRef.current) {
+      const editorValue = editorRef.current.getValue();
+      props.setEditorValue(editorValue);
+    }
   }
 
   /**
@@ -140,8 +149,10 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
    * @param {*} value
    * @param {*} event
    */
-  function setEditorValue(value, event) {
-    editorRef.current.setValue(value)
+  function setEditorValue({value, event}: BasicCodeEditorValueParams) {
+    if(editorRef.current) {
+      editorRef.current.setValue(value);
+    }
   }
 
   /**
@@ -149,9 +160,11 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
    * Sets the editor value with the new code.
    * @param {*} newCode 
    */
-  const handleCodeChange = (newCode) => {
-    props.setEditorValue(newCode)
-    props.setLineToHighlight(null)
+  const handleCodeChange = (newCode: string | undefined) => {
+    if (newCode !== undefined) {
+      props.setEditorValue(newCode);
+      props.setLineToHighlight([]);
+    }
   }
 
   return (
@@ -170,7 +183,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
             },
             automaticLayout: true,
             mouseWheelZoom: true,
-            bracketPairColorizationOptions: {
+            bracketPairColorization: {
               enabled: true,
               independentColorPoolPerBracketType: true,
             },
