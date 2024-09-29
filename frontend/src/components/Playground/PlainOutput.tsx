@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import '../../assets/style/Playground.css'
 
-const PlainOutput = ({ code, onChange, height }) => {
+interface PlainOutputProps {
+  code: string;
+  onChange: (code: string) => void;
+  height: string;
+}
+
+const PlainOutput: React.FC<PlainOutputProps> = ({ code, onChange, height }) => {
   const [internalCode, setInternalCode] = useState(code);
 
   /**
@@ -18,8 +24,8 @@ const PlainOutput = ({ code, onChange, height }) => {
    * Handles the change event. Updates the internal code and sends the updated code back to the parent component.
    * @param {*} event 
    */
-  const handleChange = (event) => {
-    const newCode = event.target.textContent;
+  const handleChange = (event: React.FormEvent<HTMLPreElement>) => {
+    const newCode = event.currentTarget.textContent || '';
     setInternalCode(newCode);
     onChange(newCode); // Send the updated code back to the parent component
   };

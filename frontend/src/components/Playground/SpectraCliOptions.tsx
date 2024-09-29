@@ -2,7 +2,11 @@ import React from 'react';
 import Select from 'react-select';
 
 
-const SpectraCliOptions = ({setSpectraCliOption }) => {
+interface SpectraCliOptionsProps {
+  setSpectraCliOption: (option: string) => void;
+}
+
+const SpectraCliOptions: React.FC<SpectraCliOptionsProps> = ({ setSpectraCliOption }) => {
   const options = [
     { value: 'check-realizability', label: 'Check Realizability' },
     { value: 'concrete-controller', label: 'Synthesize Controller' },
@@ -12,8 +16,10 @@ const SpectraCliOptions = ({setSpectraCliOption }) => {
     { value: 'non-well-sep-core', label: 'Non-well-separated core' },
   ]
 
-  const handleOptionChange = (selectedOption) => {
-    setSpectraCliOption(selectedOption.value)
+  const handleOptionChange = (selectedOption: { value: string; label: string } | null) => {
+    if (selectedOption) {
+      setSpectraCliOption(selectedOption.value);
+    }
   }
 
   return (

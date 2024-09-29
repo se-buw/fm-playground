@@ -7,7 +7,7 @@ import { MDBBtn } from 'mdb-react-ui-kit';
 import { Tooltip } from 'react-tooltip'
 import Editor from './Editor.jsx'
 import LimbooleEditor from './LimbooleEditor';
-import PlainOutput from './PlainOutput.jsx'
+import PlainOutput from './PlainOutput';
 import Tools from './Tools';
 import Options from '../../assets/config/AvailableTools.js'
 import FileUploadButton from '../Utils/FileUpload';
@@ -20,7 +20,7 @@ import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn';
 import ConfirmModal from '../Utils/Modals/ConfirmModal';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice';
 import MessageModal from '../Utils/Modals/MessageModal';
-import SpectraCliOptions from './SpectraCliOptions.jsx';
+import SpectraCliOptions from './SpectraCliOptions';
 import {
   getCodeByParmalink,
   saveCodeWithMetadata,
@@ -270,6 +270,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
     };
     reader.readAsText(file);
   };
+
+  console.log(spectraCliOption)
 
   /**
    * Download the code from the editor.
