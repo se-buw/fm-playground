@@ -2,14 +2,14 @@ import React from 'react'
 import { FaDownload } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
 import '../../assets/style/Playground.css';
-/**
- * Download a file.
- * @param {*} content - The content of the file
- * @param {*} fileName - The name of the file
- * @param {*} fileExtension - The extension of the file
- * @returns 
- */
-const FileDownload = ({ content, fileName, fileExtension }) => {
+
+interface FileDownloadProps {
+  content: string;
+  fileName: string;
+  fileExtension: string; // TODO: This should be an enum later
+}
+
+const FileDownload: React.FC<FileDownloadProps> = ({ content, fileName, fileExtension }) => {
   const handleDownload = () => {
     const blob = new Blob([content], { type: 'text/plain' });
     const link = document.createElement('a');

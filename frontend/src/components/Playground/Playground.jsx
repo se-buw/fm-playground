@@ -10,9 +10,9 @@ import LimbooleEditor from './LimbooleEditor';
 import PlainOutput from './PlainOutput.jsx'
 import Tools from './Tools.jsx'
 import Options from '../../assets/config/AvailableTools.js'
-import FileUploadButton from '../Utils/FileUpload.jsx'
-import FileDownload from '../Utils/FileDownload.jsx'
-import run_limboole from '../../assets/js/limboole'
+import FileUploadButton from '../Utils/FileUpload';
+import FileDownload from '../Utils/FileDownload';
+import run_limboole from '../../assets/js/limboole';
 import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi.js'
 import runZ3WASM from '../../assets/js/runZ3WASM.js';
 import Guides from '../Utils/Guides.jsx';
@@ -89,7 +89,6 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
     setLanguage(newLanguage)
     window.history.pushState(null, null, `?check=${newLanguage.short}`)
   }
-  console.log(permalink)
   /**
    * Load the code from the api. 
    */

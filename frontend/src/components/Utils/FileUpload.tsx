@@ -3,33 +3,39 @@ import { FaUpload } from 'react-icons/fa';
 import MessageModal from './Modals/MessageModal';
 import '../../assets/style/Playground.css';
 
-/**
- * Upload a file.
- * @param {*} onFileSelect - The file to upload
- * @returns 
- */
-const FileUploadButton = ({ onFileSelect }) => {
-  const fileInputRef = useRef(null);
-  const [errorMessage, setErrorMessage] = useState(null); // contains the error messages from the API.
-  const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
+interface FileUploadButtonProps {
+  onFileSelect: (file: File) => void;
+}
+
+const FileUploadButton: React.FC<FileUploadButtonProps> = ({ onFileSelect }) => {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);  // contains the error messages from the API.
+  const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState<boolean>(false); // contains the state of the message modal.
 
   const handleButtonClick = () => {
     // Trigger click on the hidden file input
-    fileInputRef.current.click();
+    if(fileInputRef.current){
+      fileInputRef.current.click();
+    }
   };
-  const showErrorModal = (message) => {
+  const showErrorModal = (message: string) => {
     setErrorMessage(message);
     setIsErrorMessageModalOpen(true);
   };
 
-  const handleFileSelect = (e) => {
-    const file = e.target.files[0];
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
 
-    // check file type
+    if (!file) {
+      showErrorModal('No file selected! Please select a file to upload.');
+      return;
+    }
+
+    // TODO: This should be an enum later
     if (file) {
-      const allowedFileExtensions = /(\.txt|\.smv|\.smt2|\.als)$/i;
+      const allowedFileExtensions = /(\.txt|\.smv|\.smt2|\.als|\.spectra)$/i;
       if (!allowedFileExtensions.exec(file.name)) {
-        showErrorModal('Invalid file type! Only .txt, .smv, .smt2, .als files are allowed.');
+        showErrorModal('Invalid file type! Only .txt, .smv, .smt2, .als, .spectra files are allowed.');
         return false;
       }
     }
@@ -43,14 +49,11 @@ const FileUploadButton = ({ onFileSelect }) => {
 
     onFileSelect(file);
 
-    fileInputRef.current.value = null;
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
-  /**
-   * Hide the error modal.
-   * This function is called when the user clicks on the close button of the error modal.
-   * @returns
-   */
   const hideErrorModal = () => {
     setErrorMessage(null);
     setIsErrorMessageModalOpen(!isErrorMessageModalOpen);
