@@ -24,7 +24,7 @@ import { downloadUserData, deleteProfile } from '../../api/playgroundApi.js';
 import axiosAuth from '../../api/axiosAuth.js';
 import SessionExpiredModal from './Modals/SessionExpiredModal'
 import '../../assets/style/Nav.css';
-import Toggle from './Toggle.jsx'
+import Toggle from './Toggle';
 
 /**
  * Display the header and navigation bar.

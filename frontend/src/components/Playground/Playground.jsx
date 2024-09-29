@@ -15,7 +15,7 @@ import FileDownload from '../Utils/FileDownload';
 import run_limboole from '../../assets/js/limboole';
 import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi.js'
 import runZ3WASM from '../../assets/js/runZ3WASM.js';
-import Guides from '../Utils/Guides.jsx';
+import Guides from '../Utils/Guides';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn';
 import ConfirmModal from '../Utils/Modals/ConfirmModal';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice';

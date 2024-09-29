@@ -1,7 +1,12 @@
 import React from 'react';
 import '../../assets/style/Toggle.css';
 
-const Toggle = ({ isDarkTheme, setIsDarkTheme }) => {
+interface ToggleProps {
+  isDarkTheme: boolean | string;
+  setIsDarkTheme: (value: boolean) => void;
+}
+
+const Toggle: React.FC<ToggleProps> = ({ isDarkTheme, setIsDarkTheme }) => {
   const isDark = typeof isDarkTheme === 'string' ? JSON.parse(isDarkTheme) : isDarkTheme;
   return (
     <div className='toggle-container'>

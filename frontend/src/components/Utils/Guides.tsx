@@ -2,15 +2,24 @@ import React from 'react';
 import data from '../../assets/config/Guides.json';
 import '../../assets/style/Playground.css';
 
-/**
- * Display the guides for the selected tool.
- * Guides are fetched from the config file and displayed in a list.
- * @see: assets/config/Guides.json
- * @param {*} id - The selected tool
- * @returns 
- */
-const Guides = ({ id }) => {
-  const guideData = data[id];
+interface GuideItem {
+  title: string;
+  link: string;
+}
+
+interface GuidesData {
+  [key: string]: GuideItem[];
+}
+
+interface GuidesProps {
+  id: keyof GuidesData;
+}
+
+const guidesData: GuidesData = data;
+
+
+const Guides: React.FC<GuidesProps> = ({ id }: GuidesProps) => {
+  const guideData = guidesData[id];
 
   if (!guideData) {
     return (

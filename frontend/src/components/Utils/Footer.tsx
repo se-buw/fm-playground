@@ -1,4 +1,3 @@
-import React from 'react';
 import { MDBFooter } from 'mdb-react-ui-kit';
 import '../../assets/style/Footer.css';
 
