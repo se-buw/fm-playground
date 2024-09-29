@@ -4,12 +4,20 @@ import '../../assets/style/Playground.css'
 
 import Select from 'react-select';
 
-/**
- * Load the tools from the config file and display them in a dropdown menu.
- * @param {*} props 
- * @returns 
- */
-const Tools = (props) => {
+interface LanguageProps {
+  id: string;
+  value: string;
+  label: string;
+  short: string;
+}
+
+interface ToolsProps {
+  onChange: (selectedOption: any) => void; // TODO: maybe change this to LanguageProps
+  selected: LanguageProps;
+}
+
+
+const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {
   const [options, setOptions] = useState(Options);
 
   return (

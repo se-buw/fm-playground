@@ -8,7 +8,7 @@ import { Tooltip } from 'react-tooltip'
 import Editor from './Editor.jsx'
 import LimbooleEditor from './LimbooleEditor';
 import PlainOutput from './PlainOutput.jsx'
-import Tools from './Tools.jsx'
+import Tools from './Tools';
 import Options from '../../assets/config/AvailableTools.js'
 import FileUploadButton from '../Utils/FileUpload';
 import FileDownload from '../Utils/FileDownload';
