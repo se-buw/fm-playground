@@ -10,30 +10,31 @@ import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
 import './assets/style/index.css'
 import '../src/assets/style/App.css'
+import { LanguageProps } from './components/Playground/Tools'
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
-  const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language')) || Options[1]);
+  const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language') || 'null') || Options[1]);
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const storedTheme = localStorage.getItem('isDarkTheme');
     return storedTheme === 'true';
   });
   const [editorTheme, setEditorTheme] = useState(() => {
     const storedTheme = localStorage.getItem('editorTheme');
-    return storedTheme;
+    return storedTheme || 'vs';
   });
 
-  const handleEditorValueChange = (code) => {
+  const handleEditorValueChange = (code: string) => {
     setEditorValue(code);
   };
-  const handleLanguageChange = (newLanguage) => {
+  const handleLanguageChange = (newLanguage: LanguageProps) => {
     setLanguage(newLanguage)
   }
 
   const handleToggleTheme = () => {
     setIsDarkTheme((prevIsDarkTheme) => {
       const newTheme = !prevIsDarkTheme;
-      localStorage.setItem('isDarkTheme', newTheme);
+      localStorage.setItem('isDarkTheme', newTheme.toString());
       return newTheme;
     });
   };
@@ -81,7 +82,7 @@ const App = () => {
               setLanguage={setLanguage}
               editorTheme={editorTheme}
             />} />
-            <Route path="/login" exact element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<Missing />} />
           </Routes>
         </Router>

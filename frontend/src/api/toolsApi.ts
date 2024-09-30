@@ -50,7 +50,7 @@ export async function executeSpectra(code: string, command: string) {
 }
 
 
-export async function getAlloyInstance(code: string, cmd: string) {
+export async function getAlloyInstance(code: string, cmd: number) {
   let url = `${API_URL}/getAlloyInstance/${cmd}`;
   try {
     const response = await axios.post(url, { code });
