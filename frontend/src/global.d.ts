@@ -4,4 +4,7 @@ declare global {
   interface Window {
     monaco: typeof monaco;
   }
+  interface Window {
+    Wrappers: any;
+  }
 }

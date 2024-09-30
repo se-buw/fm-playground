@@ -13,10 +13,10 @@ export default axios.create({
  * Handle the logout request
  * @returns true if loggout is successful
  */
-export function userLogout() {
+export async function userLogout() {
   let url = `${API_URL}/logout`;
   try {
-    const response = axiosAuth.get(url);
+    const response = await axiosAuth.get(url);
     return response.status === 200;
   } catch (error) {
     console.log(error);
@@ -30,15 +30,11 @@ export function userLogout() {
  * @param {*} check
  * @returns code
  */
-export async function getCodeByParmalink(check, permalink) {
+export async function getCodeByParmalink(check: string, permalink: string) {
   let url = `${API_URL}/permalink/?check=${check}&p=${permalink}`;
-  try {
-    const response = await axios.get(url);
-    if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error) {
-    throw error;
+  const response = await axios.get(url);
+  if (response.status === 200) {
+    return response.data;
   }
 }
 
@@ -47,7 +43,7 @@ export async function getCodeByParmalink(check, permalink) {
  * @param {*} id data item id
  * @returns {json} {code, check, permalink}
  */
-export async function getCodeById(id) {
+export async function getCodeById(id: number | string) {
   let url = `${API_URL}/code/${id}`;
   try {
     const response = await axiosAuth.get(url);
@@ -64,15 +60,11 @@ export async function getCodeById(id) {
  * @returns permalink
  * // FIXME: Probably we don't need this anymore. We can use saveCodeWithMetadata instead
  */
-export async function saveCode(code, check, parent) {
+export async function saveCode(code: string, check: string, parent: string | null) {
   let url = `${API_URL}/save`;
-  try {
-    const response = await axiosAuth.post(url, { code, check, parent});
-    if (response.status === 200) {
-      return response;
-    }
-  } catch (error) {
-    throw error;
+  const response = await axiosAuth.post(url, { code, check, parent});
+  if (response.status === 200) {
+    return response;
   }
 }
 
@@ -83,20 +75,17 @@ export async function saveCode(code, check, parent) {
  * @param {json} metadata
  * @returns permalink
  */
-export async function saveCodeWithMetadata(code, check, parent, metadata) {
+export async function saveCodeWithMetadata(code: string, check: string, parent: string | null, metadata: Record<string, any> | null) {
   let url = `${API_URL}/save-with-meta`;
   const md = {
     ...metadata,
     "fmp-version": FMP_VERSION
   }
   let meta = JSON.stringify(md);
-  try {
-    const response = await axiosAuth.post(url, { code, check, parent, meta });
-    if (response.status === 200) {
-      return response;
-    }
-  } catch (error) {
-    throw error;
+  console.log(FMP_VERSION);
+  const response = await axiosAuth.post(url, { code, check, parent, meta });
+  if (response.status === 200) {
+    return response;
   }
 }
 
@@ -120,7 +109,7 @@ export async function getHistories() {
  * @param {int} page 
  * @returns Object with history and has_more_data: true/false
  */
-export async function getHistoryByPage(page) {
+export async function getHistoryByPage(page: number) {
   let url = `${API_URL}/histories?page=${page}`;
   try {
     const response = await axiosAuth.get(url);
@@ -135,7 +124,7 @@ export async function getHistoryByPage(page) {
  * @param {string} query 
  * @returns list of history objects
  */
-export async function searchUserHistory(query) {
+export async function searchUserHistory(query: string) {
   let url = `${API_URL}/search?q=${query}`;
   try {
     const response = await axiosAuth.get(url);

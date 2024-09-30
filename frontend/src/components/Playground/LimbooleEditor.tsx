@@ -13,11 +13,11 @@ type LimbooleEditorProps = {
   height: string;
   setEditorValue: (value: string) => void;
   editorValue: string;
-  language: string;
-  setLanguage: (value: string) => void;
-  lineToHighlight: number;
-  setLineToHighlight: (value: number) => void;
-  editorTheme: string;
+  language?: string;
+  setLanguage?: (value: string) => void;
+  lineToHighlight?: number;
+  setLineToHighlight?: (value: number) => void;
+  editorTheme?: string;
 };
 
 const wrapper = new MonacoEditorLanguageClientWrapper();

@@ -17,11 +17,11 @@ import {
 import AuthContext from '../../contexts/AuthContext';
 import { FaGithub } from 'react-icons/fa'
 import DrawerComponent from './DrawerComponent';
-import Options from '../../assets/config/AvailableTools.js'
+import Options from '../../assets/config/AvailableTools'
 import CustomSnackbar from './Modals/CustomSnackbar';
 import ConfirmModal from './Modals/ConfirmModal';
-import { downloadUserData, deleteProfile } from '../../api/playgroundApi.js';
-import axiosAuth from '../../api/axiosAuth.js';
+import { downloadUserData, deleteProfile } from '../../api/playgroundApi';
+import axiosAuth from '../../api/axiosAuth';
 import SessionExpiredModal from './Modals/SessionExpiredModal'
 import '../../assets/style/Nav.css';
 import Toggle from './Toggle';

@@ -9,12 +9,12 @@ import Editor from './Editor';
 import LimbooleEditor from './LimbooleEditor';
 import PlainOutput from './PlainOutput';
 import Tools from './Tools';
-import Options from '../../assets/config/AvailableTools.js'
+import Options from '../../assets/config/AvailableTools'
 import FileUploadButton from '../Utils/FileUpload';
 import FileDownload from '../Utils/FileDownload';
 import run_limboole from '../../assets/js/limboole';
-import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi.js'
-import runZ3WASM from '../../assets/js/runZ3WASM.js';
+import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi'
+import runZ3WASM from '../../assets/js/runZ3WASM';
 import Guides from '../Utils/Guides';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn';
 import ConfirmModal from '../Utils/Modals/ConfirmModal';
@@ -25,28 +25,43 @@ import {
   getCodeByParmalink,
   saveCodeWithMetadata,
 } from '../../api/playgroundApi.js'
-import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
+import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil';
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput';
 import AlloyCmdOptions from './alloy/AlloyCmdOptions';
 
-const Playground = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
-  const navigate = useNavigate();
-  const inputDivRef = useRef();  // contains the reference to the editor area
-  const outputDivRef = useRef(); // contains the reference to the output area
+import type { LanguageProps } from './Tools';
 
-  const [permalink, setPermalink] = useState('') // contains `check` and `permalink` parameters
+interface PlaygroundProps {
+  editorValue: string;
+  setEditorValue: (value: string) => void;
+  language: LanguageProps;
+  setLanguage: (language: LanguageProps) => void;
+  editorTheme: string;
+}
+
+const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
+  const navigate = useNavigate();
+  const inputDivRef = useRef<HTMLDivElement>(null);  // contains the reference to the editor area
+  const outputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the output area
+
+  const [permalink, setPermalink] = useState<{ check: string | null, permalink: string | null }>({ check: null, permalink: null }); // contains `check` and `permalink` parameters
   const [output, setOutput] = useState('') // contains the output of the tool
   const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
-  const [errorMessage, setErrorMessage] = useState(null); // contains the error messages from the API.
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
-  const [lineToHighlight, setLineToHighlight] = useState([])
+  const [lineToHighlight, setLineToHighlight] = useState<number[]>([])
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
-  const [alloyCmdOption, setAlloyCmdOption] = useState([]); // contains the selected option for the Alloy cli tool.
+  interface AlloyCmdOption {
+    value: number;
+    label: string;
+  }
+  
+  const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   /**
    * Load the code and language from the URL.
@@ -60,7 +75,9 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
 
     // Load the code if 'check' parameter is present
     if (permalinkParam) {
-      loadCode(checkParam, permalinkParam)
+      if (checkParam && permalinkParam) {
+        loadCode(checkParam, permalinkParam);
+      }
       setPermalink({ check: checkParam, permalink: permalinkParam })
     }
 
@@ -78,21 +95,21 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
     const urlParams = new URLSearchParams(window.location.search);
     const checkParam = urlParams.get('check') ? urlParams.get('check') : language.short;
     // Update the URL when permalink changes
-    navigate(permalink !== '' ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
+    navigate(permalink.permalink ? `/?check=${permalink.check}&p=${permalink.permalink}` : `/?check=${checkParam}`);
   }, [permalink, navigate]);
 
   /**
    * Update the URL with ``check`` type when language changes.
    * @param {*} newLanguage 
    */
-  const handleLanguageChange = (newLanguage) => {
+  const handleLanguageChange = (newLanguage: LanguageProps) => {
     setLanguage(newLanguage)
-    window.history.pushState(null, null, `?check=${newLanguage.short}`)
+    window.history.pushState(null, '', `?check=${newLanguage.short}`)
   }
   /**
    * Load the code from the api. 
    */
-  const loadCode = async (check, permalink) => {
+  const loadCode = async (check: string, permalink: string) => {
     await getCodeByParmalink(check, permalink)
       .then((res) => {
         setEditorValue(res.code)
@@ -103,15 +120,8 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
       })
   }
 
-  /**
-   * Find the first non-ascii character in the string.
-   * Return the character and its index (line and column)
-   * If no non-ascii character is found, return -1.
-   * This function is used to check if the code contains non-ascii characters.
-   * @param {*} str 
-   * @returns -1 if no non-ascii character is found, otherwise return the character and its index (line, column).
-   */
-  const findNonAscii = (str) => {
+
+  const findNonAscii = (str: string) => {
     const regex = /[^\x00-\x7F]/g;
     const match = regex.exec(str);
     if (!match) return -1;
@@ -153,20 +163,23 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
         setIsExecuting(false);
       }
       const nonAsciiIndex = findNonAscii(editorValue)
-      if (nonAsciiIndex !== -1 && language.value < 3) {
+      if (nonAsciiIndex !== -1 && Number(language.value) < 3) {
         setLineToHighlight([nonAsciiIndex.line])
         setOutput(`<i style='color: red;'>The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.</i>`)
         setIsExecuting(false);
         return
       }
       // Execute the tools
-      if (language.value >= 0 && language.value < 3) {
+      if (Number(language.value) >= 0 && Number(language.value) < 3) {
         run_limboole(window.Wrappers[language.value], editorValue)
-        setLineToHighlight(getLineToHighlight(document.getElementById('info').innerText, language.id))
+        const infoElement = document.getElementById('info');
+        if (infoElement) {
+          setLineToHighlight(getLineToHighlight(infoElement.innerText, language.id));
+        }
         setIsExecuting(false);
       }
       // Try to execute Z3 wasm. If it fails, fallback to the API
-      else if (language.value == 3) {
+      else if (Number(language.value) == 3) {
         runZ3WASM(editorValue).then((res) => {
           if (res.error) {
             showErrorModal(res.error)
@@ -198,7 +211,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
         })
       }
       // nuXmv execution
-      else if (language.value == 4) {
+      else if (Number(language.value) == 4) {
         executeNuxmv(editorValue)
           .then((res) => {
             setLineToHighlight(getLineToHighlight(res.result, language.id))
@@ -214,7 +227,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             }
             setIsExecuting(false);
           })
-      } else if (language.value == 5) {
+      } else if (Number(language.value) == 5) {
         setAlloyInstance([])
         getAlloyInstance(editorValue, alloySelectedCmd).then((res) => {
           setAlloyInstance(res)
@@ -228,7 +241,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
           }
           setIsExecuting(false);
         })
-      } else if (language.value == 6) {
+      } else if (Number(language.value) == 6) {
         executeSpectra(editorValue, spectraCliOption)
           .then((res) => {
             setLineToHighlight(getLineToHighlight(res.result, language.id))
@@ -245,7 +258,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
             setIsExecuting(false);
           })
       }
-    } catch (err) {
+    } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
         showErrorModal('Network Error. Please check your internet connection.')
       }
@@ -262,16 +275,16 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
    * Load the code from the uploaded file into the editor.
    * @param {*} file 
    */
-  const handleFileUpload = (file) => {
+  const handleFileUpload = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const content = e.target.result;
-      setEditorValue(content);
+      if (e.target) {
+        const content = e.target.result as string;
+        setEditorValue(content);
+      }
     };
     reader.readAsText(file);
   };
-
-  console.log(spectraCliOption)
 
   /**
    * Download the code from the editor.
@@ -291,7 +304,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
    * Update the output area with the code passed as a prop to the PlainOutput component.
    * @param {*} newCode 
    */
-  const handleOutputChange = (newCode) => {
+  const handleOutputChange = (newCode: string) => {
     setOutput(newCode);
   };
 
@@ -301,7 +314,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
   const handleReset = () => {
     setEditorValue('')
     setOutput('')
-    setPermalink('')
+    setPermalink({ check: null, permalink: null })
     closeModal()
   }
 
@@ -309,31 +322,20 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
    * Toggle the full screen mode of the editor and output areas.
    * @param {*} div: 'input' or 'output'
    */
-  const toggleFullScreen = (div) => {
-    const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div];
+  const toggleFullScreen = (div: 'input' | 'output') => {
+    const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div as 'input' | 'output'];
     const theme = localStorage.getItem('isDarkTheme') === 'true' ? 'dark' : 'light';
     if (!document.fullscreenElement) {
       // Enter fullscreen mode
-      if (element.requestFullscreen) {
+      if (element?.requestFullscreen) {
         element.requestFullscreen();
-      } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-      } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-      } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
       }
       document.documentElement.setAttribute('data-theme', theme);
       setIsFullScreen(true);
     } else {
+      // Exit fullscreen mode
       if (document.exitFullscreen) {
         document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
       }
       document.documentElement.setAttribute('data-theme', theme);
       setIsFullScreen(false);
@@ -370,7 +372,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
    * @param {string} message - The error message to be displayed in the modal.
    * @returns 
    */
-  const showErrorModal = (message) => {
+  const showErrorModal = (message: string) => {
     setErrorMessage(message);
     setIsErrorMessageModalOpen(true);
   };
@@ -385,7 +387,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
     setIsErrorMessageModalOpen(!isErrorMessageModalOpen);
   };
 
-  const handleLineHighlight = (line) => {
+  const handleLineHighlight = (line: number[]) => {
     setLineToHighlight(line);
   };
 
@@ -434,14 +436,14 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
                     <>
                       {handleDownload()}
                     </>
-                    {permalink &&
+                    {permalink.check && permalink.permalink &&
                       <IconButton
                         data-tooltip-id="playground-tooltip"
                         data-tooltip-content="Copy Permalink">
-                        <CopyToClipboardBtn permalink={permalink} />
+                        <CopyToClipboardBtn permalink={{ check: permalink.check, permalink: permalink.permalink }} />
                       </IconButton>
                     }
-                    <IconButton color='light' onClick={() => { toggleFullScreen('input') }}>
+                    <IconButton color='default' onClick={() => { toggleFullScreen('input') }}>
                       {isFullScreen ?
                         <AiOutlineFullscreenExit
                           className='playground-icon'
@@ -486,7 +488,7 @@ const Playground = ({ editorValue, setEditorValue, language, setLanguage, editor
               <AlloyCmdOptions
                 editorValue={editorValue}
                 alloyCmdOption={alloyCmdOption}
-                setAlloyCmdOption={setAlloyCmdOption}
+                setAlloyCmdOption={(options: { value: number; label: string }[]) => setAlloyCmdOption(options)}
                 setAlloySelectedCmd={setAlloySelectedCmd}
               />
             }
