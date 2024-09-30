@@ -1,5 +1,5 @@
 
-function getLineToHighlightLimboole(result) {
+function getLineToHighlightLimboole(result: string) {
   return result.split('\n')
     .filter(line => line.includes('error') && line.includes('<stdin>'))
     .map(line => parseInt(line.split(':')[1]))
@@ -7,21 +7,21 @@ function getLineToHighlightLimboole(result) {
 }
 
 
-function getLineToHighlightSmt2(result) {
+function getLineToHighlightSmt2(result: string) {
   return result.split('\n')
       .filter(line => line.includes('error') && line.includes('line '))
       .map(line => parseInt(line.split('line ')[1]))
       .filter(line => !isNaN(line));
 }
 
-function getLineToHighlightXmv(result) {
+function getLineToHighlightXmv(result: string) {
   return result.split('\n')
       .filter(line => line.includes('error') && line.includes('line '))
       .map(line => parseInt(line.split('line ')[1]))
       .filter(line => !isNaN(line));
 }
 
-function getLinesToHighlightSpectra(result) {
+function getLinesToHighlightSpectra(result: string) {
   const regex = /<\s*([\d\s]+)\s*>/;
   const match = result.match(regex);
   // Regex for line error
@@ -37,7 +37,7 @@ function getLinesToHighlightSpectra(result) {
   return lines;
 }
 
-function getLinesToHighlightAlloy(result) {
+function getLinesToHighlightAlloy(result: string) {
   const regex = /line (\d+)/;
   const match = result.match(regex);
   if (match) {
@@ -53,7 +53,7 @@ function getLinesToHighlightAlloy(result) {
  * @param {*} toolId - language id i.e., 'limboole', 'smt2', 'xmv', 'spectra'
  * @returns 
  */
-export function getLineToHighlight(result, toolId) {
+export function getLineToHighlight(result: string, toolId: string) {
   if (toolId === 'limboole') {
     return getLineToHighlightLimboole(result);
   } else if (toolId === 'smt2') {

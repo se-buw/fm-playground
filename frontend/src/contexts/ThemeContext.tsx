@@ -1,16 +1,16 @@
-import React, {createContext, useContext, useEffect, useState} from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 export const ThemeContext = createContext({});
 
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
 
-// export const ThemeProvider = ThemeContext.Provider;
-
-
-export const ThemeProvider = ({children}) => {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [isDark, setIsDark] = useState(null)
 
   useEffect(() => {
-    
+
   }, [])
 
   return (
@@ -22,6 +22,6 @@ export const ThemeProvider = ({children}) => {
   )
 }
 
-export default function useTheme () {
+export default function useTheme() {
   return useContext(ThemeContext);
 };

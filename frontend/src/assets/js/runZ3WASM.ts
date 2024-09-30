@@ -1,6 +1,6 @@
 import { init } from "z3-solver"
 
-export default async function runZ3WASM(code) {
+export default async function runZ3WASM(code: string) {
   const z3p = window.z3Promise || (() => {
     console.log("Loading Z3 solver...");
     return window.z3Promise = init();
@@ -17,7 +17,7 @@ export default async function runZ3WASM(code) {
   try{
     output = await Z3.eval_smtlib2_string(ctx, code);
   }catch(e){
-    error = e.toString();
+    error = (e as Error).toString();
     console.error(e); 
   }finally{
     Z3.del_context(ctx);

@@ -12,7 +12,7 @@ import Tools from './Tools';
 import Options from '../../assets/config/AvailableTools'
 import FileUploadButton from '../Utils/FileUpload';
 import FileDownload from '../Utils/FileDownload';
-import run_limboole from '../../assets/js/limboole';
+import run_limboole from '../../assets/js/limboole.js';
 import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi'
 import runZ3WASM from '../../assets/js/runZ3WASM';
 import Guides from '../Utils/Guides';
@@ -25,7 +25,7 @@ import {
   getCodeByParmalink,
   saveCodeWithMetadata,
 } from '../../api/playgroundApi.js'
-import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil';
+import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput';
 import AlloyCmdOptions from './alloy/AlloyCmdOptions';
@@ -174,7 +174,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         run_limboole(window.Wrappers[language.value], editorValue)
         const infoElement = document.getElementById('info');
         if (infoElement) {
-          setLineToHighlight(getLineToHighlight(infoElement.innerText, language.id));
+          setLineToHighlight(getLineToHighlight(infoElement.innerText, language.id) || []);
         }
         setIsExecuting(false);
       }
@@ -184,7 +184,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
           if (res.error) {
             showErrorModal(res.error)
           } else {
-            setLineToHighlight(getLineToHighlight(res.output, language.id))
+            setLineToHighlight(getLineToHighlight(res.output, language.id) || [])
             setOutput(res.output);
             setIsExecuting(false);
           }
@@ -192,7 +192,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
           if (err.message.includes("SharedArrayBuffer is not defined")) {
             // Z3 is not supported in the current browser. Fallback to the API
             executeZ3(editorValue).then((res) => {
-              setLineToHighlight(getLineToHighlight(res.result, language.id))
+              setLineToHighlight(getLineToHighlight(res.result, language.id) || [])
               setOutput(res.result)
               setIsExecuting(false);
             }).catch((err) => {
@@ -214,7 +214,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
       else if (Number(language.value) == 4) {
         executeNuxmv(editorValue)
           .then((res) => {
-            setLineToHighlight(getLineToHighlight(res.result, language.id))
+            setLineToHighlight(getLineToHighlight(res.result, language.id) || [])
             setOutput(res.result)
             setIsExecuting(false);
           })
@@ -244,7 +244,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
       } else if (Number(language.value) == 6) {
         executeSpectra(editorValue, spectraCliOption)
           .then((res) => {
-            setLineToHighlight(getLineToHighlight(res.result, language.id))
+            setLineToHighlight(getLineToHighlight(res.result, language.id) || [])
             setOutput(res.result)
             setIsExecuting(false);
           })

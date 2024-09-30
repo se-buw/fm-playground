@@ -7,4 +7,7 @@ declare global {
   interface Window {
     Wrappers: any;
   }
+  interface Window {
+    z3Promise?: Promise<any>;
+  }
 }
