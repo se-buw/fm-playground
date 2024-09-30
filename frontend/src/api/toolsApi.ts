@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_FMP_API_URL;
  * @param {*} code
  * @returns result
  */
-export async function executeNuxmv(code) {
+export async function executeNuxmv(code: string) {
   let url = `${API_URL}/run_nuxmv`;
   try {
     const response = await axios.post(url, { code });
@@ -23,7 +23,7 @@ export async function executeNuxmv(code) {
  * @param {*} code
  * @returns result
 * */
-export async function executeZ3(code) {
+export async function executeZ3(code: string) {
   let url = `${API_URL}/run_z3`;
   try {
     const response = await axios.post(url, { code });
@@ -39,7 +39,7 @@ export async function executeZ3(code) {
  * @param {*} command command to execute e.g. check_realizability, synthesize_controller, etc.
  * @returns result 
  */
-export async function executeSpectra(code, command) {
+export async function executeSpectra(code: string, command: string) {
   let url = `${API_URL}/run_spectra`;
   try {
     const response = await axios.post(url, {code: code, command: command});
@@ -50,7 +50,7 @@ export async function executeSpectra(code, command) {
 }
 
 
-export async function getAlloyInstance(code, cmd) {
+export async function getAlloyInstance(code: string, cmd: string) {
   let url = `${API_URL}/getAlloyInstance/${cmd}`;
   try {
     const response = await axios.post(url, { code });
@@ -60,7 +60,7 @@ export async function getAlloyInstance(code, cmd) {
   }
 }
 
-export async function getAlloyNextInstance(specId) {
+export async function getAlloyNextInstance(specId: string | number | null) {
   let url = `${API_URL}/getAlloyNextInstance`;
   try {
     const response = await axios.post(url, { specId });
