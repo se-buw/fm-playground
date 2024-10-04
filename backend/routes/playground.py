@@ -66,6 +66,7 @@ def save():
   check_type = data['check']
   code = data['code']
   parent = get_id_by_permalink(data['parent'])
+  metadata = data['meta']
   if parent is None:
     parent_id = None
   else:
@@ -86,12 +87,14 @@ def save():
       code_id = new_code.id
     else: # Exist: Use the existing code id
       code_id = code_id_in_db.id
-    new_data = Data( 
-                time= datetime.now(), 
-                session_id=session_id, 
-                parent=parent_id, 
-                check_type=check_type,  
+
+    new_data = Data(
+                time= datetime.now(),
+                session_id=session_id,
+                parent=parent_id,
+                check_type=check_type,
                 permalink=permalink,
+                meta=metadata,
                 code_id=code_id,
                 user_id=user_id
               )
@@ -163,58 +166,6 @@ def run_spectra():
     response = make_response(jsonify({'result': "Error running Spectra. Server is busy. Please try again"}), 503) 
   return response
 
-@routes.route('/api/save-with-meta', methods=['POST'])
-@limiter.limit("2/second", error_message="You've already made a request recently.")
-def save_with_metadata():
-  # Get user information
-  user_id = session.get('user_id')
-  current_time = datetime.now(pytz.utc)
-  data = request.get_json()
-  check_type = data['check']
-  code = data['code']
-  parent = get_id_by_permalink(data['parent'])
-  metadata = data['meta']
-  if parent is None:
-    parent_id = None
-  else:
-    parent_id = parent.id
-  if not is_valid_size(code):
-    response = make_response(jsonify({'result': "The code is too large."}), 413)
-    return response
-  p_gen_time = time.time()
-  permalink = generate_passphrase()
-  app.logger.info(f'Permalink Generation - Permalink: {permalink} Gen Time: {time.time() - p_gen_time}')
-  try:
-    code_id_in_db = code_exists_in_db(code)
-    session_id = session.sid
-    if code_id_in_db is None: # New: Save the code
-      new_code = Code(code=code)
-      db.session.add(new_code)
-      db.session.commit()
-      code_id = new_code.id
-    else: # Exist: Use the existing code id
-      code_id = code_id_in_db.id
-
-    new_data = Data(
-                time= datetime.now(),
-                session_id=session_id,
-                parent=parent_id,
-                check_type=check_type,
-                permalink=permalink,
-                meta=metadata,
-                code_id=code_id,
-                user_id=user_id
-              )
-    db.session.add(new_data)
-    db.session.commit()
-  except:
-    app.logger.error(f'Error saving the code. Permalink: {permalink}')
-    db.session.rollback()
-    response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
-    return response
-  session['last_request_time'] = current_time
-  response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
-  return response
 
 @routes.route('/api/histories', methods=['GET'])
 def get_history():

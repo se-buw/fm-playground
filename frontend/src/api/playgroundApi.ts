@@ -53,30 +53,9 @@ export async function getCodeById(id: number | string) {
   }
 }
 
-/**
- * Save the code and the check type in the database and return the permalink
- * @param {*} code
- * @param {*} check
- * @returns permalink
- * // FIXME: Probably we don't need this anymore. We can use saveCodeWithMetadata instead
- */
-export async function saveCode(code: string, check: string, parent: string | null) {
+//Save the code and the check type in the database and return the permalink
+export async function saveCode(code: string, check: string, parent: string | null, metadata: Record<string, any> | null) {
   let url = `${API_URL}/save`;
-  const response = await axiosAuth.post(url, { code, check, parent});
-  if (response.status === 200) {
-    return response;
-  }
-}
-
-/**
- * Save the code with additional metadata and return the permalink
- * @param {*} code
- * @param {*} check
- * @param {json} metadata
- * @returns permalink
- */
-export async function saveCodeWithMetadata(code: string, check: string, parent: string | null, metadata: Record<string, any> | null) {
-  let url = `${API_URL}/save-with-meta`;
   const md = {
     ...metadata,
     "fmp-version": FMP_VERSION
@@ -88,6 +67,27 @@ export async function saveCodeWithMetadata(code: string, check: string, parent: 
     return response;
   }
 }
+
+// /**
+//  * Save the code with additional metadata and return the permalink
+//  * @param {*} code
+//  * @param {*} check
+//  * @param {json} metadata
+//  * @returns permalink
+//  */
+// export async function saveCodeWithMetadata(code: string, check: string, parent: string | null, metadata: Record<string, any> | null) {
+//   let url = `${API_URL}/save-with-meta`;
+//   const md = {
+//     ...metadata,
+//     "fmp-version": FMP_VERSION
+//   }
+//   let meta = JSON.stringify(md);
+//   console.log(FMP_VERSION);
+//   const response = await axiosAuth.post(url, { code, check, parent, meta });
+//   if (response.status === 200) {
+//     return response;
+//   }
+// }
 
 /**
  * Return the list of histories 
