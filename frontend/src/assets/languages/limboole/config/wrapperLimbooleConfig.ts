@@ -44,7 +44,7 @@ export const createLangiumGlobalConfig = async (params: {
   } : undefined;
 
   return {
-    logLevel: LogLevel.Debug, // FIXME: LogLevel.Error on deployment
+    logLevel: LogLevel.Warning, // FIXME: LogLevel.Error on deployment
     serviceConfig: {
       userServices: {
         ...getKeybindingsServiceOverride(),

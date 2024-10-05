@@ -4,16 +4,17 @@ import { createModelReference } from 'vscode/monaco';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
 import { BrowserMessageReader, BrowserMessageWriter } from 'vscode-languageclient/browser.js';
 import { createLangiumGlobalConfig } from '../../assets/languages/limboole/config/wrapperLimbooleConfig.js';
-import workerUrl from '../../assets/languages/limboole/worker/limboole-server?worker&url';
 import workerPortUrl from '../../assets/languages/limboole/worker/limboole-server-port?worker&url';
 import '../../assets/style/Playground.css'
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
+import type { LanguageProps } from './Tools';
+
 
 type LimbooleEditorProps = {
   height: string;
   setEditorValue: (value: string) => void;
   editorValue: string;
-  language?: string;
+  language?: LanguageProps;
   setLanguage?: (value: string) => void;
   lineToHighlight?: number;
   setLineToHighlight?: (value: number) => void;
@@ -24,6 +25,7 @@ const wrapper = new MonacoEditorLanguageClientWrapper();
 
 const LimbooleEditor: React.FC<LimbooleEditorProps> = (props) => {
   const editorRef = useRef<any>(null);
+  const prevLanguageRef = useRef<LanguageProps | null>(null);
 
   useEffect(() => {
     const startEditor = async () => {
@@ -33,18 +35,18 @@ const LimbooleEditor: React.FC<LimbooleEditorProps> = (props) => {
       }
 
       const limbooleWorkerPort = loadLimbooleWorkerPort();
-      limbooleWorkerPort.onmessage = (event) => {
-        console.log('Received message from worker:', event.data);
-      };
+      // limbooleWorkerPort.onmessage = (event) => {
+      //   console.log('Received message from worker:', event.data);
+      // };
 
       const channel = new MessageChannel();
       limbooleWorkerPort.postMessage({ port: channel.port2 }, [channel.port2]);
 
       const reader = new BrowserMessageReader(channel.port1);
       const writer = new BrowserMessageWriter(channel.port1);
-      reader.listen((message) => {
-        console.log('Received message from worker:', message);
-      });
+      // reader.listen((message) => {
+      //   console.log('Received message from worker:', message);
+      // });
 
       const langiumGlobalConfig = await createLangiumGlobalConfig({
         languageServerId: 'first',
@@ -65,6 +67,13 @@ const LimbooleEditor: React.FC<LimbooleEditorProps> = (props) => {
       editorRef.current.onDidChangeModelContent(() => {
         handleCodeChange(editorRef.current.getValue());
       });
+
+      const code = localStorage.getItem('editorValue');
+      if (code) {
+        editorRef.current.setValue(code);
+      } else {
+        editorRef.current.setValue(props.editorValue);
+      }
     };
 
     const disposeEditor = async () => {
@@ -80,6 +89,20 @@ const LimbooleEditor: React.FC<LimbooleEditorProps> = (props) => {
     };
 
   }, []);
+
+  useEffect(() => {
+    editorRef.current = wrapper.getEditor();
+    if (editorRef.current && props.language?.id === 'limboole') {
+
+      const code = localStorage.getItem('editorValue');
+      if (code) {
+        editorRef.current.setValue(code);
+      } else {
+        editorRef.current.setValue(props.editorValue);
+      }
+    }
+    prevLanguageRef.current = props.language ?? null;
+  }, [props.language]);
 
   const handleCodeChange = (value: string) => {
     props.setEditorValue(value);

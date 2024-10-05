@@ -464,6 +464,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
               <LimbooleEditor 
                 height={isFullScreen ? '80vh' : '60vh'}
                 setEditorValue={setEditorValue}
+                language={language}
                 editorValue={editorValue}
                 editorTheme={editorTheme}
               />

@@ -10,9 +10,9 @@ self.onmessage = async (event: MessageEvent) => {
   if (data.port !== undefined) {
     start(data.port, 'limboole-server-port');
 
-    messageReader?.listen((message) => {
-      console.log('Received message from main thread:', message);
-    });
+    // messageReader?.listen((message) => {
+    //   console.log('Received message from main thread:', message);
+    // });
 
     setTimeout(() => {
       // test independent communication
