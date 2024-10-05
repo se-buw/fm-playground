@@ -110,7 +110,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
       else if (alloyInstance["error"]) { // other errors like syntax error, type error etc.
         setIsInstance(false);
         setAlloyErrorMessage(parseAlloyErrorMessage(alloyInstance["error"]));
-        setLineToHighlight(getLineToHighlight(alloyInstance["error"], 'alloy'));
+        setLineToHighlight(getLineToHighlight(alloyInstance["error"], 'alloy') || []);
       } else { // unknown error
         setIsInstance(false);
         setAlloyPlainMessage(alloyInstance["error"]);
