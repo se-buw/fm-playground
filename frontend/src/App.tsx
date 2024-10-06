@@ -11,6 +11,7 @@ import Options from './assets/config/AvailableTools'
 import './assets/style/index.css'
 import '../src/assets/style/App.css'
 import { LanguageProps } from './components/Playground/Tools'
+import MaintenanceSnackbar from './components/Utils/Modals/MaintenanceSnackbar'
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
@@ -51,10 +52,10 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem('isDarkTheme', isDarkTheme ? 'true' : 'false');
     const theme = isDarkTheme ? 'dark' : 'light';
-    if(theme === 'dark'){
+    if (theme === 'dark') {
       setEditorTheme('vs-dark');
       localStorage.setItem('editorTheme', 'vs-dark');
-    }else{
+    } else {
       setEditorTheme('vs');
       localStorage.setItem('editorTheme', 'vs');
     }
@@ -68,7 +69,7 @@ const App = () => {
         <Nav
           setEditorValue={setEditorValue}
           setLanguage={setLanguage}
-          isDarkTheme={isDarkTheme} 
+          isDarkTheme={isDarkTheme}
           setIsDarkTheme={setIsDarkTheme}
         />
         <Router>
@@ -86,7 +87,9 @@ const App = () => {
             <Route path="*" element={<Missing />} />
           </Routes>
         </Router>
-        
+
+        <MaintenanceSnackbar />
+
         <Footer />
       </div>
     </AuthProvider>
