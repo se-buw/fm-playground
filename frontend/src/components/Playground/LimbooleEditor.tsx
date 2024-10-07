@@ -79,7 +79,6 @@ const LimbooleEditor: React.FC<LimbooleEditorProps> = (props) => {
     const disposeEditor = async () => {
       wrapper.reportStatus();
       await wrapper.dispose();
-      console.log(wrapper.reportStatus().join('\n'));
     };
 
     startEditor();
@@ -132,8 +131,6 @@ const LimbooleEditor: React.FC<LimbooleEditorProps> = (props) => {
 }
 
 export const loadLimbooleWorkerPort = () => {
-  // Language Server preparation
-  console.log(`Langium worker URL: ${workerPortUrl}`);
   return new Worker(workerPortUrl, {
     type: 'module',
     name: 'Limboole Server Port',
