@@ -1,13 +1,10 @@
 name: CI for GHCR
 
 on:
-  
   workflow_dispatch: # Manually trigger the workflow
   push:
     tags:
-      - 'v*.*.*'
-    branches:
-      - 'main'
+      - "v*.*.*"
 
 jobs:
   build_and_publish:
@@ -22,7 +19,7 @@ jobs:
           docker build -t ghcr.io/${{ github.repository }}-backend:latest .
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
           docker push ghcr.io/${{ github.repository }}-backend:latest
-      
+
       - name: Build and push Frontend
         run: |
           cd frontend
