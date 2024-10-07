@@ -2,6 +2,10 @@ name: CI for GHCR
 
 on:
   workflow_dispatch: # Manually trigger the workflow
+    inputs:
+      tags:
+        description: "VITE_FMP_VERSION (Tag)"
+        required: true
   push:
     tags:
       - "v*.*.*"
@@ -17,7 +21,7 @@ jobs:
         id: get_latest_tag
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+            LATEST_TAG="${{ github.event.inputs.tags }}"
             echo "::set-output name=tag::$LATEST_TAG"
           else
             TAG_NAME=${GITHUB_REF#refs/tags/}
