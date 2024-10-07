@@ -1,7 +1,11 @@
 name: CI for GHCR
 
 on:
-  workflow_dispatch:
+  
+  workflow_dispatch: # Manually trigger the workflow
+  push:
+    tags:
+      - 'v*.*.*'
     branches:
       - 'main'
 
