@@ -1,9 +1,14 @@
 name: CI for GHCR
 
 on:
-  workflow_dispatch:
-    branches:
-      - 'main'
+  workflow_dispatch: # Manually trigger the workflow
+    inputs:
+      tags:
+        description: "VITE_FMP_VERSION (Tag)"
+        required: true
+  push:
+    tags:
+      - "v*.*.*"
 
 jobs:
   build_and_publish:
@@ -12,17 +17,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Get the latest tag
+        id: get_latest_tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            LATEST_TAG="${{ github.event.inputs.tags }}"
+            echo "::set-output name=tag::$LATEST_TAG"
+          else
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            echo "::set-output name=tag::$TAG_NAME"
+          fi
+
       - name: Build and push Backend
         run: |
           cd backend
           docker build -t ghcr.io/${{ github.repository }}-backend:latest .
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
           docker push ghcr.io/${{ github.repository }}-backend:latest
-      
+
       - name: Build and push Frontend
         run: |
           cd frontend
-          docker build --build-arg VITE_FMP_API_URL=https://play.formal-methods.net/api -t ghcr.io/${{ github.repository }}-frontend:latest .
+          TAG_NAME=${{ steps.get_latest_tag.outputs.tag }}
+          docker build --build-arg VITE_FMP_API_URL=https://play.formal-methods.net/api --build-arg VITE_FMP_VERSION=$TAG_NAME -t ghcr.io/${{ github.repository }}-frontend:latest .
           echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
           docker push ghcr.io/${{ github.repository }}-frontend:latest
 

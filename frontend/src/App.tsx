@@ -11,7 +11,6 @@ import Options from './assets/config/AvailableTools'
 import './assets/style/index.css'
 import '../src/assets/style/App.css'
 import { LanguageProps } from './components/Playground/Tools'
-import MaintenanceSnackbar from './components/Utils/Modals/MaintenanceSnackbar'
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
@@ -87,8 +86,6 @@ const App = () => {
             <Route path="*" element={<Missing />} />
           </Routes>
         </Router>
-
-        <MaintenanceSnackbar />
 
         <Footer />
       </div>
