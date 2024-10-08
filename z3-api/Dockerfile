@@ -1,6 +1,6 @@
 FROM python:3.10-alpine
 RUN apk add --no-cache poetry
-RUN apk add --no-cache wget bash gzip tar z3 
+RUN apk add --no-cache z3
 WORKDIR /app
 COPY pyproject.toml poetry.lock* ./
 RUN poetry install --no-root

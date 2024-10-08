@@ -9,7 +9,6 @@ MAX_CONCURRENT_REQUESTS = 10
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS)
 code_queue = queue.Queue()
 
-
 def run_z3(code: str) -> str:
   """
   Run the code in z3 and return the output.

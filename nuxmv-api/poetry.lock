@@ -288,7 +288,7 @@ redis = "^5.1.1"
 type = "git"
 url = "https://github.com/soaibsafi/fmp-redis.git"
 reference = "HEAD"
-resolved_reference = "4144297d703eeaef6d7becdff85f20fcc3f8bcad"
+resolved_reference = "fe9122e84eec19c741651537ec898ba264b9db74"
 
 [[package]]
 name = "h11"
