@@ -4,12 +4,11 @@ from typing import Union
 from fastapi import FastAPI, HTTPException
 from dotenv import load_dotenv
 load_dotenv()
-from spectra.spectra import process_commands
+from spectra import process_commands
+from fmp_redis.cache_decorator import fmp_redis_cache
 
 API_URL = os.getenv("API_URL")
 REDIS_URL = os.getenv("REDIS_URL")
-if REDIS_URL:
-  from spectra.redis_cache import get_cache, set_cache
 
 SPECTRA_CLI_COMMANDS = [
     'check-realizability', 
@@ -32,7 +31,8 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
       return code
   except:
     raise HTTPException(status_code=404, detail="Permalink not found")
-
+  
+@fmp_redis_cache(REDIS_URL)
 def run_spectra(code: str, command: str) -> str:
   try:
     return process_commands(code, command)
@@ -44,20 +44,15 @@ def run_spectra(code: str, command: str) -> str:
 @app.get("/spectra/run/", response_model=None)
 def code(check: str, p: str, command: str):
   if command not in SPECTRA_CLI_COMMANDS:
-    raise HTTPException(status_code=400, detail="Invalid command")
+    raise HTTPException(status_code=422, detail="Invalid command")
+  
   try:
     code = get_code_by_permalink(check, p)
   except:
     raise HTTPException(status_code=404, detail="Permalink not found")
+  
   try:
-    if REDIS_URL:
-      cached_result = get_cache(code)
-      if cached_result is not None:
-        return cached_result
-      result = run_spectra(code, command)
-      set_cache(code, result)
-      return result
-    else:
-      return run_spectra(code)
+    return run_spectra(code, command)
   except:
     raise HTTPException(status_code=500, detail="Error running code")
+

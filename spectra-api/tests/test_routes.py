@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from spectra.spectra import TIMEOUT
+from spectra import TIMEOUT
 
 def test_run_spectra_not_found(client: TestClient):
   response = client.get("/spectra/run/?check=SPECTRA&p=not-found&command=check-realizability")

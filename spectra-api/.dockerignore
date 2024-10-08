@@ -6,5 +6,4 @@ __pycache__
 .pytest_cache/
 .idea/
 *.log
-lib/*
 tests/*
