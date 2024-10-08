@@ -5,6 +5,7 @@ WORKDIR /app
 COPY pyproject.toml poetry.lock* ./
 RUN poetry install
 COPY . .
+RUN sed -i -e 's/\r$//' install_dependencies.sh
 RUN chmod +x ./install_dependencies.sh
 RUN ./install_dependencies.sh
 EXPOSE 8080

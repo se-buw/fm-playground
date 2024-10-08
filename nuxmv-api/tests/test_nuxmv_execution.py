@@ -1,7 +1,7 @@
 import subprocess
 from unittest import mock
 import concurrent.futures
-from nuxmv.nuxmv import prettify_error, prettify_output, run_nuxmv, process_commands, MAX_CONCURRENT_REQUESTS
+from nuxmv import prettify_error, prettify_output, run_nuxmv, process_commands, MAX_CONCURRENT_REQUESTS
 
 train_valid_spec = """MODULE main
     VAR

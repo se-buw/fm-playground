@@ -3,16 +3,13 @@ import subprocess
 import tempfile
 import queue
 import concurrent.futures
-
 import platform
 
-NU_XMV_PATH = platform.system() == "Windows" and r'nuXmv.exe' or r'nuXmv'
+NU_XMV_PATH = platform.system() == "Windows" and r'lib/nuXmv.exe' or r'lib/nuXmv'
+MAX_CONCURRENT_REQUESTS = 10 
 
-MAX_CONCURRENT_REQUESTS = 10 # Maximum number of concurrent subprocesses
-
-executor = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) #thread pool with a maximum of max_concurrent threads
+executor = concurrent.futures.ThreadPoolExecutor(max_workers=MAX_CONCURRENT_REQUESTS) 
 code_queue = queue.Queue() # to hold incoming commands
-
 
 def run_nuxmv(code: str) -> str:
   """
@@ -28,7 +25,7 @@ def run_nuxmv(code: str) -> str:
   tmp_file.write(code.strip())  
   tmp_file.close()
 
-  command = [NU_XMV_PATH, "-dynamic", tmp_file.name] # TODO: Check dynamic ordering
+  command = [NU_XMV_PATH, "-dynamic", tmp_file.name] 
   try:
     result = subprocess.run(command, capture_output=True, text=True, timeout=60)
     os.remove(tmp_file.name)
