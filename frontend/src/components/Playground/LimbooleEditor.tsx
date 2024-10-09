@@ -114,9 +114,20 @@ const LimbooleEditor: React.FC<LimbooleEditorProps> = (props) => {
     }
   };
 
+  useEffect(() => {
+    setEditorValue(props.editorValue);
+  }, [props.editorValue]);
+
   const setEditorValue = (value: string) => {
     if (editorRef.current) {
-      editorRef.current.setValue(value);
+      const currentValue = editorRef.current.getValue();
+      if (currentValue !== value) {
+        const selection = editorRef.current.getSelection();
+        editorRef.current.setValue(value);
+        if (selection) {
+          editorRef.current.setSelection(selection);
+        }
+      }
     }
   };
 
