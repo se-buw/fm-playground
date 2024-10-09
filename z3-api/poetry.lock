@@ -273,24 +273,6 @@ uvicorn = {version = ">=0.15.0", extras = ["standard"]}
 standard = ["uvicorn[standard] (>=0.15.0)"]
 
 [[package]]
-name = "fmp-redis"
-version = "0.0.1"
-description = "Redis implementation for FM Playground"
-optional = false
-python-versions = "^3.10"
-files = []
-develop = false
-
-[package.dependencies]
-redis = "^5.1.1"
-
-[package.source]
-type = "git"
-url = "https://github.com/soaibsafi/fmp-redis.git"
-reference = "HEAD"
-resolved_reference = "fe9122e84eec19c741651537ec898ba264b9db74"
-
-[[package]]
 name = "h11"
 version = "0.14.0"
 description = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
@@ -769,6 +751,20 @@ files = [
 dev = ["atomicwrites (==1.4.1)", "attrs (==23.2.0)", "coverage (==7.4.1)", "hatch", "invoke (==2.2.0)", "more-itertools (==10.2.0)", "pbr (==6.0.0)", "pluggy (==1.4.0)", "py (==1.11.0)", "pytest (==8.0.0)", "pytest-cov (==4.1.0)", "pytest-timeout (==2.2.0)", "pyyaml (==6.0.1)", "ruff (==0.2.1)"]
 
 [[package]]
+name = "python-redis-cache"
+version = "4.0.1"
+description = "Basic Redis caching for functions"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python_redis_cache-4.0.1-py3-none-any.whl", hash = "sha256:3669483a04eac5391caccf129456eb7ebf612a3a516ebcf3b4abb3807c234ccf"},
+    {file = "python_redis_cache-4.0.1.tar.gz", hash = "sha256:0568b5eaa2cf4c05c8fc9629d492203a274872380fc2fb06bd4207faa5e389d0"},
+]
+
+[package.dependencies]
+redis = "*"
+
+[[package]]
 name = "pyyaml"
 version = "6.0.2"
 description = "YAML parser and emitter for Python"
@@ -1235,4 +1231,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "279976d0df96494e3e76081afb595312719e01961d668ee6831abfb43deaf7a3"
+content-hash = "7fe127f8785ebb2657e8bc1f3fbe0a1e8a89906fd9e4374cc3fc0cd57ede3b58"
