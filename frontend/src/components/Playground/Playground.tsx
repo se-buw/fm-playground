@@ -314,6 +314,10 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const handleReset = () => {
     setEditorValue('')
     setOutput('')
+    const infoElement = document.getElementById('info');
+    if (infoElement) {
+      infoElement.innerHTML = '';
+    }
     setPermalink({ check: null, permalink: null })
     closeModal()
   }
