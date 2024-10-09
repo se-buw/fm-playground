@@ -16,7 +16,7 @@ requests = "^2.32.3"
 uvicorn = "^0.30.5"
 redis = "^5.0.8"
 python-dotenv = "^1.0.1"
-fmp-redis = {git = "https://github.com/soaibsafi/fmp-redis.git"}
+python-redis-cache = "^4.0.1"
 
 
 [build-system]
