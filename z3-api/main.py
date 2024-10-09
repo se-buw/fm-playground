@@ -19,8 +19,7 @@ app = FastAPI()
 
 def is_redis_available() -> bool:
     try:
-        r = redis.Redis.from_url(REDIS_URL)
-        r.ping()
+        client.ping()
         return True
     except redis.ConnectionError:
         return False

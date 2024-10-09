@@ -30,8 +30,7 @@ app = FastAPI()
 
 def is_redis_available() -> bool:
     try:
-        r = redis.Redis.from_url(REDIS_URL)
-        r.ping()
+        client.ping()
         return True
     except redis.ConnectionError:
         return False
@@ -51,6 +50,7 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
 
 def run_spectra(code: str, command: str) -> str:
     if is_redis_available():
+
         @cache.cache()
         def cached_run_spectra(code: str, command: str) -> str:
             return process_commands(code, command)
