@@ -23,7 +23,7 @@ def run_limboole(code: str, check_sat: bool) -> str:
             command = [LIMBOOLE_EXE, '-s', tmp_file.name]
         else:
             command = [LIMBOOLE_EXE, tmp_file.name]
-        result = subprocess.run(command, capture_output=True, text=True, timeout=60)
+        result = subprocess.run(command, capture_output=True, text=True, timeout=5)
         os.remove(tmp_file.name)
         if result.returncode != 0:
             res = prettify_error(result.stderr)
@@ -35,6 +35,25 @@ def run_limboole(code: str, check_sat: bool) -> str:
         return res
     except subprocess.TimeoutExpired:
         os.remove(tmp_file.name)
+        app.logger.error(f"Timeout expired for Limboole task. | Payload: {code}")
+        return "Timeout expired"
+
+@celery.task
+def run_z3(code: str) -> str:
+    key = generate_cache_key(code)
+    tmp_file = tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.smt2')
+    tmp_file.write(code.strip())  
+    tmp_file.close()
+    try:
+        command = ['z3', tmp_file.name]
+        result = subprocess.run(command, capture_output=True, text=True, timeout=5)
+        os.remove(tmp_file.name)
+        res = result.stdout
+        set_cache(key, res)
+        return res
+    except subprocess.TimeoutExpired:
+        os.remove(tmp_file.name)
+        app.logger.error(f"Timeout expired for Z3 task. | Payload: {code}")
         return "Timeout expired"
 
 def prettify_error(stderr: str) -> str:

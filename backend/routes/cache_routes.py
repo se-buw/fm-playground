@@ -1,8 +1,9 @@
 from http.client import HTTPException
 from dotenv import load_dotenv
 from flask import Blueprint, request, jsonify, make_response
-from utils.tasks import run_limboole
+from utils.tasks import run_limboole, run_z3
 from utils.redis_utils import generate_cache_key, get_cache
+from config import app
 
 load_dotenv()
 
@@ -33,9 +34,29 @@ def limboole_cache():
         })
 
     except HTTPException as e:
+        app.logger.error(f"Error running Limboole Cache. | Payload: {code} | Error: {e} ")
         return make_response(jsonify({"error": str(e)}), 500)
 
-#TODO Implement this route
 @cache_routes.route('/api/smt-cache', methods=['POST'])
 def smt_cache():
-    pass
+    try:
+        request_data = request.get_json()
+        code = request_data.get('code')
+        if not code:
+            return make_response(jsonify({"error": "Code is required"}), 400)
+        cache_key = generate_cache_key(code)
+        cached_result = get_cache(cache_key)
+        
+        if cached_result:
+            return jsonify({
+                'status': 'cached',
+                'result': cached_result.decode()  
+            })
+        task = run_z3.delay(code)
+        return jsonify({
+            'status': 'processing',
+            'task_id': task.id
+        })
+    except HTTPException as e:
+        app.logger.error(f"Error running SMT Cache. | Payload: {code} | Error: {e} ")
+        return make_response(jsonify({"error": str(e)}), 500)
