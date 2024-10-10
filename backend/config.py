@@ -8,6 +8,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 load_dotenv()
+from celery_app import celery_init_app
 
 app = Flask(__name__)
 
@@ -52,6 +53,15 @@ app.config['GOOGLE_CLIENT_ID'] = os.getenv('GOOGLE_CLIENT_ID', None)
 app.config['GOOGLE_CLIENT_SECRET'] = os.getenv('GOOGLE_CLIENT_SECRET', None)
 app.config['GOOGLE_DISCOVERY_URL'] = "https://accounts.google.com/.well-known/openid-configuration"
 app.json.compact = False
+# Celery Config
+app.config.from_mapping(
+    CELERY=dict(
+        broker_url=os.getenv('REDIS_URL', "redis://localhost:6379/0"),
+        result_backend=os.getenv('REDIS_URL', "redis://localhost:6379/0"),
+        task_ignore_result=False,
+        broker_connection_retry_on_startup=True, 
+    ),
+)
 # ------------------ App Config ------------------
 
 # ------------------ Database ------------------
@@ -59,4 +69,4 @@ db = SQLAlchemy()
 migrate = Migrate(app, db)
 db.init_app(app)
 # ------------------ Database ------------------
-
+celery_app = celery_init_app(app)
