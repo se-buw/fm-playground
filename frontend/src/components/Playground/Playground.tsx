@@ -12,9 +12,6 @@ import Tools from './Tools';
 import Options from '../../assets/config/AvailableTools'
 import FileUploadButton from '../Utils/FileUpload';
 import FileDownload from '../Utils/FileDownload';
-import run_limboole from '../../assets/js/limboole.js';
-import { executeNuxmv, executeZ3, executeSpectra, getAlloyInstance } from '../../api/toolsApi'
-import runZ3WASM from '../../assets/js/runZ3WASM';
 import Guides from '../Utils/Guides';
 import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn';
 import ConfirmModal from '../Utils/Modals/ConfirmModal';
@@ -25,12 +22,16 @@ import {
   getCodeByParmalink,
   saveCode,
 } from '../../api/playgroundApi.js'
-import { getLineToHighlight } from '../../assets/js/lineHighlightingUtil.js';
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput';
 import AlloyCmdOptions from './alloy/AlloyCmdOptions';
 
 import type { LanguageProps } from './Tools';
+import { executeLimboole } from '../../assets/ts/toolExecutor/limbooleExecutor.js';
+import { executeZ3Wasm } from '../../assets/ts/toolExecutor/z3Executor.js';
+import { executeNuxmvTool } from '../../assets/ts/toolExecutor/nuxmvExecutor.js';
+import { executeSpectraTool } from '../../assets/ts/toolExecutor/spectraExecutor.js';
+import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js';
 
 interface PlaygroundProps {
   editorValue: string;
@@ -60,7 +61,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     value: number;
     label: string;
   }
-  
+
   const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   /**
@@ -121,24 +122,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   }
 
 
-  const findNonAscii = (str: string) => {
-    const regex = /[^\x00-\x7F]/g;
-    const match = regex.exec(str);
-    if (!match) return -1;
-    // find the line and column and the non-ascii character
-    const line = (str.substring(0, match.index).match(/\n/g) || []).length + 1;
-    const column = match.index - str.lastIndexOf('\n', match.index);
-    const char = match[0];
-    return { line, column, char };
-  }
-
-  /**
-   * Execute the tool and save the code to the database.
-   * Code will be saved in the database no matter what the result of the tool is.
-   * Save code returns the permalink of the code. The permalink is then used to update the URL.
-   * Then the output is updated with the result of the tool.
-   * If error occurs, the error modal is opened.
-   */
   const handleToolExecution = async () => {
     setOutput('')
     try {
@@ -149,7 +132,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         const metadata = { 'cli_option': spectraCliOption }
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null, metadata)
       } else if (language.id === 'als') {
-        const metadata = { 'cmd': alloySelectedCmd + 1}
+        const metadata = { 'cmd': alloySelectedCmd + 1 }
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null, metadata)
       } else {
         response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null, null)
@@ -162,102 +145,32 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         showErrorModal('Something went wrong. Please try again later.')
         setIsExecuting(false);
       }
-      const nonAsciiIndex = findNonAscii(editorValue)
-      if (nonAsciiIndex !== -1 && Number(language.value) < 3) {
-        setLineToHighlight([nonAsciiIndex.line])
-        setOutput(`<i style='color: red;'>The code contains non-ASCII characters. Please remove the character '${nonAsciiIndex.char}' at line ${nonAsciiIndex.line}, column ${nonAsciiIndex.column} and try again.</i>`)
-        setIsExecuting(false);
-        return
-      }
-      // Execute the tools
-      if (Number(language.value) >= 0 && Number(language.value) < 3) {
-        run_limboole(window.Wrappers[language.value], editorValue)
-        const infoElement = document.getElementById('info');
-        if (infoElement) {
-          setLineToHighlight(getLineToHighlight(infoElement.innerText, language.id) || []);
-        }
-        setIsExecuting(false);
-      }
-      // Try to execute Z3 wasm. If it fails, fallback to the API
-      else if (Number(language.value) == 3) {
-        runZ3WASM(editorValue).then((res) => {
-          if (res.error) {
-            showErrorModal(res.error)
-          } else {
-            setLineToHighlight(getLineToHighlight(res.output, language.id) || [])
-            setOutput(res.output);
-            setIsExecuting(false);
-          }
-        }).catch((err) => {
-          if (err.message.includes("SharedArrayBuffer is not defined")) {
-            // Z3 is not supported in the current browser. Fallback to the API
-            executeZ3(editorValue).then((res) => {
-              setLineToHighlight(getLineToHighlight(res.result, language.id) || [])
-              setOutput(res.result)
-              setIsExecuting(false);
-            }).catch((err) => {
-              if (err.response.status === 503) {
-                showErrorModal(err.response.data.result)
-              }
-              else if (err.response.status === 429) {
-                showErrorModal("Slow down! You are making too many requests. Please try again later.")
-              }
-              setIsExecuting(false);
-            })
-          } else {
-            showErrorModal(err.message)
-          }
+      
+
+      switch (Number(language.value)) {
+        case 0:
+        case 1:
+        case 2:
+          executeLimboole({ editorValue, language, setLineToHighlight, setIsExecuting })
+          break;
+        case 3:
+          executeZ3Wasm({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal })
+          break;
+        case 4:
+          executeNuxmvTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal })
+          break;
+        case 5:
+          executeAlloyTool({ editorValue, setIsExecuting, showErrorModal, alloySelectedCmd, setAlloyInstance })
+          break;
+        case 6:
+          executeSpectraTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption })
+          break;
+        default:
           setIsExecuting(false);
-        })
+          break;
       }
-      // nuXmv execution
-      else if (Number(language.value) == 4) {
-        executeNuxmv(editorValue)
-          .then((res) => {
-            setLineToHighlight(getLineToHighlight(res.result, language.id) || [])
-            setOutput(res.result)
-            setIsExecuting(false);
-          })
-          .catch((err) => {
-            if (err.response.status === 503) {
-              showErrorModal(err.response.data.result)
-            }
-            else if (err.response.status === 429) {
-              showErrorModal("Slow down! You are making too many requests. Please try again later.")
-            }
-            setIsExecuting(false);
-          })
-      } else if (Number(language.value) == 5) {
-        setAlloyInstance([])
-        getAlloyInstance(editorValue, alloySelectedCmd).then((res) => {
-          setAlloyInstance(res)
-          setIsExecuting(false);
-        }).catch((err) => {
-          if (err.response.status === 503) {
-            showErrorModal(err.response.data.result)
-          }
-          else if (err.response.status === 429) {
-            showErrorModal("Slow down! You are making too many requests. Please try again later.")
-          }
-          setIsExecuting(false);
-        })
-      } else if (Number(language.value) == 6) {
-        executeSpectra(editorValue, spectraCliOption)
-          .then((res) => {
-            setLineToHighlight(getLineToHighlight(res.result, language.id) || [])
-            setOutput(res.result)
-            setIsExecuting(false);
-          })
-          .catch((err) => {
-            if (err.response.status === 503) {
-              showErrorModal(err.response.data.result)
-            }
-            else if (err.response.status === 429) {
-              showErrorModal("Slow down! You are making too many requests. Please try again later.")
-            }
-            setIsExecuting(false);
-          })
-      }
+
+
     } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
         showErrorModal('Network Error. Please check your internet connection.')
@@ -465,7 +378,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
               </div>
             </div>
             {language.id === 'limboole' ?
-              <LimbooleEditor 
+              <LimbooleEditor
                 height={isFullScreen ? '80vh' : '60vh'}
                 setEditorValue={setEditorValue}
                 language={language}

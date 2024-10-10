@@ -16,7 +16,7 @@ import {
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
 import { getAlloyNextInstance } from '../../../api/toolsApi';
 import PlainOutput from '../PlainOutput';
-import { getLineToHighlight } from '../../../assets/js/lineHighlightingUtil';
+import { getLineToHighlight } from '../../../assets/ts/lineHighlightingUtil';
 import {
   getGraphData,
   parseAlloyErrorMessage,
