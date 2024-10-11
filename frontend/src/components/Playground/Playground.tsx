@@ -125,51 +125,30 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const handleToolExecution = async () => {
     setOutput('')
     try {
-      // Pre execution checks
       setIsExecuting(true);
-      let response;
-      if (language.id === 'spectra') {
-        const metadata = { 'cli_option': spectraCliOption }
-        response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null, metadata)
-      } else if (language.id === 'als') {
-        const metadata = { 'cmd': alloySelectedCmd + 1 }
-        response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null, metadata)
-      } else {
-        response = await saveCode(editorValue, language.short, permalink.permalink ? permalink.permalink : null, null)
-      }
-
-      if (response) {
-        setPermalink(response.data)
-      }
-      else {
-        showErrorModal('Something went wrong. Please try again later.')
-        setIsExecuting(false);
-      }
-      
 
       switch (Number(language.value)) {
         case 0:
         case 1:
         case 2:
-          executeLimboole({ editorValue, language, setLineToHighlight, setIsExecuting })
+          executeLimboole({ editorValue, language, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink })
           break;
         case 3:
-          executeZ3Wasm({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal })
+          executeZ3Wasm({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
           break;
         case 4:
-          executeNuxmvTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal })
+          executeNuxmvTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
           break;
         case 5:
-          executeAlloyTool({ editorValue, setIsExecuting, showErrorModal, alloySelectedCmd, setAlloyInstance })
+          executeAlloyTool({ editorValue, language, setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd, permalink, setPermalink })
           break;
         case 6:
-          executeSpectraTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption })
+          executeSpectraTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink })
           break;
         default:
           setIsExecuting(false);
           break;
       }
-
 
     } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
