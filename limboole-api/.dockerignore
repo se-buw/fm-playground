@@ -1,0 +1,10 @@
+.env
+.env.example
+__pycache__
+.vscode/
+*.pyc
+.pytest_cache/
+.idea/
+*.log
+lib/*
+tests/*
