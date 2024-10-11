@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +71,7 @@ class ApplicationTests {
 		List<String> instanceList = new ArrayList<>();		
 		String result = "";
 		try {
-			result = controller.getInstance(request, 0);
+			result = controller.getInstance("ALS", "clerk-liver-enable-aliens", 0);
 		} catch (Exception e) {
 			fail();
 		}
@@ -99,7 +102,7 @@ class ApplicationTests {
 		request.setCode(longCode);
 		String result = "";
 		try {
-			result = controller.getInstance(request, 0);
+			result = controller.getInstance("ALS", "bunt-unfold-sitter-chug", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -116,7 +119,7 @@ class ApplicationTests {
 		String result = "";
 		long start = System.currentTimeMillis();
 		try {
-			result = controller.getInstance(request, 0);
+			result = controller.getInstance("ALS", "clerk-liver-enable-aliens", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,11 +133,11 @@ class ApplicationTests {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
 		AlloyInstanceController controller = new AlloyInstanceController();
-		InstanceRequest request = new InstanceRequest();
-		request.setCode(shortCode);
+		AlloyInstanceController spyController = spy(controller);
+		doReturn("sig A {}").when(spyController).getCodeByPermalink(anyString(), anyString());
 		String result = "";
 		try {
-			result = controller.getInstance(request, 0);
+			result = spyController.getInstance("ALS", "clerk-liver-enable-aliens", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -147,11 +150,11 @@ class ApplicationTests {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 10;
 		AlloyInstanceController controller = new AlloyInstanceController();
-		InstanceRequest request = new InstanceRequest();
-		request.setCode(shortCode);
+		AlloyInstanceController spyController = spy(controller);
+		doReturn(shortCode).when(spyController).getCodeByPermalink(anyString(), anyString());
 		String result = "";
 		try {
-			result = controller.getInstance(request, 0);
+			result = spyController.getInstance("ALS", "clerk-liver-enable-aliens", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -163,11 +166,11 @@ class ApplicationTests {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
 		AlloyInstanceController controller = new AlloyInstanceController();
-		InstanceRequest request = new InstanceRequest();
-		request.setCode(shortCode);
+		AlloyInstanceController spyController = spy(controller);
+		doReturn(shortCode).when(spyController).getCodeByPermalink(anyString(), anyString());
 		String result = "";		
 		try {
-			result = controller.getInstance(request, 0);
+			result = controller.getInstance("ALS", "clerk-liver-enable-aliens", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -191,11 +194,11 @@ class ApplicationTests {
 		AlloyInstanceController.running = 0;
 
 		AlloyInstanceController controller = new AlloyInstanceController();
-		InstanceRequest request = new InstanceRequest();
-		request.setCode(longCode);
+		AlloyInstanceController spyController = spy(controller);
+		doReturn(longCode).when(spyController).getCodeByPermalink(anyString(), anyString());
 		String result = "";
 		try {
-			result = controller.getInstance(request, 0);
+			result = controller.getInstance("ALS", "sudoku-raft-ramp-nephew", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -217,7 +220,7 @@ class ApplicationTests {
 		// execute get instance in a thread
 		Thread t = new Thread(() -> {
 			try {
-				controller.getInstance(request, 0);
+				controller.getInstance("ALS", "bunt-unfold-sitter-chug", 0);
 			} catch (Exception e) {
 				fail(e);
 			}
