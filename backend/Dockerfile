@@ -1,12 +1,22 @@
-FROM python:3.10-slim
+FROM python:3.10-alpine
 
+RUN apk add --no-cache \
+    poetry \
+    gcc \
+    python3-dev \
+    musl-dev \
+    linux-headers \
+    wget \
+    bash \
+    gzip \
+    tar
 WORKDIR /backend
-COPY . /backend 
-RUN apt-get update && apt-get install -y
+COPY pyproject.toml poetry.lock* ./
+RUN poetry install
 
-RUN pip install --no-cache-dir --upgrade pip setuptools
-RUN pip install --no-cache-dir -r requirements.txt
-
+COPY . .
+RUN sed -i -e 's/\r$//' entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 RUN mkdir logs
 
 EXPOSE 8000
