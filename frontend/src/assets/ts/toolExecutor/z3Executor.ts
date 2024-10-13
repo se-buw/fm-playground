@@ -4,6 +4,7 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeZ3 } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
+import fmpConfig from "../../../../fmp.config";
 interface ExecuteZ3Props {
   editorValue: string;
   language: LanguageProps;
@@ -26,11 +27,13 @@ export const executeZ3Wasm = async (
     setPermalink
   }: ExecuteZ3Props) => {
 
-  const response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
-  if (response) { setPermalink(response.data); }
-  else {
-    showErrorModal('Something went wrong. Please try again later.')
-    setIsExecuting(false);
+  let response: any = null;
+  try {
+    response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
+    if (response) { setPermalink(response.data); }
+  }
+  catch (error: any) {
+    showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
   }
 
   try {
@@ -42,12 +45,13 @@ export const executeZ3Wasm = async (
       setOutput(res.output);
     }
   } catch (err: any) {
-    if (err.message.includes("SharedArrayBuffer is not defined")) {
+    setOutput("Could't load WASM module. Trying to execute on the server...");
+    try {
       const res = await executeZ3(response?.data);
-      setLineToHighlight(getLineToHighlight(res.result, language.id) || []);
-      setOutput(res.result);
-    } else {
-      showErrorModal(err.message);
+      setLineToHighlight(getLineToHighlight(res, language.id) || []);
+      setOutput(res);
+    } catch (error: any) {
+      showErrorModal(error.message);
     }
   }
   setIsExecuting(false);

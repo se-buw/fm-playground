@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_FMP_API_URL;
+
 import fmpConfig from "../../fmp.config";
 import { Permalink } from "../types";
 
