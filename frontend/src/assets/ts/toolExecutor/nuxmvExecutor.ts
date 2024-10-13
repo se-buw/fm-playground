@@ -3,6 +3,7 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeNuxmv } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
+import fmpConfig from "../../../../fmp.config";
 
 interface ExecuteNuxmvProps {
   editorValue: string;
@@ -29,7 +30,7 @@ export const executeNuxmvTool = async (
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
   if (response) { setPermalink(response.data); }
   else {
-    showErrorModal('Unable to generate permalink. Please try again later.')
+    showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
     setIsExecuting(false);
   }
 

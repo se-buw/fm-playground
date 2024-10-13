@@ -18,10 +18,7 @@ import ConfirmModal from '../Utils/Modals/ConfirmModal';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice';
 import MessageModal from '../Utils/Modals/MessageModal';
 import SpectraCliOptions from './SpectraCliOptions';
-import {
-  getCodeByParmalink,
-  saveCode,
-} from '../../api/playgroundApi.js'
+import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput';
 import AlloyCmdOptions from './alloy/AlloyCmdOptions';
@@ -32,6 +29,7 @@ import { executeZ3Wasm } from '../../assets/ts/toolExecutor/z3Executor.js';
 import { executeNuxmvTool } from '../../assets/ts/toolExecutor/nuxmvExecutor.js';
 import { executeSpectraTool } from '../../assets/ts/toolExecutor/spectraExecutor.js';
 import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js';
+import fmpConfig from '../../../fmp.config.js';
 
 interface PlaygroundProps {
   editorValue: string;
@@ -158,7 +156,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         showErrorModal('Code too long. Please reduce the size of the code.')
       }
       else {
-        showErrorModal(`Something went wrong. Please try again later.${err.message}`)
+        showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
       }
     }
   }

@@ -3,6 +3,7 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeSpectra } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
+import fmpConfig from "../../../../fmp.config";
 
 interface ExecuteSpectraProps {
   editorValue: string;
@@ -32,7 +33,7 @@ export const executeSpectraTool = async (
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
   if (response) { setPermalink(response.data); }
   else {
-    showErrorModal('Unable to generate permalink. Please try again later.')
+    showErrorModal(`Unable to generate permalink. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`)
     setIsExecuting(false);
   }
   try {
