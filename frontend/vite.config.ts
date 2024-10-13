@@ -14,13 +14,44 @@ export default defineConfig({
     },
   },
   react()],
-  build:{
+  build: {
     chunkSizeWarningLimit: 1000,
   },
   preview: {
     host: true,
     strictPort: true,
-    port: 5173
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://fmp-backend:8000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/nuxmv': {
+        target: 'http://fmp-nuxmv-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/nuxmv/, '')
+      },
+      '/smt': {
+        target: 'http://fmp-z3-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/smt/, '')
+      },
+      '/alloy': {
+        target: 'http://fmp-alloy-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/alloy/, '')
+      },
+      '/spectra': {
+        target: 'http://fmp-spectra-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/spectra/, '')
+      },
+    },
   },
   server: {
     watch: {
@@ -28,7 +59,37 @@ export default defineConfig({
     },
     host: true,
     strictPort: true,
-    port: 5173, 
+    port: 5173,
+    proxy: {
+      '/api': {
+        target: 'http://fmp-backend:8000',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/nuxmv': {
+        target: 'http://fmp-nuxmv-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/nuxmv/, '')
+      },
+      '/smt': {
+        target: 'http://fmp-z3-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/smt/, '')
+      },
+      '/alloy': {
+        target: 'http://fmp-alloy-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/alloy/, '')
+      },
+      '/spectra': {
+        target: 'http://fmp-spectra-api:8080',
+        changeOrigin: true,
+        secure: false,
+        rewrite: (path) => path.replace(/^\/spectra/, '')
+      },
+    },
   }
 })
- 
