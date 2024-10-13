@@ -1,15 +1,12 @@
 import sys
-import requests
 sys.path.append("..") # Adds higher directory to python modules path.
 import time
 import pytz
 from datetime import datetime
 aware_datetime = datetime.now(pytz.utc)
 from flask import Blueprint, request, jsonify, session, make_response
-from flask_login import current_user
 from db.models import db, Data
 from db.db_query import *
-from utils import xmv, z3, spectra
 from utils.permalink_generator import generate_passphrase
 from utils.logging_utils import *
 from config import app, limiter
@@ -49,14 +46,6 @@ def after_request(response):
   return response
 # ------------------ Logging ------------------
 
-# Index page
-@routes.route('/api/', methods=['GET'])
-def index():
-  token = request.headers.get('Authorization')
-  if token is None: 
-    return jsonify({'result': 'fail', 'message': 'You are not logged in.'}), 401
-  return f'Hello, {current_user.id}! You are logged in.'
-  
 @routes.route('/api/save', methods=['POST'])
 @limiter.limit("2/second", error_message="You've already made a request recently.")
 def save():
@@ -116,56 +105,6 @@ def get_code():
   code_data = Code.query.join(Data, Data.code_id == Code.id).filter_by(permalink=p).filter_by(check_type=c).first_or_404()
   response = make_response(jsonify({'code': code_data.code}))
   return response
-
-@routes.route('/api/run_nuxmv', methods=['POST'])
-@limiter.limit("1/second")
-def run_nuxmv():
-  data = request.get_json()
-  code = data['code']
-  # Check if the code is too large
-  if not is_valid_size(code):
-    return {'error': "The code is too large."}, 413
-  try:
-    res = xmv.process_commands(code)
-    response = make_response(jsonify({'result': res}), 200)
-  except:
-    app.logger.error(f"Error running NuXMV. | Payload: {code} | Error: {sys.exc_info()[0]} ")
-    response = make_response(jsonify({'result': "Error running nuXmv. Server is busy. Please try again"}), 503)
-  return response
-
-@routes.route('/api/run_z3', methods=['POST'])
-@limiter.limit("1/second")
-def run_z3():
-  data = request.get_json()
-  code = data['code']
-  # Check if the code is too large
-  if not is_valid_size(code):
-    return {'error': "The code is too large."}, 413
-  try:
-    res = z3.process_commands(code)
-    response = make_response(jsonify({'result': res}), 200)
-  except:
-    app.logger.error(f"Error running Z3. | Payload: {code} | Error: {sys.exc_info()[0]} ")
-    response = make_response(jsonify({'result': "Error running Z3. Server is busy. Please try again"}), 503)
-  return response
-
-@routes.route('/api/run_spectra', methods=['POST'])
-@limiter.limit("1/second")
-def run_spectra():
-  data = request.get_json()
-  code = data['code']
-  command = data['command']
-  # Check if the code is too large
-  if not is_valid_size(code):
-    return {'error': "The code is too large."}, 413
-  try:
-    res = spectra.process_commands(code, command)
-    response = make_response(jsonify({'result': res}), 200)
-  except:
-    app.logger.error(f"Error running Spectra. | Payload: {code} | Error: {sys.exc_info()[0]} ")
-    response = make_response(jsonify({'result': "Error running Spectra. Server is busy. Please try again"}), 503) 
-  return response
-
 
 @routes.route('/api/histories', methods=['GET'])
 def get_history():
@@ -237,38 +176,3 @@ def history_by_permalink(permalink: str):
   if data:
     return jsonify({'history': data}), 200
   return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
-
-
-## --------- Alloy -------------
-@routes.route('/api/getAlloyInstance/<int:cmd>', methods=['POST'])
-@limiter.limit("1/second")
-def get_alloy_instance_by_cmd(cmd: int):
-  data = request.get_json()
-  code = data['code']
-  command = cmd
-  url = f'{ALLOY_API_URL}/instance/{command}'
-  data = {'code': code}
-  headers = {
-    'Content-Type': 'application/json'
-  }
-  try:
-    response = requests.post(url, json=data, headers=headers)
-    return jsonify(response.json()), response.status_code
-  except requests.exceptions.RequestException as e:
-    return jsonify({'error': str(e)}), 500
-  
-@routes.route('/api/getAlloyNextInstance', methods=['POST'])
-@limiter.limit("2/second")
-def get_alloy_next_instance():
-  data = request.get_json()
-  specId = data['specId']
-  url = f'{ALLOY_API_URL}/nextInstance'
-  data = specId
-  headers = {
-    'Content-Type': 'application/text'
-  }
-  try:
-    response = requests.post(url, data, headers=headers)
-    return jsonify(response.json()), response.status_code
-  except requests.exceptions.RequestException as e:
-    return jsonify({'error': str(e)}), 500
