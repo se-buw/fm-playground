@@ -29,20 +29,16 @@ export const executeNuxmvTool = async (
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
   if (response) { setPermalink(response.data); }
   else {
-    showErrorModal('Something went wrong. Please try again later.')
+    showErrorModal('Unable to generate permalink. Please try again later.')
     setIsExecuting(false);
   }
 
   try {
-    const res = await executeNuxmv(editorValue);
-    setLineToHighlight(getLineToHighlight(res.result, language.id) || []);
-    setOutput(res.result);
+    const res = await executeNuxmv(response?.data);
+    setLineToHighlight(getLineToHighlight(res, language.id) || []);
+    setOutput(res);
   } catch (err: any) {
-    if (err.response.status === 503) {
-      showErrorModal(err.response.data.result);
-    } else if (err.response.status === 429) {
-      showErrorModal("Slow down! You are making too many requests. Please try again later.");
-    }
+    showErrorModal(err.response);
   }
   setIsExecuting(false);
 }

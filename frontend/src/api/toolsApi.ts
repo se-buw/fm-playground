@@ -1,48 +1,34 @@
 import axios from "axios";
 
-const API_URL = import.meta.env.VITE_FMP_API_URL;
+import fmpConfig from "../../fmp.config";
+import { Permalink } from "../types";
 
 
-/**
- * Execute nuxmv in the server and return the result
- * @param {*} code
- * @returns result
- */
-export async function executeNuxmv(code: string) {
-  let url = `${API_URL}/run_nuxmv`;
+export async function executeNuxmv(permalink: Permalink) {
+  let url = `${fmpConfig.tools.nuxmv.apiUrl}?check=${permalink.check}&p=${permalink.permalink}`;
   try {
-    const response = await axios.post(url, { code });
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     throw error;
   }
 }
 
-/**
- * Execute z3 in the server and return the result
- * @param {*} code
- * @returns result
-* */
-export async function executeZ3(code: string) {
-  let url = `${API_URL}/run_z3`;
+
+export async function executeZ3(permalink: Permalink) {
+  let url = `${fmpConfig.tools.smt.apiUrl}?check=${permalink.check}&p=${permalink.permalink}`;
   try {
-    const response = await axios.post(url, { code });
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     throw error;
   }
 } 
 
-/**
- * Execute spectra in the server and return the result
- * @param {*} code spectra specification
- * @param {*} command command to execute e.g. check_realizability, synthesize_controller, etc.
- * @returns result 
- */
-export async function executeSpectra(code: string, command: string) {
-  let url = `${API_URL}/run_spectra`;
+export async function executeSpectra(permalink: Permalink, command: string) {
+  let url = `${fmpConfig.tools.spectra.apiUrl}?check=${permalink.check}&p=${permalink.permalink}&command=${command}`;
   try {
-    const response = await axios.post(url, {code: code, command: command});
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     throw error;
@@ -50,18 +36,21 @@ export async function executeSpectra(code: string, command: string) {
 }
 
 
-export async function getAlloyInstance(code: string, cmd: number) {
-  let url = `${API_URL}/getAlloyInstance/${cmd}`;
+export async function getAlloyInstance(permalink: Permalink, cmd: number) {
+  let url = `${fmpConfig.tools.alloy.apiUrl}?check=${permalink.check}&p=${permalink.permalink}&cmd=${cmd}`;
   try {
-    const response = await axios.post(url, { code });
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     throw error;
   }
 }
 
-export async function getAlloyNextInstance(specId: string | number | null) {
-  let url = `${API_URL}/getAlloyNextInstance`;
+export async function getAlloyNextInstance(specId: string | null) {
+  let url = fmpConfig.tools.alloy.apiUrlNext;
+  if (!url) {
+    throw new Error("Alloy Next Instance API URL not found");
+  }
   try {
     const response = await axios.post(url, { specId });
     return response.data;

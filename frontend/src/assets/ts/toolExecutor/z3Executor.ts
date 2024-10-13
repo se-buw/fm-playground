@@ -4,7 +4,6 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeZ3 } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
-
 interface ExecuteZ3Props {
   editorValue: string;
   language: LanguageProps;
@@ -44,7 +43,7 @@ export const executeZ3Wasm = async (
     }
   } catch (err: any) {
     if (err.message.includes("SharedArrayBuffer is not defined")) {
-      const res = await executeZ3(editorValue);
+      const res = await executeZ3(response?.data);
       setLineToHighlight(getLineToHighlight(res.result, language.id) || []);
       setOutput(res.result);
     } else {
