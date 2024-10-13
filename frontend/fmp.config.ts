@@ -100,7 +100,7 @@ const fmpConfig: FmpConfig = {
           path: "../../assets/languages/smt2",
         },
       },
-      apiUrl: 'http://localhost:8082/smt/run/',
+      apiUrl: 'http://127.0.0.1:8080/smt/run/',
     },
     nuxmv: {
       name: "nuXmv",
@@ -118,7 +118,7 @@ const fmpConfig: FmpConfig = {
           path: "../../assets/languages/nuxmv",
         },
       },
-      apiUrl: 'http://localhost:8080/xmv/run/',
+      apiUrl: 'http://127.0.0.1:8081/xmv/run/',
     },
     alloy: {
       name: "Alloy",
@@ -136,8 +136,8 @@ const fmpConfig: FmpConfig = {
           path: "../../assets/languages/alloy",
         },
       },
-      apiUrl: 'http://localhost:8080/alloy/instance',
-      apiUrlNext: 'http://localhost:8080/alloy/nextInstance',
+      apiUrl: 'http://127.0.0.1:8082/alloy/instance',
+      apiUrlNext: 'http://127.0.0.1:8082/alloy/nextInstance',
     },
     spectra: {
       name: "Spectra",
@@ -155,7 +155,7 @@ const fmpConfig: FmpConfig = {
           path: "../../assets/languages/spectra",
         },
       },
-      apiUrl: 'http://localhost:8081/spectra/run/',
+      apiUrl: 'http://127.0.0.1:8083/spectra/run/',
     },
   },
 };

@@ -20,7 +20,7 @@ export const executeAlloyTool = async (
     setAlloyInstance,
     showErrorModal,
     alloySelectedCmd,
-    permalink, 
+    permalink,
     setPermalink
   }: ExecuteAlloyProps) => {
 
@@ -34,7 +34,7 @@ export const executeAlloyTool = async (
 
   try {
     setAlloyInstance([]);
-    const res = await getAlloyInstance(editorValue, alloySelectedCmd);
+    const res = await getAlloyInstance(response?.data, alloySelectedCmd);
     setAlloyInstance(res)
     setIsExecuting(false);
   } catch (err: any) {

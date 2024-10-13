@@ -1,5 +1,6 @@
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_FMP_API_URL;
 import fmpConfig from "../../fmp.config";
 import { Permalink } from "../types";
 
@@ -23,7 +24,7 @@ export async function executeZ3(permalink: Permalink) {
   } catch (error) {
     throw error;
   }
-} 
+}
 
 export async function executeSpectra(permalink: Permalink, command: string) {
   let url = `${fmpConfig.tools.spectra.apiUrl}?check=${permalink.check}&p=${permalink.permalink}&command=${command}`;
@@ -52,7 +53,11 @@ export async function getAlloyNextInstance(specId: string | null) {
     throw new Error("Alloy Next Instance API URL not found");
   }
   try {
-    const response = await axios.post(url, { specId });
+    const response = await axios.post(url, specId, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    });
     return response.data;
   } catch (error) {
     throw error;

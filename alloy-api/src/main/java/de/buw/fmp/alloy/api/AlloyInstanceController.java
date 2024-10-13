@@ -31,12 +31,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class AlloyInstanceController {
-    @Value("${API_URL:https://play.formal-methods.net/}")
+    @Value("${API_URL:http://127.0.0.1:8000/}")
     private String apiUrl;
     public static int TIME_OUT = 60;
     public static int MAX_RUNNING = 10;
@@ -53,7 +54,8 @@ public class AlloyInstanceController {
         opt.solver = A4Options.SatSolver.SAT4J;
         return opt;
     }
-
+    
+    @CrossOrigin(origins = "*")
     @GetMapping("/alloy/instance")
     public String getInstance(
             @RequestParam(required = true) String check,
@@ -171,6 +173,7 @@ public class AlloyInstanceController {
         return false;
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/alloy/nextInstance")
     public String getNextInstance(@RequestBody String specId) throws IOException {
         StoredSolution storedSolution = instances.get(specId);
