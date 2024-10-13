@@ -15,7 +15,6 @@ function getLineToHighlightSmt2(result: string) {
 }
 
 function getLineToHighlightXmv(result: string) {
-  console.log("result", result);
   return result.split('\n')
       .filter(line => line.toLowerCase().includes('error'.toLowerCase()) && line.includes('line '))
       .map(line => parseInt(line.split('line ')[1]))
