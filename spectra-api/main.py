@@ -2,6 +2,7 @@ import os
 import requests
 from typing import Union
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,7 +27,13 @@ SPECTRA_CLI_COMMANDS = [
 ]
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def is_redis_available() -> bool:
     try:
