@@ -39,11 +39,11 @@ export const executeAlloyTool = async (
     setAlloyInstance(res)
     setIsExecuting(false);
   } catch (err: any) {
-    if (err.response.status === 503) {
-      showErrorModal(err.response.data.result)
-    }
-    else if (err.response.status === 429) {
+    if (err.response.status === 429) {
       showErrorModal("Slow down! You are making too many requests. Please try again later.")
+    }
+    else {
+      showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
     }
   }
   setIsExecuting(false);

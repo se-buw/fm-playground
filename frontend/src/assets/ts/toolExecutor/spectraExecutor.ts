@@ -41,7 +41,7 @@ export const executeSpectraTool = async (
     setLineToHighlight(getLineToHighlight(res, language.id) || []);
     setOutput(res);
   } catch (err: any) {
-    showErrorModal(err.response);
+    showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
   }
   setIsExecuting(false);
 }
