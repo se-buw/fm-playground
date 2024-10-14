@@ -9,19 +9,24 @@ interface LanguageConfig {
   };
 }
 
-interface Tool {
+export type ToolDropdown = {
+  label: string;
+  value: string;
+}
+
+export interface Tool {
   name: string;
-  dropdownLabel: string;
-  dropdownValue: string;
   extension: string;
   shortName: string;
+  dropdown: ToolDropdown;
+  commandDropdown?: ToolDropdown[];
   language: LanguageConfig;
   apiUrl: string;
   apiUrlNext?: string;
 }
 
 
-interface FmpConfig {
+export interface FmpConfig {
   title: string;
   repository?: string;
   issues?: string;
@@ -34,48 +39,19 @@ const fmpConfig: FmpConfig = {
   repository: "https://github.com/se-buw/fm-playground",
   issues: "https://github.com/se-buw/fm-playground/issues",
   tools: {
-    limbooleValidity: {
+    limboole: {
       name: "Limboole",
-      dropdownLabel: "Limboole Validity",
-      dropdownValue: "0",
       extension: ".limboole",
       shortName: "VAL",
-      language: {
-        tokenProvider: {
-          token: "limbooleLang",
-          path: "../../assets/languages/limboole",
-        },
-        languageConfiguration: {
-          configuration: "limbooleConf",
-          path: "../../assets/languages/limboole",
-        },
+      dropdown: {
+        label: "Limboole (SAT)",
+        value: "0",
       },
-      apiUrl: 'http://localhost:8082/limboole/run/',
-    },
-    limbooleSatisfiability: {
-      name: "Limboole",
-      dropdownLabel: "Limboole Satisfiability",
-      dropdownValue: "1",
-      extension: ".limboole",
-      shortName: "SAT",
-      language: {
-        tokenProvider: {
-          token: "limbooleLang",
-          path: "../../assets/languages/limboole",
-        },
-        languageConfiguration: {
-          configuration: "limbooleConf",
-          path: "../../assets/languages/limboole",
-        },
-      },
-      apiUrl: 'http://localhost:8082/limboole/run/',
-    },
-    limbooleQBF: {
-      name: "Limboole",
-      dropdownLabel: "Limboole QBF Satisfiability",
-      dropdownValue: "2",
-      extension: ".limboole",
-      shortName: "QBF",
+      commandDropdown: [
+        { value: "0", label: "Validity" },
+        { value: "1", label: "Satisfiability" },
+        { value: "2", label: "QBF Satisfiability" },
+      ],
       language: {
         tokenProvider: {
           token: "limbooleLang",
@@ -90,10 +66,12 @@ const fmpConfig: FmpConfig = {
     },
     smt: {
       name: "SMT",
-      dropdownLabel: "SMT",
-      dropdownValue: "3",
       extension: ".smt2",
       shortName: "SMT",
+      dropdown: {
+        label: "SMT",
+        value: "3",
+      },
       language: {
         tokenProvider: {
           token: "smt2Lang",
@@ -108,10 +86,12 @@ const fmpConfig: FmpConfig = {
     },
     nuxmv: {
       name: "nuXmv",
-      dropdownLabel: "nuXmv",
-      dropdownValue: "4",
       extension: ".smv",
       shortName: "XMV",
+      dropdown: {
+        label: "nuXmv",
+        value: "4",
+      },
       language: {
         tokenProvider: {
           token: "nuxmvLang",
@@ -126,10 +106,12 @@ const fmpConfig: FmpConfig = {
     },
     alloy: {
       name: "Alloy",
-      dropdownLabel: "Alloy",
-      dropdownValue: "5",
       extension: ".als",
       shortName: "ALS",
+      dropdown: {
+        label: "Alloy",
+        value: "5",
+      },
       language: {
         tokenProvider: {
           token: "alloyLang",
@@ -145,10 +127,20 @@ const fmpConfig: FmpConfig = {
     },
     spectra: {
       name: "Spectra",
-      dropdownLabel: "Spectra",
-      dropdownValue: "6",
       extension: ".spectra",
       shortName: "SPECTRA",
+      dropdown: {
+        label: "Spectra",
+        value: "6",
+      },
+      commandDropdown: [
+        { value: 'check-realizability', label: 'Check Realizability' },
+        { value: 'concrete-controller', label: 'Synthesize Controller' },
+        { value: 'concrete-counter-strategy', label: 'Counter-strategy' },
+        { value: 'unrealizable-core', label: 'Unrealizable core' },
+        { value: 'check-well-sep', label: 'Check well-separation' },
+        { value: 'non-well-sep-core', label: 'Non-well-separated core' },
+      ],
       language: {
         tokenProvider: {
           token: "spectraLang",

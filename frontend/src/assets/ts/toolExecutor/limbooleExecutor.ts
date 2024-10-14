@@ -4,10 +4,12 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
+import { ToolDropdown } from "../../../../fmp.config";
 
 interface ExecuteLimbooleProps {
   editorValue: string;
   language: LanguageProps;
+  limbooleCheckOption: ToolDropdown;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
   showErrorModal: (value: string) => void;
@@ -18,6 +20,7 @@ interface ExecuteLimbooleProps {
 export const executeLimboole = async (
   { editorValue,
     language,
+    limbooleCheckOption,
     setLineToHighlight,
     setIsExecuting,
     showErrorModal,
@@ -25,7 +28,8 @@ export const executeLimboole = async (
     setPermalink
   }: ExecuteLimbooleProps) => {
 
-  const response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
+  const metadata = { 'check': limbooleCheckOption.label };
+  const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
   if (response) { setPermalink(response.data); }
   else {
     showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
@@ -44,7 +48,7 @@ export const executeLimboole = async (
     return;
   }
 
-  run_limboole(window.Wrappers[language.value], editorValue);
+  run_limboole(window.Wrappers[limbooleCheckOption.value], editorValue);
 
   if (infoElement) {
     setLineToHighlight(getLineToHighlight(infoElement.innerHTML, language.id) || []);

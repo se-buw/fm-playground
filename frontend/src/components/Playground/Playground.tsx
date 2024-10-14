@@ -18,6 +18,7 @@ import ConfirmModal from '../Utils/Modals/ConfirmModal';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice';
 import MessageModal from '../Utils/Modals/MessageModal';
 import SpectraCliOptions from './SpectraCliOptions';
+import LimbooleCheckOptions from './limbooleCheckOptions.js';
 import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput';
@@ -30,13 +31,18 @@ import { executeNuxmvTool } from '../../assets/ts/toolExecutor/nuxmvExecutor.js'
 import { executeSpectraTool } from '../../assets/ts/toolExecutor/spectraExecutor.js';
 import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js';
 import fmpConfig from '../../../fmp.config.js';
-
+import { ToolDropdown } from '../../../fmp.config.js';
 interface PlaygroundProps {
   editorValue: string;
   setEditorValue: (value: string) => void;
   language: LanguageProps;
   setLanguage: (language: LanguageProps) => void;
   editorTheme: string;
+}
+
+interface AlloyCmdOption {
+  value: number;
+  label: string;
 }
 
 const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, language, setLanguage, editorTheme }) => {
@@ -55,10 +61,8 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const [lineToHighlight, setLineToHighlight] = useState<number[]>([])
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
-  interface AlloyCmdOption {
-    value: number;
-    label: string;
-  }
+  const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
+
 
   const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
@@ -119,7 +123,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
       })
   }
 
-
   const handleToolExecution = async () => {
     setOutput('')
     try {
@@ -129,7 +132,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         case 0:
         case 1:
         case 2:
-          executeLimboole({ editorValue, language, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink })
+          executeLimboole({ editorValue, language, limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink })
           break;
         case 3:
           executeZ3Wasm({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
@@ -372,6 +375,11 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                 lineToHighlight={lineToHighlight}
                 setLineToHighlight={handleLineHighlight}
                 editorTheme={editorTheme}
+              />
+            }
+            {language.id === 'limboole' &&
+              <LimbooleCheckOptions
+                setLimbooleCheckOption={setLimbooleCheckOption}
               />
             }
             {language.id === 'spectra' &&
