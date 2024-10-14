@@ -42,9 +42,9 @@ const fmpConfig: FmpConfig = {
     limboole: {
       name: "Limboole",
       extension: ".limboole",
-      shortName: "VAL",
+      shortName: "SAT",
       dropdown: {
-        label: "Limboole (SAT)",
+        label: "Limboole",
         value: "0",
       },
       commandDropdown: [

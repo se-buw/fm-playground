@@ -21,7 +21,7 @@
       "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
     }
   ],
-  "smt2": [
+  "smt": [
     {
       "title": "Example: Dog, Cat, Mouse",
       "link": "https://play.formal-methods.net/?check=SMT&p=relock-clever-parcel-envy"
@@ -43,7 +43,7 @@
       "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
     }
   ],
-  "xmv": [
+  "nuxmv": [
     {
       "title": "Example: Traffic",
       "link": "https://play.formal-methods.net/?check=XMV&p=example-1"
@@ -57,7 +57,7 @@
       "link": "https://nusmv.fbk.eu/userman/v26/nusmv.pdf"
     }
   ],
-  "als": [
+  "alloy": [
     {
       "title": "Example: Traffic Light",
       "link": "https://play.formal-methods.net/?check=ALS&p=bobble-payday-oboe-banana"
