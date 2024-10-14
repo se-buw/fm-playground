@@ -23,7 +23,6 @@ import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput';
 import AlloyCmdOptions from './alloy/AlloyCmdOptions';
-
 import type { LanguageProps } from './Tools';
 import { executeLimboole } from '../../assets/ts/toolExecutor/limbooleExecutor.js';
 import { executeZ3Wasm } from '../../assets/ts/toolExecutor/z3Executor.js';
@@ -62,8 +61,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
   const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
-
-
   const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   /**
@@ -164,10 +161,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     }
   }
 
-  /**
-   * Load the code from the uploaded file into the editor.
-   * @param {*} file 
-   */
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -179,11 +172,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     reader.readAsText(file);
   };
 
-  /**
-   * Download the code from the editor.
-   * @todo: Add handling for file extension
-   * @returns 
-   */
   const handleDownload = () => {
     const content = editorValue;
     const queryParams = new URLSearchParams(useLocation().search);
@@ -193,17 +181,10 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     return <FileDownload content={content} fileName={fileName} fileExtension={fileExtension} />;
   };
 
-  /**
-   * Update the output area with the code passed as a prop to the PlainOutput component.
-   * @param {*} newCode 
-   */
   const handleOutputChange = (newCode: string) => {
     setOutput(newCode);
   };
 
-  /**
-   * Reset the parent.
-   */
   const handleReset = () => {
     setEditorValue('')
     setOutput('')
@@ -215,10 +196,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     closeModal()
   }
 
-  /**
-   * Toggle the full screen mode of the editor and output areas.
-   * @param {*} div: 'input' or 'output'
-   */
   const toggleFullScreen = (div: 'input' | 'output') => {
     const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div as 'input' | 'output'];
     const theme = localStorage.getItem('isDarkTheme') === 'true' ? 'dark' : 'light';
@@ -263,22 +240,11 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const openModal = () => setIsNewSpecModalOpen(true); // open the new spec modal
   const closeModal = () => setIsNewSpecModalOpen(false); // close the new spec modal
 
-  /**
-   * Display the error modal with the error message. 
-   * This function is called when an error occurs in the API.
-   * @param {string} message - The error message to be displayed in the modal.
-   * @returns 
-   */
   const showErrorModal = (message: string) => {
     setErrorMessage(message);
     setIsErrorMessageModalOpen(true);
   };
 
-  /**
-   * Hide the error modal.
-   * This function is called when the user clicks on the close button of the error modal.
-   * @returns
-   */
   const hideErrorModal = () => {
     setErrorMessage(null);
     setIsErrorMessageModalOpen(!isErrorMessageModalOpen);

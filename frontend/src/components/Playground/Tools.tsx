@@ -26,7 +26,6 @@ const options = Object.values(fmpConfig.tools).map(tool => ({
 
 const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {
   const [optionsState, setOptionsState] = useState(options);
-  console.log(optionsState);
 
   return (
       <div className='tools'>     {/* TODO: fix this  */}
