@@ -45,7 +45,7 @@ const MessageModal: React.FC<MessageModalProps> = ({
               ></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
-              <p>{errorMessage}</p>
+              <div dangerouslySetInnerHTML={{ __html: errorMessage }} />
             </MDBModalBody>
             <MDBModalFooter>
               <MDBBtn color="secondary" onClick={toggleErrorMessageModal}>

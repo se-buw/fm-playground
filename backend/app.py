@@ -7,7 +7,6 @@ from config import app, db
 from routes.playground import *
 from routes.authentication import *
 from db.models import User
-
 Session(app)
 app.app_context().push()
 CORS(app, supports_credentials=True)

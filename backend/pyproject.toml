@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "fmp-backend"
+version = "0.1.0"
+description = "Flask Backend for FM Playground"
+authors = ["Soaibuzzaman <soaibuzzaman@uni-weimar.de>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^3.0.3"
+flask-caching = "^2.3.0"
+flask-compress = "^1.15"
+flask-cors = "^5.0.0"
+flask-limiter = "^3.8.0"
+flask-login = "^0.6.3"
+flask-migrate = "^4.0.7"
+flask-session = "^0.8.0"
+flask-sqlalchemy = "^3.1.1"
+authlib = "^1.3.2"
+psycopg2-binary = "^2.9.9"
+sqlalchemy = "^2.0.35"
+xkcdpass = "^1.19.9"
+python-dotenv = "^1.0.1"
+requests = "^2.32.3"
+pytz = "^2024.2"
+psutil = "^6.0.0"
+gunicorn = "^23.0.0"
+
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

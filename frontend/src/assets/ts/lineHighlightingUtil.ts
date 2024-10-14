@@ -16,7 +16,7 @@ function getLineToHighlightSmt2(result: string) {
 
 function getLineToHighlightXmv(result: string) {
   return result.split('\n')
-      .filter(line => line.includes('error') && line.includes('line '))
+      .filter(line => line.toLowerCase().includes('error'.toLowerCase()) && line.includes('line '))
       .map(line => parseInt(line.split('line ')[1]))
       .filter(line => !isNaN(line));
 }

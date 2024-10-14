@@ -1,5 +1,7 @@
+import json
 from .models import db, Data, Code, User
 from sqlalchemy import func
+from flask import jsonify
 
 def code_exists_in_db(code: str):
   return db.session.query(Code).filter_by(code=code).first()
@@ -192,3 +194,23 @@ def get_history_by_permalink(permalink: str, user_id: int):
   }
   
   return result
+
+def get_metadata_by_permalink(c: str, p: str, ) -> str:
+  try:
+    query_result = db.session.query(Data.meta).filter(Data.permalink == p, Data.check_type == c).first()
+    if query_result is None:
+      return jsonify({"error": "No result found for the given permalink and check type."}), 404
+    meta_json_str = query_result[0]
+      
+      # Check if it's a valid JSON string format
+    if not (meta_json_str and meta_json_str.startswith('{') and meta_json_str.endswith('}')):
+      return jsonify({"error": "No valid JSON string found in the query result."}), 400
+    meta_data = json.loads(meta_json_str) 
+      
+  except json.JSONDecodeError:
+    return jsonify({"error": "Error parsing JSON string."}), 400
+  except Exception as e:
+    return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+  
+  return {"meta": meta_data.get("check") or meta_data.get("cli_option") or meta_data.get("cmd") or None}
+    

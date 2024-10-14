@@ -59,4 +59,3 @@ db = SQLAlchemy()
 migrate = Migrate(app, db)
 db.init_app(app)
 # ------------------ Database ------------------
-

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Options from '../../assets/config/AvailableTools'
 import '../../assets/style/Playground.css'
-
 import Select from 'react-select';
+import fmpConfig from '../../../fmp.config';
+import Options from '../../assets/config/AvailableTools'
 
 export type LanguageProps = {
   id: string;
@@ -12,27 +12,36 @@ export type LanguageProps = {
 }
 
 interface ToolsProps {
-  onChange: (selectedOption: any) => void; // TODO: maybe change this to LanguageProps
+  onChange: (selectedOption: any) => void; // TODO: Change any to LanguageProps when the fmp.config.ts file is ready
   selected: LanguageProps;
 }
 
+// TODO: Use it when the fmp.config.ts file is ready
+const options = Object.values(fmpConfig.tools).map(tool => ({
+  id: tool.name.toLowerCase(),
+  value: tool.dropdown.value,
+  label: tool.dropdown.label,
+  short: tool.shortName
+}));
+
 
 const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {
+  // FIXME: This is a temporary solution. The options should be generated from the fmp.config.ts file.
   const [options, setOptions] = useState(Options);
 
   return (
-      <div className='tools'>     {/* TODO: fix this  */}
+      <div className='tools'> 
         <Select
           className="basic-single react-select-container"
           classNamePrefix="select"
-          defaultValue={options[1]}
+          defaultValue={options[0]}
           isDisabled={false}
           isLoading={false}
           isClearable={false}
           isRtl={false}
           isSearchable={true}
           name="color"
-          options={Options}
+          options={options}
           onChange={props.onChange}
           value={props.selected}
         />

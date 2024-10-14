@@ -1,2 +1,2 @@
 #!/bin/bash
-gunicorn --bind 0.0.0.0:8000 app:app --timeout 120 --workers 32 --worker-class sync
+poetry run gunicorn --bind 0.0.0.0:8000 app:app --timeout 120 --workers 4 --worker-class sync

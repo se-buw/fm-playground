@@ -38,6 +38,14 @@ export async function getCodeByParmalink(check: string, permalink: string) {
   }
 }
 
+export async function getMetadataByPermalink(check: string, permalink: string) {
+  let url = `${API_URL}/metadata?check=${check}&p=${permalink}`;
+  const response = await axios.get(url);
+  if (response.status === 200) {
+    return response.data;
+  }
+}
+
 /**
  * Return code by id
  * @param {*} id data item id
