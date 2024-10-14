@@ -46,7 +46,7 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
 
 def run_z3(code: str) -> str:
     if is_redis_available():
-
+        @cache.cache()
         def cached_run_z3(code: str) -> str:
             return process_commands(code)
 
