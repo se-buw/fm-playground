@@ -69,7 +69,9 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   useEffect(() => {
     // Get the 'check' parameter from the URL
     const urlParams = new URLSearchParams(window.location.search);
-    const checkParam = urlParams.get('check');
+    let checkParam = urlParams.get('check');
+    if (checkParam === "VAL" || checkParam === "QBF"){checkParam = "SAT"} // v2.0.0: VAL and QBF are merged into SAT
+    
     const permalinkParam = urlParams.get('p');
     const selectedOption = Options.find(option => option.short === checkParam);
 
