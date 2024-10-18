@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaDownload } from 'react-icons/fa';
-import IconButton from '@mui/material/IconButton';
+import { MDBIcon } from 'mdb-react-ui-kit';
 import '../../assets/style/Playground.css';
 
 interface FileDownloadProps {
@@ -24,13 +24,14 @@ const FileDownload: React.FC<FileDownloadProps> = ({ content, fileName, fileExte
 
   return (
 
-    <IconButton onClick={handleDownload}>
+    <MDBIcon size='lg' className='playground-icon' 
+    onClick={handleDownload}>
       <FaDownload
         className='playground-icon'
         role='button'
         data-tooltip-id="playground-tooltip"
         data-tooltip-content="Download file" />
-    </IconButton>
+    </MDBIcon>
 
   );
 }
