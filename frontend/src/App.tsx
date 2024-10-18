@@ -8,9 +8,11 @@ import Login from './components/Authentication/Login'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
 import Options from './assets/config/AvailableTools'
+import { LanguageProps } from './components/Playground/Tools'
+import Feedback from './components/Utils/Feedback';
 import './assets/style/index.css'
 import '../src/assets/style/App.css'
-import { LanguageProps } from './components/Playground/Tools'
+import '../src/assets/style/Feedback.css'
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
@@ -23,6 +25,12 @@ const App = () => {
     const storedTheme = localStorage.getItem('editorTheme');
     return storedTheme || 'vs';
   });
+
+  const [showFeedback, setShowFeedback] = useState<boolean>(false);
+
+  const toggleFeedbackForm = () => {
+    setShowFeedback((prev) => !prev);
+  };
 
   const handleEditorValueChange = (code: string) => {
     setEditorValue(code);
@@ -86,7 +94,10 @@ const App = () => {
             <Route path="*" element={<Missing />} />
           </Routes>
         </Router>
-
+        <button className="floating-button" onClick={toggleFeedbackForm}>
+          Feedback
+        </button>
+        {showFeedback && <Feedback toggleFeedback={toggleFeedbackForm} />}
         <Footer />
       </div>
     </AuthProvider>
