@@ -41,7 +41,7 @@ const fmpConfig: FmpConfig = {
   tools: {
     limboole: {
       name: "Limboole",
-      extension: ".limboole",
+      extension: "limboole",
       shortName: "SAT",
       dropdown: {
         label: "Limboole",
@@ -66,7 +66,7 @@ const fmpConfig: FmpConfig = {
     },
     smt: {
       name: "SMT",
-      extension: ".smt2",
+      extension: "smt2",
       shortName: "SMT",
       dropdown: {
         label: "SMT",
@@ -106,7 +106,7 @@ const fmpConfig: FmpConfig = {
     },
     alloy: {
       name: "Alloy",
-      extension: ".als",
+      extension: "als",
       shortName: "ALS",
       dropdown: {
         label: "Alloy",
@@ -127,7 +127,7 @@ const fmpConfig: FmpConfig = {
     },
     spectra: {
       name: "Spectra",
-      extension: ".spectra",
+      extension: "spectra",
       shortName: "SPECTRA",
       dropdown: {
         label: "Spectra",
