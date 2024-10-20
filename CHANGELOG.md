@@ -1,5 +1,21 @@
 # Change Log
 
+## v2.0.0 [2024-10-20]
+### Added
+- ⚡️Added caching mechanism for z3, nuXmv, and Spectra with Redis
+- ✨ New api for getting metadata
+### Changed
+- 💥 Separated nuxmv, alloy, and z3 api
+- 💥 Merged VAL and QBF are merged into SAT
+- 🔥 Remove tool specific api
+- 🔥 Remove check type for permalink lookup
+- 🔥 Remove dark mode (temporarily)
+- ♻️ Migrated backend to Flask 3 and poetry
+- ♻️ Populating tools dropdown from fmp.conf
+- ♻️ Fixed wasm fallback api
+- 🎨 Added issue link on error modals
+- 🐛Fixed-creating new spec not reseting the editor
+  
 ## v1.5.0 [2024-10-07]
 ### Added
  - ✨ Limboole in editor language support (browser worker)
