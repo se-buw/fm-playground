@@ -54,6 +54,18 @@ export const createLangiumGlobalConfig = async (params: {
     },
     editorAppConfig: {
       $type: 'extended',
+      editorOptions: {
+        minimap: {
+          enabled: false,
+        },
+        automaticLayout: true,
+        mouseWheelZoom: true,
+        bracketPairColorization: {
+          enabled: true,
+          independentColorPoolPerBracketType: true,
+        },
+        glyphMargin: false,
+      },
       codeResources: {
         main
       },
