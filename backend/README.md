@@ -6,37 +6,31 @@
   - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Prerequisites](#prerequisites)
-  - [Getting Started](#getting-started)
-    - [Installation](#installation)
+  - [Installation](#installation)
+    - [🚧TODO: Update with v2.0.0 architecture (use docker compose for now)](#todo-update-with-v200-architecture-use-docker-compose-for-now)
     - [Docker](#docker)
   - [Contributing](#contributing)
   - [License](#license)
 
 ## Description
 
-This is the backend for the FM Playground application. FM Playground is a web application that allows users to run formal methods tools in the browser. Currently, the application supports the following tools:
-
-- [Limboole](https://fmv.jku.at/limboole/) - A SAT-based tool for Boolean reasoning.
-- [Z3](https://github.com/Z3Prover/z3) - A SMT solver developed at Microsoft Research.
-- [nuXmv ](https://nuxmv.fbk.eu/) - A symbolic model checker for the analysis of synchronous finite-state and infinite-state systems.
-- ~~[Alloy](https://alloytools.org/)~~ (served from [alloy-app](../alloy-app/)) - A declarative modeling language for software systems.
+This is the backend for the FM Playground application. FM Playground is a web application that allows users to run formal methods tools in the browser. 
 
 
 ## Prerequisites
 
 List any dependencies that must be installed before running the application.
 
-- Python v3.9.0 or higher
+- Python v3.10.0 or higher
 - Flask v2.0.0 or higher
-- Z3
-- nuXmv
 - Docker v20.10.0 or higher (optional)
 - Docker Compose v1.27.0 or higher (optional)
 
 
-## Getting Started
 
-### Installation
+## Installation
+
+### 🚧TODO: Update with v2.0.0 architecture (use docker compose for now)
 
 1. Clone the repository:
 

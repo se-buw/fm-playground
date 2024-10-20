@@ -6,8 +6,7 @@
   <img src="https://img.shields.io/github/issues/se-buw/fm-playground" alt="GitHub issues">
   <img src="https://img.shields.io/github/actions/workflow/status/se-buw/fm-playground/ci.yml" alt="Build">
   <img src="https://img.shields.io/github/license/se-buw/fm-playground" alt="GitHub License">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fwakapi.soaib.me%2Fapi%2Fcompat%2Fshields%2Fv1%2Fsoaib%2Finterval%3Aany%2Fproject%3Afm-playground&style=flat&label=dev&color=%233b71ca
-  " alt="Wakapi">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fwakapi.soaib.me%2Fapi%2Fcompat%2Fshields%2Fv1%2Fsoaib%2Finterval%3Aany%2Fproject%3Afm-playground&style=flat&label=dev&color=%233b71ca" alt="Wakapi">
   <hr>
 </div>
 
@@ -30,12 +29,11 @@ For more updates, examples, and tutorials, please visit the [formal-methods.net]
 ## Development 
 
 ### Requirements
-- Python >= 3.9.0
-- Node >= 18.0.0
+- Python >= 3.10.0
+- Node >= 20.0.0
 - PostgreSQL >= 15.0 (optional) - use sqlite3 for development
 - Docker >= 20.10.0 (optional)
 - Docker Compose >= 1.27.0 (optional)
-
 
 
 ### Installation
@@ -54,12 +52,13 @@ cp .env.example .env
 ```
 - Run the following command:
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 
 
 ## Contributing
+TODO: Create a contributing guide
 
 Contributions are welcome!  Please refer to the [contributing guidelines](CONTRIBUTING.md) for detailed instructions.
 
