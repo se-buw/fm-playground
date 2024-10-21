@@ -22,11 +22,6 @@ export default defineConfig({
     strictPort: true,
     port: 5173,
     proxy: {
-      '/api': {
-        target: 'http://fmp-backend:8000',
-        changeOrigin: true,
-        secure: false,
-      },
       '/nuxmv': {
         target: 'http://fmp-nuxmv-api:8080',
         changeOrigin: true,
@@ -61,11 +56,6 @@ export default defineConfig({
     strictPort: true,
     port: 5173,
     proxy: {
-      '/api': {
-        target: 'http://fmp-backend:8000',
-        changeOrigin: true,
-        secure: false,
-      },
       '/nuxmv': {
         target: 'http://fmp-nuxmv-api:8080',
         changeOrigin: true,
