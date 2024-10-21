@@ -34,7 +34,7 @@ const Feedback: React.FC<{ toggleFeedback: () => void }> = ({ toggleFeedback }) 
     <div className="feedback-container">
       <span className="close-icon" onClick={toggleFeedback}>&times;</span>
       <h4>Feedback</h4>
-      <p>Your input is valuable in helping us better understand your needs.</p>
+      <p>Please leave general feedback (this is anonymous and not linked to your specifications). If you think you have found a bug or problem, please <a href='https://github.com/se-buw/fm-playground/issues' target='_blank'>create an issue on GitHub</a> instead.</p>
       <div className="star-rating">
         {[1, 2, 3, 4, 5].map((star) => (
           <span
