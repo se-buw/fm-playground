@@ -61,10 +61,12 @@ jobs:
       
       - name: Extract VITE_FMP_VERSION
         id: extract_version
-        run: echo "VITE_FMP_VERSION=$(echo $DOCKER_METADATA_OUTPUT_VERSION)" >> $GITHUB_ENV
-        
-      - name: Print version
-        run: echo "VITE_FMP_VERSION is ${{ env.VITE_FMP_VERSION }}"
+        run: |
+          if [ -n "${{ github.event.inputs.tags }}" ]; then
+            echo "VITE_FMP_VERSION=${{ github.event.inputs.tags }}" >> $GITHUB_ENV
+          else
+            echo "VITE_FMP_VERSION=$(echo $DOCKER_METADATA_OUTPUT_VERSION)" >> $GITHUB_ENV
+          fi
 
       - name: Determine Tags
         id: determine-tags
