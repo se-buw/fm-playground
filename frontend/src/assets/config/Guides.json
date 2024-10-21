@@ -46,7 +46,7 @@
   "xmv": [
     {
       "title": "Example: Traffic",
-      "link": "https://play.formal-methods.net/?check=XMV&p=example-1"
+      "link": "https://play.formal-methods.net/?check=XMV&p=xmv-example-1"
     },
     {
       "title": "NuSMV 2.6 Tutorial",
