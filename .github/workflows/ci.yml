@@ -58,6 +58,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
+      
+      - name: Extract VITE_FMP_VERSION
+        id: extract_version
+        run: echo "VITE_FMP_VERSION=$(echo $DOCKER_METADATA_OUTPUT_VERSION)" >> $GITHUB_ENV
+        
+      - name: Print version
+        run: echo "VITE_FMP_VERSION is ${{ env.VITE_FMP_VERSION }}"
 
       - name: Determine Tags
         id: determine-tags
@@ -83,4 +90,4 @@ jobs:
           push: true
           build-args: |
             VITE_FMP_API_URL=https://play.formal-methods.net/api
-            VITE_FMP_VERSION=${{ env.TAGS }}
+            VITE_FMP_VERSION=${{ env.VITE_FMP_VERSION }}
