@@ -186,8 +186,6 @@ def get_metadata():
 
 @routes.route('/api/feedback', methods=['POST'])
 def feedback():
-  session_id = session.sid
-  print(session_id)
   data = request.get_json()
   rating = data['rating']
   comment = data['comment']
@@ -195,7 +193,7 @@ def feedback():
     response = make_response(jsonify({'result': "The comment is too large."}), 413)
     return response
   try:
-    app.logger.info(f'FEEDBACK - Session: {session_id} Rating: {rating} Comment: {comment}')
+    app.logger.info(f'FEEDBACK - Rating: {rating} Comment: {comment}')
     return jsonify({'result': 'success'}), 200
   except Exception as e:
     app.logger.error('FEEDBACK: Error saving the feedback.')
