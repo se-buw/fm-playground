@@ -1,5 +1,5 @@
-import type { ValidationChecks } from 'langium';
-import type { SmtAstType} from './generated/ast.js';
+import type { ValidationAcceptor, ValidationChecks } from 'langium';
+import type { SmtAstType, Model } from './generated/ast.js';
 import type { SmtServices } from './smt-module.js';
 
 /**
@@ -19,7 +19,7 @@ export function registerValidationChecks(services: SmtServices) {
  */
 export class SmtValidator {
 
-    checkPersonStartsWithCapital(): void {
+    checkPersonStartsWithCapital(model: Model, accept: ValidationAcceptor): void {
         // if (Model[Symbol] !== model[Symbol]) {
         //     const firstChar = model.elements.substring(0, 1);
         //     if (firstChar.toUpperCase() !== firstChar) {
