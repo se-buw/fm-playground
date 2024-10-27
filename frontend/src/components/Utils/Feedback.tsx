@@ -24,6 +24,7 @@ const Feedback: React.FC<{ toggleFeedback: () => void }> = ({ toggleFeedback }) 
       setSubmitted(true);
       setRating(0);
       setComment('');
+      toggleFeedback();
     } catch (err) {
       setError('There was an error submitting your feedback. Please try again.');
     }
