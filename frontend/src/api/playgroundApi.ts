@@ -170,3 +170,11 @@ export async function isUserLoggedIn() {
     console.log("Not logged in");
   }
 }
+
+export async function saveFeedback(rating: number, comment: string) {
+  let url = `${API_URL}/feedback`;
+  const response = await axiosAuth.post(url, { rating, comment });
+  if (response.status === 200) {
+    return response;
+  }
+}

@@ -27,8 +27,8 @@ interface BasicCodeEditorValueParams {
 }
 
 const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps) => {
-  
-  
+
+
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null); // editor reference
   const [internalEditorValue, setInternalEditorValue] = useState(props.editorValue);
   const [language, setLanguage] = useState(props.language.id);
@@ -135,7 +135,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
    * @param {*} value 
    * @param {*} event 
    */
-  
+
 
   function getEditorValue({ value, event }: BasicCodeEditorValueParams) {
     if (editorRef.current) {
@@ -149,8 +149,8 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
    * @param {*} value
    * @param {*} event
    */
-  function setEditorValue({value, event}: BasicCodeEditorValueParams) {
-    if(editorRef.current) {
+  function setEditorValue({ value, event }: BasicCodeEditorValueParams) {
+    if (editorRef.current) {
       editorRef.current.setValue(value);
     }
   }
@@ -168,31 +168,30 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   }
 
   return (
-    <>
-      <div className="custom-code-editor">
-        <Editor
-          height={props.height}
-          width="100%"
-          language={language}
-          defaultValue=""
-          value={internalEditorValue}
-          theme={props.editorTheme}
-          options={{
-            minimap: {
-              enabled: false,
-            },
-            automaticLayout: true,
-            mouseWheelZoom: true,
-            bracketPairColorization: {
-              enabled: true,
-              independentColorPoolPerBracketType: true,
-            },
-          }}
-          onMount={handleEditorDidMount}
-          onChange={handleCodeChange}
-        />
-      </div>
-    </>
+
+    <div className="custom-code-editor">
+      <Editor
+        height={props.height}
+        width="100%"
+        language={language}
+        defaultValue=""
+        value={internalEditorValue}
+        theme={props.editorTheme}
+        options={{
+          minimap: {
+            enabled: false,
+          },
+          automaticLayout: true,
+          mouseWheelZoom: true,
+          bracketPairColorization: {
+            enabled: true,
+            independentColorPoolPerBracketType: true,
+          },
+        }}
+        onMount={handleEditorDidMount}
+        onChange={handleCodeChange}
+      />
+    </div>
   )
 }
 

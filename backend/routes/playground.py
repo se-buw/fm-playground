@@ -183,3 +183,19 @@ def get_metadata():
   p = request.args.get('p')
   medatada = get_metadata_by_permalink(c, p)
   return jsonify(medatada), 200
+
+@routes.route('/api/feedback', methods=['POST'])
+def feedback():
+  data = request.get_json()
+  rating = data['rating']
+  comment = data['comment']
+  if not is_valid_size(comment):
+    response = make_response(jsonify({'result': "The comment is too large."}), 413)
+    return response
+  try:
+    app.logger.info(f'FEEDBACK - Rating: {rating} Comment: {comment}')
+    return jsonify({'result': 'success'}), 200
+  except Exception as e:
+    app.logger.error('FEEDBACK: Error saving the feedback.')
+    response = make_response(jsonify({'result': "There is a problem. Please try after some time."}), 500)
+    return response

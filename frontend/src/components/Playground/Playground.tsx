@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
 import { FaFileCirclePlus } from "react-icons/fa6";
-import { IconButton, Stack } from '@mui/material';
-import { MDBBtn } from 'mdb-react-ui-kit';
+import { Stack } from '@mui/material';
+import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 import { Tooltip } from 'react-tooltip'
+import Toggle from 'react-toggle';
 import Editor from './Editor';
-import LimbooleEditor from './LimbooleEditor';
+import LspEditor from './LspEditor.js';
 import PlainOutput from './PlainOutput';
 import Tools from './Tools';
 import Options from '../../assets/config/AvailableTools'
@@ -29,8 +30,8 @@ import { executeZ3Wasm } from '../../assets/ts/toolExecutor/z3Executor.js';
 import { executeNuxmvTool } from '../../assets/ts/toolExecutor/nuxmvExecutor.js';
 import { executeSpectraTool } from '../../assets/ts/toolExecutor/spectraExecutor.js';
 import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js';
-import fmpConfig from '../../../fmp.config.js';
-import { ToolDropdown } from '../../../fmp.config.js';
+import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
+
 interface PlaygroundProps {
   editorValue: string;
   setEditorValue: (value: string) => void;
@@ -63,6 +64,8 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
   const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
+  const [enableLsp, setEnableLsp] = useState(false); // contains the state of the LSP editor.
+
   /**
    * Load the code and language from the URL.
    */
@@ -70,8 +73,8 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     // Get the 'check' parameter from the URL
     const urlParams = new URLSearchParams(window.location.search);
     let checkParam = urlParams.get('check');
-    if (checkParam === "VAL" || checkParam === "QBF"){checkParam = "SAT"} // v2.0.0: VAL and QBF are merged into SAT
-    
+    if (checkParam === "VAL" || checkParam === "QBF") { checkParam = "SAT" } // v2.0.0: VAL and QBF are merged into SAT
+
     const permalinkParam = urlParams.get('p');
     const selectedOption = Options.find(option => option.short === checkParam);
 
@@ -267,14 +270,27 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         <div className="col-md-6 Playground" ref={inputDivRef}>
           <div className='row'>
             <div className='col-md-12 mx-auto mb-2'>
-              <div className='d-flex justify-content-between'>
+              <div className='d-flex justify-content-between align-items-center'>
                 <div className='col-md-4'>
                   <h2>Input</h2>
                 </div>
-                {/* configuration/options row for the editor */}
                 <div>
                   <Stack direction="row" spacing={1}>
-                    <IconButton
+                    {/* <div className='toggle-container'> */}
+                    <span className='syntax-checking-span'>Syntax Checking</span>
+                    <MDBIcon size='lg' className='playground-icon'
+                      style={{ marginTop: "5px" }}
+                      data-tooltip-id="playground-tooltip"
+                      data-tooltip-content="This allows you to check the syntax of the code, get suggestions/code completion. Currently experimental."
+                    >
+                      <Toggle
+                        id='cheese-status'
+                        defaultChecked={enableLsp}
+                        onChange={(e) => setEnableLsp(e.target.checked)}
+                      />
+                    </MDBIcon >
+                    {/* </div> */}
+                    <MDBIcon size='lg' className='playground-icon'
                       onClick={openModal}
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="New Spec"
@@ -283,7 +299,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                         className='playground-icon'
                         role='button'
                       />
-                    </IconButton>
+                    </MDBIcon>
                     <ConfirmModal
                       isOpen={isNewSpecModalOpen}
                       onClose={closeModal}
@@ -292,23 +308,23 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                               This will reset the editor and the output areas`}
                       onConfirm={handleReset}
                     />
-                    <IconButton
+                    <MDBIcon size='lg' className='playground-icon'
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Upload file"
                     >
                       <FileUploadButton onFileSelect={handleFileUpload} />
-                    </IconButton>
+                    </MDBIcon>
                     <>
                       {handleDownload()}
                     </>
                     {permalink.check && permalink.permalink &&
-                      <IconButton
+                      <MDBIcon size='lg' className='playground-icon'
                         data-tooltip-id="playground-tooltip"
                         data-tooltip-content="Copy Permalink">
                         <CopyToClipboardBtn permalink={{ check: permalink.check, permalink: permalink.permalink }} />
-                      </IconButton>
+                      </MDBIcon>
                     }
-                    <IconButton color='default' onClick={() => { toggleFullScreen('input') }}>
+                    <MDBIcon size='lg' className='playground-icon' onClick={() => { toggleFullScreen('input') }}>
                       {isFullScreen ?
                         <AiOutlineFullscreenExit
                           className='playground-icon'
@@ -320,13 +336,13 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                           data-tooltip-id="playground-tooltip"
                           data-tooltip-content="Fullscreen"
                         />}
-                    </IconButton>
+                    </MDBIcon>
                   </Stack>
                 </div>
               </div>
             </div>
-            {language.id === 'limboole' ?
-              <LimbooleEditor
+            {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ?
+              <LspEditor
                 height={isFullScreen ? '80vh' : '60vh'}
                 setEditorValue={setEditorValue}
                 language={language}
@@ -377,9 +393,10 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         <div className='col-md-6 Playground' ref={outputDivRef} >
           <div className='row'>
             <div className='col-md-12'>
-              <div className={`d-flex justify-content-between ${language.id !== 'xmv' ? 'mb-3' : ''}`}>
+              <div className={`d-flex justify-content-between align-items-center ${language.id !== 'xmv' ? 'mb-2' : ''}`}>
                 <h2>Output</h2>
-                <IconButton onClick={() => { toggleFullScreen('output') }}>
+                <MDBIcon size='lg' className='playground-icon'
+                  onClick={() => { toggleFullScreen('output') }}>
                   {isFullScreen ?
                     <AiOutlineFullscreenExit
                       className='playground-icon'
@@ -391,7 +408,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                       data-tooltip-id="playground-tooltip"
                       data-tooltip-content="Fullscreen"
                     />}
-                </IconButton>
+                </MDBIcon>
               </div>
             </div>
             {language.id === 'xmv' && (
