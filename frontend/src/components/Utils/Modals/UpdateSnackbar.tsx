@@ -1,37 +1,17 @@
-import React, { useState, useEffect, SyntheticEvent } from 'react';
-import Alert, { AlertColor }  from '@mui/material/Alert';
-import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
+import React, { useState } from 'react';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 type UpdateSnackbarProps = {
   message: string,
-  severity?: AlertColor,
-  visible?: boolean,
-  targetDate?: string
 };
 
 const UpdateSnackbar: React.FC<UpdateSnackbarProps> = (props) => {
-  const [open, setOpen] = useState(props.visible || false);
-  const [manuallyClosed, setManuallyClosed] = useState(false);
-  const targetDate = new Date(props.targetDate || '1970-01-01');
+  const [open, setOpen] = useState(true);
 
-  useEffect(() => {
-    const currentDate = new Date();
-    if (currentDate < targetDate && !manuallyClosed) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-  }, [targetDate, manuallyClosed]);
 
-  const handleClose = (
-    event?: SyntheticEvent | Event,
-    reason?: SnackbarCloseReason,
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+  const handleClose = () => {
     setOpen(false);
-    setManuallyClosed(true);
   };
 
   return (
@@ -41,12 +21,7 @@ const UpdateSnackbar: React.FC<UpdateSnackbarProps> = (props) => {
         autoHideDuration={5000}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         onClose={handleClose}>
-        <Alert
-          onClose={handleClose}
-          severity={props.severity}
-          variant="standard"
-          sx={{ width: '30vw' }}
-        >
+        <Alert onClose={handleClose} severity="warning">
           <span dangerouslySetInnerHTML={{ __html: props.message }} />
         </Alert>
       </Snackbar>

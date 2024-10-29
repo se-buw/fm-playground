@@ -31,6 +31,7 @@ import { executeNuxmvTool } from '../../assets/ts/toolExecutor/nuxmvExecutor.js'
 import { executeSpectraTool } from '../../assets/ts/toolExecutor/spectraExecutor.js';
 import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js';
 import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
+import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 
 interface PlaygroundProps {
   editorValue: string;
@@ -281,7 +282,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                     <MDBIcon size='lg' className='playground-icon'
                       style={{ marginTop: "5px" }}
                       data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="This allows you to check the syntax of the code, get suggestions/code completion. Currently experimental."
+                      data-tooltip-content="This allows you to check the syntax of the code, get suggestions/code completion."
                     >
                       <Toggle
                         id='cheese-status'
@@ -458,6 +459,10 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
           title="Error"
           errorMessage={errorMessage}
         />
+      )}
+      {enableLsp && language.id === "smt2" && (
+        <UpdateSnackbar
+          message="This feature is experimental for the SMT language. <br/> If you encounter any misbehavior, please provide a <i>Feedback</i>." />
       )}
     </div>
   )
