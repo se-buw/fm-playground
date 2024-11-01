@@ -1,5 +1,10 @@
 # Change Log
 
+## v2.1.0 [2024-11-01]
+### Added
+ - ✨ SMT in editor language support (browser worker)
+ - ✨ Feedback form
+
 ## v2.0.0 [2024-10-20]
 ### Added
 - ⚡️Added caching mechanism for z3, nuXmv, and Spectra with Redis
