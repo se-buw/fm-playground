@@ -3,6 +3,8 @@ from .models import db, Data, Code, User
 from sqlalchemy import func
 from flask import jsonify
 
+DATE_FORMAT = "%d %b %y %I:%M %p"
+
 def code_exists_in_db(code: str):
   return db.session.query(Code).filter_by(code=code).first()
 
@@ -46,7 +48,7 @@ def get_user_history(user_id: int, page: int = 1, per_page: int = 20):
 
   result = []
   for d in data:
-      p_time = d.time.strftime("%d %b %y %I:%M %p")
+      p_time = d.time.strftime(DATE_FORMAT)
       p_code = d.code[:25] + "..." if len(d.code) > 25 else d.code
       result.append({
           'id': d.id,
@@ -72,7 +74,7 @@ def update_user_history_by_id(data_id: int):
     db.session.query(Data).filter_by(id=data_id).update({"user_id": None})
     db.session.commit()
     return True
-  except:
+  except Exception:
     db.session.rollback()
     return False
 
@@ -121,7 +123,7 @@ def search_by_query(query, user_id: int = None):
   data = search_result
   result = []
   for d in data:
-      p_time = d.time.strftime("%d %b %y %I:%M %p")
+      p_time = d.time.strftime(DATE_FORMAT)
       p_code = d.code[:25] + "..." if len(d.code) > 25 else d.code
       result.append({
           'id': d.id,
@@ -146,9 +148,8 @@ def get_user_data(user_id):
   
   downloadables = []
   # add history to downloadables
-  for h in history:
-    downloadables.append({
-          'time': h.time.strftime("%d %b %y %I:%M %p"),
+  for h in history:    downloadables.append({
+          'time': h.time.strftime(DATE_FORMAT),
           'check': h.check_type,
           'permalink': h.permalink,
           'code': h.code
@@ -163,7 +164,7 @@ def delete_user(user_id):
     db.session.query(User).filter_by(id=user_id).delete()
     db.session.commit()
     return True
-  except:
+  except Exception:
     db.session.rollback()
     return False
   
@@ -190,7 +191,7 @@ def get_history_by_permalink(permalink: str, user_id: int):
       'code': query_result.code,
       'id': query_result.id,
       'permalink': query_result.permalink,
-      'time': query_result.time.strftime("%d %b %y %I:%M %p"),
+      'time': query_result.time.strftime(DATE_FORMAT),
   }
   
   return result
@@ -199,18 +200,18 @@ def get_metadata_by_permalink(c: str, p: str, ) -> str:
   try:
     query_result = db.session.query(Data.meta).filter(Data.permalink == p, Data.check_type == c).first()
     if query_result is None:
-      return jsonify({"error": "No result found for the given permalink and check type."}), 404
+      return json.dumps({"error": "No result found for the given permalink and check type."})
     meta_json_str = query_result[0]
       
       # Check if it's a valid JSON string format
     if not (meta_json_str and meta_json_str.startswith('{') and meta_json_str.endswith('}')):
-      return jsonify({"error": "No valid JSON string found in the query result."}), 400
+      return json.dumps({"error": "No valid JSON string found in the query result."})
     meta_data = json.loads(meta_json_str) 
       
   except json.JSONDecodeError:
-    return jsonify({"error": "Error parsing JSON string."}), 400
+    return json.dumps({"error": "Error parsing JSON string."})
   except Exception as e:
-    return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
+    return json.dumps({"error": f"An unexpected error occurred: {str(e)}"})
   
-  return {"meta": meta_data.get("check") or meta_data.get("cli_option") or meta_data.get("cmd") or None}
+  return json.dumps({"meta": meta_data.get("check") or meta_data.get("cli_option") or meta_data.get("cmd") or None})
     
