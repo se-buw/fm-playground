@@ -51,7 +51,7 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
             res = requests.get(url)
             code = res.json().get("code")
             return code
-    except:
+    except Exception:
         raise HTTPException(status_code=404, detail="Permalink not found")
 
 
@@ -64,7 +64,7 @@ def run_spectra(code: str, command: str) -> str:
 
         try:
             return cached_run_spectra(code, command)
-        except:
+        except Exception:
             raise HTTPException(
                 status_code=500,
                 detail="Something went wrong while executing the spectra cli.",
@@ -72,7 +72,7 @@ def run_spectra(code: str, command: str) -> str:
     else:
         try:
             return process_commands(code, command)
-        except:
+        except Exception:
             raise HTTPException(
                 status_code=500,
                 detail="Something went wrong while executing the spectra cli.",
@@ -85,10 +85,10 @@ def code(check: str, p: str, command: str):
         raise HTTPException(status_code=422, detail="Invalid command")
     try:
         code = get_code_by_permalink(check, p)
-    except:
+    except Exception:
         raise HTTPException(status_code=404, detail="Permalink not found")
 
     try:
         return run_spectra(code, command)
-    except:
+    except Exception:
         raise HTTPException(status_code=500, detail="Error running code")

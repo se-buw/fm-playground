@@ -40,7 +40,7 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
             res = requests.get(url)
             code = res.json().get("code")
             return code
-    except:
+    except Exception:
         raise HTTPException(status_code=404, detail="Permalink not found")
 
 
@@ -52,12 +52,12 @@ def run_z3(code: str) -> str:
 
         try:
             return cached_run_z3(code)
-        except:
+        except Exception:
             raise HTTPException(status_code=500, detail="Error running z3")
     else:
         try:
             return process_commands(code)
-        except:
+        except Exception:
             raise HTTPException(status_code=500, detail="Error running z3")
 
 
@@ -66,5 +66,5 @@ def code(check: str, p: str):
     code = get_code_by_permalink(check, p)
     try:
         return run_z3(code)
-    except:
+    except Exception:
         raise HTTPException(status_code=500, detail="Error running code")
