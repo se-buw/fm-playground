@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import '../../assets/style/Playground.css'
 import Select from 'react-select';
-import fmpConfig from '../../../fmp.config';
-import Options from '../../assets/config/AvailableTools'
+import languageOptions from '../../assets/config/languageConfig';
 
 export type LanguageProps = {
   id: string;
@@ -10,24 +9,13 @@ export type LanguageProps = {
   label: string;
   short: string;
 }
-
 interface ToolsProps {
-  onChange: (selectedOption: any) => void; // TODO: Change any to LanguageProps when the fmp.config.ts file is ready
+  onChange: (selectedOption: any) => void; 
   selected: LanguageProps;
 }
 
-// TODO: Use it when the fmp.config.ts file is ready
-const options = Object.values(fmpConfig.tools).map(tool => ({
-  id: tool.name.toLowerCase(),
-  value: tool.dropdown.value,
-  label: tool.dropdown.label,
-  short: tool.shortName
-}));
-
-
 const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {
-  // FIXME: This is a temporary solution. The options should be generated from the fmp.config.ts file.
-  const [options, setOptions] = useState(Options);
+  const [options, setOptions] = useState(languageOptions);
 
   return (
       <div className='tools'> 
@@ -41,7 +29,7 @@ const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {
           isRtl={false}
           isSearchable={true}
           name="color"
-          options={options}
+          options={languageOptions}
           onChange={props.onChange}
           value={props.selected}
         />

@@ -17,7 +17,7 @@ import {
 import AuthContext from '../../contexts/AuthContext';
 import { FaGithub } from 'react-icons/fa'
 import DrawerComponent from './DrawerComponent';
-import Options from '../../assets/config/AvailableTools'
+import languageOptions from '../../assets/config/languageConfig';
 import CustomSnackbar from './Modals/CustomSnackbar';
 import ConfirmModal from './Modals/ConfirmModal';
 import { downloadUserData, deleteProfile } from '../../api/playgroundApi';
@@ -123,7 +123,7 @@ const Navbar: React.FC<NavbarProps> = ({ setEditorValue, setLanguage, isDarkThem
    */
   const handleDrawerItemClick = (check: string, permalink: string, code: string) => {
     setEditorValue(code);
-    setLanguage(Options.find(option => option.short === check));
+    setLanguage(languageOptions.find(option => option.short === check));
     window.history.pushState(null, '', `/?check=${check}&p=${permalink}`);
     // Clean the output area when a new item is loaded from the history. 
     // FIXME: Better approach would be to handle this using useState hook in the Output component.
