@@ -3,8 +3,7 @@ import { LanguageProps } from "../../../components/Playground/Tools";
 import { getLineToHighlight } from "../lineHighlightingUtil";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
-import fmpConfig from "../../../../fmp.config";
-import { ToolDropdown } from "../../../../fmp.config";
+import fmpConfig, { ToolDropdown } from "../../../../fmp.config";
 
 interface ExecuteLimbooleProps {
   editorValue: string;
@@ -29,7 +28,7 @@ export const executeLimboole = async (
   }: ExecuteLimbooleProps) => {
 
   const metadata = { 'check': limbooleCheckOption.label };
-  const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
+  const response = await saveCode(editorValue, language.short, permalink.permalink ?? null, metadata);
   if (response) { setPermalink(response.data); }
   else {
     showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
@@ -57,7 +56,7 @@ export const executeLimboole = async (
 };
 
 const findNonAscii = (str: string) => {
-  const regex = /[^\x00-\x7F]/g;
+  const regex = /[^\x20-\x7E]/g;
   const match = regex.exec(str);
   if (!match) return -1;
   // find the line and column and the non-ascii character
