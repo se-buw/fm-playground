@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,41 +15,58 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class ApplicationTests {
 
+	private class AlloyInstanceControllerLocal extends AlloyInstanceController {
+		@Override
+		public String getCodeByPermalink(String type, String permalink) {
+			switch (permalink) {
+				case "shank-whiff-unify-salon":
+					return "sig A {}";
+				case "long-code":
+					return longCode;
+				case "short-code":
+					return shortCode;
+				default:
+					break;
+			}
+			return shortCode;
+		}
+	}
+
 	final String shortCode = "sig A {}";
 	final String longCode = "sig Person {spouse: Person, shaken: set Person}\r\n" + //
-				"one sig Jocelyn, Hilary extends Person {}\r\n" + //
-				"\r\n" + //
-				"fact ShakingProtocol {\r\n" + //
-				"    // nobody shakes own or spouse's hand\r\n" + //
-				"    all p: Person | no (p + p.spouse) & p.shaken\r\n" + //
-				"    // if p shakes q, q shakes p\r\n" + //
-				"    all p, q: Person | p in q.shaken => q in p.shaken\r\n" + //
-				"    }\r\n" + //
-				"\r\n" + //
-				"fact Spouses {\r\n" + //
-				"    all p, q: Person | p!=q => {\r\n" + //
-				"        // if q is p's spouse, p is q's spouse\r\n" + //
-				"        p.spouse = q => q.spouse = p\r\n" + //
-				"        // no spouse sharing\r\n" + //
-				"        p.spouse != q.spouse\r\n" + //
-				"        }\r\n" + //
-				"    all p: Person {\r\n" + //
-				"        // a person is his or her spouse's spouse\r\n" + //
-				"        p.spouse.spouse = p\r\n" + //
-				"        // nobody is his or her own spouse\r\n" + //
-				"        p != p.spouse\r\n" + //
-				"        }\r\n" + //
-				"    }\r\n" + //
-				"\r\n" + //
-				"pred Puzzle {\r\n" + //
-				"    // everyone but Jocelyn has shaken a different number of hands\r\n" + //
-				"    all p,q: Person - Jocelyn | p!=q => #p.shaken != #q.shaken\r\n" + //
-				"    // Hilary's spouse is Jocelyn\r\n" + //
-				"    Hilary.spouse = Jocelyn\r\n" + //
-				"    }\r\n" + //
-				"\r\n" + //
-				"run Puzzle for exactly 1000 Person, 15 int\r\n" + //
-				"";
+			"one sig Jocelyn, Hilary extends Person {}\r\n" + //
+			"\r\n" + //
+			"fact ShakingProtocol {\r\n" + //
+			"    // nobody shakes own or spouse's hand\r\n" + //
+			"    all p: Person | no (p + p.spouse) & p.shaken\r\n" + //
+			"    // if p shakes q, q shakes p\r\n" + //
+			"    all p, q: Person | p in q.shaken => q in p.shaken\r\n" + //
+			"    }\r\n" + //
+			"\r\n" + //
+			"fact Spouses {\r\n" + //
+			"    all p, q: Person | p!=q => {\r\n" + //
+			"        // if q is p's spouse, p is q's spouse\r\n" + //
+			"        p.spouse = q => q.spouse = p\r\n" + //
+			"        // no spouse sharing\r\n" + //
+			"        p.spouse != q.spouse\r\n" + //
+			"        }\r\n" + //
+			"    all p: Person {\r\n" + //
+			"        // a person is his or her spouse's spouse\r\n" + //
+			"        p.spouse.spouse = p\r\n" + //
+			"        // nobody is his or her own spouse\r\n" + //
+			"        p != p.spouse\r\n" + //
+			"        }\r\n" + //
+			"    }\r\n" + //
+			"\r\n" + //
+			"pred Puzzle {\r\n" + //
+			"    // everyone but Jocelyn has shaken a different number of hands\r\n" + //
+			"    all p,q: Person - Jocelyn | p!=q => #p.shaken != #q.shaken\r\n" + //
+			"    // Hilary's spouse is Jocelyn\r\n" + //
+			"    Hilary.spouse = Jocelyn\r\n" + //
+			"    }\r\n" + //
+			"\r\n" + //
+			"run Puzzle for exactly 1000 Person, 15 int\r\n" + //
+			"";
 
 	@BeforeEach
 	void setUp() {
@@ -63,15 +77,14 @@ class ApplicationTests {
 	void contextLoads() {
 		AlloyInstanceController.TIME_OUT = 5;
 
-		AlloyInstanceController controller = new AlloyInstanceController();
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
 		InstanceRequest request = new InstanceRequest();
-		// Command@73 "Run Default for 4 but 4 int, 4 seq expect 1"
-		// request.setCode("sig A {}");
+
 		request.setCode(shortCode);
-		List<String> instanceList = new ArrayList<>();		
+		List<String> instanceList = new ArrayList<>();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "clerk-liver-enable-aliens", 0);
+			result = controller.getInstance("ALS", "shank-whiff-unify-salon", 0);
 		} catch (Exception e) {
 			fail();
 		}
@@ -83,7 +96,7 @@ class ApplicationTests {
 		while (!result.contains("error")) {
 			try {
 				result = controller.getNextInstance(specId);
-				System.out.println(result);								
+				System.out.println(result);
 				assertFalse(instanceList.contains(result));
 				instanceList.add(result);
 			} catch (Exception e) {
@@ -93,16 +106,15 @@ class ApplicationTests {
 		}
 	}
 
-
 	@Test
 	void longRunningCodeTest() {
 		AlloyInstanceController.TIME_OUT = 5;
-		AlloyInstanceController controller = new AlloyInstanceController();
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
 		InstanceRequest request = new InstanceRequest();
 		request.setCode(longCode);
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "bunt-unfold-sitter-chug", 0);
+			result = controller.getInstance("ALS", "long-code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -113,13 +125,13 @@ class ApplicationTests {
 	@Test
 	void shortRunningCodeTest() {
 		AlloyInstanceController.TIME_OUT = 5;
-		AlloyInstanceController controller = new AlloyInstanceController();
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
 		InstanceRequest request = new InstanceRequest();
 		request.setCode(shortCode);
 		String result = "";
 		long start = System.currentTimeMillis();
 		try {
-			result = controller.getInstance("ALS", "clerk-liver-enable-aliens", 0);
+			result = controller.getInstance("ALS", "short-code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -132,29 +144,24 @@ class ApplicationTests {
 	void lessThanMaxRunningTest() {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
-		AlloyInstanceController controller = new AlloyInstanceController();
-		AlloyInstanceController spyController = spy(controller);
-		doReturn("sig A {}").when(spyController).getCodeByPermalink(anyString(), anyString());
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = spyController.getInstance("ALS", "clerk-liver-enable-aliens", 0);
+			result = controller.getInstance("ALS", "short-code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		assertFalse(result.contains("error"));
 	}
 
-	
 	@Test
 	void moreThanMaxRunningTest() {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 10;
-		AlloyInstanceController controller = new AlloyInstanceController();
-		AlloyInstanceController spyController = spy(controller);
-		doReturn(shortCode).when(spyController).getCodeByPermalink(anyString(), anyString());
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = spyController.getInstance("ALS", "clerk-liver-enable-aliens", 0);
+			result = controller.getInstance("ALS", "short-code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -165,12 +172,10 @@ class ApplicationTests {
 	void updateRunningTest() {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
-		AlloyInstanceController controller = new AlloyInstanceController();
-		AlloyInstanceController spyController = spy(controller);
-		doReturn(shortCode).when(spyController).getCodeByPermalink(anyString(), anyString());
-		String result = "";		
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		String result = "";
 		try {
-			result = controller.getInstance("ALS", "clerk-liver-enable-aliens", 0);
+			result = controller.getInstance("ALS", "short-code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -184,7 +189,7 @@ class ApplicationTests {
 			e.printStackTrace();
 		}
 		assertFalse(result.contains("error"));
-		assertEquals(AlloyInstanceController.running, 0);		
+		assertEquals(AlloyInstanceController.running, 0);
 	}
 
 	@Test
@@ -193,12 +198,10 @@ class ApplicationTests {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
 
-		AlloyInstanceController controller = new AlloyInstanceController();
-		AlloyInstanceController spyController = spy(controller);
-		doReturn(longCode).when(spyController).getCodeByPermalink(anyString(), anyString());
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "sudoku-raft-ramp-nephew", 0);
+			result = controller.getInstance("ALS", "long-code", 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -207,20 +210,17 @@ class ApplicationTests {
 
 	}
 
-
 	@Test
 	void increaseRunningTest() throws InterruptedException {
 		AlloyInstanceController.TIME_OUT = 2;
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
 
-		AlloyInstanceController controller = new AlloyInstanceController();
-		InstanceRequest request = new InstanceRequest();
-		request.setCode(longCode);
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
 		// execute get instance in a thread
 		Thread t = new Thread(() -> {
 			try {
-				controller.getInstance("ALS", "bunt-unfold-sitter-chug", 0);
+				controller.getInstance("ALS", "long-code", 0);
 			} catch (Exception e) {
 				fail(e);
 			}
