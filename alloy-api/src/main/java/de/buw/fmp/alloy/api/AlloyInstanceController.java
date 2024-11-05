@@ -48,13 +48,10 @@ public class AlloyInstanceController {
 
     public static A4Options getOptions() {
         A4Options opt = new A4Options();
-        // String osName = System.getProperty("os.name").toLowerCase();
-        // opt.solver = osName.contains("linux") ? A4Options.SatSolver.MiniSatJNI :
-        // A4Options.SatSolver.SAT4J;
         opt.solver = A4Options.SatSolver.SAT4J;
         return opt;
     }
-    
+
     @CrossOrigin(origins = "*")
     @GetMapping("/alloy/instance")
     public String getInstance(
@@ -92,9 +89,8 @@ public class AlloyInstanceController {
         Command runCommand = module.getAllCommands().get(cmd);
         if (cmd == 0 && hasDefaultCommand(module)) {
             runCommand = new Command(Pos.UNKNOWN, ExprConstant.TRUE, "FMPlayDefault", false, 4, 4, 4, -1, -1, -1, null,
-                    null, ExprConstant.TRUE, null);
+                    null, runCommand.formula, null);
         }
-        ;
 
         A4Options options = getOptions();
         // get the first instance of the Alloy file
