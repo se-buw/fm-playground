@@ -5,15 +5,31 @@ import pytz
 from datetime import datetime
 aware_datetime = datetime.now(pytz.utc)
 from flask import Blueprint, request, jsonify, session, make_response
-from db.models import db, Data
-from db.db_query import *
+from db.models import db, Data, Code
+from db.db_query import (
+    code_exists_in_db,
+    get_id_by_permalink,
+    get_user_history,
+    update_user_history_by_id,
+    get_code_by_data_id,
+    search_by_query,
+    get_user_data,
+    delete_user,
+    get_history_by_permalink,
+    get_metadata_by_permalink,
+)
 from utils.permalink_generator import generate_passphrase
-from utils.logging_utils import *
+from utils.logging_utils import (
+    generate_before_request_log, 
+    generate_after_request_log
+)
 from config import app, limiter
 
-ALLOY_API_URL = os.getenv('ALLOY_API_URL')
+ERROR_LOGGEDIN_MESSAGE = 'You are not logged in.'
+TRY_AGAIN_MESSAGE = 'There is a problem. Please try after some time.'
 
 routes = Blueprint('routes', __name__)
+
 
 # ------------------ Helper Functions ------------------
 def is_valid_size(code: str) -> bool:
@@ -89,7 +105,7 @@ def save():
               )
     db.session.add(new_data)
     db.session.commit()
-  except:
+  except Exception:
     app.logger.error(f'Error saving the code. Permalink: {permalink}')
     db.session.rollback()
     response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
@@ -100,7 +116,6 @@ def save():
   
 @routes.route('/api/permalink/', methods=['GET'])
 def get_code():
-  c = request.args.get('check').upper()
   p = request.args.get('p')
   code_data = Code.query.join(Data, Data.code_id == Code.id).filter_by(permalink=p).first_or_404()
   response = make_response(jsonify({'code': code_data.code}))
@@ -110,7 +125,7 @@ def get_code():
 def get_history():
     user_id = session.get('user_id')
     if user_id is None:
-        return jsonify({'result': 'fail', 'message': 'You are not logged in.'}, 401)
+        return jsonify({'result': 'fail', 'message': ERROR_LOGGEDIN_MESSAGE}, 401)
     page = request.args.get('page', 1, type=int)
     per_page = 20
     data, has_more_data = get_user_history(user_id, page=page, per_page=per_page)
@@ -120,29 +135,29 @@ def get_history():
 def unlink_history_by_id():
   user_id = session.get('user_id')
   if user_id is None:
-    return jsonify({'result': 'fail', 'message': 'You are not logged in.'}, 401)
+    return jsonify({'result': 'fail', 'message': ERROR_LOGGEDIN_MESSAGE}, 401)
   data = request.get_json()
   data_id = data['id']
   if update_user_history_by_id(data_id):
     return jsonify({'result': 'success'})
-  return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
+  return jsonify({'result': 'fail', 'message': TRY_AGAIN_MESSAGE}, 500)
  
 @routes.route('/api/code/<int:data_id>', methods=['GET'])
 def get_code_by_id(data_id: int):
   user_id = session.get('user_id')
   if user_id is None:
-    return jsonify({'result': 'fail', 'message': 'You are not logged in.'}, 401)
+    return jsonify({'result': 'fail', 'message': ERROR_LOGGEDIN_MESSAGE}, 401)
   data = get_code_by_data_id(data_id)
   if data:
     return jsonify({'result': 'success', 'code': data.code, 'check': data.check_type, 'permalink': data.permalink})
-  return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
+  return jsonify({'result': 'fail', 'message': TRY_AGAIN_MESSAGE}, 500)
 
 # Search the history data by query
 @routes.route('/api/search', methods=['GET'])
 def search():
   user_id = session.get('user_id')
   if user_id is None:
-    return jsonify({'result': 'fail', 'message': 'You are not logged in.'}, 401)
+    return jsonify({'result': 'fail', 'message': ERROR_LOGGEDIN_MESSAGE}, 401)
   query = request.args.get('q')
   data = search_by_query(query, user_id=user_id)
   return jsonify({'history': data, 'has_more_data': False})
@@ -152,7 +167,7 @@ def search():
 def download_user_data():
   user_id = session.get('user_id')
   if user_id is None:
-    return jsonify({'result': 'fail', 'message': 'You are not logged in.'}, 401)
+    return jsonify({'result': 'fail', 'message': ERROR_LOGGEDIN_MESSAGE}, 401)
   user, data = get_user_data(user_id)
   return jsonify({'email':user, 'data': data})
 
@@ -161,21 +176,21 @@ def download_user_data():
 def delete_profile():
   user_id = session.get('user_id')
   if user_id is None:
-    return jsonify({'result': 'fail', 'message': 'You are not logged in.'}, 401)
+    return jsonify({'result': 'fail', 'message': ERROR_LOGGEDIN_MESSAGE}, 401)
   if delete_user(user_id):
     return jsonify({'result': 'success'})
-  return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
+  return jsonify({'result': 'fail', 'message': TRY_AGAIN_MESSAGE}, 500)
 
 # Get the history by permalink
 @routes.route('/api/history/<permalink>', methods=['GET'])
 def history_by_permalink(permalink: str):
   user_id = session.get('user_id')
   if user_id is None:
-    return jsonify({'result': 'fail', 'message': 'You are not logged in.'}, 401) 
+    return jsonify({'result': 'fail', 'message': ERROR_LOGGEDIN_MESSAGE}, 401) 
   data = get_history_by_permalink(permalink, user_id=user_id)
   if data:
     return jsonify({'history': data}), 200
-  return jsonify({'result': 'fail', 'message': 'There is a problem. Please try after some time.'}, 500)
+  return jsonify({'result': 'fail', 'message': TRY_AGAIN_MESSAGE}, 500)
 
 @routes.route('/api/metadata', methods=['GET'])
 def get_metadata():
@@ -195,7 +210,7 @@ def feedback():
   try:
     app.logger.info(f'FEEDBACK - Rating: {rating} Comment: {comment}')
     return jsonify({'result': 'success'}), 200
-  except Exception as e:
+  except Exception:
     app.logger.error('FEEDBACK: Error saving the feedback.')
-    response = make_response(jsonify({'result': "There is a problem. Please try after some time."}), 500)
+    response = make_response(jsonify({'result': TRY_AGAIN_MESSAGE}), 500)
     return response

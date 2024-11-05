@@ -4,8 +4,8 @@ from flask_session import Session
 from flask_login import LoginManager
 from flask_compress import Compress
 from config import app, db
-from routes.playground import *
-from routes.authentication import *
+from routes.playground import routes
+from routes.authentication import authentication
 from db.models import User
 Session(app)
 app.app_context().push()

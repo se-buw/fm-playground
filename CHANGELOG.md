@@ -1,5 +1,12 @@
 # Change Log
 
+## v2.1.1 [2024-11-05]
+### Changed
+- 🐛Fixed Alloy default run command ignoring all facts
+- 🧪Fixed Alloy-api bkoken test cases
+- ⚡️Removed some unused code
+- ⚡️Fixed some code smells
+
 ## v2.1.0 [2024-11-01]
 ### Added
  - ✨ SMT in editor language support (browser worker)
