@@ -183,7 +183,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     const queryParams = new URLSearchParams(useLocation().search);
     const p = queryParams.get('p');
     const fileName = p ? p : 'code';
-    const fileExtension = language.short == 'SMT' ? 'smt2' : language.short == 'XMV' ? 'smv' : language.short == 'SPECTRA' ? 'spectra' : language.short == 'als' ? 'als' : 'txt';
+    const fileExtension = language.id;
     return <FileDownload content={content} fileName={fileName} fileExtension={fileExtension} />;
   };
 
