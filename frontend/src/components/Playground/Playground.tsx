@@ -10,7 +10,7 @@ import Editor from './Editor';
 import LspEditor from './LspEditor.js';
 import PlainOutput from './PlainOutput';
 import Tools from './Tools';
-import Options from '../../assets/config/AvailableTools'
+import languageOptions from '../../assets/config/languageConfig.js';
 import FileUploadButton from '../Utils/FileUpload';
 import FileDownload from '../Utils/FileDownload';
 import Guides from '../Utils/Guides';
@@ -77,7 +77,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     if (checkParam === "VAL" || checkParam === "QBF") { checkParam = "SAT" } // v2.0.0: VAL and QBF are merged into SAT
 
     const permalinkParam = urlParams.get('p');
-    const selectedOption = Options.find(option => option.short === checkParam);
+    const selectedOption = languageOptions.find(option => option.short === checkParam);
 
     // Load the code if 'check' parameter is present
     if (permalinkParam) {
@@ -122,7 +122,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
       })
       .catch((err) => {
         alert("Permaling not found. Redirecting...")
-        window.open(`/?check=SAT`, '_self')
+        window.open(`/?check=${languageOptions[0].short}`, '_self')
       })
   }
 

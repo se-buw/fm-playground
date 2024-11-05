@@ -7,8 +7,8 @@ import Playground from './components/Playground/Playground'
 import Login from './components/Authentication/Login'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
-import Options from './assets/config/AvailableTools'
 import { LanguageProps } from './components/Playground/Tools'
+import languageOptions from './assets/config/languageConfig'
 import Feedback from './components/Utils/Feedback';
 import './assets/style/index.css'
 import '../src/assets/style/App.css'
@@ -16,7 +16,7 @@ import '../src/assets/style/Feedback.css'
 
 const App = () => {
   const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
-  const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language') || 'null') || Options[1]);
+  const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language') || 'null') || languageOptions[1]);
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const storedTheme = localStorage.getItem('isDarkTheme');
     return storedTheme === 'true';
