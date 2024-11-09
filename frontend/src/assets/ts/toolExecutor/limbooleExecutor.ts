@@ -56,7 +56,7 @@ export const executeLimboole = async (
 };
 
 const findNonAscii = (str: string) => {
-  const regex = /[^\x20-\x7E]/g;
+  const regex = /[^\x00-\x7F]/g;
   const match = regex.exec(str);
   if (!match) return -1;
   // find the line and column and the non-ascii character
