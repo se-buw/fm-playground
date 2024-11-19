@@ -27,6 +27,9 @@ from config import app, limiter
 
 ERROR_LOGGEDIN_MESSAGE = 'You are not logged in.'
 TRY_AGAIN_MESSAGE = 'There is a problem. Please try after some time.'
+RECENT_REQUEST_MESSAGE = 'You have already made a request recently.'
+CODE_TOO_LARGE_MESSAGE = 'The code is too large.'
+COMMENT_TOO_LARGE_MESSAGE = 'The comment is too large.'
 
 routes = Blueprint('routes', __name__)
 
@@ -63,7 +66,7 @@ def after_request(response):
 # ------------------ Logging ------------------
 
 @routes.route('/api/save', methods=['POST'])
-@limiter.limit("2/second", error_message="You've already made a request recently.")
+@limiter.limit("2/second", error_message=RECENT_REQUEST_MESSAGE)
 def save():
   user_id = session.get('user_id')
   current_time = datetime.now(pytz.utc)
@@ -77,7 +80,7 @@ def save():
   else:
     parent_id = parent.id
   if not is_valid_size(code):
-    response = make_response(jsonify({'result': "The code is too large."}), 413)
+    response = make_response(jsonify({'result': CODE_TOO_LARGE_MESSAGE}), 413)
     return response
   p_gen_time = time.time()
   permalink = generate_passphrase()
@@ -108,7 +111,7 @@ def save():
   except Exception:
     app.logger.error(f'Error saving the code. Permalink: {permalink}')
     db.session.rollback()
-    response = make_response(jsonify({'permalink': "There is a problem. Please try after some time."}), 500)
+    response = make_response(jsonify({'permalink': TRY_AGAIN_MESSAGE}), 500)
     return response
   session['last_request_time'] = current_time
   response = make_response(jsonify({'check':check_type,'permalink': permalink}), 200)
@@ -205,7 +208,7 @@ def feedback():
   rating = data['rating']
   comment = data['comment']
   if not is_valid_size(comment):
-    response = make_response(jsonify({'result': "The comment is too large."}), 413)
+    response = make_response(jsonify({'result': COMMENT_TOO_LARGE_MESSAGE}), 413)
     return response
   try:
     app.logger.info(f'FEEDBACK - Rating: {rating} Comment: {comment}')
