@@ -135,10 +135,10 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
         case 0:
         case 1:
         case 2:
-          executeLimboole({ editorValue, language, limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink })
+          executeLimboole({ editorValue, language, limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink, enableLsp })
           break;
         case 3:
-          executeZ3Wasm({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
+          executeZ3Wasm({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink, enableLsp })
           break;
         case 4:
           executeNuxmvTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })

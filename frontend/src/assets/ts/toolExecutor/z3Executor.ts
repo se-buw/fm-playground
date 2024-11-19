@@ -14,6 +14,7 @@ interface ExecuteZ3Props {
   showErrorModal: (value: string) => void;
   permalink: Permalink;
   setPermalink: (value: Permalink) => void;
+  enableLsp?: boolean;
 }
 
 export const executeZ3Wasm = async (
@@ -24,12 +25,14 @@ export const executeZ3Wasm = async (
     setOutput,
     showErrorModal,
     permalink,
-    setPermalink
+    setPermalink,
+    enableLsp
   }: ExecuteZ3Props) => {
 
   let response: any = null;
+  const metadata =  { 'ls': enableLsp };
   try {
-    response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
+    response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
     if (response) { setPermalink(response.data); }
   }
   catch (error: any) {
