@@ -1,7 +1,8 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
 import type { LimbooleAstType, Expr, And, Or, Implies, Iff } from './generated/ast.js';
-import { isAnd, isOr, isIff, isImplies } from './generated/ast.js';
+import { isAnd, isOr, isIff, isImplies, isExpr } from './generated/ast.js';
 import type { LimbooleServices } from './limboole-module.js';
+import { checkTypo } from './typo-detector.js';
 
 /**
  * Register custom validation checks.
@@ -10,7 +11,7 @@ export function registerValidationChecks(services: LimbooleServices) {
   const registry = services.validation.ValidationRegistry;
   const validator = services.validation.LimbooleValidator;
   const checks: ValidationChecks<LimbooleAstType> = {
-    Expr: [validator.checkPersonStartsWithNot, validator.operatorShouldBeBetweenOperands]
+    Expr: [validator.operatorShouldBeBetweenOperands, validator.validateSpelling],
   };
   registry.register(checks, validator);
 }
@@ -19,21 +20,30 @@ export function registerValidationChecks(services: LimbooleServices) {
  * Implementation of custom validations.
  */
 export class LimbooleValidator {
+
+  services: LimbooleServices;
+
+  constructor(services: LimbooleServices) {
+    this.services = services;
+  }
+
   operatorShouldBeBetweenOperands(expr: Expr, accept: ValidationAcceptor): void {
     if (isAnd(expr) || isOr(expr) || isIff(expr) || isImplies(expr)) {
       validateBinaryOperands(expr, accept, expr.$type);
     }
   }
 
-  checkPersonStartsWithNot(expr: Expr, accept: ValidationAcceptor): void {
-    if (expr.var) {
-      // console.log('First character of expr.var:', expr.var);
-      if (expr.var.startsWith('!')) {
-        accept('warning', 'Variable name should start with a capital.', { node: expr, property: 'var' });
+  validateSpelling(expr: Expr, accept: ValidationAcceptor): void {
+    if (isExpr(expr) && expr.var !== undefined) {
+      const typo = checkTypo(expr.var, this.services);
+      if (typo !== undefined) {
+        accept('hint', `A possible typo was detected. Do you mean: "${typo}"?`, { node: expr, property: 'var', code: 'typo', data: { typo } });
       }
     }
   }
 }
+
+
 function validateBinaryOperands(
   expr: And | Or | Iff | Implies,
   accept: ValidationAcceptor,
@@ -46,7 +56,7 @@ function validateBinaryOperands(
     });
   }
   if (!expr.right) {
-    accept('error', `Right operand is missing for the ${operatorName} operator.`, {
+    accept('warning', `Right operand is missing for the ${operatorName} operator.`, {
       node: expr,
       property: 'right',
     });
