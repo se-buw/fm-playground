@@ -1,10 +1,12 @@
 # Change Log
 
-## v2.1.2 [2024-11-19]
+## v2.2.0 [2024-11-20]
+### Added
+- ✨ Added typo validation in Limboole.
+- ✨ Storing language support check as metadata
 ### Changed
 - 🐛 Fixed issue with ascii char recognition
 - 🐛 Fixed limboole syntax highlighting
-- ✨ Storing language support check as metadata
 - ♻️ Refactored error messages
 
 ## v2.1.1 [2024-11-05]
