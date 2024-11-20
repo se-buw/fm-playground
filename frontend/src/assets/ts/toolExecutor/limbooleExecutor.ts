@@ -14,6 +14,7 @@ interface ExecuteLimbooleProps {
   showErrorModal: (value: string) => void;
   permalink: Permalink;
   setPermalink: (value: Permalink) => void;
+  enableLsp?: boolean;
 }
 
 export const executeLimboole = async (
@@ -24,10 +25,11 @@ export const executeLimboole = async (
     setIsExecuting,
     showErrorModal,
     permalink,
-    setPermalink
+    setPermalink,
+    enableLsp
   }: ExecuteLimbooleProps) => {
 
-  const metadata = { 'check': limbooleCheckOption.label };
+  const metadata = { 'check': limbooleCheckOption.label, 'ls': enableLsp };
   const response = await saveCode(editorValue, language.short, permalink.permalink ?? null, metadata);
   if (response) { setPermalink(response.data); }
   else {
@@ -56,7 +58,7 @@ export const executeLimboole = async (
 };
 
 const findNonAscii = (str: string) => {
-  const regex = /[^\x20-\x7E]/g;
+  const regex = /[^\x00-\x7F]/g;
   const match = regex.exec(str);
   if (!match) return -1;
   // find the line and column and the non-ascii character

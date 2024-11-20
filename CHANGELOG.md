@@ -1,11 +1,20 @@
 # Change Log
 
+## v2.2.0 [2024-11-20]
+### Added
+- ✨ Added typo validation in Limboole.
+- ✨ Storing language support check as metadata
+### Changed
+- 🐛 Fixed issue with ascii char recognition
+- 🐛 Fixed limboole syntax highlighting
+- ♻️ Refactored error messages
+
 ## v2.1.1 [2024-11-05]
 ### Changed
-- 🐛Fixed Alloy default run command ignoring all facts
-- 🧪Fixed Alloy-api bkoken test cases
-- ⚡️Removed some unused code
-- ⚡️Fixed some code smells
+- 🐛 Fixed Alloy default run command ignoring all facts
+- 🧪 Fixed Alloy-api bkoken test cases
+- ⚡️ Removed some unused code
+- ⚡️ Fixed some code smells
 
 ## v2.1.0 [2024-11-01]
 ### Added
@@ -14,7 +23,7 @@
 
 ## v2.0.0 [2024-10-20]
 ### Added
-- ⚡️Added caching mechanism for z3, nuXmv, and Spectra with Redis
+- ⚡️ Added caching mechanism for z3, nuXmv, and Spectra with Redis
 - ✨ New api for getting metadata
 ### Changed
 - 💥 Separated nuxmv, alloy, and z3 api

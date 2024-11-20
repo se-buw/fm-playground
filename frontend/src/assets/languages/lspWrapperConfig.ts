@@ -34,7 +34,7 @@ const loadLimbooleWorkerPort = () => {
 export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
   const limbooleExtensionFilesOrContents = new Map<string, string | URL>();
   limbooleExtensionFilesOrContents.set(`/limboole-configuration.json`, limbooleLanguageConfig);
-  limbooleExtensionFilesOrContents.set(`/-limboole-grammar.json`, responseLimbooleTm);
+  limbooleExtensionFilesOrContents.set(`/limboole-grammar.json`, responseLimbooleTm);
 
   const smtExtensionFilesOrContents = new Map<string, string | URL>();
   smtExtensionFilesOrContents.set(`/smt-configuration.json`, smtLanguageConfig);

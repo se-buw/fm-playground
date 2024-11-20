@@ -40,7 +40,7 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
             res = requests.get(url)
             code = res.json().get("code")
             return code
-    except:
+    except Exception:
         raise HTTPException(status_code=404, detail="Permalink not found")
 
 
@@ -52,13 +52,13 @@ def run(code: str, check_sat: bool) -> str:
 
         try:
             return cached_run_limboole(code, check_sat)
-        except:
+        except Exception:
             raise HTTPException(status_code=500, detail="Error running limboole")
     else:
         print("Redis not available, running limboole without cache")
         try:
             return run_limboole(code, check_sat)
-        except:
+        except Exception:
             raise HTTPException(status_code=500, detail="Error running limboole")
 
 
@@ -69,5 +69,5 @@ def code(check: str, p: str, check_sat: bool):
     code = get_code_by_permalink(check, p)
     try:
         return run(code, check_sat)
-    except:
+    except Exception:
         raise HTTPException(status_code=500, detail="Error running code")
