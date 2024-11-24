@@ -2,7 +2,7 @@
 
 # Configuration
 JAVA_CMD="java -Djava.library.path=lib/ -jar app.jar"
-MEMORY_LIMIT_MB=512   # Memory limit in MB (30720MB-30 GB)
+MEMORY_LIMIT_MB=30720   # Memory limit in MB (30720MB-30 GB)
 CHECK_INTERVAL=5        # Interval to check memory usage (in seconds)
 
 # Function to get memory usage of a process (in MB)
