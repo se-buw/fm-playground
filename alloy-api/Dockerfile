@@ -1,14 +1,14 @@
-FROM openjdk:17-jdk-alpine
+FROM ubuntu:24.04 
 
 WORKDIR /app
 COPY . /app
 
-RUN apk add --no-cache libstdc++ && \
-	sed -i -e 's/\r$//' gradlew && \
-	chmod +x gradlew && \
+RUN apt-get update && apt-get install -y bash openjdk-17-jdk && \
+	sed -i -e 's/\r$//' gradlew entrypoint.sh && \ 
+	chmod +x gradlew entrypoint.sh && \
 	./gradlew clean build -x test && \
 	mv build/libs/fmp.alloy.api-0.0.1.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java","-Djava.library.path=lib/", "-jar","app.jar"]
+ENTRYPOINT ["/app/entrypoint.sh"]
