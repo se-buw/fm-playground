@@ -16,20 +16,31 @@ const AlloyCmdOptions: React.FC<AlloyCmdOptionsProps> = ({ editorValue, alloyCmd
 
   useEffect(() => {
     if (editorValue) {
-      const lines = editorValue.split('\n')
-      const options = []
+      const lines = editorValue.split('\n');
+      const options = [];
+      const labelRegex = /^(\w+):\s*(run|check)\s+(\w+)/;
+
       for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim()
+        const line = lines[i].trim();
         if (line.startsWith('run') || line.startsWith('check')) {
-          const option = line
-          options.push({ value: i, label: option })
+          const option = line;
+          options.push({ value: i, label: option });
+        }
+        // If there is a label, we need to add the label to the command
+        else if (labelRegex.test(line)) {
+          const match = line.match(labelRegex);
+
+          if (match) {
+            const option = `${match[2]} ${match[1]} ${line.slice(match[0].length)}`;
+            options.push({ value: i, label: option });
+          }
         }
       }
-      setAlloyCmdOption(options)
-    }
-  }, [editorValue])
 
-  
+      setAlloyCmdOption(options);
+    }
+  }, [editorValue]);
+
   
   const handleOptionChange = (selectedOption: SingleValue<{ value: number, label: string }>) => {
     if (selectedOption) {
