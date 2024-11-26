@@ -48,7 +48,7 @@ public class AlloyInstanceController {
 
     public static A4Options getOptions() {
         A4Options opt = new A4Options();
-        opt.solver = A4Options.SatSolver.SAT4J;
+        opt.solver = System.getProperty("os.name").contains("linux") ? A4Options.SatSolver.MiniSatJNI : A4Options.SatSolver.SAT4J;
         return opt;
     }
 
