@@ -1,5 +1,11 @@
 # Change Log
 
+## v2.2.1 [2024-11-26]
+### Changed
+⚡️Set alloy memory usage limit; restart if exceeded
+⚡️Using minisat for alloy
+🐛Handle label on alloy commands
+
 ## v2.2.0 [2024-11-20]
 ### Added
 - ✨ Added typo validation in Limboole.
