@@ -1,6 +1,7 @@
 from xkcdpass import xkcd_password as xp
 from config import db
 from db.models import Data
+from config import app
 
 
 all_words = xp.generate_wordlist(wordfile= xp.locate_wordfile(), min_length=3, max_length=6)
@@ -14,3 +15,4 @@ def generate_passphrase():
     passphrase = xp.generate_xkcdpassword(all_words, numwords=4, delimiter="-")
     if not passphrase_exists_in_db(passphrase):
       return passphrase
+    app.logger.warning(f"Permalink Generation - Permalink: {passphrase} already exists. Regenerating...")
