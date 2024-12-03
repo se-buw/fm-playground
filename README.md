@@ -10,31 +10,29 @@
   <hr>
 </div>
 
-
-A Formal Method playground for limboole, z3, nuXmv, Alloy, and Spectra. This project is a part of the  Formal Methods course at the Bauhaus-Universität Weimar. It is a web application that allows users to run formal methods tools in the browser. 
+A Formal Method playground for limboole, z3, nuXmv, Alloy, and Spectra. This project is a part of the Formal Methods course at the Bauhaus-Universität Weimar. It is a web application that allows users to run formal methods tools in the browser.
 
 ## Overview and Examples
 
-We started a small overview of the features of the FM Playground and how to use it. The video playlist is available on [YouTube](https://youtu.be/ItNVFcuxeCo)
-
+We started a small overview of the features of the FM Playground and how to use it. The video playlist is available on [YouTube](https://www.youtube.com/playlist?list=PLGyeoukah9NYq9ULsIuADG2r2QjX530nf)
 
 <div align="center">
 
-  [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ItNVFcuxeCo/0.jpg)](https://youtu.be/ItNVFcuxeCo)
+[![Formal Methods Playground](./resources/fmp-tutorial.jpg)](https://www.youtube.com/playlist?list=PLGyeoukah9NYq9ULsIuADG2r2QjX530nf)
 
 </div>
 
 For more updates, examples, and tutorials, please visit the [formal-methods.net](https://formal-methods.net) website.
 
-## Development 
+## Development
 
 ### Requirements
+
 - Python >= 3.10.0
 - Node >= 20.0.0
 - PostgreSQL >= 15.0 (optional) - use sqlite3 for development
 - Docker >= 20.10.0 (optional)
 - Docker Compose >= 1.27.0 (optional)
-
 
 ### Installation
 
@@ -47,25 +45,26 @@ For more updates, examples, and tutorials, please visit the [formal-methods.net]
 ### Docker Compose
 
 - Copy the `.env.example` file to `.env` and update the environment variables as needed:
+
 ```bash
 cp .env.example .env
 ```
+
 - Run the following command:
+
 ```bash
 docker compose up -d
 ```
 
-
-
 ## Contributing
+
 TODO: Create a contributing guide
 
-Contributions are welcome!  Please refer to the [contributing guidelines](CONTRIBUTING.md) for detailed instructions.
-
+Contributions are welcome! Please refer to the [contributing guidelines](CONTRIBUTING.md) for detailed instructions.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). 
+This project is licensed under the [MIT License](LICENSE).
 
 ### Third-Party Licenses
 
