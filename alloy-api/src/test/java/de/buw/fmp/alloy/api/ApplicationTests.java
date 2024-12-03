@@ -7,10 +7,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 
 @SpringBootTest
 class ApplicationTests {
@@ -25,6 +29,8 @@ class ApplicationTests {
 					return longCode;
 				case "short-code":
 					return shortCode;
+				case "list-code":
+					return listCode;
 				default:
 					break;
 			}
@@ -67,6 +73,19 @@ class ApplicationTests {
 			"\r\n" + //
 			"run Puzzle for exactly 1000 Person, 15 int\r\n" + //
 			"";
+	final String listCode = """
+one sig List {
+    header: lone Node 
+} 
+var sig Node {
+    var link: lone Node 
+}
+fact noDanglingNodes {
+    always (Node in List.header.*link)
+}
+
+run {# Node = 4 and after one Node } for 3 but 4 Node
+			""";
 
 	@BeforeEach
 	void setUp() {
@@ -231,5 +250,50 @@ class ApplicationTests {
 		assertEquals(AlloyInstanceController.running, 1);
 		t.join();
 		assertEquals(AlloyInstanceController.running, 0);
+	}
+
+	@Test
+	void evaluateListTest() throws Exception{
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		String result = "";
+		String resultJson = controller.getInstance("ALS", "list-code", 0);
+		String specId = getField(resultJson, "specId");
+		result = controller.eval(specId, "# Node", 0);
+		assertEquals("4", getField(result, "result"));
+		
+		result = controller.eval(specId, "# List", 0);
+		assertEquals("1", getField(result, "result"));
+
+		result = controller.eval(specId, "# Node", 1);
+		assertEquals("1", getField(result, "result"));
+	}
+
+	@Test
+	void evaluateErrorsTest() throws Exception{
+		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		String result = "";
+		String resultJson = controller.getInstance("ALS", "short-code", 0);
+		String specId = getField(resultJson, "specId");
+		// Node does not exist in this model
+		result = controller.eval(specId, "# Node", 0);
+		assertTrue(getField(result, "error").contains("Syntax error"));
+	}
+
+	/**
+	 * Get a field from a JSON string
+	 * 
+	 * @param json
+	 * @param field
+	 * @return
+	 * @throws Exception
+	 */
+	private String getField(String json, String field) throws Exception {
+		ObjectReader reader = new ObjectMapper().readerFor(Map.class);
+		Map<String, String> map = reader.readValue(json);
+		Object value = map.get(field);
+		if (value instanceof List) {
+			return ((List<?>) value).get(0).toString();
+		}
+		return value.toString();
 	}
 }

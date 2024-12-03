@@ -7,6 +7,7 @@ import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.alloy4.Pos;
 import edu.mit.csail.sdg.alloy4.SafeList;
 import edu.mit.csail.sdg.ast.Command;
+import edu.mit.csail.sdg.ast.Expr;
 import edu.mit.csail.sdg.ast.ExprConstant;
 import edu.mit.csail.sdg.ast.Sig;
 import edu.mit.csail.sdg.parser.CompModule;
@@ -126,7 +127,7 @@ public class AlloyInstanceController {
             specId = Long.toHexString(Double.doubleToLongBits(Math.random()));
         } while (instances.containsKey(specId));
         // store the instance in the instances map
-        instances.put(specId, new StoredSolution(instance));
+        instances.put(specId, new StoredSolution(module, instance));
 
         File tmpFile = File.createTempFile("alloy_instance", ".xml");
         tmpFile.deleteOnExit();
@@ -242,6 +243,35 @@ public class AlloyInstanceController {
         String jsonPrettyPrintString = xmlJSONObj.toString(4);
 
         return jsonPrettyPrintString;
+    }
+
+    
+    @CrossOrigin(origins = "*")
+    @GetMapping("/alloy/eval")
+    public String eval(@RequestParam String specId, @RequestParam String expr, @RequestParam(required = false, defaultValue = "0") int state) throws IOException {
+        StoredSolution storedSolution = instances.get(specId);
+        if (storedSolution == null) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "No instance found, possibly cleaned up in the meantime");
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        A4Solution instance = storedSolution.getSolution();
+        String result = "";
+        try {
+            Expr e = CompUtil.parseOneExpression_fromString(storedSolution.getModule(), expr);
+            result = instance.eval(e, state).toString();
+        } catch (Exception e) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", e.toString());
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+        JSONObject obj = new JSONObject();
+        obj.put("result", result);
+        obj.put("status", HttpStatus.OK.value());
+        return obj.toString();
     }
 
     @Scheduled(fixedRate = 30000)

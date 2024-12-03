@@ -1,14 +1,21 @@
 package de.buw.fmp.alloy.api;
 
+import edu.mit.csail.sdg.parser.CompModule;
 import edu.mit.csail.sdg.translator.A4Solution;
 
 public class StoredSolution {
     private A4Solution solution;
+    private CompModule module;
     private long lastAccessed; 
 
-    public StoredSolution(A4Solution solution) {
+    public StoredSolution(CompModule module, A4Solution solution) {
+        this.module = module;
         this.solution = solution;
         this.lastAccessed = System.currentTimeMillis();
+    }
+
+    public CompModule getModule() {
+        return module;
     }
 
     public A4Solution getSolution() {
