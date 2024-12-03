@@ -242,7 +242,7 @@ public class AlloyInstanceController {
         running--;
 
         if (t.isAlive()) {
-            t.stop();
+            t.interrupt();
             throw new TimeoutException("Analysis timed out after " + seconds + " seconds.");
         }
         if (r.instance == null) {
