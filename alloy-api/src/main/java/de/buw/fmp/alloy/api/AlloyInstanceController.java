@@ -137,13 +137,35 @@ public class AlloyInstanceController {
         if (specId != null) {
             xmlJSONObj.append("specId", specId);
         }
-        String tabularInstance = instance.format();
+        String tabularInstance = formatTabularInstance(instance);
         xmlJSONObj.append("tabularInstance", tabularInstance);
         String textInstance = instance.toString();
         xmlJSONObj.append("textInstance", textInstance);
         String jsonPrettyPrintString = xmlJSONObj.toString(4);
 
         return jsonPrettyPrintString;
+    }
+
+    /**
+     * Format the instance in tabular form
+     * 
+     * In case of temporal instance, it will format the instance for each state
+     * 
+     * @param instance
+     * @return
+     */
+    private String formatTabularInstance(A4Solution instance) {
+        // check if instance is temporal
+        if (instance.getTraceLength() == 1) {
+            return instance.format();
+        }
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < instance.getTraceLength(); i++) {
+            sb.append("------State " + i + "-------\n");
+            sb.append(instance.format(i));
+            sb.append("\n");
+        }
+        return sb.toString();
     }
 
     public String getCodeByPermalink(String check, String p) {
