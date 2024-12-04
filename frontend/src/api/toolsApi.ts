@@ -63,3 +63,13 @@ export async function getAlloyNextInstance(specId: string | null) {
     throw error;
   }
 }
+
+export async function getAlloyEval(specId: string, expr: string, state: number) {
+  let url = `${fmpConfig.tools.alloy.apiUrlEval}?specId=${specId}&expr=${expr}&state=${state}`;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}

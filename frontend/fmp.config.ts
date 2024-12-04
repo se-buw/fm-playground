@@ -23,6 +23,7 @@ export interface Tool {
   language: LanguageConfig;
   apiUrl: string;
   apiUrlNext?: string;
+  apiUrlEval?: string;
 }
 
 
@@ -124,6 +125,7 @@ const fmpConfig: FmpConfig = {
       },
       apiUrl: '/alloy/alloy/instance',
       apiUrlNext: '/alloy/alloy/nextInstance',
+      apiUrlEval: '/alloy/alloy/eval',
     },
     spectra: {
       name: "Spectra",

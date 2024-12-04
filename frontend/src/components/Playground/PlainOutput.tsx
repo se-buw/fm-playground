@@ -35,10 +35,11 @@ const PlainOutput: React.FC<PlainOutputProps> = ({ code, onChange, height }) => 
       id='info'
       className='plain-output-box'
       contentEditable={false}
-      style={{ 
-        borderRadius: '8px', 
-        height: height, 
-        whiteSpace: 'pre-wrap' }}
+      style={{
+        borderRadius: '8px',
+        height: height,
+        whiteSpace: 'pre-wrap'
+      }}
       onInput={handleChange}
       dangerouslySetInnerHTML={{ __html: internalCode }}
     />

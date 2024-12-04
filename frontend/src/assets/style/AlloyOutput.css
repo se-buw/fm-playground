@@ -11,7 +11,7 @@
   text-align: center;
 }
 
-.alloy-viz-area{
+.alloy-viz-area {
   background-color: var(--output-box-color);
   border: 1px thin var(--border-color);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
@@ -36,4 +36,28 @@
 .nav-tabs .nav-link.active {
   color: var(--text-color);
   background-color: var(--active-color);
+}
+
+.alloy-eval-close-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333333;
+  background: transparent;
+}
+
+.alloy-eval-close-icon:hover {
+  color: #dc4c64;
+}
+
+.alloy-eval-expression-input{
+  background-color: var(--output-box-color);
+  border: 1px thin var(--border-color);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  white-space: pre-wrap;
+  font-size: 1em;
 }

@@ -4,6 +4,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { TbBinaryTree } from "react-icons/tb";
 import { CiViewTable } from "react-icons/ci";
 import { CiTextAlignLeft } from "react-icons/ci";
+import { LiaClipboardListSolid } from "react-icons/lia";
 import {
   MDBBtn,
   MDBInput,
@@ -23,6 +24,7 @@ import {
   getTraceLengthAndBackloop
 } from '../../../assets/js/alloyUtils';
 import '../../../assets/style/AlloyOutput.css';
+import AlloyEvaluator from './AlloyEvaluator';
 
 interface AlloyOutputProps {
   alloyInstance: any;
@@ -46,6 +48,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
   const [alloyTextInstance, setAlloyTextInstance] = useState('');
   const [activeTab, setActiveTab] = useState('graph');
   const [isNextInstanceExecuting, setIsNextInstanceExecuting] = useState(false);
+  const [instanceIndexToShow, setInstanceIndexToShow] = useState(0);
 
   /**
    * Update the Alloy instance in the state when the API response is received
@@ -71,12 +74,11 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
       setIsTemporal(instances.some((instance) => instance["mintrace"] !== -1));
       const { traceLength, backloop } = getTraceLengthAndBackloop(instances[0]);
       if (instances.length > 1) {
-        var instanceIndexToShow;
         if (alloyTraceIndex < instances.length) {
-          instanceIndexToShow = alloyTraceIndex;
+          setInstanceIndexToShow(alloyTraceIndex);
         } else {
           const m = (alloyTraceIndex - traceLength) % (traceLength - backloop);
-          instanceIndexToShow = backloop + m;
+          setInstanceIndexToShow(backloop + m);
         }
         const graphData = getGraphData(instances[instanceIndexToShow]);
         setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
@@ -183,6 +185,9 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
             <MDBTabsItem>
               <MDBTabsLink onClick={() => handleTabClick('text')} active={activeTab === 'text'}><CiTextAlignLeft /> Text</MDBTabsLink>
             </MDBTabsItem>
+            <MDBTabsItem>
+              <MDBTabsLink onClick={() => handleTabClick('eval')} active={activeTab === 'eval'}><LiaClipboardListSolid /> Eval</MDBTabsLink>
+            </MDBTabsItem>
           </MDBTabs>
 
           <MDBTabsContent>
@@ -205,18 +210,29 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
                 height={isFullScreen ? '80vh' : '57vh'}
                 onChange={() => { }} />
             </MDBTabsPane>
+
+            <MDBTabsPane open={activeTab === 'eval'}>
+              <AlloyEvaluator
+                height={isFullScreen ? '80vh' : '57vh'}
+                specId={alloySpecId}
+                state={instanceIndexToShow}
+              />
+            </MDBTabsPane>
           </MDBTabsContent>
 
-          <div>
-            <pre
-              className='plain-alloy-message-box'
-              contentEditable={false}
-              style={{
-                height: alloyPlainMessage ? 'auto' : '35px',
-              }}
-              dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + (alloyTraceLoop ? ' | ' + alloyTraceLoop : '') : alloyTraceLoop }}
-            />
-          </div>
+          {activeTab !== 'eval' &&
+            <div>
+              <pre
+                className='plain-alloy-message-box'
+                contentEditable={false}
+                style={{
+                  height: alloyPlainMessage ? 'auto' : '35px',
+                }}
+                dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + (alloyTraceLoop ? ' | ' + alloyTraceLoop : '') : alloyTraceLoop }}
+              />
+            </div>
+          }
+
           <div
             style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
           >
