@@ -4,7 +4,7 @@
 ### Changed
 - ✨ Added alloy evaluator
 - 🎨 Improved the visualization of alloy text and tabular format
-- ⚡️ Switched depricated method in java
+- ⚡️ Switched deprecated method in Java
 
 ## v2.2.2 [2024-12-03]
 ### Changed
