@@ -124,7 +124,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
       setAlloyTabularInstance(alloyInstance["tabularInstance"][0]);
     }
 
-    // Tabular instance
+    // Text instance
     if (alloyInstance && "textInstance" in alloyInstance) {
       setAlloyTextInstance(alloyInstance["textInstance"][0]);
     }
@@ -170,6 +170,26 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
     setActiveTab(tabValue);
   }
 
+  /**
+   * Alloy API returns all the states in a single instance. 
+   * We need to extract the selected state from the instance.
+   */
+  const getAlloyTextInstance = (alloyTextInstance: string, state: number) => {
+    const instanceHeader = alloyTextInstance.split('------State')[0];
+    const states = alloyTextInstance.split('------State').slice(1);
+    const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
+    return `${instanceHeader}${selectedState}`;
+  }
+
+  /**
+   * Alloy API returns all the states in a single instance. 
+   * We need to extract the selected state from the instance.
+   */
+  const getAlloyTabularInstance = (alloyTabularInstance: string, state: number) => {
+    const states = alloyTabularInstance.split('------State').slice(1);
+    const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
+    return selectedState;
+  }
 
   return (
     <div>
@@ -199,14 +219,14 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
             </MDBTabsPane>
             <MDBTabsPane open={activeTab === 'tabular'}>
               <PlainOutput
-                code={alloyTabularInstance}
+                code={getAlloyTabularInstance(alloyTabularInstance, instanceIndexToShow)}
                 height={isFullScreen ? '80vh' : '57vh'}
                 onChange={() => { }} />
             </MDBTabsPane>
 
             <MDBTabsPane open={activeTab === 'text'}>
               <PlainOutput
-                code={alloyTextInstance}
+                code={getAlloyTextInstance(alloyTextInstance, instanceIndexToShow)}
                 height={isFullScreen ? '80vh' : '57vh'}
                 onChange={() => { }} />
             </MDBTabsPane>
