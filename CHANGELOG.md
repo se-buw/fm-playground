@@ -1,5 +1,15 @@
 # Change Log
 
+## v2.3.0 [2024-12-04]
+### Changed
+- ✨ Added alloy evaluator
+- 🎨 Improved the visualization of alloy text and tabular format
+- ⚡️ Switched depricated method in java
+
+## v2.2.2 [2024-12-03]
+### Changed
+- 📌Bump python dependencies
+
 ## v2.2.1 [2024-11-26]
 ### Changed
 ⚡️Set alloy memory usage limit; restart if exceeded
