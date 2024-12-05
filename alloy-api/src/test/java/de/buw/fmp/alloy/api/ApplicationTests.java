@@ -19,74 +19,6 @@ import com.fasterxml.jackson.databind.ObjectReader;
 @SpringBootTest
 class ApplicationTests {
 
-	private class AlloyInstanceControllerLocal extends AlloyInstanceController {
-		@Override
-		public String getCodeByPermalink(String type, String permalink) {
-			switch (permalink) {
-				case "shank-whiff-unify-salon":
-					return "sig A {}";
-				case "long-code":
-					return longCode;
-				case "short-code":
-					return shortCode;
-				case "list-code":
-					return listCode;
-				default:
-					break;
-			}
-			return shortCode;
-		}
-	}
-
-	final String shortCode = "sig A {}";
-	final String longCode = "sig Person {spouse: Person, shaken: set Person}\r\n" + //
-			"one sig Jocelyn, Hilary extends Person {}\r\n" + //
-			"\r\n" + //
-			"fact ShakingProtocol {\r\n" + //
-			"    // nobody shakes own or spouse's hand\r\n" + //
-			"    all p: Person | no (p + p.spouse) & p.shaken\r\n" + //
-			"    // if p shakes q, q shakes p\r\n" + //
-			"    all p, q: Person | p in q.shaken => q in p.shaken\r\n" + //
-			"    }\r\n" + //
-			"\r\n" + //
-			"fact Spouses {\r\n" + //
-			"    all p, q: Person | p!=q => {\r\n" + //
-			"        // if q is p's spouse, p is q's spouse\r\n" + //
-			"        p.spouse = q => q.spouse = p\r\n" + //
-			"        // no spouse sharing\r\n" + //
-			"        p.spouse != q.spouse\r\n" + //
-			"        }\r\n" + //
-			"    all p: Person {\r\n" + //
-			"        // a person is his or her spouse's spouse\r\n" + //
-			"        p.spouse.spouse = p\r\n" + //
-			"        // nobody is his or her own spouse\r\n" + //
-			"        p != p.spouse\r\n" + //
-			"        }\r\n" + //
-			"    }\r\n" + //
-			"\r\n" + //
-			"pred Puzzle {\r\n" + //
-			"    // everyone but Jocelyn has shaken a different number of hands\r\n" + //
-			"    all p,q: Person - Jocelyn | p!=q => #p.shaken != #q.shaken\r\n" + //
-			"    // Hilary's spouse is Jocelyn\r\n" + //
-			"    Hilary.spouse = Jocelyn\r\n" + //
-			"    }\r\n" + //
-			"\r\n" + //
-			"run Puzzle for exactly 1000 Person, 15 int\r\n" + //
-			"";
-	final String listCode = """
-one sig List {
-    header: lone Node 
-} 
-var sig Node {
-    var link: lone Node 
-}
-fact noDanglingNodes {
-    always (Node in List.header.*link)
-}
-
-run {# Node = 4 and after one Node } for 3 but 4 Node
-			""";
-
 	@BeforeEach
 	void setUp() {
 		AlloyInstanceController.instances.clear();
@@ -96,14 +28,11 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 	void contextLoads() {
 		AlloyInstanceController.TIME_OUT = 5;
 
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
-		InstanceRequest request = new InstanceRequest();
-
-		request.setCode(shortCode);
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		List<String> instanceList = new ArrayList<>();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "shank-whiff-unify-salon", 0);
+			result = controller.getInstance(Specs.SHORT_CODE, 0);
 		} catch (Exception e) {
 			fail();
 		}
@@ -128,12 +57,10 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 	@Test
 	void longRunningCodeTest() {
 		AlloyInstanceController.TIME_OUT = 5;
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
-		InstanceRequest request = new InstanceRequest();
-		request.setCode(longCode);
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "long-code", 0);
+			result = controller.getInstance(Specs.LONG_CODE, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -144,13 +71,11 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 	@Test
 	void shortRunningCodeTest() {
 		AlloyInstanceController.TIME_OUT = 5;
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
-		InstanceRequest request = new InstanceRequest();
-		request.setCode(shortCode);
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		long start = System.currentTimeMillis();
 		try {
-			result = controller.getInstance("ALS", "short-code", 0);
+			result = controller.getInstance(Specs.SHORT_CODE, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -163,10 +88,10 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 	void lessThanMaxRunningTest() {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "short-code", 0);
+			result = controller.getInstance(Specs.SHORT_CODE, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -177,10 +102,10 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 	void moreThanMaxRunningTest() {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 10;
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "short-code", 0);
+			result = controller.getInstance(Specs.SHORT_CODE, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -191,10 +116,10 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 	void updateRunningTest() {
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "short-code", 0);
+			result = controller.getInstance(Specs.SHORT_CODE, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -217,10 +142,10 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
 
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
 		try {
-			result = controller.getInstance("ALS", "long-code", 0);
+			result = controller.getInstance(Specs.LONG_CODE, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -235,11 +160,11 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 		AlloyInstanceController.MAX_RUNNING = 10;
 		AlloyInstanceController.running = 0;
 
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		// execute get instance in a thread
 		Thread t = new Thread(() -> {
 			try {
-				controller.getInstance("ALS", "long-code", 0);
+				controller.getInstance(Specs.LONG_CODE, 0);
 			} catch (Exception e) {
 				fail(e);
 			}
@@ -254,9 +179,9 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 
 	@Test
 	void evaluateListTest() throws Exception{
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
-		String resultJson = controller.getInstance("ALS", "list-code", 0);
+		String resultJson = controller.getInstance(Specs.LIST_CODE, 0);
 		String specId = getField(resultJson, "specId");
 		result = controller.eval(specId, "# Node", 0);
 		assertEquals("4", getField(result, "result"));
@@ -270,13 +195,27 @@ run {# Node = 4 and after one Node } for 3 but 4 Node
 
 	@Test
 	void evaluateErrorsTest() throws Exception{
-		AlloyInstanceController controller = new AlloyInstanceControllerLocal();
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";
-		String resultJson = controller.getInstance("ALS", "short-code", 0);
+		String resultJson = controller.getInstance(Specs.SHORT_CODE, 0);
 		String specId = getField(resultJson, "specId");
 		// Node does not exist in this model
 		result = controller.eval(specId, "# Node", 0);
 		assertTrue(getField(result, "error").contains("Syntax error"));
+	}
+
+	@Test
+	void checkListTabularTest() throws Exception{
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
+		String resultJson = controller.getInstance(Specs.LIST_CODE, 0);		
+		assertTrue(getField(resultJson, "tabularInstance").contains("this/"));
+	}
+
+	@Test
+	void checkTrafficTabularTest() throws Exception{
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
+		String resultJson = controller.getInstance(Specs.TRAFFIC_CODE, 0);		
+		assertTrue(getField(resultJson, "tabularInstance").contains("this/"));
 	}
 
 	/**
