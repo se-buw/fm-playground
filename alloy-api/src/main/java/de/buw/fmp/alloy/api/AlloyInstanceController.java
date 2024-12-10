@@ -6,17 +6,21 @@ import org.springframework.web.client.RestTemplate;
 import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.alloy4.Pos;
 import edu.mit.csail.sdg.alloy4.SafeList;
+import edu.mit.csail.sdg.alloy4.XMLNode;
 import edu.mit.csail.sdg.ast.Command;
 import edu.mit.csail.sdg.ast.Expr;
 import edu.mit.csail.sdg.ast.ExprConstant;
+import edu.mit.csail.sdg.ast.ExprVar;
 import edu.mit.csail.sdg.ast.Sig;
 import edu.mit.csail.sdg.parser.CompModule;
 import edu.mit.csail.sdg.parser.CompUtil;
 import edu.mit.csail.sdg.translator.A4Options;
 import edu.mit.csail.sdg.translator.A4Solution;
+import edu.mit.csail.sdg.translator.A4SolutionReader;
 import edu.mit.csail.sdg.translator.TranslateAlloyToKodkod;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.File;
@@ -242,6 +246,15 @@ public class AlloyInstanceController {
     }
 
     
+    /**
+     * Evaluates an Alloy expression on a given specification instance.
+     *
+     * @param specId The ID of the specification instance to evaluate.
+     * @param expr The Alloy expression to evaluate.
+     * @param state The state of the solution to evaluate the expression on (default is 0).
+     * @return A JSON string containing the result of the evaluation or an error message.
+     * @throws IOException If an input or output exception occurs.
+     */
     @CrossOrigin(origins = "*")
     @GetMapping("/alloy/eval")
     public String eval(@RequestParam String specId, @RequestParam String expr, @RequestParam(required = false, defaultValue = "0") int state) throws IOException {
@@ -253,11 +266,11 @@ public class AlloyInstanceController {
             return obj.toString();
         }
 
-        A4Solution instance = storedSolution.getSolution();
         String result = "";
         try {
-            Expr e = CompUtil.parseOneExpression_fromString(storedSolution.getModule(), expr);
-            result = instance.eval(e, state).toString();
+            Expr e = parseExpression(expr, storedSolution);
+            // evaluate expression
+            result = storedSolution.getSolution().eval(e, state).toString();            
         } catch (Exception e) {
             JSONObject obj = new JSONObject();
             obj.put("error", e.toString());
@@ -268,6 +281,37 @@ public class AlloyInstanceController {
         obj.put("result", result);
         obj.put("status", HttpStatus.OK.value());
         return obj.toString();
+    }
+
+    /**
+     * Parses an Alloy expression from a string.
+     * 
+     * This method uses reflection to temporarily extend the globals of the module with the atoms from the stored solution.
+     * 
+     * @param expr
+     * @param storedSolution
+     * @return
+     * @throws NoSuchFieldException
+     * @throws IllegalAccessException
+     */
+    private Expr parseExpression(String expr, StoredSolution storedSolution) throws NoSuchFieldException, IllegalAccessException {
+        A4Solution instance = storedSolution.getSolution();
+        CompModule root = storedSolution.getModule();
+        // get globals from module
+        java.lang.reflect.Field globalsField = CompModule.class.getDeclaredField("globals");
+        globalsField.setAccessible(true);
+        Map<String,Expr> oldGlobals = new LinkedHashMap<>((Map<String, Expr>) globalsField.get(root));
+        // extend globals
+        for (ExprVar a : instance.getAllAtoms()) {
+            root.addGlobal(a.label, a);
+        }
+        for (ExprVar a : instance.getAllSkolems()) {
+            root.addGlobal(a.label, a);
+        }            
+        Expr e = CompUtil.parseOneExpression_fromString(root, expr);
+        // restore globals
+        globalsField.set(root, oldGlobals);
+        return e;
     }
 
     @Scheduled(fixedRate = 30000)
