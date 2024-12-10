@@ -194,6 +194,18 @@ class ApplicationTests {
 	}
 
 	@Test
+	void evaluateAtomTest() throws Exception{
+		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
+		String result = "";
+		String resultJson = controller.getInstance(Specs.LIST_CODE, 0);
+		String specId = getField(resultJson, "specId");
+		result = controller.eval(specId, "List", 0);
+		assertEquals("{List$0}", getField(result, "result"));
+		result = controller.eval(specId, "List$0", 0);
+		assertEquals("{List$0}", getField(result, "result"));
+	}
+	
+	@Test
 	void evaluateErrorsTest() throws Exception{
 		AlloyInstanceControllerLocal controller = new AlloyInstanceControllerLocal();
 		String result = "";

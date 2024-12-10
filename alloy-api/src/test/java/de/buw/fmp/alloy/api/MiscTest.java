@@ -3,12 +3,12 @@ package de.buw.fmp.alloy.api;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
 
 import edu.mit.csail.sdg.alloy4.A4Reporter;
 import edu.mit.csail.sdg.alloy4.XMLNode;
+import edu.mit.csail.sdg.ast.Expr;
 import edu.mit.csail.sdg.parser.CompModule;
 import edu.mit.csail.sdg.parser.CompUtil;
 import edu.mit.csail.sdg.translator.A4Options;
@@ -33,6 +33,7 @@ public class MiscTest {
     A4Solution sol = A4SolutionReader.read(m.getAllReachableSigs(), x);
     System.out.println(sol.toString(0));
     System.out.println(sol.format(0));
-
+    Expr e = CompUtil.parseOneExpression_fromString(m, "Car");
+    System.out.println(sol.eval(e));
   }
 }
