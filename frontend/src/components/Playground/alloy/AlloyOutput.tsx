@@ -129,6 +129,25 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
       setAlloyTextInstance(alloyInstance["textInstance"][0]);
     }
   }, [alloyInstance, alloyTraceIndex, isTemporal]);
+  
+  // FIXME: This might be merged with the above useEffect.
+  // cause: asynchronous updates in React's state when we change the instanceIndexToShow to useState.
+  useEffect(() => {
+    if (alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance) {
+      const alloy = alloyInstance["alloy"];
+      const instances = Array.isArray(alloy["instance"]) ? alloy["instance"] : [alloy["instance"]];
+
+      if (isTemporal && instances.length > 1) {
+        const { traceLength, backloop } = getTraceLengthAndBackloop(instances[0]);
+        const instanceIndexToShow = (alloyTraceIndex < traceLength)
+          ? alloyTraceIndex
+          : backloop + ((alloyTraceIndex - traceLength) % (traceLength - backloop));
+
+        const graphData = getGraphData(instances[instanceIndexToShow]);
+        setAlloyVizGraph(graphData);
+      }
+    }
+  }, [alloyInstance, alloyTraceIndex, isTemporal]);
 
   const handleNextInstance = () => {
     setIsNextInstanceExecuting(true);
@@ -152,14 +171,12 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
   }
 
   const handleForwardTrace = () => {
-    setalloyTraceIndex(alloyTraceIndex + 1);
-  }
+    setalloyTraceIndex((prevIndex) => prevIndex + 1);
+  };
 
   const handleBackwardTrace = () => {
-    if (alloyTraceIndex > 0) {
-      setalloyTraceIndex(alloyTraceIndex - 1);
-    }
-  }
+    setalloyTraceIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+  };
 
   const handleAlloyErrorMessageChange = (value: string) => {
     setAlloyErrorMessage(value);
