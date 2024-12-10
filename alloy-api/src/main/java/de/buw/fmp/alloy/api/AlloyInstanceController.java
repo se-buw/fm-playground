@@ -115,13 +115,6 @@ public class AlloyInstanceController {
         }
 
         String specId = null;
-        if (!instance.satisfiable()) {
-            JSONObject obj = new JSONObject();
-            obj.put("error", "No instance found");
-            obj.put("status", HttpStatus.BAD_REQUEST.value());
-            return obj.toString();
-        }
-
         // generate a unieuq id for the instance
         do {
             specId = Long.toHexString(Double.doubleToLongBits(Math.random()));
@@ -129,22 +122,7 @@ public class AlloyInstanceController {
         // store the instance in the instances map
         instances.put(specId, new StoredSolution(module, instance));
 
-        File tmpFile = File.createTempFile("alloy_instance", ".xml");
-        tmpFile.deleteOnExit();
-        instance.writeXML(tmpFile.getAbsolutePath());
-        // read content of instance.xml as String
-        String instanceContent = Files.readString(Paths.get(tmpFile.getAbsolutePath()));
-        JSONObject xmlJSONObj = XML.toJSONObject(instanceContent);
-        if (specId != null) {
-            xmlJSONObj.append("specId", specId);
-        }
-        String tabularInstance = formatTabularInstance(instance);
-        xmlJSONObj.append("tabularInstance", tabularInstance);
-        String textInstance = instance.toString();
-        xmlJSONObj.append("textInstance", textInstance);
-        String jsonPrettyPrintString = xmlJSONObj.toString(4);
-
-        return jsonPrettyPrintString;
+        return instanceToJson(specId, instance);
     }
 
     /**
@@ -220,23 +198,41 @@ public class AlloyInstanceController {
             obj.put("status", HttpStatus.BAD_REQUEST.value());
             return obj.toString();
         }
+        
+        storedSolution.setSolution(instance);
+
+        return instanceToJson(specId, instance);
+    }
+
+    /**
+     * Convert the instance to a JSON response that contains a JSON encoding, the specId, the tabular instance and the instance as text
+     * 
+     * @param specId
+     * @param instance
+     * @return
+     * @throws IOException
+     */
+    private String instanceToJson(String specId, A4Solution instance) throws IOException {
+
         if (!instance.satisfiable()) {
             JSONObject obj = new JSONObject();
-            obj.put("error", "No more instances");
+            obj.put("error", "No instance found");
             obj.put("status", HttpStatus.BAD_REQUEST.value());
             return obj.toString();
         }
 
-        storedSolution.setSolution(instance);
         File tmpFile = File.createTempFile("alloy_instance", ".xml");
         tmpFile.deleteOnExit();
         instance.writeXML(tmpFile.getAbsolutePath());
         // read content of instance.xml as String
         String instanceContent = Files.readString(Paths.get(tmpFile.getAbsolutePath()));
         JSONObject xmlJSONObj = XML.toJSONObject(instanceContent);
+        
+        // replace instance by a the serialized and then deserialized instance (there is a bug in the tabular instance printing otherwise)
+        instance = A4SolutionReader.read(instance.getAllReachableSigs(), new XMLNode(new File(tmpFile.getAbsolutePath())));
 
         xmlJSONObj.append("specId", specId);
-        String tabularInstance = instance.format();
+        String tabularInstance = formatTabularInstance(instance);
         xmlJSONObj.append("tabularInstance", tabularInstance);
         String textInstance = instance.toString();
         xmlJSONObj.append("textInstance", textInstance);
