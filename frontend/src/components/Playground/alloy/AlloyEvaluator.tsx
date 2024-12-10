@@ -16,9 +16,9 @@ const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state }
     getAlloyEval(specId, expr, state)
       .then((res) => {
         if (res.result) {
-          setCode(code + expr + '<br>&nbsp;&nbsp;' + res.result + '<br>');
+          setCode( expr + '<br>&nbsp;&nbsp;' + res.result + '<br>' + code );
         } else if (res.error) {
-          setCode(code + expr + '<br>&nbsp;&nbsp;<span style="color: red;">' + res.error + '</span><br>');
+          setCode(expr + '<br>&nbsp;&nbsp;<span style="color: red;">' + res.error + '</span><br>' + code);
         }
       });
   }
@@ -29,14 +29,6 @@ const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state }
 
   return (
     <>
-      <div style={{ position: 'relative' }}>
-        <button className="alloy-eval-close-icon" onClick={handleClear} >&times;</button>
-        <PlainOutput
-          code={code}
-          height={height}
-          onChange={() => { }}
-        />
-      </div>
       <MDBInput
         label="Alloy Expressions"
         id="alloyExprForm"
@@ -48,6 +40,15 @@ const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state }
           }
         }}
       />
+      <div style={{ position: 'relative' }}>
+        <button className="alloy-eval-close-icon" onClick={handleClear} >&times;</button>
+        <PlainOutput
+          code={code}
+          height={height}
+          onChange={() => { }}
+        />
+      </div>
+
     </>
 
   );

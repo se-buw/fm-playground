@@ -129,7 +129,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
       setAlloyTextInstance(alloyInstance["textInstance"][0]);
     }
   }, [alloyInstance, alloyTraceIndex, isTemporal]);
-  
+
   // FIXME: This might be merged with the above useEffect.
   // cause: asynchronous updates in React's state when we change the instanceIndexToShow to useState.
   useEffect(() => {
@@ -227,6 +227,14 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
             </MDBTabsItem>
           </MDBTabs>
 
+          {activeTab == 'eval' &&
+            <AlloyEvaluator
+              height={isFullScreen ? '80vh' : '52vh'}
+              specId={alloySpecId}
+              state={instanceIndexToShow}
+            />
+          }
+
           <MDBTabsContent>
             <MDBTabsPane open={activeTab === 'graph'}>
               <AlloyCytoscapeGraph
@@ -248,27 +256,22 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
                 onChange={() => { }} />
             </MDBTabsPane>
 
-            <MDBTabsPane open={activeTab === 'eval'}>
-              <AlloyEvaluator
-                height={isFullScreen ? '80vh' : '57vh'}
-                specId={alloySpecId}
-                state={instanceIndexToShow}
-              />
-            </MDBTabsPane>
+            {/* <MDBTabsPane open={activeTab === 'eval'}>
+
+            </MDBTabsPane> */}
           </MDBTabsContent>
 
-          {activeTab !== 'eval' &&
-            <div>
-              <pre
-                className='plain-alloy-message-box'
-                contentEditable={false}
-                style={{
-                  height: alloyPlainMessage ? 'auto' : '35px',
-                }}
-                dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + (alloyTraceLoop ? ' | ' + alloyTraceLoop : '') : alloyTraceLoop }}
-              />
-            </div>
-          }
+          <div>
+            <pre
+              className='plain-alloy-message-box'
+              contentEditable={false}
+              style={{
+                height: alloyPlainMessage ? 'auto' : '35px',
+              }}
+              dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + (alloyTraceLoop ? ' | ' + alloyTraceLoop : '') : alloyTraceLoop }}
+            />
+          </div>
+
 
           <div
             style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
