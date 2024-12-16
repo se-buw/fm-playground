@@ -153,7 +153,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
     setIsNextInstanceExecuting(true);
     getAlloyNextInstance(alloySpecId)
       .then((data) => {
-        if (data["error"] && data["error"].includes("No more instances")) {
+        if (data["error"] && data["error"].includes("No instance found")) {
           setAlloyInstance(alloyInstance);
           setIsLastInstance(true);
           setalloyTraceIndex(0);
@@ -207,7 +207,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
     const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
     return selectedState;
   }
-
+  
   return (
     <div>
       {isInstance ? (
