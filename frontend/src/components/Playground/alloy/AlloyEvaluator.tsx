@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PlainOutput from '../PlainOutput';
 import { MDBInput } from 'mdb-react-ui-kit';
 import { getAlloyEval } from '../../../api/toolsApi';
@@ -6,25 +6,26 @@ interface AlloyEvaluatorProps {
   height: string;
   specId: string | null;
   state: number;
+  evaluatorOutput: string;
+  setEvaluatorOutput: (evaluatorOutput: string) => void;
 }
 
-const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state }) => {
-  const [code, setCode] = useState('');
+const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state, evaluatorOutput, setEvaluatorOutput }) => {
 
   const handleEvaluate = (expr: string) => {
     if (!expr || !specId) return;
     getAlloyEval(specId, expr, state)
       .then((res) => {
         if (res.result) {
-          setCode( expr + '<br>&nbsp;&nbsp;' + res.result + '<br>' + code );
+          setEvaluatorOutput( expr + '<br>&nbsp;&nbsp;' + res.result + '<br>' + evaluatorOutput );
         } else if (res.error) {
-          setCode(expr + '<br>&nbsp;&nbsp;<span style="color: red;">' + res.error + '</span><br>' + code);
+          setEvaluatorOutput(expr + '<br>&nbsp;&nbsp;<span style="color: red;">' + res.error + '</span><br>' + evaluatorOutput);
         }
       });
   }
 
   const handleClear = () => {
-    setCode('');
+    setEvaluatorOutput('');
   }
 
   return (
@@ -43,7 +44,7 @@ const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state }
       <div style={{ position: 'relative' }}>
         <button className="alloy-eval-close-icon" onClick={handleClear} >&times;</button>
         <PlainOutput
-          code={code}
+          code={evaluatorOutput}
           height={height}
           onChange={() => { }}
         />

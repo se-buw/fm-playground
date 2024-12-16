@@ -49,6 +49,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
   const [activeTab, setActiveTab] = useState('graph');
   const [isNextInstanceExecuting, setIsNextInstanceExecuting] = useState(false);
   const [instanceIndexToShow, setInstanceIndexToShow] = useState(0);
+  const [evaluatorOutput, setEvaluatorOutput] = useState('');
 
   /**
    * Update the Alloy instance in the state when the API response is received
@@ -232,6 +233,8 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
               height={isFullScreen ? '80vh' : '52vh'}
               specId={alloySpecId}
               state={instanceIndexToShow}
+              evaluatorOutput={evaluatorOutput}
+              setEvaluatorOutput={setEvaluatorOutput}
             />
           }
 
