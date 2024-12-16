@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.4.0 [2024-12-16]
+### Changed
+- ✨ Alloy- added support for atoms and skolems when parsing expressions
+- 🐛 Alloy- fixed tabular output
+- 🐛 Alloy- fixed alloy instance is not updating immediately
+- 🐛 Alloy- fixed evaluator cleared up when switching tabs
+
+
 ## v2.3.0 [2024-12-04]
 ### Changed
 - ✨ Added alloy evaluator
