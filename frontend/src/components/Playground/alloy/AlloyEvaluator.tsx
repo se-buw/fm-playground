@@ -43,10 +43,15 @@ const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state, 
       />
       <div style={{ position: 'relative' }}>
         <button className="alloy-eval-close-icon" onClick={handleClear} >&times;</button>
-        <PlainOutput
-          code={evaluatorOutput}
-          height={height}
-          onChange={() => { }}
+        <pre
+          className='plain-output-box'
+          contentEditable={false}
+          style={{
+            borderRadius: '8px',
+            height: height,
+            whiteSpace: 'pre-wrap'
+          }}
+          dangerouslySetInnerHTML={{ __html: evaluatorOutput }}
         />
       </div>
 

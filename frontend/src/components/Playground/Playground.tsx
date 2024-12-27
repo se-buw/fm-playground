@@ -9,11 +9,6 @@ import MessageModal from '../Utils/Modals/MessageModal';
 import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
 import type { LanguageProps } from './Tools';
-import { executeLimboole } from '../../assets/ts/toolExecutor/limbooleExecutor.js';
-import { executeZ3Wasm } from '../../assets/ts/toolExecutor/z3Executor.js';
-import { executeNuxmvTool } from '../../assets/ts/toolExecutor/nuxmvExecutor.js';
-import { executeSpectraTool } from '../../assets/ts/toolExecutor/spectraExecutor.js';
-import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js';
 import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
 import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
@@ -27,11 +22,6 @@ import {
   isFullScreenAtom
 } from '../../atoms';
 import InputArea from './InputArea';
-import { MDBIcon } from 'mdb-react-ui-kit';
-import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
-import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.js';
-import AlloyOutput from './alloy/AlloyOutput.js';
-import PlainOutput from './PlainOutput.js';
 import OutputArea from './OutputArea.js';
 import { toolExecutionMap } from './ToolMaps.js';
 

@@ -1,34 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import '../../assets/style/Playground.css'
+import { useAtom } from 'jotai';
+import { outputAtom } from '@/atoms';
 
-interface PlainOutputProps {
-  code: string;
-  onChange: (code: string) => void;
-  height: string;
-}
 
-const PlainOutput: React.FC<PlainOutputProps> = ({ code, onChange, height }) => {
-  const [internalCode, setInternalCode] = useState(code);
 
-  /**
-   * Sets the output area with the code passed as a prop.
-   * @param {*} code
-   * @param {*} event
-   * @returns
-   */
-  useEffect(() => {
-    setInternalCode(code);
-  }, [code]);
+const PlainOutput = () => {
+  const [code, setCode] = useAtom(outputAtom);
 
-  /**
-   * Handles the change event. Updates the internal code and sends the updated code back to the parent component.
-   * @param {*} event 
-   */
-  const handleChange = (event: React.FormEvent<HTMLPreElement>) => {
-    const newCode = event.currentTarget.textContent || '';
-    setInternalCode(newCode);
-    onChange(newCode); // Send the updated code back to the parent component
-  };
+
 
   return (
     <pre
@@ -37,11 +17,10 @@ const PlainOutput: React.FC<PlainOutputProps> = ({ code, onChange, height }) => 
       contentEditable={false}
       style={{
         borderRadius: '8px',
-        height: height,
+        height: '100%',
         whiteSpace: 'pre-wrap'
       }}
-      onInput={handleChange}
-      dangerouslySetInnerHTML={{ __html: internalCode }}
+      dangerouslySetInnerHTML={{ __html: code }}
     />
   );
 };

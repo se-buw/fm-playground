@@ -1,19 +1,22 @@
 import { MDBIcon } from 'mdb-react-ui-kit'
 import React, { useState } from 'react'
-import { 
-  AiOutlineFullscreen, 
-  AiOutlineFullscreenExit 
+import {
+  AiOutlineFullscreen,
+  AiOutlineFullscreenExit
 } from 'react-icons/ai'
 import { useAtom } from 'jotai'
 import { isFullScreenAtom, languageAtom, outputAtom } from '@/atoms'
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice'
 import PlainOutput from './PlainOutput'
+import { toolOutputMap } from './ToolMaps'
 
 const OutputArea = () => {
   const [output, setOutput] = useAtom(outputAtom)
   const [language] = useAtom(languageAtom)
   const [isFullScreen, setIsFullScreen] = useAtom(isFullScreenAtom)
-  const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); 
+  const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false);
+
+  const OutputComponent = toolOutputMap[language.short];
 
   const handleOutputChange = (newCode: string) => {
     setOutput(newCode);
@@ -58,14 +61,13 @@ const OutputArea = () => {
           )}
         </div>
       )}
-      <div className='col-md-12'>
-        
-          <PlainOutput
-            code={output}
-            height={isFullScreen ? '80vh' : '60vh'}
-            onChange={handleOutputChange} />
-  
 
+      <div className='col-md-12'>
+        {OutputComponent ? (
+          <OutputComponent />
+        ) : (
+          <div>No output component available for {language.short}</div>
+        )}
       </div>
     </div>
   )

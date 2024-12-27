@@ -1,11 +1,15 @@
 import LimbooleCheckOptions from './limboole/limbooleCheckOptions'
 import SpectraCliOptions from './spectra/SpectraCliOptions'
 import AlloyCmdOptions from './alloy/AlloyCmdOptions'
+
 import { executeLimboole } from '@/assets/ts/toolExecutor/limbooleExecutor';
 import { executeZ3Wasm } from '@/assets/ts/toolExecutor/z3Executor';
 import { executeNuxmvTool } from '@/assets/ts/toolExecutor/nuxmvExecutor';
 import { executeAlloyTool } from '@/assets/ts/toolExecutor/alloyExecutor';
 import { executeSpectraTool } from '@/assets/ts/toolExecutor/spectraExecutor';
+
+import PlainOutput from './PlainOutput';
+import AlloyOutput from './alloy/AlloyOutput';
 
 export const additionalInputAreaUiMap: Record<string, React.FC<any>> = {
   SAT: LimbooleCheckOptions,
@@ -19,4 +23,12 @@ export const toolExecutionMap: Record<string, () => void> = {
   XMV: executeNuxmvTool,
   ALS: executeAlloyTool,
   SPECTRA: executeSpectraTool
+};
+
+export const toolOutputMap: Record<string, React.FC<any>> = {
+  SAT: PlainOutput,
+  SMT: PlainOutput,
+  XMV: PlainOutput,
+  ALS: AlloyOutput,
+  SPECTRA: PlainOutput
 };

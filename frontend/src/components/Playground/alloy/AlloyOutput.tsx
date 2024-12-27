@@ -26,15 +26,12 @@ import {
 import '../../../assets/style/AlloyOutput.css';
 import AlloyEvaluator from './AlloyEvaluator';
 import { useAtom } from 'jotai';
-import { lineToHighlightAtom, isFullScreenAtom } from '../../../atoms';
+import { lineToHighlightAtom, isFullScreenAtom, alloyInstanceAtom } from '../../../atoms';
 
-interface AlloyOutputProps {
-  alloyInstance: any;
-  setAlloyInstance: (instance: any) => void; // TODO: Check the type of instance
-}
 
-const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstance }) => {
+const AlloyOutput = () => {
   const [, setLineToHighlight] = useAtom(lineToHighlightAtom);
+  const [alloyInstance, setAlloyInstance] = useAtom(alloyInstanceAtom)
   const [isFullScreen] = useAtom(isFullScreenAtom);
   const [alloyTraceIndex, setalloyTraceIndex] = useState(0);
   const [alloySpecId, setAlloySpecId] = useState(null);
@@ -58,7 +55,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
   */
   useEffect(() => {
     setAlloyInstance(alloyInstance);
-    setAlloySpecId(alloyInstance.specId);
+    setAlloySpecId((alloyInstance as any).specId);
     setalloyTraceIndex(0);
     setIsLastInstance(false);
   }, [alloyInstance]);
@@ -69,8 +66,8 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
    */
   useEffect(() => {
     if (alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance) { // if there is an instance
-      const alloy = alloyInstance["alloy"];
-      const specId = alloyInstance["specId"][0] || alloyInstance["specId"];
+      const alloy = (alloyInstance as { [key: string]: any })["alloy"];
+      const specId = (alloyInstance as any)["specId"][0] || (alloyInstance as any)["specId"];
       setAlloySpecId(specId);
       setIsInstance(true);
       const instances = Array.isArray(alloy["instance"]) ? alloy["instance"] : [alloy["instance"]];
@@ -104,10 +101,10 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
     }
     else if (alloyInstance && "error" in alloyInstance) { // instance not found and error message is present
       setAlloyVizGraph([]);
-      if (alloyInstance["error"].includes("No instance found")) { // error for no instance found for the given command
+      if (typeof alloyInstance === 'object' && alloyInstance !== null && 'error' in alloyInstance && (alloyInstance as any)["error"].includes("No instance found")) { // error for no instance found for the given command
         setIsInstance(false);
         setAlloyErrorMessage("No instance found");
-      } else if (alloyInstance["error"].includes("No more instances")) { // when we reach the last instance, keep the last instance in the graph and show the message
+      } else if (typeof alloyInstance === 'object' && alloyInstance !== null && 'error' in alloyInstance && (alloyInstance as any)["error"].includes("No more instances")) { // when we reach the last instance, keep the last instance in the graph and show the message
         setIsInstance(true);
         setAlloyVizGraph(lastInstance);
         setAlloyPlainMessage("No more instances");
@@ -115,21 +112,22 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
       else if (alloyInstance["error"]) { // other errors like syntax error, type error etc.
         setIsInstance(false);
         setAlloyErrorMessage(parseAlloyErrorMessage(alloyInstance["error"]));
-        setLineToHighlight(getLineToHighlight(alloyInstance["error"], 'alloy') || []);
+        const errorMessage = typeof alloyInstance["error"] === 'string' ? alloyInstance["error"] : '';
+        setLineToHighlight(getLineToHighlight(errorMessage, 'alloy') || []);
       } else { // unknown error
         setIsInstance(false);
-        setAlloyPlainMessage(alloyInstance["error"]);
+        setAlloyPlainMessage(alloyInstance["error"] as string);
       }
     }
 
     // Tabular instance
-    if (alloyInstance && "tabularInstance" in alloyInstance) {
-      setAlloyTabularInstance(alloyInstance["tabularInstance"][0]);
+    if (alloyInstance && typeof alloyInstance === 'object' && "tabularInstance" in alloyInstance) {
+      setAlloyTabularInstance((alloyInstance as any)["tabularInstance"][0]);
     }
 
     // Text instance
     if (alloyInstance && "textInstance" in alloyInstance) {
-      setAlloyTextInstance(alloyInstance["textInstance"][0]);
+      setAlloyTextInstance((alloyInstance as any)["textInstance"][0]);
     }
   }, [alloyInstance, alloyTraceIndex, isTemporal]);
 
@@ -137,7 +135,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
   // cause: asynchronous updates in React's state when we change the instanceIndexToShow to useState.
   useEffect(() => {
     if (alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance) {
-      const alloy = alloyInstance["alloy"];
+      const alloy = (alloyInstance as { [key: string]: any })["alloy"];
       const instances = Array.isArray(alloy["instance"]) ? alloy["instance"] : [alloy["instance"]];
 
       if (isTemporal && instances.length > 1) {
@@ -210,7 +208,7 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
     const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
     return selectedState;
   }
-  
+
   return (
     <div>
       {isInstance ? (
@@ -248,17 +246,28 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
               />
             </MDBTabsPane>
             <MDBTabsPane open={activeTab === 'tabular'}>
-              <PlainOutput
-                code={getAlloyTabularInstance(alloyTabularInstance, instanceIndexToShow)}
-                height={isFullScreen ? '80vh' : '57vh'}
-                onChange={() => { }} />
+              <pre
+                className='plain-alloy-message-box'
+                contentEditable={false}
+                style={{
+                  borderRadius: '8px',
+                  height: isFullScreen ? '80vh' : '57vh',
+                  whiteSpace: 'pre-wrap'
+                }}
+                dangerouslySetInnerHTML={{ __html: getAlloyTabularInstance(alloyTabularInstance, instanceIndexToShow) }}
+              />
             </MDBTabsPane>
-
             <MDBTabsPane open={activeTab === 'text'}>
-              <PlainOutput
-                code={getAlloyTextInstance(alloyTextInstance, instanceIndexToShow)}
-                height={isFullScreen ? '80vh' : '57vh'}
-                onChange={() => { }} />
+              <pre
+                className='plain-alloy-message-box'
+                contentEditable={false}
+                style={{
+                  borderRadius: '8px',
+                  height: isFullScreen ? '80vh' : '57vh',
+                  whiteSpace: 'pre-wrap'
+                }}
+                dangerouslySetInnerHTML={{ __html: getAlloyTextInstance(alloyTextInstance, instanceIndexToShow) }}
+              />
             </MDBTabsPane>
 
             {/* <MDBTabsPane open={activeTab === 'eval'}>
@@ -320,10 +329,16 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
           </div>
         </div>
       ) : (
-        <PlainOutput
-          code={alloyErrorMessage}
-          height={isFullScreen ? '80vh' : '60vh'}
-          onChange={handleAlloyErrorMessageChange} />
+        <pre
+          className='plain-output-box'
+          contentEditable={false}
+          style={{
+            borderRadius: '8px',
+            height: isFullScreen ? '80vh' : '57vh',
+            whiteSpace: 'pre-wrap'
+          }}
+          dangerouslySetInnerHTML={{ __html: alloyErrorMessage }}
+        />
       )
       }
     </div>
