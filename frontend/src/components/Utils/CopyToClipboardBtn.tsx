@@ -3,19 +3,17 @@ import { Snackbar } from '@mui/material'
 import { useState } from 'react'
 import { FaShareNodes } from "react-icons/fa6";
 import '../../assets/style/Playground.css';
+import { useAtom } from 'jotai';
+import { permalinkAtom } from '../../atoms';
 
 
-interface CoopyToClipboardBtnProps {
-  permalink: {
-    check: string;
-    permalink: string;
-  }
-}
 
-const CopyToClipboardBtn: React.FC<CoopyToClipboardBtnProps> = ({ permalink }) => {
+
+const CopyToClipboardBtn = () => {
   const [open, setOpen] = useState(false);
   const [snackbarPosition, setSnackbarPosition] = useState<{ vertical: 'top' | 'bottom'; horizontal: 'left' | 'center' | 'right' }>({ vertical: 'top', horizontal: 'center' });
   const [snackbarMessage, setSnackbarMessage] = useState('Copied to clipboard');
+  const [permalink] = useAtom(permalinkAtom);
 
   /**
    * @function handleCopyClick

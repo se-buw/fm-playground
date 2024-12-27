@@ -1,8 +1,7 @@
 import { getAlloyInstance } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
-import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom, permalinkAtom } from "../../../atoms";
 
 
 interface ExecuteAlloyProps {
@@ -10,8 +9,6 @@ interface ExecuteAlloyProps {
   showErrorModal: (value: string) => void;
   alloySelectedCmd: number;
   setAlloyInstance: (value: any) => void;
-  permalink: Permalink;
-  setPermalink: (value: Permalink) => void;
 }
 
 export const executeAlloyTool = async (
@@ -19,15 +16,14 @@ export const executeAlloyTool = async (
     setAlloyInstance,
     showErrorModal,
     alloySelectedCmd,
-    permalink,
-    setPermalink
   }: ExecuteAlloyProps) => {
     
   const editorValue = jotaiStore.get(editorValueAtom);
   const language = jotaiStore.get(languageAtom);
+  const permalink = jotaiStore.get(permalinkAtom);
   const metadata = { 'cmd': alloySelectedCmd + 1 }
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
-  if (response) { setPermalink(response.data); }
+  if (response) { jotaiStore.set(permalinkAtom, response.data) }
   else {
     showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
     setIsExecuting(false);

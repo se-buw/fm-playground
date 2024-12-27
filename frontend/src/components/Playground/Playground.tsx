@@ -33,7 +33,7 @@ import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js'
 import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
 import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
-import { editorValueAtom, languageAtom } from '../../atoms';
+import { editorValueAtom, languageAtom, permalinkAtom } from '../../atoms';
 
 interface PlaygroundProps {
   editorTheme: string;
@@ -50,7 +50,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const outputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the output area
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const [language, setLanguage] = useAtom(languageAtom);
-  const [permalink, setPermalink] = useState<{ check: string | null, permalink: string | null }>({ check: null, permalink: null }); // contains `check` and `permalink` parameters
+  const [permalink, setPermalink] = useAtom(permalinkAtom);
   const [output, setOutput] = useState('') // contains the output of the tool
   const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
@@ -134,19 +134,19 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
         case 0:
         case 1:
         case 2:
-          executeLimboole({ limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink, enableLsp })
+          executeLimboole({ limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, enableLsp })
           break;
         case 3:
-          executeZ3Wasm({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink, enableLsp })
+          executeZ3Wasm({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, enableLsp })
           break;
         case 4:
-          executeNuxmvTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
+          executeNuxmvTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal})
           break;
         case 5:
-          executeAlloyTool({ setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd, permalink, setPermalink })
+          executeAlloyTool({ setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd})
           break;
         case 6:
-          executeSpectraTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink })
+          executeSpectraTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption })
           break;
         default:
           setIsExecuting(false);
@@ -321,7 +321,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
                       <MDBIcon size='lg' className='playground-icon'
                         data-tooltip-id="playground-tooltip"
                         data-tooltip-content="Copy Permalink">
-                        <CopyToClipboardBtn permalink={{ check: permalink.check, permalink: permalink.permalink }} />
+                        <CopyToClipboardBtn />
                       </MDBIcon>
                     }
                     <MDBIcon size='lg' className='playground-icon' onClick={() => { toggleFullScreen('input') }}>

@@ -1,17 +1,14 @@
 import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeNuxmv } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
-import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom, permalinkAtom } from "../../../atoms";
 
 interface ExecuteNuxmvProps {
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
   setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
-  permalink: Permalink;
-  setPermalink: (value: Permalink) => void;
 }
 
 export const executeNuxmvTool = async (
@@ -19,13 +16,12 @@ export const executeNuxmvTool = async (
     setIsExecuting,
     setOutput,
     showErrorModal,
-    permalink,
-    setPermalink
   }: ExecuteNuxmvProps) => {
   const editorValue = jotaiStore.get(editorValueAtom);
   const language = jotaiStore.get(languageAtom);
+  const permalink = jotaiStore.get(permalinkAtom);
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
-  if (response) { setPermalink(response.data); }
+  if (response) { jotaiStore.set(permalinkAtom, response.data); }
   else {
     showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
     setIsExecuting(false);

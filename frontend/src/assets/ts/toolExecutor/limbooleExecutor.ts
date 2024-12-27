@@ -3,15 +3,13 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig, { ToolDropdown } from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom, permalinkAtom } from "../../../atoms";
 
 interface ExecuteLimbooleProps {
   limbooleCheckOption: ToolDropdown;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
   showErrorModal: (value: string) => void;
-  permalink: Permalink;
-  setPermalink: (value: Permalink) => void;
   enableLsp?: boolean;
 }
 
@@ -20,16 +18,15 @@ export const executeLimboole = async (
     setLineToHighlight,
     setIsExecuting,
     showErrorModal,
-    permalink,
-    setPermalink,
     enableLsp
   }: ExecuteLimbooleProps) => {
 
   const editorValue = jotaiStore.get(editorValueAtom);
   const language = jotaiStore.get(languageAtom);
+  const permalink: Permalink = jotaiStore.get(permalinkAtom);
   const metadata = { 'check': limbooleCheckOption.label, 'ls': enableLsp };
   const response = await saveCode(editorValue, language.short, permalink.permalink ?? null, metadata);
-  if (response) { setPermalink(response.data); }
+  if (response) {jotaiStore.set(permalinkAtom, response.data);}
   else {
     showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
     setIsExecuting(false);

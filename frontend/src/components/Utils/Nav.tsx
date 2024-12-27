@@ -125,7 +125,10 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
    */
   const handleDrawerItemClick = (check: string, permalink: string, code: string) => {
     setEditorValue(code);
-    setLanguage(Options.find(option => option.short === check));
+    const selectedOption = Options.find(option => option.short === check);
+    if (selectedOption) {
+      setLanguage(selectedOption);
+    }
     window.history.pushState(null, '', `/?check=${check}&p=${permalink}`);
     // Clean the output area when a new item is loaded from the history. 
     // FIXME: Better approach would be to handle this using useState hook in the Output component.

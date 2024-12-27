@@ -34,7 +34,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
    * Sets the language when the language prop changes.
   */
   useEffect(() => {
-    setLanguage(language.id);
+    setLanguage(language);
   }, [language.id]);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
       <Editor
         height={props.height}
         width="100%"
-        language={language}
+        language={language.id}
         defaultValue=""
         value={editorValue}
         theme={props.editorTheme}
