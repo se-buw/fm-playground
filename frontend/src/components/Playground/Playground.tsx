@@ -39,7 +39,8 @@ import {
   permalinkAtom,
   isExecutingAtom,
   lineToHighlightAtom,
-  outputAtom
+  outputAtom,
+  isFullScreenAtom
 } from '../../atoms';
 
 interface PlaygroundProps {
@@ -60,7 +61,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const [permalink, setPermalink] = useAtom(permalinkAtom);
   const [output, setOutput] = useAtom(outputAtom); // contains the output from the tool execution.
   const [isExecuting, setIsExecuting] = useAtom(isExecutingAtom); // contains the state of the tool execution.
-  const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
+  const [isFullScreen, setIsFullScreen] = useAtom(isFullScreenAtom); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
@@ -431,8 +432,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
                 <AlloyOutput
                   alloyInstance={alloyInstance}
                   setAlloyInstance={setAlloyInstance}
-                  // height={isFullScreen ? '80vh' : '60vh'}
-                  isFullScreen={isFullScreen}
                 />
               ) : (
                 <PlainOutput
