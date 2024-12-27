@@ -7,13 +7,11 @@ import '../../assets/style/Playground.css'
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import type { LanguageProps } from './Tools';
 import fmpConfig from '../../../fmp.config';
-import { editorValueAtom } from '../../atoms.js';
 import { useAtom } from 'jotai';
+import { editorValueAtom, languageAtom } from '../../atoms.js';
 
 type LspEditorProps = {
   height: string;
-  language: LanguageProps;
-  setLanguage?: (value: string) => void;
   lineToHighlight?: number;
   setLineToHighlight?: (value: number) => void;
   editorTheme?: string;
@@ -23,6 +21,7 @@ const wrapper = new MonacoEditorLanguageClientWrapper();
 
 const LspEditor: React.FC<LspEditorProps> = (props) => {
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
+  const [language] = useAtom(languageAtom);
   const editorRef = useRef<any>(null);
   const prevLanguageRef = useRef<LanguageProps | null>(null);
 
@@ -41,7 +40,7 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
       const langiumGlobalConfig = await createLangiumGlobalConfig();
       await wrapper.initAndStart(langiumGlobalConfig, document.getElementById('monaco-editor-root'));
 
-      const currentExtension = getExtensionById(props.language?.id ?? '');
+      const currentExtension = getExtensionById(language?.id ?? '');
       const uri = vscode.Uri.parse(`/workspace/example.${currentExtension}`);
       const modelRef = await createModelReference(uri, editorValue);
       wrapper.updateEditorModels({
@@ -76,7 +75,7 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
 
   useEffect(() => {
     editorRef.current = wrapper.getEditor();
-    if (editorRef.current && props.language?.id === 'limboole') {
+    if (editorRef.current && language?.id === 'limboole') {
 
       const code = localStorage.getItem('editorValue');
       if (code) {
@@ -85,8 +84,8 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
         editorRef.current.setValue(editorValue);
       }
     }
-    prevLanguageRef.current = props.language ?? null;
-  }, [props.language]);
+    prevLanguageRef.current = language ?? null;
+  }, [language]);
 
   const handleCodeChange = (value: string) => {
     setEditorValue(value);
@@ -108,10 +107,10 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
     wrapper.updateCodeResources({
       main: {
         text: editorValue,
-        fileExt: getExtensionById(props.language.id) ?? ''
+        fileExt: getExtensionById(language.id) ?? ''
       }
     });
-  }, [props.language]);
+  }, [language]);
 
   return (
     <div className="custom-code-editor">

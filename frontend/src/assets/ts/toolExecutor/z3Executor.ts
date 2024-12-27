@@ -1,13 +1,11 @@
 import runZ3WASM from "../runZ3WASM";
-import { LanguageProps } from "../../../components/Playground/Tools";
 import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeZ3 } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
 interface ExecuteZ3Props {
-  language: LanguageProps;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
   setOutput: (value: string) => void;
@@ -18,8 +16,7 @@ interface ExecuteZ3Props {
 }
 
 export const executeZ3Wasm = async (
-  { language,
-    setLineToHighlight,
+  { setLineToHighlight,
     setIsExecuting,
     setOutput,
     showErrorModal,
@@ -28,6 +25,7 @@ export const executeZ3Wasm = async (
     enableLsp
   }: ExecuteZ3Props) => {
   const editorValue = jotaiStore.get(editorValueAtom);
+  const language = jotaiStore.get(languageAtom);
   let response: any = null;
   const metadata = { 'ls': enableLsp };
   try {

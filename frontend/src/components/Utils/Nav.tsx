@@ -26,17 +26,17 @@ import SessionExpiredModal from './Modals/SessionExpiredModal'
 import '../../assets/style/Nav.css';
 import Toggle from './Toggle';
 import { useAtom } from 'jotai';
-import { editorValueAtom } from '../../atoms';
+import { editorValueAtom, languageAtom } from '../../atoms';
 
 
 interface NavbarProps {
-  setLanguage: (language: any) => void; // Replace 'any' with the appropriate type if known
   isDarkTheme: boolean;
   setIsDarkTheme: (value: boolean) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({  setLanguage, isDarkTheme, setIsDarkTheme }) => {
+const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
   const [, setEditorValue] = useAtom(editorValueAtom);
+  const [, setLanguage] = useAtom(languageAtom);
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
   const authContext = useContext(AuthContext);
   const isLoggedIn = authContext?.isLoggedIn ?? false;

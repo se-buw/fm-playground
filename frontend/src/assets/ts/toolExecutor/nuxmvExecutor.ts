@@ -1,13 +1,11 @@
-import { LanguageProps } from "../../../components/Playground/Tools";
 import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeNuxmv } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
 
 interface ExecuteNuxmvProps {
-  language: LanguageProps;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
   setOutput: (value: string) => void;
@@ -17,8 +15,7 @@ interface ExecuteNuxmvProps {
 }
 
 export const executeNuxmvTool = async (
-  { language,
-    setLineToHighlight,
+  { setLineToHighlight,
     setIsExecuting,
     setOutput,
     showErrorModal,
@@ -26,6 +23,7 @@ export const executeNuxmvTool = async (
     setPermalink
   }: ExecuteNuxmvProps) => {
   const editorValue = jotaiStore.get(editorValueAtom);
+  const language = jotaiStore.get(languageAtom);
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, null);
   if (response) { setPermalink(response.data); }
   else {

@@ -1,13 +1,11 @@
 import { getAlloyInstance } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
-import { LanguageProps } from "../../../components/Playground/Tools";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
 
 
 interface ExecuteAlloyProps {
-  language: LanguageProps;
   setIsExecuting: (value: boolean) => void;
   showErrorModal: (value: string) => void;
   alloySelectedCmd: number;
@@ -17,8 +15,7 @@ interface ExecuteAlloyProps {
 }
 
 export const executeAlloyTool = async (
-  { language,
-    setIsExecuting,
+  { setIsExecuting,
     setAlloyInstance,
     showErrorModal,
     alloySelectedCmd,
@@ -27,6 +24,7 @@ export const executeAlloyTool = async (
   }: ExecuteAlloyProps) => {
     
   const editorValue = jotaiStore.get(editorValueAtom);
+  const language = jotaiStore.get(languageAtom);
   const metadata = { 'cmd': alloySelectedCmd + 1 }
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
   if (response) { setPermalink(response.data); }

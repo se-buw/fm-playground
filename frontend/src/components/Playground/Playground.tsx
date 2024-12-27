@@ -33,11 +33,9 @@ import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js'
 import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
 import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
-import { editorValueAtom } from '../../atoms';
+import { editorValueAtom, languageAtom } from '../../atoms';
 
 interface PlaygroundProps {
-  language: LanguageProps;
-  setLanguage: (language: LanguageProps) => void;
   editorTheme: string;
 }
 
@@ -46,11 +44,12 @@ interface AlloyCmdOption {
   label: string;
 }
 
-const Playground: React.FC<PlaygroundProps> = ({ language, setLanguage, editorTheme }) => {
+const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef<HTMLDivElement>(null);  // contains the reference to the editor area
   const outputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the output area
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
+  const [language, setLanguage] = useAtom(languageAtom);
   const [permalink, setPermalink] = useState<{ check: string | null, permalink: string | null }>({ check: null, permalink: null }); // contains `check` and `permalink` parameters
   const [output, setOutput] = useState('') // contains the output of the tool
   const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
@@ -135,19 +134,19 @@ const Playground: React.FC<PlaygroundProps> = ({ language, setLanguage, editorTh
         case 0:
         case 1:
         case 2:
-          executeLimboole({  language, limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink, enableLsp })
+          executeLimboole({ limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink, enableLsp })
           break;
         case 3:
-          executeZ3Wasm({ language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink, enableLsp })
+          executeZ3Wasm({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink, enableLsp })
           break;
         case 4:
-          executeNuxmvTool({ language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
+          executeNuxmvTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
           break;
         case 5:
-          executeAlloyTool({ language, setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd, permalink, setPermalink })
+          executeAlloyTool({ setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd, permalink, setPermalink })
           break;
         case 6:
-          executeSpectraTool({ language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink })
+          executeSpectraTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink })
           break;
         default:
           setIsExecuting(false);
@@ -345,14 +344,11 @@ const Playground: React.FC<PlaygroundProps> = ({ language, setLanguage, editorTh
             {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ?
               <LspEditor
                 height={isFullScreen ? '80vh' : '60vh'}
-                language={language}
                 editorTheme={editorTheme}
               />
               :
               <Editor
                 height={isFullScreen ? '80vh' : '60vh'}
-                language={language}
-                setLanguage={setLanguage}
                 lineToHighlight={lineToHighlight}
                 setLineToHighlight={handleLineHighlight}
                 editorTheme={editorTheme}

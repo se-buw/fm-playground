@@ -7,8 +7,6 @@ import Playground from './components/Playground/Playground'
 import Login from './components/Authentication/Login'
 import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
 import Missing from './components/Utils/Missing'
-import Options from './assets/config/AvailableTools'
-import { LanguageProps } from './components/Playground/Tools'
 import Feedback from './components/Utils/Feedback';
 import './assets/style/index.css'
 import '../src/assets/style/App.css'
@@ -17,7 +15,6 @@ import { Provider as JotaiProvider } from 'jotai'
 import { jotaiStore } from './atoms'
 
 const App = () => {
-  const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language') || 'null') || Options[1]);
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const storedTheme = localStorage.getItem('isDarkTheme');
     return storedTheme === 'true';
@@ -43,10 +40,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem('language', JSON.stringify(language));
-  }, [language]);
-
-  useEffect(() => {
     localStorage.setItem('isDarkTheme', isDarkTheme ? 'true' : 'false');
     const theme = isDarkTheme ? 'dark' : 'light';
     if (theme === 'dark') {
@@ -65,7 +58,6 @@ const App = () => {
       <JotaiProvider store={jotaiStore}>
         <div className='App' data-theme={isDarkTheme ? 'dark' : 'light'}>
           <Nav
-            setLanguage={setLanguage}
             isDarkTheme={isDarkTheme}
             setIsDarkTheme={setIsDarkTheme}
           />
@@ -74,8 +66,6 @@ const App = () => {
               <Route element={<ProtectedRoutes />} >
               </Route>
               <Route path="/" element={<Playground
-                language={language}
-                setLanguage={setLanguage}
                 editorTheme={editorTheme}
               />} />
               <Route path="/login" element={<Login />} />

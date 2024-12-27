@@ -1,6 +1,7 @@
 import { atom } from "jotai"
 import { atomWithStorage } from 'jotai/utils'
 import { createStore } from "jotai";
+import Options from "./assets/config/AvailableTools";
 
 export const jotaiStore = createStore();
 
@@ -18,5 +19,8 @@ const rawStringStorage = {
 }
 
 export const editorValueAtom = atomWithStorage("editorValue", "", rawStringStorage)
+export const languageAtom = atomWithStorage("language", JSON.parse(localStorage.getItem('language') || 'null') || Options[0])
+
 
 jotaiStore.sub(editorValueAtom, () => {})
+jotaiStore.sub(languageAtom, () => {})

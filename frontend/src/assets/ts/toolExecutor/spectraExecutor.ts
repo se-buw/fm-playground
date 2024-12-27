@@ -1,14 +1,12 @@
-import { LanguageProps } from "../../../components/Playground/Tools";
 import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeSpectra } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
 
 
 interface ExecuteSpectraProps {
-  language: LanguageProps;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
   setOutput: (value: string) => void;
@@ -19,8 +17,7 @@ interface ExecuteSpectraProps {
 }
 
 export const executeSpectraTool = async (
-  { language,
-    setLineToHighlight,
+  { setLineToHighlight,
     setIsExecuting,
     setOutput,
     showErrorModal,
@@ -29,6 +26,7 @@ export const executeSpectraTool = async (
     setPermalink
   }: ExecuteSpectraProps) => {
   const editorValue = jotaiStore.get(editorValueAtom);
+  const language = jotaiStore.get(languageAtom);
   const metadata = { 'cli_option': spectraCliOption }
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
   if (response) { setPermalink(response.data); }

@@ -7,14 +7,11 @@ import { alloyConf, alloyLang } from '../../assets/languages/alloy'
 import { spectraConf, spectraLang } from '../../assets/languages/spectra';
 import '../../assets/style/Playground.css'
 import * as monacoEditor from 'monaco-editor';
-import type { LanguageProps } from './Tools';
 import { useAtom } from 'jotai';
-import { editorValueAtom } from '../../atoms';
+import { editorValueAtom, languageAtom } from '../../atoms';
 
 interface BasicCodeEditorProps {
   height: string;
-  language: LanguageProps
-  setLanguage: (language: LanguageProps) => void;
   lineToHighlight: number[];
   setLineToHighlight: (line: number[]) => void;
   editorTheme: string;
@@ -23,7 +20,7 @@ interface BasicCodeEditorProps {
 const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps) => {
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null); // editor reference
-  const [language, setLanguage] = useState(props.language.id);
+  const [language, setLanguage] = useAtom(languageAtom);
   const [decorationIds, setDecorationIds] = useState<string[]>([]);
 
   /**
@@ -37,8 +34,8 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
    * Sets the language when the language prop changes.
   */
   useEffect(() => {
-    setLanguage(props.language.id);
-  }, [props.language.id]);
+    setLanguage(language.id);
+  }, [language.id]);
 
   useEffect(() => {
     if (editorRef.current) {

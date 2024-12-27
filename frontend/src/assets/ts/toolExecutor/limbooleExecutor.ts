@@ -1,13 +1,11 @@
 import run_limboole from "../../js/limboole";
-import { LanguageProps } from "../../../components/Playground/Tools";
 import { getLineToHighlight } from "../lineHighlightingUtil";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig, { ToolDropdown } from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore } from "../../../atoms";
+import { editorValueAtom, jotaiStore, languageAtom } from "../../../atoms";
 
 interface ExecuteLimbooleProps {
-  language: LanguageProps;
   limbooleCheckOption: ToolDropdown;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
@@ -18,8 +16,7 @@ interface ExecuteLimbooleProps {
 }
 
 export const executeLimboole = async (
-  { language,
-    limbooleCheckOption,
+  { limbooleCheckOption,
     setLineToHighlight,
     setIsExecuting,
     showErrorModal,
@@ -29,6 +26,7 @@ export const executeLimboole = async (
   }: ExecuteLimbooleProps) => {
 
   const editorValue = jotaiStore.get(editorValueAtom);
+  const language = jotaiStore.get(languageAtom);
   const metadata = { 'check': limbooleCheckOption.label, 'ls': enableLsp };
   const response = await saveCode(editorValue, language.short, permalink.permalink ?? null, metadata);
   if (response) { setPermalink(response.data); }
