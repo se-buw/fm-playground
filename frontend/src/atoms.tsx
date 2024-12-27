@@ -23,6 +23,7 @@ export const languageAtom = atomWithStorage("language", Options[0]);
 export const permalinkAtom = atom<{ check: string | null, permalink: string | null }>({ check: null, permalink: null });
 export const isExecutingAtom = atom(false);
 export const lineToHighlightAtom = atom<number[]>([])
+export const outputAtom = atom<string>("")
 
 jotaiStore.sub(editorValueAtom, () => {})
 jotaiStore.sub(languageAtom, () => {})

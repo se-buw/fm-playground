@@ -8,19 +8,18 @@ import {
   languageAtom, 
   permalinkAtom,
   isExecutingAtom,
-  lineToHighlightAtom
+  lineToHighlightAtom,
+  outputAtom
 } from "../../../atoms";
 
 
 interface ExecuteSpectraProps {
-  setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
   spectraCliOption: string;
 }
 
 export const executeSpectraTool = async (
-  { setOutput,
-    showErrorModal,
+  { showErrorModal,
     spectraCliOption,
   }: ExecuteSpectraProps) => {
   const editorValue = jotaiStore.get(editorValueAtom);
@@ -36,7 +35,7 @@ export const executeSpectraTool = async (
   try {
     const res = await executeSpectra(response?.data, spectraCliOption);
     jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(res, language.id) || []));
-    setOutput(res);
+    jotaiStore.set(outputAtom, (res));
   } catch (err: any) {
     showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
   }

@@ -38,7 +38,8 @@ import {
   languageAtom, 
   permalinkAtom,
   isExecutingAtom,
-  lineToHighlightAtom
+  lineToHighlightAtom,
+  outputAtom
 } from '../../atoms';
 
 interface PlaygroundProps {
@@ -57,14 +58,14 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const [language, setLanguage] = useAtom(languageAtom);
   const [permalink, setPermalink] = useAtom(permalinkAtom);
-  const [output, setOutput] = useState('') // contains the output of the tool
+  const [output, setOutput] = useAtom(outputAtom); // contains the output from the tool execution.
   const [isExecuting, setIsExecuting] = useAtom(isExecutingAtom); // contains the state of the tool execution.
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
-  const [lineToHighlight, setLineToHighlight] = useAtom(lineToHighlightAtom); // contains the line number to highlight in the editor.
+  const [, setLineToHighlight] = useAtom(lineToHighlightAtom); // contains the line number to highlight in the editor.
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
   const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
@@ -143,16 +144,16 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
           executeLimboole({ limbooleCheckOption, showErrorModal, enableLsp })
           break;
         case 3:
-          executeZ3Wasm({ setOutput, showErrorModal, enableLsp })
+          executeZ3Wasm({ showErrorModal, enableLsp })
           break;
         case 4:
-          executeNuxmvTool({ setOutput, showErrorModal})
+          executeNuxmvTool({ showErrorModal})
           break;
         case 5:
           executeAlloyTool({ setAlloyInstance, showErrorModal, alloySelectedCmd})
           break;
         case 6:
-          executeSpectraTool({ setOutput, showErrorModal, spectraCliOption })
+          executeSpectraTool({ showErrorModal, spectraCliOption })
           break;
         default:
           setIsExecuting(false);

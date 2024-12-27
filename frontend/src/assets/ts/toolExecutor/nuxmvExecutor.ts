@@ -8,17 +8,16 @@ import {
   languageAtom, 
   permalinkAtom,
   isExecutingAtom,
-  lineToHighlightAtom
+  lineToHighlightAtom,
+  outputAtom
 } from "../../../atoms";
 
 interface ExecuteNuxmvProps {
-  setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
 }
 
 export const executeNuxmvTool = async (
-  { setOutput,
-    showErrorModal,
+  { showErrorModal,
   }: ExecuteNuxmvProps) => {
   const editorValue = jotaiStore.get(editorValueAtom);
   const language = jotaiStore.get(languageAtom);
@@ -33,7 +32,7 @@ export const executeNuxmvTool = async (
   try {
     const res = await executeNuxmv(response?.data);
     jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(res, language.id) || []));
-    setOutput(res);
+    jotaiStore.set(outputAtom, (res));
   } catch (err: any) {
     showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
   }
