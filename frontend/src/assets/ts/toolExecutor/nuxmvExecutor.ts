@@ -2,18 +2,22 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeNuxmv } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore, languageAtom, permalinkAtom } from "../../../atoms";
+import { 
+  editorValueAtom, 
+  jotaiStore, 
+  languageAtom, 
+  permalinkAtom,
+  isExecutingAtom
+} from "../../../atoms";
 
 interface ExecuteNuxmvProps {
   setLineToHighlight: (value: number[]) => void;
-  setIsExecuting: (value: boolean) => void;
   setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
 }
 
 export const executeNuxmvTool = async (
   { setLineToHighlight,
-    setIsExecuting,
     setOutput,
     showErrorModal,
   }: ExecuteNuxmvProps) => {
@@ -24,7 +28,7 @@ export const executeNuxmvTool = async (
   if (response) { jotaiStore.set(permalinkAtom, response.data); }
   else {
     showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
-    setIsExecuting(false);
+    jotaiStore.set(isExecutingAtom, false);
   }
 
   try {
@@ -34,5 +38,5 @@ export const executeNuxmvTool = async (
   } catch (err: any) {
     showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
   }
-  setIsExecuting(false);
+  jotaiStore.set(isExecutingAtom, false);
 }

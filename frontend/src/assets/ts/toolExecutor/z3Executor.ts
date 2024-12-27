@@ -3,10 +3,16 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeZ3 } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore, languageAtom, permalinkAtom } from "../../../atoms";
+import { 
+  editorValueAtom, 
+  jotaiStore, 
+  languageAtom, 
+  permalinkAtom,
+  isExecutingAtom
+
+} from "../../../atoms";
 interface ExecuteZ3Props {
   setLineToHighlight: (value: number[]) => void;
-  setIsExecuting: (value: boolean) => void;
   setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
   enableLsp?: boolean;
@@ -14,7 +20,6 @@ interface ExecuteZ3Props {
 
 export const executeZ3Wasm = async (
   { setLineToHighlight,
-    setIsExecuting,
     setOutput,
     showErrorModal,
     enableLsp
@@ -50,5 +55,5 @@ export const executeZ3Wasm = async (
       showErrorModal(error.message);
     }
   }
-  setIsExecuting(false);
+  jotaiStore.set(isExecutingAtom, false);
 }

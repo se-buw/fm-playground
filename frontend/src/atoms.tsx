@@ -21,6 +21,7 @@ const rawStringStorage = {
 export const editorValueAtom = atomWithStorage("editorValue", "", rawStringStorage)
 export const languageAtom = atomWithStorage("language", Options[0]);
 export const permalinkAtom = atom<{ check: string | null, permalink: string | null }>({ check: null, permalink: null });
+export const isExecutingAtom = atom(false);
 
 jotaiStore.sub(editorValueAtom, () => {})
 jotaiStore.sub(languageAtom, () => {})

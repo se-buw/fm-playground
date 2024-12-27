@@ -3,12 +3,18 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig, { ToolDropdown } from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore, languageAtom, permalinkAtom } from "../../../atoms";
+import { 
+  editorValueAtom, 
+  jotaiStore, 
+  languageAtom, 
+  permalinkAtom,
+  isExecutingAtom 
+
+} from "../../../atoms";
 
 interface ExecuteLimbooleProps {
   limbooleCheckOption: ToolDropdown;
   setLineToHighlight: (value: number[]) => void;
-  setIsExecuting: (value: boolean) => void;
   showErrorModal: (value: string) => void;
   enableLsp?: boolean;
 }
@@ -16,7 +22,6 @@ interface ExecuteLimbooleProps {
 export const executeLimboole = async (
   { limbooleCheckOption,
     setLineToHighlight,
-    setIsExecuting,
     showErrorModal,
     enableLsp
   }: ExecuteLimbooleProps) => {
@@ -29,7 +34,7 @@ export const executeLimboole = async (
   if (response) {jotaiStore.set(permalinkAtom, response.data);}
   else {
     showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
-    setIsExecuting(false);
+    jotaiStore.set(isExecutingAtom, false);
   }
   const infoElement = document.getElementById('info');
   run_limboole(window.Wrappers[limbooleCheckOption.value], editorValue);
@@ -37,5 +42,5 @@ export const executeLimboole = async (
   if (infoElement) {
     setLineToHighlight(getLineToHighlight(infoElement.innerHTML, language.id) || []);
   }
-  setIsExecuting(false);
+  jotaiStore.set(isExecutingAtom, false);
 };

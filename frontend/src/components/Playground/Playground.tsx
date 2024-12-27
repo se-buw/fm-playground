@@ -33,7 +33,12 @@ import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js'
 import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
 import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
-import { editorValueAtom, languageAtom, permalinkAtom } from '../../atoms';
+import { 
+  editorValueAtom, 
+  languageAtom, 
+  permalinkAtom,
+  isExecutingAtom
+} from '../../atoms';
 
 interface PlaygroundProps {
   editorTheme: string;
@@ -52,7 +57,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const [language, setLanguage] = useAtom(languageAtom);
   const [permalink, setPermalink] = useAtom(permalinkAtom);
   const [output, setOutput] = useState('') // contains the output of the tool
-  const [isExecuting, setIsExecuting] = useState(false); // contains the state of the execution of the tool.
+  const [isExecuting, setIsExecuting] = useAtom(isExecutingAtom); // contains the state of the tool execution.
   const [isFullScreen, setIsFullScreen] = useState(false); // contains the state of the full screen mode.
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
@@ -134,19 +139,19 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
         case 0:
         case 1:
         case 2:
-          executeLimboole({ limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, enableLsp })
+          executeLimboole({ limbooleCheckOption, setLineToHighlight, showErrorModal, enableLsp })
           break;
         case 3:
-          executeZ3Wasm({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, enableLsp })
+          executeZ3Wasm({ setLineToHighlight, setOutput, showErrorModal, enableLsp })
           break;
         case 4:
-          executeNuxmvTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal})
+          executeNuxmvTool({ setLineToHighlight, setOutput, showErrorModal})
           break;
         case 5:
-          executeAlloyTool({ setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd})
+          executeAlloyTool({ setAlloyInstance, showErrorModal, alloySelectedCmd})
           break;
         case 6:
-          executeSpectraTool({ setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption })
+          executeSpectraTool({ setLineToHighlight, setOutput, showErrorModal, spectraCliOption })
           break;
         default:
           setIsExecuting(false);

@@ -2,12 +2,18 @@ import { getLineToHighlight } from "../lineHighlightingUtil";
 import { executeSpectra } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import fmpConfig from "../../../../fmp.config";
-import { editorValueAtom, jotaiStore, languageAtom, permalinkAtom } from "../../../atoms";
+import { 
+  editorValueAtom, 
+  jotaiStore, 
+  languageAtom, 
+  permalinkAtom,
+  isExecutingAtom
+
+} from "../../../atoms";
 
 
 interface ExecuteSpectraProps {
   setLineToHighlight: (value: number[]) => void;
-  setIsExecuting: (value: boolean) => void;
   setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
   spectraCliOption: string;
@@ -15,7 +21,6 @@ interface ExecuteSpectraProps {
 
 export const executeSpectraTool = async (
   { setLineToHighlight,
-    setIsExecuting,
     setOutput,
     showErrorModal,
     spectraCliOption,
@@ -28,7 +33,7 @@ export const executeSpectraTool = async (
   if (response) { jotaiStore.set(permalinkAtom, response.data) }
   else {
     showErrorModal(`Unable to generate permalink. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`)
-    setIsExecuting(false);
+    jotaiStore.set(isExecutingAtom, false);
   }
   try {
     const res = await executeSpectra(response?.data, spectraCliOption);
@@ -37,5 +42,5 @@ export const executeSpectraTool = async (
   } catch (err: any) {
     showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
   }
-  setIsExecuting(false);
+  jotaiStore.set(isExecutingAtom, false);
 }
