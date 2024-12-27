@@ -7,11 +7,11 @@ import '../../assets/style/Playground.css'
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import type { LanguageProps } from './Tools';
 import fmpConfig from '../../../fmp.config';
+import { editorValueAtom } from '../../atoms.js';
+import { useAtom } from 'jotai';
 
 type LspEditorProps = {
   height: string;
-  setEditorValue: (value: string) => void;
-  editorValue: string;
   language: LanguageProps;
   setLanguage?: (value: string) => void;
   lineToHighlight?: number;
@@ -22,6 +22,7 @@ type LspEditorProps = {
 const wrapper = new MonacoEditorLanguageClientWrapper();
 
 const LspEditor: React.FC<LspEditorProps> = (props) => {
+  const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const editorRef = useRef<any>(null);
   const prevLanguageRef = useRef<LanguageProps | null>(null);
 
@@ -42,7 +43,7 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
 
       const currentExtension = getExtensionById(props.language?.id ?? '');
       const uri = vscode.Uri.parse(`/workspace/example.${currentExtension}`);
-      const modelRef = await createModelReference(uri, props.editorValue);
+      const modelRef = await createModelReference(uri, editorValue);
       wrapper.updateEditorModels({
         modelRef
       });
@@ -56,7 +57,7 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
       if (code) {
         editorRef.current.setValue(code);
       } else {
-        editorRef.current.setValue(props.editorValue);
+        editorRef.current.setValue(editorValue);
       }
     };
 
@@ -81,45 +82,32 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
       if (code) {
         editorRef.current.setValue(code);
       } else {
-        editorRef.current.setValue(props.editorValue);
+        editorRef.current.setValue(editorValue);
       }
     }
     prevLanguageRef.current = props.language ?? null;
   }, [props.language]);
 
   const handleCodeChange = (value: string) => {
-    props.setEditorValue(value);
+    setEditorValue(value);
   };
 
   const getEditorValue = () => {
     if (editorRef.current) {
       const value = editorRef.current.getValue();
-      props.setEditorValue(value);
+      setEditorValue(value);
     }
   };
 
   useEffect(() => {
-    setEditorValue(props.editorValue);
-  }, [props.editorValue]);
-
-  const setEditorValue = (value: string) => {
-    if (editorRef.current) {
-      const currentValue = editorRef.current.getValue();
-      if (currentValue !== value) {
-        const selection = editorRef.current.getSelection();
-        editorRef.current.setValue(value);
-        if (selection) {
-          editorRef.current.setSelection(selection);
-        }
-      }
-    }
-  };
+    setEditorValue(editorValue);
+  }, [editorValue]);
 
 
   useEffect(() => {
     wrapper.updateCodeResources({
       main: {
-        text: props.editorValue,
+        text: editorValue,
         fileExt: getExtensionById(props.language.id) ?? ''
       }
     });

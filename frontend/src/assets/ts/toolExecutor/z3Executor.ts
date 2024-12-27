@@ -5,8 +5,8 @@ import { executeZ3 } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
+import { editorValueAtom, jotaiStore } from "../../../atoms";
 interface ExecuteZ3Props {
-  editorValue: string;
   language: LanguageProps;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
@@ -18,8 +18,7 @@ interface ExecuteZ3Props {
 }
 
 export const executeZ3Wasm = async (
-  { editorValue,
-    language,
+  { language,
     setLineToHighlight,
     setIsExecuting,
     setOutput,
@@ -28,9 +27,9 @@ export const executeZ3Wasm = async (
     setPermalink,
     enableLsp
   }: ExecuteZ3Props) => {
-
+  const editorValue = jotaiStore.get(editorValueAtom);
   let response: any = null;
-  const metadata =  { 'ls': enableLsp };
+  const metadata = { 'ls': enableLsp };
   try {
     response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
     if (response) { setPermalink(response.data); }

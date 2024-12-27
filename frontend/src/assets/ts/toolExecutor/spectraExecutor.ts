@@ -4,9 +4,10 @@ import { executeSpectra } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
 import { Permalink } from "../../../types";
 import fmpConfig from "../../../../fmp.config";
+import { editorValueAtom, jotaiStore } from "../../../atoms";
+
 
 interface ExecuteSpectraProps {
-  editorValue: string;
   language: LanguageProps;
   setLineToHighlight: (value: number[]) => void;
   setIsExecuting: (value: boolean) => void;
@@ -18,8 +19,7 @@ interface ExecuteSpectraProps {
 }
 
 export const executeSpectraTool = async (
-  { editorValue,
-    language,
+  { language,
     setLineToHighlight,
     setIsExecuting,
     setOutput,
@@ -28,7 +28,7 @@ export const executeSpectraTool = async (
     permalink,
     setPermalink
   }: ExecuteSpectraProps) => {
-
+  const editorValue = jotaiStore.get(editorValueAtom);
   const metadata = { 'cli_option': spectraCliOption }
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
   if (response) { setPermalink(response.data); }

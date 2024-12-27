@@ -138,16 +138,16 @@ const Playground: React.FC<PlaygroundProps> = ({ language, setLanguage, editorTh
           executeLimboole({  language, limbooleCheckOption, setLineToHighlight, setIsExecuting, showErrorModal, permalink, setPermalink, enableLsp })
           break;
         case 3:
-          executeZ3Wasm({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink, enableLsp })
+          executeZ3Wasm({ language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink, enableLsp })
           break;
         case 4:
-          executeNuxmvTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
+          executeNuxmvTool({ language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, permalink, setPermalink })
           break;
         case 5:
-          executeAlloyTool({ editorValue, language, setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd, permalink, setPermalink })
+          executeAlloyTool({ language, setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd, permalink, setPermalink })
           break;
         case 6:
-          executeSpectraTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink })
+          executeSpectraTool({ language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink })
           break;
         default:
           setIsExecuting(false);
@@ -345,9 +345,7 @@ const Playground: React.FC<PlaygroundProps> = ({ language, setLanguage, editorTh
             {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ?
               <LspEditor
                 height={isFullScreen ? '80vh' : '60vh'}
-                setEditorValue={setEditorValue}
                 language={language}
-                editorValue={editorValue}
                 editorTheme={editorTheme}
               />
               :
@@ -372,7 +370,6 @@ const Playground: React.FC<PlaygroundProps> = ({ language, setLanguage, editorTh
             }
             {language.id === 'als' &&
               <AlloyCmdOptions
-                editorValue={editorValue}
                 alloyCmdOption={alloyCmdOption}
                 setAlloyCmdOption={(options: { value: number; label: string }[]) => setAlloyCmdOption(options)}
                 setAlloySelectedCmd={setAlloySelectedCmd}
