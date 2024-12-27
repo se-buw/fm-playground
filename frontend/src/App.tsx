@@ -13,9 +13,10 @@ import Feedback from './components/Utils/Feedback';
 import './assets/style/index.css'
 import '../src/assets/style/App.css'
 import '../src/assets/style/Feedback.css'
+import { Provider as JotaiProvider } from 'jotai'
+import { jotaiStore } from './atoms'
 
 const App = () => {
-  const [editorValue, setEditorValue] = useState(localStorage.getItem('editorValue') || '');
   const [language, setLanguage] = useState(JSON.parse(localStorage.getItem('language') || 'null') || Options[1]);
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const storedTheme = localStorage.getItem('isDarkTheme');
@@ -32,12 +33,6 @@ const App = () => {
     setShowFeedback((prev) => !prev);
   };
 
-  const handleEditorValueChange = (code: string) => {
-    setEditorValue(code);
-  };
-  const handleLanguageChange = (newLanguage: LanguageProps) => {
-    setLanguage(newLanguage)
-  }
 
   const handleToggleTheme = () => {
     setIsDarkTheme((prevIsDarkTheme) => {
@@ -46,11 +41,6 @@ const App = () => {
       return newTheme;
     });
   };
-
-
-  useEffect(() => {
-    localStorage.setItem('editorValue', editorValue);
-  }, [editorValue]);
 
   useEffect(() => {
     localStorage.setItem('language', JSON.stringify(language));
@@ -72,34 +62,33 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <div className='App' data-theme={isDarkTheme ? 'dark' : 'light'}>
-        <Nav
-          setEditorValue={setEditorValue}
-          setLanguage={setLanguage}
-          isDarkTheme={isDarkTheme}
-          setIsDarkTheme={setIsDarkTheme}
-        />
-        <Router>
-          <Routes>
-            <Route element={<ProtectedRoutes />} >
-            </Route>
-            <Route path="/" element={<Playground
-              editorValue={editorValue}
-              setEditorValue={setEditorValue}
-              language={language}
-              setLanguage={setLanguage}
-              editorTheme={editorTheme}
-            />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="*" element={<Missing />} />
-          </Routes>
-        </Router>
-        <button className="floating-button" onClick={toggleFeedbackForm}>
-          Feedback
-        </button>
-        {showFeedback && <Feedback toggleFeedback={toggleFeedbackForm} />}
-        <Footer />
-      </div>
+      <JotaiProvider store={jotaiStore}>
+        <div className='App' data-theme={isDarkTheme ? 'dark' : 'light'}>
+          <Nav
+            setLanguage={setLanguage}
+            isDarkTheme={isDarkTheme}
+            setIsDarkTheme={setIsDarkTheme}
+          />
+          <Router>
+            <Routes>
+              <Route element={<ProtectedRoutes />} >
+              </Route>
+              <Route path="/" element={<Playground
+                language={language}
+                setLanguage={setLanguage}
+                editorTheme={editorTheme}
+              />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="*" element={<Missing />} />
+            </Routes>
+          </Router>
+          <button className="floating-button" onClick={toggleFeedbackForm}>
+            Feedback
+          </button>
+          {showFeedback && <Feedback toggleFeedback={toggleFeedbackForm} />}
+          <Footer />
+        </div>
+      </JotaiProvider>
     </AuthProvider>
   )
 }

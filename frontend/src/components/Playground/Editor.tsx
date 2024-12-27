@@ -6,14 +6,13 @@ import { nuxmvConf, nuxmvLang } from '../../assets/languages/nuxmv'
 import { alloyConf, alloyLang } from '../../assets/languages/alloy'
 import { spectraConf, spectraLang } from '../../assets/languages/spectra';
 import '../../assets/style/Playground.css'
-
 import * as monacoEditor from 'monaco-editor';
 import type { LanguageProps } from './Tools';
+import { useAtom } from 'jotai';
+import { editorValueAtom } from '../../atoms';
 
 interface BasicCodeEditorProps {
   height: string;
-  setEditorValue: (value: string) => void;
-  editorValue: string;
   language: LanguageProps
   setLanguage: (language: LanguageProps) => void;
   lineToHighlight: number[];
@@ -21,16 +20,9 @@ interface BasicCodeEditorProps {
   editorTheme: string;
 }
 
-interface BasicCodeEditorValueParams {
-  value: string;
-  event: monacoEditor.editor.IModelContentChangedEvent;
-}
-
 const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps) => {
-
-
+  const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null); // editor reference
-  const [internalEditorValue, setInternalEditorValue] = useState(props.editorValue);
   const [language, setLanguage] = useState(props.language.id);
   const [decorationIds, setDecorationIds] = useState<string[]>([]);
 
@@ -38,8 +30,8 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   * Sets the editor value when the editorValue prop changes.
   */
   useEffect(() => {
-    setInternalEditorValue(props.editorValue);
-  }, [props.editorValue]);
+    setEditorValue(editorValue);
+  }, [editorValue]);
 
   /**
    * Sets the language when the language prop changes.
@@ -131,38 +123,13 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   }, [props.editorTheme]);
 
   /**
-   * Gets the editor value and sets the editorValue prop.
-   * @param {*} value 
-   * @param {*} event 
-   */
-
-
-  function getEditorValue({ value, event }: BasicCodeEditorValueParams) {
-    if (editorRef.current) {
-      const editorValue = editorRef.current.getValue();
-      props.setEditorValue(editorValue);
-    }
-  }
-
-  /**
-   * Sets the editor value.
-   * @param {*} value
-   * @param {*} event
-   */
-  function setEditorValue({ value, event }: BasicCodeEditorValueParams) {
-    if (editorRef.current) {
-      editorRef.current.setValue(value);
-    }
-  }
-
-  /**
    * Handles the code change event.
    * Sets the editor value with the new code.
    * @param {*} newCode 
    */
   const handleCodeChange = (newCode: string | undefined) => {
     if (newCode !== undefined) {
-      props.setEditorValue(newCode);
+      setEditorValue(newCode);
       props.setLineToHighlight([]);
     }
   }
@@ -175,7 +142,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
         width="100%"
         language={language}
         defaultValue=""
-        value={internalEditorValue}
+        value={editorValue}
         theme={props.editorTheme}
         options={{
           minimap: {
