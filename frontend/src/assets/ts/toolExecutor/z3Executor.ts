@@ -8,19 +8,17 @@ import {
   jotaiStore, 
   languageAtom, 
   permalinkAtom,
-  isExecutingAtom
-
+  isExecutingAtom,
+  lineToHighlightAtom
 } from "../../../atoms";
 interface ExecuteZ3Props {
-  setLineToHighlight: (value: number[]) => void;
   setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
   enableLsp?: boolean;
 }
 
 export const executeZ3Wasm = async (
-  { setLineToHighlight,
-    setOutput,
+  { setOutput,
     showErrorModal,
     enableLsp
   }: ExecuteZ3Props) => {
@@ -42,14 +40,14 @@ export const executeZ3Wasm = async (
     if (res.error) {
       showErrorModal(res.error);
     } else {
-      setLineToHighlight(getLineToHighlight(res.output, language.id) || []);
+      jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(res.output, language.id) || []));
       setOutput(res.output);
     }
   } catch (err: any) {
     setOutput("Could't load WASM module. Trying to execute on the server...");
     try {
       const res = await executeZ3(response?.data);
-      setLineToHighlight(getLineToHighlight(res, language.id) || []);
+      jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(res, language.id) || []));
       setOutput(res);
     } catch (error: any) {
       showErrorModal(error.message);

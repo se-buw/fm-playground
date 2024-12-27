@@ -8,20 +8,19 @@ import {
   jotaiStore, 
   languageAtom, 
   permalinkAtom,
-  isExecutingAtom 
+  isExecutingAtom,
+  lineToHighlightAtom
 
 } from "../../../atoms";
 
 interface ExecuteLimbooleProps {
   limbooleCheckOption: ToolDropdown;
-  setLineToHighlight: (value: number[]) => void;
   showErrorModal: (value: string) => void;
   enableLsp?: boolean;
 }
 
 export const executeLimboole = async (
   { limbooleCheckOption,
-    setLineToHighlight,
     showErrorModal,
     enableLsp
   }: ExecuteLimbooleProps) => {
@@ -40,7 +39,7 @@ export const executeLimboole = async (
   run_limboole(window.Wrappers[limbooleCheckOption.value], editorValue);
 
   if (infoElement) {
-    setLineToHighlight(getLineToHighlight(infoElement.innerHTML, language.id) || []);
+    jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(infoElement.innerHTML, language.id) || []));
   }
   jotaiStore.set(isExecutingAtom, false);
 };

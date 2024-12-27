@@ -37,7 +37,8 @@ import {
   editorValueAtom, 
   languageAtom, 
   permalinkAtom,
-  isExecutingAtom
+  isExecutingAtom,
+  lineToHighlightAtom
 } from '../../atoms';
 
 interface PlaygroundProps {
@@ -63,7 +64,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
-  const [lineToHighlight, setLineToHighlight] = useState<number[]>([])
+  const [lineToHighlight, setLineToHighlight] = useAtom(lineToHighlightAtom); // contains the line number to highlight in the editor.
   const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
   const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
@@ -139,19 +140,19 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
         case 0:
         case 1:
         case 2:
-          executeLimboole({ limbooleCheckOption, setLineToHighlight, showErrorModal, enableLsp })
+          executeLimboole({ limbooleCheckOption, showErrorModal, enableLsp })
           break;
         case 3:
-          executeZ3Wasm({ setLineToHighlight, setOutput, showErrorModal, enableLsp })
+          executeZ3Wasm({ setOutput, showErrorModal, enableLsp })
           break;
         case 4:
-          executeNuxmvTool({ setLineToHighlight, setOutput, showErrorModal})
+          executeNuxmvTool({ setOutput, showErrorModal})
           break;
         case 5:
           executeAlloyTool({ setAlloyInstance, showErrorModal, alloySelectedCmd})
           break;
         case 6:
-          executeSpectraTool({ setLineToHighlight, setOutput, showErrorModal, spectraCliOption })
+          executeSpectraTool({ setOutput, showErrorModal, spectraCliOption })
           break;
         default:
           setIsExecuting(false);
@@ -354,8 +355,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
               :
               <Editor
                 height={isFullScreen ? '80vh' : '60vh'}
-                lineToHighlight={lineToHighlight}
-                setLineToHighlight={handleLineHighlight}
                 editorTheme={editorTheme}
               />
             }
@@ -433,7 +432,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
                   setAlloyInstance={setAlloyInstance}
                   // height={isFullScreen ? '80vh' : '60vh'}
                   isFullScreen={isFullScreen}
-                  setLineToHighlight={setLineToHighlight}
                 />
               ) : (
                 <PlainOutput

@@ -25,15 +25,17 @@ import {
 } from '../../../assets/js/alloyUtils';
 import '../../../assets/style/AlloyOutput.css';
 import AlloyEvaluator from './AlloyEvaluator';
+import { useAtom } from 'jotai';
+import { lineToHighlightAtom } from '../../../atoms';
 
 interface AlloyOutputProps {
   alloyInstance: any;
   setAlloyInstance: (instance: any) => void; // TODO: Check the type of instance
   isFullScreen: boolean;
-  setLineToHighlight: (line: number[]) => void;
 }
 
-const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstance, isFullScreen, setLineToHighlight }) => {
+const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstance, isFullScreen }) => {
+  const [, setLineToHighlight] = useAtom(lineToHighlightAtom)
   const [alloyTraceIndex, setalloyTraceIndex] = useState(0);
   const [alloySpecId, setAlloySpecId] = useState(null);
   const [alloyVizGraph, setAlloyVizGraph] = useState<{ data: { id: any; label: any; } }[]>([]);

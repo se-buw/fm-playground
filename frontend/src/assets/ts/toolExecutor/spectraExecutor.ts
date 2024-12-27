@@ -7,21 +7,19 @@ import {
   jotaiStore, 
   languageAtom, 
   permalinkAtom,
-  isExecutingAtom
-
+  isExecutingAtom,
+  lineToHighlightAtom
 } from "../../../atoms";
 
 
 interface ExecuteSpectraProps {
-  setLineToHighlight: (value: number[]) => void;
   setOutput: (value: string) => void;
   showErrorModal: (value: string) => void;
   spectraCliOption: string;
 }
 
 export const executeSpectraTool = async (
-  { setLineToHighlight,
-    setOutput,
+  { setOutput,
     showErrorModal,
     spectraCliOption,
   }: ExecuteSpectraProps) => {
@@ -37,7 +35,7 @@ export const executeSpectraTool = async (
   }
   try {
     const res = await executeSpectra(response?.data, spectraCliOption);
-    setLineToHighlight(getLineToHighlight(res, language.id) || []);
+    jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(res, language.id) || []));
     setOutput(res);
   } catch (err: any) {
     showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);

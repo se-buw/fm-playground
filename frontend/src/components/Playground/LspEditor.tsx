@@ -12,8 +12,6 @@ import { editorValueAtom, languageAtom } from '../../atoms.js';
 
 type LspEditorProps = {
   height: string;
-  lineToHighlight?: number;
-  setLineToHighlight?: (value: number) => void;
   editorTheme?: string;
 };
 

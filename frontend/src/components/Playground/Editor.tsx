@@ -8,12 +8,10 @@ import { spectraConf, spectraLang } from '../../assets/languages/spectra';
 import '../../assets/style/Playground.css'
 import * as monacoEditor from 'monaco-editor';
 import { useAtom } from 'jotai';
-import { editorValueAtom, languageAtom } from '../../atoms';
+import { editorValueAtom, languageAtom, lineToHighlightAtom } from '../../atoms';
 
 interface BasicCodeEditorProps {
   height: string;
-  lineToHighlight: number[];
-  setLineToHighlight: (line: number[]) => void;
   editorTheme: string;
 }
 
@@ -21,6 +19,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const editorRef = useRef<monacoEditor.editor.IStandaloneCodeEditor | null>(null); // editor reference
   const [language, setLanguage] = useAtom(languageAtom);
+  const [lineToHighlight, setLineToHighlight] = useAtom(lineToHighlightAtom);
   const [decorationIds, setDecorationIds] = useState<string[]>([]);
 
   /**
@@ -40,8 +39,8 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   useEffect(() => {
     if (editorRef.current) {
       const editor = editorRef.current;
-      if (props.lineToHighlight !== null && props.lineToHighlight.length > 0) {
-        const decorations = props.lineToHighlight.map(line => {
+      if (lineToHighlight !== null && lineToHighlight.length > 0) {
+        const decorations = lineToHighlight.map(line => {
           return {
             range: new window.monaco.Range(line, 1, line, 1),
             options: {
@@ -59,7 +58,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
         setDecorationIds(newDecorationIds);
       }
     }
-  }, [props.lineToHighlight]);
+  }, [lineToHighlight]);
 
   /**
    * Handles the editor did mount event. On mount, registers all the languages. 
@@ -127,7 +126,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   const handleCodeChange = (newCode: string | undefined) => {
     if (newCode !== undefined) {
       setEditorValue(newCode);
-      props.setLineToHighlight([]);
+      setLineToHighlight([]);
     }
   }
 
