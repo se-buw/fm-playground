@@ -18,8 +18,8 @@ import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn';
 import ConfirmModal from '../Utils/Modals/ConfirmModal';
 import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice';
 import MessageModal from '../Utils/Modals/MessageModal';
-import SpectraCliOptions from './SpectraCliOptions';
-import LimbooleCheckOptions from './limbooleCheckOptions.js';
+import SpectraCliOptions from './spectra/SpectraCliOptions.js';
+import LimbooleCheckOptions from './limboole/limbooleCheckOptions';
 import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
 import AlloyOutput from './alloy/AlloyOutput';
