@@ -1,29 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AiOutlineFullscreen, AiOutlineFullscreenExit } from "react-icons/ai";
-import { FaFileCirclePlus } from "react-icons/fa6";
-import { Stack } from '@mui/material';
-import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
 import { Tooltip } from 'react-tooltip'
-import Toggle from 'react-toggle';
-import Editor from './Editor';
-import LspEditor from './LspEditor.js';
-import PlainOutput from './PlainOutput';
 import Tools from './Tools';
 import Options from '../../assets/config/AvailableTools'
-import FileUploadButton from '../Utils/FileUpload';
 import FileDownload from '../Utils/FileDownload';
 import Guides from '../Utils/Guides';
-import CopyToClipboardBtn from '../Utils/CopyToClipboardBtn';
-import ConfirmModal from '../Utils/Modals/ConfirmModal';
-import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice';
 import MessageModal from '../Utils/Modals/MessageModal';
-import SpectraCliOptions from './spectra/SpectraCliOptions.js';
-import LimbooleCheckOptions from './limboole/limbooleCheckOptions';
 import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
-import AlloyOutput from './alloy/AlloyOutput';
-import AlloyCmdOptions from './alloy/AlloyCmdOptions';
 import type { LanguageProps } from './Tools';
 import { executeLimboole } from '../../assets/ts/toolExecutor/limbooleExecutor.js';
 import { executeZ3Wasm } from '../../assets/ts/toolExecutor/z3Executor.js';
@@ -33,15 +17,23 @@ import { executeAlloyTool } from '../../assets/ts/toolExecutor/alloyExecutor.js'
 import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
 import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
-import { 
-  editorValueAtom, 
-  languageAtom, 
+import {
+  editorValueAtom,
+  languageAtom,
   permalinkAtom,
   isExecutingAtom,
   lineToHighlightAtom,
   outputAtom,
   isFullScreenAtom
 } from '../../atoms';
+import InputArea from './InputArea';
+import { MDBIcon } from 'mdb-react-ui-kit';
+import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
+import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice.js';
+import AlloyOutput from './alloy/AlloyOutput.js';
+import PlainOutput from './PlainOutput.js';
+import OutputArea from './OutputArea.js';
+import { toolExecutionMap } from './ToolMaps.js';
 
 interface PlaygroundProps {
   editorTheme: string;
@@ -67,7 +59,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
   const [, setLineToHighlight] = useAtom(lineToHighlightAtom); // contains the line number to highlight in the editor.
-  const [spectraCliOption, setSpectraCliOption] = useState('check-realizability'); // contains the selected option for the Spectra cli tool.
   const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
   const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
   const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
@@ -137,30 +128,12 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
     setOutput('')
     try {
       setIsExecuting(true);
-
-      switch (Number(language.value)) {
-        case 0:
-        case 1:
-        case 2:
-          executeLimboole({ limbooleCheckOption, showErrorModal, enableLsp })
-          break;
-        case 3:
-          executeZ3Wasm({ showErrorModal, enableLsp })
-          break;
-        case 4:
-          executeNuxmvTool({ showErrorModal})
-          break;
-        case 5:
-          executeAlloyTool({ setAlloyInstance, showErrorModal, alloySelectedCmd})
-          break;
-        case 6:
-          executeSpectraTool({ showErrorModal, spectraCliOption })
-          break;
-        default:
-          setIsExecuting(false);
-          break;
+      const currentTool = toolExecutionMap[language.short];
+      if (currentTool) {
+        currentTool();
+      }else{
+        setIsExecuting(false);
       }
-
     } catch (err: any) {
       if (err.code === "ERR_NETWORK") {
         showErrorModal('Network Error. Please check your internet connection.')
@@ -276,172 +249,13 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
       <Tooltip id="playground-tooltip" />
       <div className="row Playground">
         <div className="col-md-6 Playground" ref={inputDivRef}>
-          <div className='row'>
-            <div className='col-md-12 mx-auto mb-2'>
-              <div className='d-flex justify-content-between align-items-center'>
-                <div className='col-md-4'>
-                  <h2>Input</h2>
-                </div>
-                <div>
-                  <Stack direction="row" spacing={1}>
-                    {/* <div className='toggle-container'> */}
-                    <span className='syntax-checking-span'>Syntax Checking</span>
-                    <MDBIcon size='lg' className='playground-icon'
-                      style={{ marginTop: "5px" }}
-                      data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="This allows you to check the syntax of the code, get suggestions/code completion."
-                    >
-                      <Toggle
-                        id='cheese-status'
-                        defaultChecked={enableLsp}
-                        onChange={(e) => setEnableLsp(e.target.checked)}
-                      />
-                    </MDBIcon >
-                    {/* </div> */}
-                    <MDBIcon size='lg' className='playground-icon'
-                      onClick={openModal}
-                      data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="New Spec"
-                    >
-                      <FaFileCirclePlus
-                        className='playground-icon'
-                        role='button'
-                      />
-                    </MDBIcon>
-                    <ConfirmModal
-                      isOpen={isNewSpecModalOpen}
-                      onClose={closeModal}
-                      title='New Spec'
-                      message={`Are you sure? 
-                              This will reset the editor and the output areas`}
-                      onConfirm={handleReset}
-                    />
-                    <MDBIcon size='lg' className='playground-icon'
-                      data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="Upload file"
-                    >
-                      <FileUploadButton onFileSelect={handleFileUpload} />
-                    </MDBIcon>
-                    <>
-                      {handleDownload()}
-                    </>
-                    {permalink.check && permalink.permalink &&
-                      <MDBIcon size='lg' className='playground-icon'
-                        data-tooltip-id="playground-tooltip"
-                        data-tooltip-content="Copy Permalink">
-                        <CopyToClipboardBtn />
-                      </MDBIcon>
-                    }
-                    <MDBIcon size='lg' className='playground-icon' onClick={() => { toggleFullScreen('input') }}>
-                      {isFullScreen ?
-                        <AiOutlineFullscreenExit
-                          className='playground-icon'
-                          data-tooltip-id="playground-tooltip"
-                          data-tooltip-content="Exit"
-                        />
-                        : <AiOutlineFullscreen
-                          className='playground-icon'
-                          data-tooltip-id="playground-tooltip"
-                          data-tooltip-content="Fullscreen"
-                        />}
-                    </MDBIcon>
-                  </Stack>
-                </div>
-              </div>
-            </div>
-            {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ?
-              <LspEditor
-                height={isFullScreen ? '80vh' : '60vh'}
-                editorTheme={editorTheme}
-              />
-              :
-              <Editor
-                height={isFullScreen ? '80vh' : '60vh'}
-                editorTheme={editorTheme}
-              />
-            }
-            {language.id === 'limboole' &&
-              <LimbooleCheckOptions
-                setLimbooleCheckOption={setLimbooleCheckOption}
-              />
-            }
-            {language.id === 'spectra' &&
-              <SpectraCliOptions
-                setSpectraCliOption={setSpectraCliOption}
-              />
-            }
-            {language.id === 'als' &&
-              <AlloyCmdOptions
-                alloyCmdOption={alloyCmdOption}
-                setAlloyCmdOption={(options: { value: number; label: string }[]) => setAlloyCmdOption(options)}
-                setAlloySelectedCmd={setAlloySelectedCmd}
-              />
-            }
-            <MDBBtn
-              className='mx-auto my-3'
-              style={{ width: '95%' }}
-              color='primary'
-              onClick={handleToolExecution}
-              disabled={isExecuting}
-            >
-              {isExecuting ? 'Running...' : 'RUN'}
-            </MDBBtn>
-          </div>
+          <InputArea 
+           onClick={handleToolExecution}
+          
+          />
         </div>
         <div className='col-md-6 Playground' ref={outputDivRef} >
-          <div className='row'>
-            <div className='col-md-12'>
-              <div className={`d-flex justify-content-between align-items-center ${language.id !== 'xmv' ? 'mb-2' : ''}`}>
-                <h2>Output</h2>
-                <MDBIcon size='lg' className='playground-icon'
-                  onClick={() => { toggleFullScreen('output') }}>
-                  {isFullScreen ?
-                    <AiOutlineFullscreenExit
-                      className='playground-icon'
-                      data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="Exit"
-                    />
-                    : <AiOutlineFullscreen
-                      className='playground-icon'
-                      data-tooltip-id="playground-tooltip"
-                      data-tooltip-content="Fullscreen"
-                    />}
-                </MDBIcon>
-              </div>
-            </div>
-            {language.id === 'xmv' && (
-              <div className='col-md-12'>
-                <a
-                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  role='button'
-                  onClick={() => setIsNuxmvModalOpen(true)}>
-                  nuXmv Copyright Notice
-                </a>
-                {/* Render the modal conditionally */}
-                {isNuxmvModalOpen && (
-                  <NuxmvCopyrightNotice
-                    isNuxmvModalOpen={isNuxmvModalOpen}
-                    setIsNuxmvModalOpen={setIsNuxmvModalOpen}
-                    toggleNuxmvModal={() => setIsNuxmvModalOpen(!isNuxmvModalOpen)}
-                  />
-                )}
-              </div>
-            )}
-            <div className='col-md-12'>
-              {language.id === 'als' ? (
-                <AlloyOutput
-                  alloyInstance={alloyInstance}
-                  setAlloyInstance={setAlloyInstance}
-                />
-              ) : (
-                <PlainOutput
-                  code={output}
-                  height={isFullScreen ? '80vh' : '60vh'}
-                  onChange={handleOutputChange} />
-              )}
-
-            </div>
-          </div>
+          <OutputArea />
         </div>
       </div>
       <Guides id={language.id} />

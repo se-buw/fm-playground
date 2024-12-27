@@ -6,45 +6,39 @@ import {
   jotaiStore, 
   languageAtom, 
   permalinkAtom,
-  isExecutingAtom
+  isExecutingAtom,
+  alloySelectedCmdAtom,
+  alloyInstanceAtom,
+  outputAtom
  } from "../../../atoms";
 
 
-interface ExecuteAlloyProps {
-  showErrorModal: (value: string) => void;
-  alloySelectedCmd: number;
-  setAlloyInstance: (value: any) => void;
-}
-
-export const executeAlloyTool = async (
-  { setAlloyInstance,
-    showErrorModal,
-    alloySelectedCmd,
-  }: ExecuteAlloyProps) => {
+export const executeAlloyTool = async () => {
     
   const editorValue = jotaiStore.get(editorValueAtom);
   const language = jotaiStore.get(languageAtom);
   const permalink = jotaiStore.get(permalinkAtom);
+  const alloySelectedCmd = jotaiStore.get(alloySelectedCmdAtom);
 
   const metadata = { 'cmd': alloySelectedCmd + 1 }
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
   if (response) { jotaiStore.set(permalinkAtom, response.data) }
   else {
-    showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
+    jotaiStore.set(outputAtom, (`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`));
     jotaiStore.set(isExecutingAtom, false);
   }
 
   try {
-    setAlloyInstance([]);
+    jotaiStore.set(alloyInstanceAtom, ([]));
     const res = await getAlloyInstance(response?.data, alloySelectedCmd);
-    setAlloyInstance(res)
+    jotaiStore.set(alloyInstanceAtom, (res));
     jotaiStore.set(isExecutingAtom, false);
   } catch (err: any) {
     if (err.response.status === 429) {
-      showErrorModal("Slow down! You are making too many requests. Please try again later.")
+      jotaiStore.set(outputAtom, ("Slow down! You are making too many requests. Please try again later."));
     }
     else {
-      showErrorModal(`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
+      jotaiStore.set(outputAtom, (`${err.message}. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`));
     }
   }
   jotaiStore.set(isExecutingAtom, false);

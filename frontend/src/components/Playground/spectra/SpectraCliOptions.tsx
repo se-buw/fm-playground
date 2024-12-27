@@ -1,12 +1,9 @@
-import React from 'react';
 import Select from 'react-select';
+import { useAtom } from 'jotai';
+import { spectraCliOptionsAtom } from '@/atoms';
 
-
-interface SpectraCliOptionsProps {
-  setSpectraCliOption: (option: string) => void;
-}
-
-const SpectraCliOptions: React.FC<SpectraCliOptionsProps> = ({ setSpectraCliOption }) => {
+const SpectraCliOptions = () => {
+  const [, setSpectraCliOption] = useAtom(spectraCliOptionsAtom);
   const options = [
     { value: 'check-realizability', label: 'Check Realizability' },
     { value: 'concrete-controller', label: 'Synthesize Controller' },
@@ -15,6 +12,7 @@ const SpectraCliOptions: React.FC<SpectraCliOptionsProps> = ({ setSpectraCliOpti
     { value: 'check-well-sep', label: 'Check well-separation' },
     { value: 'non-well-sep-core', label: 'Non-well-separated core' },
   ]
+
 
   const handleOptionChange = (selectedOption: { value: string; label: string } | null) => {
     if (selectedOption) {

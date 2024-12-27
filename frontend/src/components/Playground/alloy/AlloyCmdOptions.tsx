@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react'
 import Select, { SingleValue } from 'react-select';
-import { editorValueAtom } from '../../../atoms';
+import { editorValueAtom, alloySelectedCmdAtom, alloyCmdOptionsAtom } from '../../../atoms';
 import { useAtom } from 'jotai';
 
-interface AlloyCmdOptionsProps {
-  alloyCmdOption: { value: number, label: string }[];
-  setAlloyCmdOption: (options: { value: number, label: string }[]) => void;
-  setAlloySelectedCmd: (index: number) => void;
-}
-
-const AlloyCmdOptions: React.FC<AlloyCmdOptionsProps> = ({  alloyCmdOption, setAlloyCmdOption, setAlloySelectedCmd }) => {
+const AlloyCmdOptions = () => {
   const [editorValue] = useAtom(editorValueAtom);
+  const [, setAlloySelectedCmd] = useAtom(alloySelectedCmdAtom);
+  const [alloyCmdOption, setAlloyCmdOption] = useAtom(alloyCmdOptionsAtom);
+
+
   const findIndexByValue = (cmdOptionValue: number) => {
     return alloyCmdOption.findIndex((option) => option.value === cmdOptionValue)
   }

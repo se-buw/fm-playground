@@ -10,20 +10,16 @@ import {
   permalinkAtom,
   isExecutingAtom,
   lineToHighlightAtom,
-  outputAtom
+  outputAtom,
+  enableLspAtom
 } from "../../../atoms";
-interface ExecuteZ3Props {
-  showErrorModal: (value: string) => void;
-  enableLsp?: boolean;
-}
 
-export const executeZ3Wasm = async (
-  { showErrorModal,
-    enableLsp
-  }: ExecuteZ3Props) => {
+
+export const executeZ3Wasm = async () => {
   const editorValue = jotaiStore.get(editorValueAtom);
   const language = jotaiStore.get(languageAtom);
   const permalink = jotaiStore.get(permalinkAtom);
+  const enableLsp = jotaiStore.get(enableLspAtom);
   let response: any = null;
   const metadata = { 'ls': enableLsp };
   try {
@@ -31,13 +27,13 @@ export const executeZ3Wasm = async (
     if (response) { jotaiStore.set(permalinkAtom, response.data); }
   }
   catch (error: any) {
-    showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
+    jotaiStore.set(outputAtom, (`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`));
   }
 
   try {
     const res = await runZ3WASM(editorValue);
     if (res.error) {
-      showErrorModal(res.error);
+      jotaiStore.set(outputAtom, (res.error));
     } else {
       jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(res.output, language.id) || []));
       jotaiStore.set(outputAtom, (res.output));
@@ -49,7 +45,7 @@ export const executeZ3Wasm = async (
       jotaiStore.set(lineToHighlightAtom, (getLineToHighlight(res, language.id) || []));
       jotaiStore.set(outputAtom, (res));
     } catch (error: any) {
-      showErrorModal(error.message);
+      jotaiStore.set(outputAtom, (error.message));
     }
   }
   jotaiStore.set(isExecutingAtom, false);

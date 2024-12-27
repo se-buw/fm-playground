@@ -1,23 +1,24 @@
 import React from "react";
 import Select, { SingleValue } from "react-select";
-import fmpConfig from "../../../fmp.config";
-import { ToolDropdown } from "../../../fmp.config";
+import { useAtom } from "jotai";
+import { limbooleCliOptionsAtom } from "@/atoms";
 
-interface LimbooleCheckOptionsProps {
-  setLimbooleCheckOption: (option: ToolDropdown) => void;
+interface Option {
+  value: string;
+  label: string;
 }
 
-const LimbooleCheckOptions: React.FC<LimbooleCheckOptionsProps> = ({ setLimbooleCheckOption }) => {
-  const options = fmpConfig.tools.limboole.commandDropdown?.map((option) => {
-    return {
-      value: option.value,
-      label: option.label
-    }
-  }) || [];
+const LimbooleCheckOptions = () => {
+  const options = [
+    { value: "0", label: "Validity" },
+    { value: "1", label: "Satisfiability" },
+    { value: "2", label: "QBF Satisfiability" },
+  ];
+  const [, setLimbooleCheckOption] = useAtom(limbooleCliOptionsAtom);
 
   const handleOptionChange = (selectedOption: SingleValue<{ value: string; label: string }>) => {
     if (selectedOption) {
-      setLimbooleCheckOption(selectedOption as ToolDropdown);
+      setLimbooleCheckOption(selectedOption);
     }
   };
 

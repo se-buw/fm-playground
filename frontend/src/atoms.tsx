@@ -25,7 +25,22 @@ export const isExecutingAtom = atom(false);
 export const lineToHighlightAtom = atom<number[]>([]);
 export const outputAtom = atom<string>("");
 export const isFullScreenAtom = atom(false);
+export const enableLspAtom = atom(false);
+
+export const spectraCliOptionsAtom = atom('check-realizability');
+export const limbooleCliOptionsAtom = atom({ value: "1", label: 'satisfiability' });
+
+export const alloySelectedCmdAtom = atom(0);
+export const alloyInstanceAtom = atom<any[]>([]);
+export const alloyCmdOptionsAtom = atom<{ value: number, label: string }[]>([]);
+
 
 jotaiStore.sub(editorValueAtom, () => {})
 jotaiStore.sub(languageAtom, () => {})
 jotaiStore.sub(lineToHighlightAtom, () => {})
+jotaiStore.sub(enableLspAtom, () => {})
+jotaiStore.sub(spectraCliOptionsAtom, () => {})
+jotaiStore.sub(limbooleCliOptionsAtom, () => {})
+jotaiStore.sub(alloySelectedCmdAtom, () => {})
+jotaiStore.sub(alloyInstanceAtom, () => {})
+jotaiStore.sub(alloyCmdOptionsAtom, () => {})

@@ -22,6 +22,7 @@ export interface Tool {
   commandDropdown?: ToolDropdown[];
   language: LanguageConfig;
   apiUrl: string;
+  additionalUiPath?: string;
   apiUrlNext?: string;
   apiUrlEval?: string;
 }
@@ -48,11 +49,6 @@ const fmpConfig: FmpConfig = {
         label: "Limboole",
         value: "0",
       },
-      commandDropdown: [
-        { value: "0", label: "Validity" },
-        { value: "1", label: "Satisfiability" },
-        { value: "2", label: "QBF Satisfiability" },
-      ],
       language: {
         tokenProvider: {
           token: "limbooleLang",
@@ -64,6 +60,7 @@ const fmpConfig: FmpConfig = {
         },
       },
       apiUrl: 'http://localhost:8082/limboole/run/',
+      additionalUiPath: "../../components/Playground/limboole/LimbooleCheckOptions",
     },
     smt: {
       name: "SMT",
@@ -126,6 +123,7 @@ const fmpConfig: FmpConfig = {
       apiUrl: '/alloy/alloy/instance',
       apiUrlNext: '/alloy/alloy/nextInstance',
       apiUrlEval: '/alloy/alloy/eval',
+      additionalUiPath: "../../components/Playground/alloy/AlloyCmdOptions",
     },
     spectra: {
       name: "Spectra",
@@ -135,14 +133,6 @@ const fmpConfig: FmpConfig = {
         label: "Spectra",
         value: "6",
       },
-      commandDropdown: [
-        { value: 'check-realizability', label: 'Check Realizability' },
-        { value: 'concrete-controller', label: 'Synthesize Controller' },
-        { value: 'concrete-counter-strategy', label: 'Counter-strategy' },
-        { value: 'unrealizable-core', label: 'Unrealizable core' },
-        { value: 'check-well-sep', label: 'Check well-separation' },
-        { value: 'non-well-sep-core', label: 'Non-well-separated core' },
-      ],
       language: {
         tokenProvider: {
           token: "spectraLang",
@@ -154,6 +144,7 @@ const fmpConfig: FmpConfig = {
         },
       },
       apiUrl: '/spectra/spectra/run/',
+      additionalUiPath: "../../components/Playground/spectra/SpectraCliOptions",
     },
   },
 };
