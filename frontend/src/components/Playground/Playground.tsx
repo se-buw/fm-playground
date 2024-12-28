@@ -9,7 +9,7 @@ import MessageModal from '../Utils/Modals/MessageModal';
 import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
 import type { LanguageProps } from './Tools';
-import fmpConfig, { ToolDropdown } from '../../../fmp.config.js';
+import fmpConfig from '../../../fmp.config.js';
 import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
 import {
@@ -29,10 +29,6 @@ interface PlaygroundProps {
   editorTheme: string;
 }
 
-interface AlloyCmdOption {
-  value: number;
-  label: string;
-}
 
 const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const navigate = useNavigate();
@@ -41,18 +37,13 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const [language, setLanguage] = useAtom(languageAtom);
   const [permalink, setPermalink] = useAtom(permalinkAtom);
-  const [output, setOutput] = useAtom(outputAtom); // contains the output from the tool execution.
-  const [isExecuting, setIsExecuting] = useAtom(isExecutingAtom); // contains the state of the tool execution.
-  const [isFullScreen, setIsFullScreen] = useAtom(isFullScreenAtom); // contains the state of the full screen mode.
-  const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
-  const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false); // contains the state of the Nuxmv copyrigth notice modal.
+  const [, setOutput] = useAtom(outputAtom); // contains the output from the tool execution.
+  const [, setIsExecuting] = useAtom(isExecutingAtom); // contains the state of the tool execution.
+  const [, setIsFullScreen] = useAtom(isFullScreenAtom); // contains the state of the full screen mode.
+  const [, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
   const [, setLineToHighlight] = useAtom(lineToHighlightAtom); // contains the line number to highlight in the editor.
-  const [alloyInstance, setAlloyInstance] = useState([]); // contains the elements for the Alloy graph.
-  const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
-  const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
-  const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   const [enableLsp, setEnableLsp] = useState(false); // contains the state of the LSP editor.
 
   /**

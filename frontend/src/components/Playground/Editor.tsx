@@ -1,14 +1,11 @@
 import { useState, useRef, useEffect } from 'react'
 import Editor from "@monaco-editor/react";
-import { limbooleConf, limbooleLang } from '../../assets/languages/limboole'
-import { smt2Conf, smt2Lang, smt2ComplitionProvider } from '../../assets/languages/smt2'
-import { nuxmvConf, nuxmvLang } from '../../assets/languages/nuxmv'
-import { alloyConf, alloyLang } from '../../assets/languages/alloy'
-import { spectraConf, spectraLang } from '../../assets/languages/spectra';
 import '../../assets/style/Playground.css'
 import * as monacoEditor from 'monaco-editor';
 import { useAtom } from 'jotai';
 import { editorValueAtom, languageAtom, lineToHighlightAtom } from '../../atoms';
+import fmpConfig from '../../../fmp.config';
+import { languageConfigMap } from './ToolMaps';
 
 interface BasicCodeEditorProps {
   height: string;
@@ -71,31 +68,21 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   function handleEditorDidMount(editor: monacoEditor.editor.IStandaloneCodeEditor, monaco: typeof monacoEditor) {
     editorRef.current = editor
     editorRef.current.focus()
-    // register limboole language
-    monaco.languages.register({ id: 'limboole' })
-    monaco.languages.setMonarchTokensProvider('limboole', limbooleLang)
-    monaco.languages.setLanguageConfiguration('limboole', limbooleConf)
 
-    // register smt2 language
-    monaco.languages.register({ id: 'smt2' })
-    monaco.languages.setMonarchTokensProvider('smt2', smt2Lang)
-    monaco.languages.setLanguageConfiguration('smt2', smt2Conf)
-    monaco.languages.registerCompletionItemProvider('smt2', smt2ComplitionProvider);
-
-    // register nuxmv language
-    monaco.languages.register({ id: 'xmv' })
-    monaco.languages.setMonarchTokensProvider('xmv', nuxmvLang)
-    monaco.languages.setLanguageConfiguration('xmv', nuxmvConf)
-
-    // register alloy language
-    monaco.languages.register({ id: 'als' })
-    monaco.languages.setMonarchTokensProvider('als', alloyLang)
-    monaco.languages.setLanguageConfiguration('als', alloyConf)
-
-    // register spectra language
-    monaco.languages.register({ id: 'spectra' })
-    monaco.languages.setMonarchTokensProvider('spectra', spectraLang)
-    monaco.languages.setLanguageConfiguration('spectra', spectraConf)
+    const tools = fmpConfig.tools;
+    for (const toolKey in tools) {
+      const tool = tools[toolKey];
+      const languageId = tool.extension.replace(/^\./, '');
+      const resource = languageConfigMap[languageId];
+      if(!resource) {
+        console.warn(`Language configuration for ${languageId} not found.`);
+        continue;
+      }
+      const { tokenProvider, configuration } = resource;
+      monaco.languages.register({ id: languageId });
+      monaco.languages.setMonarchTokensProvider(languageId, tokenProvider);
+      monaco.languages.setLanguageConfiguration(languageId, configuration);
+    }
 
     monaco.editor.defineTheme('spectraTheme', {
       base: props.editorTheme === 'vs-dark' ? 'vs-dark' : 'vs', // 'vs-dark' or 'vs'

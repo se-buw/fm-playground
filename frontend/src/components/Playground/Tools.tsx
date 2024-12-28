@@ -16,13 +16,6 @@ interface ToolsProps {
   selected: LanguageProps;
 }
 
-// TODO: Use it when the fmp.config.ts file is ready
-const options = Object.values(fmpConfig.tools).map(tool => ({
-  id: tool.name.toLowerCase(),
-  value: tool.dropdown.value,
-  label: tool.dropdown.label,
-  short: tool.shortName
-}));
 
 
 const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {

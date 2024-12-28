@@ -7,9 +7,7 @@ import { outputAtom } from '@/atoms';
 
 const PlainOutput = () => {
   const [code, setCode] = useAtom(outputAtom);
-
-
-
+  
   return (
     <pre
       id='info'

@@ -9,17 +9,12 @@ interface LanguageConfig {
   };
 }
 
-export type ToolDropdown = {
-  label: string;
-  value: string;
-}
+
 
 export interface Tool {
   name: string;
   extension: string;
   shortName: string;
-  dropdown: ToolDropdown;
-  commandDropdown?: ToolDropdown[];
   language: LanguageConfig;
   apiUrl: string;
   additionalUiPath?: string;
@@ -45,10 +40,6 @@ const fmpConfig: FmpConfig = {
       name: "Limboole",
       extension: "limboole",
       shortName: "SAT",
-      dropdown: {
-        label: "Limboole",
-        value: "0",
-      },
       language: {
         tokenProvider: {
           token: "limbooleLang",
@@ -66,10 +57,6 @@ const fmpConfig: FmpConfig = {
       name: "SMT",
       extension: "smt2",
       shortName: "SMT",
-      dropdown: {
-        label: "SMT",
-        value: "3",
-      },
       language: {
         tokenProvider: {
           token: "smt2Lang",
@@ -84,12 +71,8 @@ const fmpConfig: FmpConfig = {
     },
     nuxmv: {
       name: "nuXmv",
-      extension: ".smv",
+      extension: ".xmv",
       shortName: "XMV",
-      dropdown: {
-        label: "nuXmv",
-        value: "4",
-      },
       language: {
         tokenProvider: {
           token: "nuxmvLang",
@@ -106,10 +89,6 @@ const fmpConfig: FmpConfig = {
       name: "Alloy",
       extension: "als",
       shortName: "ALS",
-      dropdown: {
-        label: "Alloy",
-        value: "5",
-      },
       language: {
         tokenProvider: {
           token: "alloyLang",
@@ -129,10 +108,6 @@ const fmpConfig: FmpConfig = {
       name: "Spectra",
       extension: "spectra",
       shortName: "SPECTRA",
-      dropdown: {
-        label: "Spectra",
-        value: "6",
-      },
       language: {
         tokenProvider: {
           token: "spectraLang",
