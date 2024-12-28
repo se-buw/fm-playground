@@ -55,6 +55,9 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
   const limbooleReader = new BrowserMessageReader(limbooleChannel.port1);
   const limbooleWriter = new BrowserMessageWriter(limbooleChannel.port1);
 
+  const localEditorTheme = localStorage.getItem('editorTheme') ?? 'vs-dark';
+  const themeToApply = localEditorTheme === 'vs-dark' ? 'Default Dark Modern' : 'Default Light Modern';
+  
   return {
     id: '42',
     logLevel: LogLevel.Debug,
@@ -146,7 +149,7 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
       ],
       userConfiguration: {
         json: JSON.stringify({
-          'workbench.colorTheme': 'Default Light Modern',
+          'workbench.colorTheme': themeToApply,
           'editor.guides.bracketPairsHorizontal': 'active',
           'editor.wordBasedSuggestions': 'off',
           'editor.experimental.asyncTokenization': true,

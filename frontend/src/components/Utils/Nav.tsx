@@ -38,7 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
   const authContext = useContext(AuthContext);
   const isLoggedIn = authContext?.isLoggedIn ?? false;
-  const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => {});
+  const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => { });
   const [openNavRight, setOpenNavRight] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -156,8 +156,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
               <h2 className='bold header'>FM Playground</h2>
             </MDBNavbarBrand>
 
-            {isMobile && <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />}
-
             <MDBNavbarToggler
               type='button'
               aria-expanded='false'
@@ -205,23 +203,25 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                     Login
                   </MDBBtn>
                 )}
-
                 {isMobile && (
-                  <button
-                    color='navbar-option-button'
-                    onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                    style={{ backgroundColor: 'transparent', border: 'none', display: 'flex', alignItems: 'center' }}
-                  >
-                    <FaGithub size={24} />
-                  </button>
+                  <div className='navbar-mobile'>
+                    <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+                    <button
+                      className='navbar-mobile-github'
+                      onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                      
+                    >
+                      <FaGithub size={24} />
+                    </button>
+                  </div>
                 )}
               </MDBNavbarNav>
             </MDBCollapse>
           </MDBContainer>
           {/* FIXME: Enable Dark mode once moved all the LSP */}
-          {/* <div className='toggle-icon'>
+          <div className='toggle-icon'>
             <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-          </div> */}
+          </div>
           <FaGithub
             size={40}
             className='github-icon'

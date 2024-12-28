@@ -7,7 +7,7 @@ import Guides from '@/components/Utils/Guides';
 import MessageModal from '@/components/Utils/Modals/MessageModal';
 import { getCodeByParmalink } from '@/api/playgroundApi';
 import { fmpConfig, toolExecutionMap } from '@/components/Playground/ToolMaps';
-import UpdateSnackbar from '@/components/Utils/Modals/UpdateSnackbar.js';
+import Feedback from '@/components/Utils/Feedback';
 import { editorValueAtom, languageAtom, permalinkAtom, isExecutingAtom, outputAtom, isFullScreenAtom } from '@/atoms';
 import InputArea from '@/components/Playground/InputArea';
 import OutputArea from '@/components/Playground//OutputArea';
@@ -15,7 +15,11 @@ import '@/assets/style/Playground.css';
 
 import type { LanguageProps } from './Tools';
 
-const Playground = () => {
+interface PlaygroundProps {
+  editorTheme: string;
+}
+
+const Playground : React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the editor area
   const outputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the output area
@@ -27,7 +31,11 @@ const Playground = () => {
   const [, setIsFullScreen] = useAtom(isFullScreenAtom); // contains the state of the full screen mode.
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
-  const [enableLsp] = useState(false); // contains the state of the LSP editor.
+  const [showFeedback, setShowFeedback] = useState<boolean>(false);
+
+  const toggleFeedbackForm = () => {
+    setShowFeedback((prev) => !prev);
+  };
 
   /**
    * Load the code and language from the URL.
@@ -174,7 +182,12 @@ const Playground = () => {
       <Tooltip id='playground-tooltip' />
       <div className='row Playground'>
         <div className='col-md-6 Playground' ref={inputDivRef}>
-          <InputArea onRunButtonClick={handleToolExecution} onFullScreenButtonClick={() => toggleFullScreen('input')} />
+          <InputArea 
+          editorTheme={editorTheme}
+          onRunButtonClick={handleToolExecution} 
+          onFullScreenButtonClick={() => toggleFullScreen('input')} 
+          
+          />
         </div>
         <div className='col-md-6 Playground' ref={outputDivRef}>
           <OutputArea onFullScreenButtonClick={() => toggleFullScreen('output')} />
@@ -190,9 +203,10 @@ const Playground = () => {
           errorMessage={errorMessage}
         />
       )}
-      {enableLsp && language.id === 'smt2' && (
-        <UpdateSnackbar message='This feature is experimental for the SMT language. <br/> If you encounter any misbehavior, please provide a <i>Feedback</i>.' />
-      )}
+      <button className='floating-button' onClick={toggleFeedbackForm}>
+        Feedback
+      </button>
+      {showFeedback && <Feedback toggleFeedback={toggleFeedbackForm} />}
     </div>
   );
 };

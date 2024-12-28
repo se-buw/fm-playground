@@ -75,3 +75,16 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar-mobile{
+  padding-top: 0.5rem;
+  padding-left: 0.4rem;
+}
+.navbar-mobile-github{
+  display: flex;
+  align-items: center;
+  margin-left: 1.4rem;
+  background: transparent;
+  border: none;
+  fill: var(--primary-text-color);
+}
