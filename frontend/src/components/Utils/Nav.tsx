@@ -38,7 +38,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
   const authContext = useContext(AuthContext);
   const isLoggedIn = authContext?.isLoggedIn ?? false;
-  const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => { });
+  const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => {});
   const [openNavRight, setOpenNavRight] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -209,7 +209,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                     <button
                       className='navbar-mobile-github'
                       onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                      
                     >
                       <FaGithub size={24} />
                     </button>

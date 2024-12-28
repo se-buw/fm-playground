@@ -26,7 +26,7 @@ export const additionalInputAreaUiMap: Record<string, React.FC<any>> = {
 };
 
 export const additonalOutputAreaUiMap: Record<string, React.FC<any>> = {
-  XMV: NuxmvCopyrightNotice
+  XMV: NuxmvCopyrightNotice,
 };
 
 export const toolExecutionMap: Record<string, () => void> = {

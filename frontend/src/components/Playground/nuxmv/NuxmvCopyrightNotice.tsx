@@ -1,9 +1,9 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import NuxmvCopyrightNoticeModal from '@/components/Playground/nuxmv/NuxmvCopyrightNoticeModal';
 
 const NuxmvCopyrightNotice = () => {
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false);
-  
+
   return (
     <div className='col-md-12'>
       <a
@@ -22,7 +22,7 @@ const NuxmvCopyrightNotice = () => {
         />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default NuxmvCopyrightNotice
+export default NuxmvCopyrightNotice;

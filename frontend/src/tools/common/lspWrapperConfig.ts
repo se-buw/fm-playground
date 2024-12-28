@@ -57,7 +57,7 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
 
   const localEditorTheme = localStorage.getItem('editorTheme') ?? 'vs-dark';
   const themeToApply = localEditorTheme === 'vs-dark' ? 'Default Dark Modern' : 'Default Light Modern';
-  
+
   return {
     id: '42',
     logLevel: LogLevel.Debug,

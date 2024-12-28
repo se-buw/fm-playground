@@ -22,7 +22,6 @@ const App = () => {
     return storedTheme || 'vs';
   });
 
-  
   // const handleToggleTheme = () => {
   //   setIsDarkTheme((prevIsDarkTheme) => {
   //     const newTheme = !prevIsDarkTheme;
@@ -51,7 +50,7 @@ const App = () => {
           <Router>
             <Routes>
               <Route element={<ProtectedRoutes />}></Route>
-              <Route path='/' element={<Playground  editorTheme={editorTheme}/>} />
+              <Route path='/' element={<Playground editorTheme={editorTheme} />} />
               <Route path='/login' element={<Login />} />
               <Route path='*' element={<Missing />} />
             </Routes>

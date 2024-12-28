@@ -24,7 +24,7 @@ import Editor from './Editor';
 import { additionalInputAreaUiMap } from './ToolMaps';
 
 interface InputAreaProps {
-  editorTheme: string; 
+  editorTheme: string;
   onRunButtonClick: () => void;
   onFullScreenButtonClick: () => void;
 }
@@ -155,7 +155,7 @@ const InputArea: React.FC<InputAreaProps> = ({ editorTheme, onRunButtonClick, on
         </div>
       </div>
       {enableLsp ? (
-        <LspEditor height={isFullScreen ? '80vh' : '60vh'} editorTheme={editorTheme}/>
+        <LspEditor height={isFullScreen ? '80vh' : '60vh'} editorTheme={editorTheme} />
       ) : (
         <Editor height={isFullScreen ? '80vh' : '60vh'} editorTheme={editorTheme} />
       )}

@@ -19,7 +19,7 @@ interface PlaygroundProps {
   editorTheme: string;
 }
 
-const Playground : React.FC<PlaygroundProps> = ({ editorTheme }) => {
+const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the editor area
   const outputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the output area
@@ -182,11 +182,10 @@ const Playground : React.FC<PlaygroundProps> = ({ editorTheme }) => {
       <Tooltip id='playground-tooltip' />
       <div className='row Playground'>
         <div className='col-md-6 Playground' ref={inputDivRef}>
-          <InputArea 
-          editorTheme={editorTheme}
-          onRunButtonClick={handleToolExecution} 
-          onFullScreenButtonClick={() => toggleFullScreen('input')} 
-          
+          <InputArea
+            editorTheme={editorTheme}
+            onRunButtonClick={handleToolExecution}
+            onFullScreenButtonClick={() => toggleFullScreen('input')}
           />
         </div>
         <div className='col-md-6 Playground' ref={outputDivRef}>
