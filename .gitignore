@@ -1,5 +1,4 @@
 .idea/
-.vscode/
 .venv/
 nuXmv-2.0.0-win64/
 flask_session/
