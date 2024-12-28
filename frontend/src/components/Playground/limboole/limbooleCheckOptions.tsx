@@ -1,18 +1,12 @@
-import React from "react";
-import Select, { SingleValue } from "react-select";
-import { useAtom } from "jotai";
-import { limbooleCliOptionsAtom } from "@/atoms";
-
-interface Option {
-  value: string;
-  label: string;
-}
+import Select, { SingleValue } from 'react-select';
+import { useAtom } from 'jotai';
+import { limbooleCliOptionsAtom } from '@/atoms';
 
 const LimbooleCheckOptions = () => {
   const options = [
-    { value: "0", label: "Validity" },
-    { value: "1", label: "Satisfiability" },
-    { value: "2", label: "QBF Satisfiability" },
+    { value: '0', label: 'Validity' },
+    { value: '1', label: 'Satisfiability' },
+    { value: '2', label: 'QBF Satisfiability' },
   ];
   const [, setLimbooleCheckOption] = useAtom(limbooleCliOptionsAtom);
 
@@ -22,14 +16,13 @@ const LimbooleCheckOptions = () => {
     }
   };
 
-
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: "15px" }}>
-      <p style={{ marginRight: "10px", marginTop: "5px" }}>Check:</p>
-      <div style={{ width: "70%" }}>
+    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+      <p style={{ marginRight: '10px', marginTop: '5px' }}>Check:</p>
+      <div style={{ width: '70%' }}>
         <Select
-          className="basic-single react-select-container"
-          classNamePrefix="select"
+          className='basic-single react-select-container'
+          classNamePrefix='select'
           defaultValue={options[1] || null}
           isDisabled={false}
           isLoading={false}
@@ -41,7 +34,7 @@ const LimbooleCheckOptions = () => {
         />
       </div>
     </div>
-  )
+  );
 };
 
 export default LimbooleCheckOptions;

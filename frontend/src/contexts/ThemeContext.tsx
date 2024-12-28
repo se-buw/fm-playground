@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export const ThemeContext = createContext({});
 
@@ -7,21 +7,22 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [isDark, setIsDark] = useState(null)
+  const [isDark, setIsDark] = useState(null);
 
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, []);
 
   return (
-    <ThemeContext.Provider value={{
-      isDark, setIsDark
-    }}>
+    <ThemeContext.Provider
+      value={{
+        isDark,
+        setIsDark,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
-  )
-}
+  );
+};
 
 export default function useTheme() {
   return useContext(ThemeContext);
-};
+}

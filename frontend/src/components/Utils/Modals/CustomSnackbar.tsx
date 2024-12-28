@@ -1,17 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Snackbar } from '@mui/material';
-
-
 interface CustomSnackbarProps {
   message: string;
   onClose?: () => void;
 }
 
-/**
- * Display a snackbar with a message.
- * @param {*} props
- * @returns
- */
 const CustomSnackbar: React.FC<CustomSnackbarProps> = ({ message, onClose }: any) => {
   const [open, setOpen] = useState(!!message);
 

@@ -9,8 +9,7 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
-import '../../../assets/style/Modal.css'
-
+import '@/assets/style/Modal.css';
 interface ConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -22,36 +21,38 @@ interface ConfirmModalProps {
 const ConfirmModal: React.FC<ConfirmModalProps> = ({ isOpen, onClose, title, message, onConfirm }) => {
   const toggleOpen = () => onClose();
   const handleConfirm = () => {
-    toggleOpen(); // Close the modal
+    toggleOpen();
     if (onConfirm && typeof onConfirm === 'function') {
-      onConfirm(); // Call the onConfirm callback from the parent
+      onConfirm();
     }
   };
 
   return (
     <>
-      <MDBModal
-        open={isOpen}
-        onClose={toggleOpen}
-        tabIndex='-1'>
+      <MDBModal open={isOpen} onClose={toggleOpen} tabIndex='-1'>
         <MDBModalDialog>
           <MDBModalContent className='model-content'>
             <MDBModalHeader className='modal-header'>
               <MDBModalTitle className='modal-title'>{title}</MDBModalTitle>
               <MDBBtn className='btn-close' color='none' onClick={toggleOpen}></MDBBtn>
             </MDBModalHeader>
-            <MDBModalBody className='modal-body'> <p>{message}</p></MDBModalBody>
+            <MDBModalBody className='modal-body'>
+              {' '}
+              <p>{message}</p>
+            </MDBModalBody>
             <MDBModalFooter className='modal-footer'>
               <MDBBtn color='secondary' onClick={toggleOpen}>
                 Close
               </MDBBtn>
-              <MDBBtn color='danger' onClick={handleConfirm}>Confirm</MDBBtn>
+              <MDBBtn color='danger' onClick={handleConfirm}>
+                Confirm
+              </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
       </MDBModal>
     </>
-  )
-}
+  );
+};
 
-export default ConfirmModal
+export default ConfirmModal;

@@ -1,42 +1,30 @@
 import { useState, useEffect } from 'react';
-import { IconButton } from '@mui/material';
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { TbBinaryTree } from "react-icons/tb";
-import { CiViewTable } from "react-icons/ci";
-import { CiTextAlignLeft } from "react-icons/ci";
-import { LiaClipboardListSolid } from "react-icons/lia";
-import {
-  MDBBtn,
-  MDBInput,
-  MDBTabs,
-  MDBTabsItem,
-  MDBTabsLink,
-  MDBTabsContent,
-  MDBTabsPane
-} from 'mdb-react-ui-kit';
-import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
-import { getLineToHighlight } from '@/tools/common/lineHighlightingUtil';
-import {
-  getGraphData,
-  parseAlloyErrorMessage,
-  getTraceLengthAndBackloop
-} from '@/tools/alloy/alloyUtils';
-import '../../../assets/style/AlloyOutput.css';
-import AlloyEvaluator from './AlloyEvaluator';
-import { useAtom } from 'jotai';
-import { lineToHighlightAtom, isFullScreenAtom, alloyInstanceAtom } from '../../../atoms';
 import axios from 'axios';
+import { useAtom } from 'jotai';
+import { IconButton } from '@mui/material';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { TbBinaryTree } from 'react-icons/tb';
+import { CiViewTable } from 'react-icons/ci';
+import { CiTextAlignLeft } from 'react-icons/ci';
+import { LiaClipboardListSolid } from 'react-icons/lia';
+import { MDBBtn, MDBInput, MDBTabs, MDBTabsItem, MDBTabsLink, MDBTabsContent, MDBTabsPane } from 'mdb-react-ui-kit';
+import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
+import AlloyEvaluator from './AlloyEvaluator';
+import { getLineToHighlight } from '@/tools/common/lineHighlightingUtil';
+import { getGraphData, parseAlloyErrorMessage, getTraceLengthAndBackloop } from '@/tools/alloy/alloyUtils';
+import '@/assets/style/AlloyOutput.css';
+import { lineToHighlightAtom, isFullScreenAtom, alloyInstanceAtom } from '@/atoms';
 
 async function getAlloyNextInstance(specId: string | null) {
   let url = '/alloy/alloy/nextInstance';
   if (!url) {
-    throw new Error("Alloy Next Instance API URL not found");
+    throw new Error('Alloy Next Instance API URL not found');
   }
   try {
     const response = await axios.post(url, specId, {
       headers: {
-        'Content-Type': 'text/plain'
-      }
+        'Content-Type': 'text/plain',
+      },
     });
     return response.data;
   } catch (error) {
@@ -46,17 +34,17 @@ async function getAlloyNextInstance(specId: string | null) {
 
 const AlloyOutput = () => {
   const [, setLineToHighlight] = useAtom(lineToHighlightAtom);
-  const [alloyInstance, setAlloyInstance] = useAtom(alloyInstanceAtom)
+  const [alloyInstance, setAlloyInstance] = useAtom(alloyInstanceAtom);
   const [isFullScreen] = useAtom(isFullScreenAtom);
   const [alloyTraceIndex, setalloyTraceIndex] = useState(0);
   const [alloySpecId, setAlloySpecId] = useState(null);
-  const [alloyVizGraph, setAlloyVizGraph] = useState<{ data: { id: any; label: any; } }[]>([]);
+  const [alloyVizGraph, setAlloyVizGraph] = useState<{ data: { id: any; label: any } }[]>([]);
   const [isTemporal, setIsTemporal] = useState(false);
   const [isInstance, setIsInstance] = useState(true);
   const [alloyErrorMessage, setAlloyErrorMessage] = useState('');
   const [alloyPlainMessage, setAlloyPlainMessage] = useState('');
   const [alloyTraceLoop, setAlloyTraceLoop] = useState('');
-  const [lastInstance, setLastInstance] = useState<{ data: { id: any; label: any; } }[]>([]);
+  const [lastInstance, setLastInstance] = useState<{ data: { id: any; label: any } }[]>([]);
   const [isLastInstance, setIsLastInstance] = useState(false);
   const [alloyTabularInstance, setAlloyTabularInstance] = useState('');
   const [alloyTextInstance, setAlloyTextInstance] = useState('');
@@ -67,7 +55,7 @@ const AlloyOutput = () => {
 
   /**
    * Update the Alloy instance in the state when the API response is received
-  */
+   */
   useEffect(() => {
     setAlloyInstance(alloyInstance);
     setAlloySpecId((alloyInstance as any).specId);
@@ -80,13 +68,14 @@ const AlloyOutput = () => {
    * @param {Object} alloyInstance - The Alloy instance object
    */
   useEffect(() => {
-    if (alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance) { // if there is an instance
-      const alloy = (alloyInstance as { [key: string]: any })["alloy"];
-      const specId = (alloyInstance as any)["specId"][0] || (alloyInstance as any)["specId"];
+    if (alloyInstance && 'alloy' in alloyInstance && 'specId' in alloyInstance) {
+      // if there is an instance
+      const alloy = (alloyInstance as { [key: string]: any })['alloy'];
+      const specId = (alloyInstance as any)['specId'][0] || (alloyInstance as any)['specId'];
       setAlloySpecId(specId);
       setIsInstance(true);
-      const instances = Array.isArray(alloy["instance"]) ? alloy["instance"] : [alloy["instance"]];
-      setIsTemporal(instances.some((instance) => instance["mintrace"] !== -1));
+      const instances = Array.isArray(alloy['instance']) ? alloy['instance'] : [alloy['instance']];
+      setIsTemporal(instances.some((instance) => instance['mintrace'] !== -1));
       const { traceLength, backloop } = getTraceLengthAndBackloop(instances[0]);
       if (instances.length > 1) {
         if (alloyTraceIndex < instances.length) {
@@ -96,68 +85,79 @@ const AlloyOutput = () => {
           setInstanceIndexToShow(backloop + m);
         }
         const graphData = getGraphData(instances[instanceIndexToShow]);
-        setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
+        setAlloyPlainMessage(graphData.length === 0 ? 'Empty Instance' : '');
         setAlloyVizGraph(graphData);
         setLastInstance(graphData);
-        if (isTemporal)
-          setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
-        else
-          setAlloyTraceLoop('');
-      } else { // instance found but empty
+        if (isTemporal) setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`);
+        else setAlloyTraceLoop('');
+      } else {
+        // instance found but empty
         const graphData = getGraphData(instances[0]);
-        setAlloyPlainMessage(graphData.length === 0 ? "Empty Instance" : '');
+        setAlloyPlainMessage(graphData.length === 0 ? 'Empty Instance' : '');
         setAlloyVizGraph(graphData);
         setLastInstance(graphData);
-        if (isTemporal)
-          setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`)
-        else
-          setAlloyTraceLoop('');
+        if (isTemporal) setAlloyTraceLoop(`Trace Length: ${traceLength} | Backloop: ${backloop}`);
+        else setAlloyTraceLoop('');
       }
-    }
-    else if (alloyInstance && "error" in alloyInstance) { // instance not found and error message is present
+    } else if (alloyInstance && 'error' in alloyInstance) {
+      // instance not found and error message is present
       setAlloyVizGraph([]);
-      if (typeof alloyInstance === 'object' && alloyInstance !== null && 'error' in alloyInstance && (alloyInstance as any)["error"].includes("No instance found")) { // error for no instance found for the given command
+      if (
+        typeof alloyInstance === 'object' &&
+        alloyInstance !== null &&
+        'error' in alloyInstance &&
+        (alloyInstance as any)['error'].includes('No instance found')
+      ) {
+        // error for no instance found for the given command
         setIsInstance(false);
-        setAlloyErrorMessage("No instance found");
-      } else if (typeof alloyInstance === 'object' && alloyInstance !== null && 'error' in alloyInstance && (alloyInstance as any)["error"].includes("No more instances")) { // when we reach the last instance, keep the last instance in the graph and show the message
+        setAlloyErrorMessage('No instance found');
+      } else if (
+        typeof alloyInstance === 'object' &&
+        alloyInstance !== null &&
+        'error' in alloyInstance &&
+        (alloyInstance as any)['error'].includes('No more instances')
+      ) {
+        // when we reach the last instance, keep the last instance in the graph and show the message
         setIsInstance(true);
         setAlloyVizGraph(lastInstance);
-        setAlloyPlainMessage("No more instances");
-      }
-      else if (alloyInstance["error"]) { // other errors like syntax error, type error etc.
+        setAlloyPlainMessage('No more instances');
+      } else if (alloyInstance['error']) {
+        // other errors like syntax error, type error etc.
         setIsInstance(false);
-        setAlloyErrorMessage(parseAlloyErrorMessage(alloyInstance["error"]));
-        const errorMessage = typeof alloyInstance["error"] === 'string' ? alloyInstance["error"] : '';
+        setAlloyErrorMessage(parseAlloyErrorMessage(alloyInstance['error']));
+        const errorMessage = typeof alloyInstance['error'] === 'string' ? alloyInstance['error'] : '';
         setLineToHighlight(getLineToHighlight(errorMessage, 'alloy') || []);
-      } else { // unknown error
+      } else {
+        // unknown error
         setIsInstance(false);
-        setAlloyPlainMessage(alloyInstance["error"] as string);
+        setAlloyPlainMessage(alloyInstance['error'] as string);
       }
     }
 
     // Tabular instance
-    if (alloyInstance && typeof alloyInstance === 'object' && "tabularInstance" in alloyInstance) {
-      setAlloyTabularInstance((alloyInstance as any)["tabularInstance"][0]);
+    if (alloyInstance && typeof alloyInstance === 'object' && 'tabularInstance' in alloyInstance) {
+      setAlloyTabularInstance((alloyInstance as any)['tabularInstance'][0]);
     }
 
     // Text instance
-    if (alloyInstance && "textInstance" in alloyInstance) {
-      setAlloyTextInstance((alloyInstance as any)["textInstance"][0]);
+    if (alloyInstance && 'textInstance' in alloyInstance) {
+      setAlloyTextInstance((alloyInstance as any)['textInstance'][0]);
     }
   }, [alloyInstance, alloyTraceIndex, isTemporal]);
 
   // FIXME: This might be merged with the above useEffect.
   // cause: asynchronous updates in React's state when we change the instanceIndexToShow to useState.
   useEffect(() => {
-    if (alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance) {
-      const alloy = (alloyInstance as { [key: string]: any })["alloy"];
-      const instances = Array.isArray(alloy["instance"]) ? alloy["instance"] : [alloy["instance"]];
+    if (alloyInstance && 'alloy' in alloyInstance && 'specId' in alloyInstance) {
+      const alloy = (alloyInstance as { [key: string]: any })['alloy'];
+      const instances = Array.isArray(alloy['instance']) ? alloy['instance'] : [alloy['instance']];
 
       if (isTemporal && instances.length > 1) {
         const { traceLength, backloop } = getTraceLengthAndBackloop(instances[0]);
-        const instanceIndexToShow = (alloyTraceIndex < traceLength)
-          ? alloyTraceIndex
-          : backloop + ((alloyTraceIndex - traceLength) % (traceLength - backloop));
+        const instanceIndexToShow =
+          alloyTraceIndex < traceLength
+            ? alloyTraceIndex
+            : backloop + ((alloyTraceIndex - traceLength) % (traceLength - backloop));
 
         const graphData = getGraphData(instances[instanceIndexToShow]);
         setAlloyVizGraph(graphData);
@@ -169,7 +169,7 @@ const AlloyOutput = () => {
     setIsNextInstanceExecuting(true);
     getAlloyNextInstance(alloySpecId)
       .then((data) => {
-        if (data["error"] && data["error"].includes("No instance found")) {
+        if (data['error'] && data['error'].includes('No instance found')) {
           setAlloyInstance(alloyInstance);
           setIsLastInstance(true);
           setalloyTraceIndex(0);
@@ -184,7 +184,7 @@ const AlloyOutput = () => {
         console.log(error);
         setIsNextInstanceExecuting(false);
       });
-  }
+  };
 
   const handleForwardTrace = () => {
     setalloyTraceIndex((prevIndex) => prevIndex + 1);
@@ -194,17 +194,13 @@ const AlloyOutput = () => {
     setalloyTraceIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
   };
 
-  const handleAlloyErrorMessageChange = (value: string) => {
-    setAlloyErrorMessage(value);
-  }
-
   const handleTabClick = (tabValue: string) => {
     if (tabValue === activeTab) return;
     setActiveTab(tabValue);
-  }
+  };
 
   /**
-   * Alloy API returns all the states in a single instance. 
+   * Alloy API returns all the states in a single instance.
    * We need to extract the selected state from the instance.
    */
   const getAlloyTextInstance = (alloyTextInstance: string, state: number) => {
@@ -212,38 +208,46 @@ const AlloyOutput = () => {
     const states = alloyTextInstance.split('------State').slice(1);
     const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
     return `${instanceHeader}${selectedState}`;
-  }
+  };
 
   /**
-   * Alloy API returns all the states in a single instance. 
+   * Alloy API returns all the states in a single instance.
    * We need to extract the selected state from the instance.
    */
   const getAlloyTabularInstance = (alloyTabularInstance: string, state: number) => {
     const states = alloyTabularInstance.split('------State').slice(1);
     const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
     return selectedState;
-  }
+  };
 
   return (
     <div>
       {isInstance ? (
         <div>
-          <MDBTabs justify >
+          <MDBTabs justify>
             <MDBTabsItem>
-              <MDBTabsLink onClick={() => handleTabClick('graph')} active={activeTab === 'graph'}><TbBinaryTree /> Viz</MDBTabsLink>
+              <MDBTabsLink onClick={() => handleTabClick('graph')} active={activeTab === 'graph'}>
+                <TbBinaryTree /> Viz
+              </MDBTabsLink>
             </MDBTabsItem>
             <MDBTabsItem>
-              <MDBTabsLink onClick={() => handleTabClick('tabular')} active={activeTab === 'tabular'}><CiViewTable /> Table</MDBTabsLink>
+              <MDBTabsLink onClick={() => handleTabClick('tabular')} active={activeTab === 'tabular'}>
+                <CiViewTable /> Table
+              </MDBTabsLink>
             </MDBTabsItem>
             <MDBTabsItem>
-              <MDBTabsLink onClick={() => handleTabClick('text')} active={activeTab === 'text'}><CiTextAlignLeft /> Text</MDBTabsLink>
+              <MDBTabsLink onClick={() => handleTabClick('text')} active={activeTab === 'text'}>
+                <CiTextAlignLeft /> Text
+              </MDBTabsLink>
             </MDBTabsItem>
             <MDBTabsItem>
-              <MDBTabsLink onClick={() => handleTabClick('eval')} active={activeTab === 'eval'}><LiaClipboardListSolid /> Eval</MDBTabsLink>
+              <MDBTabsLink onClick={() => handleTabClick('eval')} active={activeTab === 'eval'}>
+                <LiaClipboardListSolid /> Eval
+              </MDBTabsLink>
             </MDBTabsItem>
           </MDBTabs>
 
-          {activeTab == 'eval' &&
+          {activeTab == 'eval' && (
             <AlloyEvaluator
               height={isFullScreen ? '80vh' : '52vh'}
               specId={alloySpecId}
@@ -251,14 +255,11 @@ const AlloyOutput = () => {
               evaluatorOutput={evaluatorOutput}
               setEvaluatorOutput={setEvaluatorOutput}
             />
-          }
+          )}
 
           <MDBTabsContent>
             <MDBTabsPane open={activeTab === 'graph'}>
-              <AlloyCytoscapeGraph
-                alloyVizGraph={alloyVizGraph}
-                height={isFullScreen ? '80vh' : '57vh'}
-              />
+              <AlloyCytoscapeGraph alloyVizGraph={alloyVizGraph} height={isFullScreen ? '80vh' : '57vh'} />
             </MDBTabsPane>
             <MDBTabsPane open={activeTab === 'tabular'}>
               <pre
@@ -267,9 +268,11 @@ const AlloyOutput = () => {
                 style={{
                   borderRadius: '8px',
                   height: isFullScreen ? '80vh' : '57vh',
-                  whiteSpace: 'pre-wrap'
+                  whiteSpace: 'pre-wrap',
                 }}
-                dangerouslySetInnerHTML={{ __html: getAlloyTabularInstance(alloyTabularInstance, instanceIndexToShow) }}
+                dangerouslySetInnerHTML={{
+                  __html: getAlloyTabularInstance(alloyTabularInstance, instanceIndexToShow),
+                }}
               />
             </MDBTabsPane>
             <MDBTabsPane open={activeTab === 'text'}>
@@ -279,15 +282,13 @@ const AlloyOutput = () => {
                 style={{
                   borderRadius: '8px',
                   height: isFullScreen ? '80vh' : '57vh',
-                  whiteSpace: 'pre-wrap'
+                  whiteSpace: 'pre-wrap',
                 }}
-                dangerouslySetInnerHTML={{ __html: getAlloyTextInstance(alloyTextInstance, instanceIndexToShow) }}
+                dangerouslySetInnerHTML={{
+                  __html: getAlloyTextInstance(alloyTextInstance, instanceIndexToShow),
+                }}
               />
             </MDBTabsPane>
-
-            {/* <MDBTabsPane open={activeTab === 'eval'}>
-
-            </MDBTabsPane> */}
           </MDBTabsContent>
 
           <div>
@@ -297,50 +298,44 @@ const AlloyOutput = () => {
               style={{
                 height: alloyPlainMessage ? 'auto' : '35px',
               }}
-              dangerouslySetInnerHTML={{ __html: alloyPlainMessage ? alloyPlainMessage + (alloyTraceLoop ? ' | ' + alloyTraceLoop : '') : alloyTraceLoop }}
+              dangerouslySetInnerHTML={{
+                __html: alloyPlainMessage
+                  ? alloyPlainMessage + (alloyTraceLoop ? ' | ' + alloyTraceLoop : '')
+                  : alloyTraceLoop,
+              }}
             />
           </div>
 
-
           <div
-            style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
           >
-            {alloyInstance && "alloy" in alloyInstance && "specId" in alloyInstance &&
-              <MDBBtn
-                color="success"
-                onClick={handleNextInstance}
-                disabled={isNextInstanceExecuting || isLastInstance}
-              >
-                {isNextInstanceExecuting ? "Computing..." : isTemporal ? "Next Trace" : "Next Instance"}
+            {alloyInstance && 'alloy' in alloyInstance && 'specId' in alloyInstance && (
+              <MDBBtn color='success' onClick={handleNextInstance} disabled={isNextInstanceExecuting || isLastInstance}>
+                {isNextInstanceExecuting ? 'Computing...' : isTemporal ? 'Next Trace' : 'Next Instance'}
                 {/* {isTemporal ? "Next Trace" : "Next Instance"} */}
               </MDBBtn>
-            }
-            {isTemporal &&
+            )}
+            {isTemporal && (
               <div
-                style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
               >
-                <IconButton
-                  onClick={handleBackwardTrace}
-                >
-                  <FaArrowLeft
-                    className='playground-icon'
-                    role='button'
-                  />
+                <IconButton onClick={handleBackwardTrace}>
+                  <FaArrowLeft className='playground-icon' role='button' />
                 </IconButton>
-                <MDBInput
-                  style={{ width: '50px', textAlign: 'center' }}
-                  type="text"
-                  readonly
-                  value={alloyTraceIndex} />
-                <IconButton
-                  onClick={handleForwardTrace}
-                ><FaArrowRight
-                    className='playground-icon'
-                    role='button'
-                  />
+                <MDBInput style={{ width: '50px', textAlign: 'center' }} type='text' readonly value={alloyTraceIndex} />
+                <IconButton onClick={handleForwardTrace}>
+                  <FaArrowRight className='playground-icon' role='button' />
                 </IconButton>
               </div>
-            }
+            )}
           </div>
         </div>
       ) : (
@@ -350,12 +345,11 @@ const AlloyOutput = () => {
           style={{
             borderRadius: '8px',
             height: isFullScreen ? '80vh' : '57vh',
-            whiteSpace: 'pre-wrap'
+            whiteSpace: 'pre-wrap',
           }}
           dangerouslySetInnerHTML={{ __html: alloyErrorMessage }}
         />
-      )
-      }
+      )}
     </div>
   );
 };

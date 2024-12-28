@@ -17,7 +17,6 @@ interface GuidesProps {
 
 const guidesData: GuidesData = data;
 
-
 const Guides: React.FC<GuidesProps> = ({ id }: GuidesProps) => {
   const guideData = guidesData[id];
 
@@ -33,12 +32,18 @@ const Guides: React.FC<GuidesProps> = ({ id }: GuidesProps) => {
   return (
     <div>
       <h2>Guides</h2>
-      <div className="row">
+      <div className='row'>
         {guideData.map((item, index) => (
-          <div key={index} className="col-md-4" style={{ marginBottom: '8px' }}>
-            <div className="card guide-box">
-              <div className="card-body">
-                <h5 className="card-title">{<a target="_blank" rel="noopener noreferrer" href={item.link}>{item.title} </a>}</h5>
+          <div key={index} className='col-md-4' style={{ marginBottom: '8px' }}>
+            <div className='card guide-box'>
+              <div className='card-body'>
+                <h5 className='card-title'>
+                  {
+                    <a target='_blank' rel='noopener noreferrer' href={item.link}>
+                      {item.title}{' '}
+                    </a>
+                  }
+                </h5>
               </div>
             </div>
           </div>

@@ -20,30 +20,36 @@ async function getAlloyEval(specId: string, expr: string, state: number) {
   }
 }
 
-const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state, evaluatorOutput, setEvaluatorOutput }) => {
-
+const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({
+  height,
+  specId,
+  state,
+  evaluatorOutput,
+  setEvaluatorOutput,
+}) => {
   const handleEvaluate = (expr: string) => {
     if (!expr || !specId) return;
-    getAlloyEval(specId, expr, state)
-      .then((res) => {
-        if (res.result) {
-          setEvaluatorOutput( expr + '<br>&nbsp;&nbsp;' + res.result + '<br>' + evaluatorOutput );
-        } else if (res.error) {
-          setEvaluatorOutput(expr + '<br>&nbsp;&nbsp;<span style="color: red;">' + res.error + '</span><br>' + evaluatorOutput);
-        }
-      });
-  }
+    getAlloyEval(specId, expr, state).then((res) => {
+      if (res.result) {
+        setEvaluatorOutput(expr + '<br>&nbsp;&nbsp;' + res.result + '<br>' + evaluatorOutput);
+      } else if (res.error) {
+        setEvaluatorOutput(
+          expr + '<br>&nbsp;&nbsp;<span style="color: red;">' + res.error + '</span><br>' + evaluatorOutput
+        );
+      }
+    });
+  };
 
   const handleClear = () => {
     setEvaluatorOutput('');
-  }
+  };
 
   return (
     <>
       <MDBInput
-        label="Alloy Expressions"
-        id="alloyExprForm"
-        type="text"
+        label='Alloy Expressions'
+        id='alloyExprForm'
+        type='text'
         className='alloy-eval-expression-input'
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
@@ -52,23 +58,22 @@ const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state, 
         }}
       />
       <div style={{ position: 'relative' }}>
-        <button className="alloy-eval-close-icon" onClick={handleClear} >&times;</button>
+        <button className='alloy-eval-close-icon' onClick={handleClear}>
+          &times;
+        </button>
         <pre
           className='plain-output-box'
           contentEditable={false}
           style={{
             borderRadius: '8px',
             height: height,
-            whiteSpace: 'pre-wrap'
+            whiteSpace: 'pre-wrap',
           }}
           dangerouslySetInnerHTML={{ __html: evaluatorOutput }}
         />
       </div>
-
     </>
-
   );
-}
+};
 
 export default AlloyEvaluator;
-

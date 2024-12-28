@@ -4,9 +4,8 @@ import {
   MDBCard,
   MDBCardBody,
   MDBIcon
-}
-  from 'mdb-react-ui-kit';
-import '../../assets/style/Login.css';
+} from 'mdb-react-ui-kit';
+import '@/assets/style/Login.css';
 
 function Login() {
   function handleGoogleLogin() {
@@ -20,7 +19,7 @@ function Login() {
     <MDBContainer className='d-flex justify-content-center align-items-center' style={{ height: '100vh' }}>
       <MDBCard className='log-in-card'>
         <div className='text-center mt-3'>
-          <img src='logo_se.png' alt='SE Logo'  className="logo" />
+          <img src='logo_se.png' alt='SE Logo' className="logo" />
         </div>
         <h5 className='mx-auto mt-3'>Login with your identity provider</h5>
         <hr />

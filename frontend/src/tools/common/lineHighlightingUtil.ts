@@ -1,24 +1,25 @@
-
 function getLineToHighlightLimboole(result: string) {
-  return result.split('\n')
-    .filter(line => line.includes('error') && line.includes('<stdin>'))
-    .map(line => parseInt(line.split(':')[1]))
-    .filter(line => !isNaN(line));
+  return result
+    .split('\n')
+    .filter((line) => line.includes('error') && line.includes('<stdin>'))
+    .map((line) => parseInt(line.split(':')[1]))
+    .filter((line) => !isNaN(line));
 }
 
-
 function getLineToHighlightSmt2(result: string) {
-  return result.split('\n')
-      .filter(line => line.includes('error') && line.includes('line '))
-      .map(line => parseInt(line.split('line ')[1]))
-      .filter(line => !isNaN(line));
+  return result
+    .split('\n')
+    .filter((line) => line.includes('error') && line.includes('line '))
+    .map((line) => parseInt(line.split('line ')[1]))
+    .filter((line) => !isNaN(line));
 }
 
 function getLineToHighlightXmv(result: string) {
-  return result.split('\n')
-      .filter(line => line.toLowerCase().includes('error'.toLowerCase()) && line.includes('line '))
-      .map(line => parseInt(line.split('line ')[1]))
-      .filter(line => !isNaN(line));
+  return result
+    .split('\n')
+    .filter((line) => line.toLowerCase().includes('error'.toLowerCase()) && line.includes('line '))
+    .map((line) => parseInt(line.split('line ')[1]))
+    .filter((line) => !isNaN(line));
 }
 
 function getLinesToHighlightSpectra(result: string) {
@@ -32,7 +33,7 @@ function getLinesToHighlightSpectra(result: string) {
     lines.push(...match[1].split(/\s+/).filter(Boolean).map(Number));
   }
   if (errorMatches && errorMatches.length > 0) {
-    errorMatches.forEach(errorMatch => lines.push(parseInt(errorMatch[1])));
+    errorMatches.forEach((errorMatch) => lines.push(parseInt(errorMatch[1])));
   }
   return lines;
 }
@@ -46,12 +47,11 @@ function getLinesToHighlightAlloy(result: string) {
   return [];
 }
 
-
 /**
  * Get the line number to highlight in the code editor.
  * @param {*} result - output of the tool execution.
  * @param {*} toolId - language id i.e., 'limboole', 'smt2', 'xmv', 'spectra'
- * @returns 
+ * @returns
  */
 export function getLineToHighlight(result: string, toolId: string) {
   if (toolId === 'limboole') {
@@ -62,7 +62,7 @@ export function getLineToHighlight(result: string, toolId: string) {
     return getLineToHighlightXmv(result);
   } else if (toolId === 'spectra') {
     return getLinesToHighlightSpectra(result);
-  }else if (toolId === 'alloy') {
+  } else if (toolId === 'alloy') {
     return getLinesToHighlightAlloy(result);
   }
 }

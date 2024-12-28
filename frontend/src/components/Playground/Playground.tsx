@@ -1,34 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Tooltip } from 'react-tooltip'
+import { useAtom } from 'jotai';
+import { Tooltip } from 'react-tooltip';
 import Tools from '@/components/Playground/Tools';
 import Guides from '@/components/Utils/Guides';
 import MessageModal from '@/components/Utils/Modals/MessageModal';
-import { getCodeByParmalink, } from '@/api/playgroundApi';
-import '@/assets/style/Playground.css'
-import type { LanguageProps } from './Tools';
+import { getCodeByParmalink } from '@/api/playgroundApi';
 import { fmpConfig, toolExecutionMap } from '@/components/Playground/ToolMaps';
 import UpdateSnackbar from '@/components/Utils/Modals/UpdateSnackbar.js';
-import { useAtom } from 'jotai';
-import {
-  editorValueAtom,
-  languageAtom,
-  permalinkAtom,
-  isExecutingAtom,
-  outputAtom,
-  isFullScreenAtom
-} from '@/atoms';
+import { editorValueAtom, languageAtom, permalinkAtom, isExecutingAtom, outputAtom, isFullScreenAtom } from '@/atoms';
 import InputArea from '@/components/Playground/InputArea';
 import OutputArea from '@/components/Playground//OutputArea';
+import '@/assets/style/Playground.css';
 
-interface PlaygroundProps {
-  editorTheme: string;
-}
+import type { LanguageProps } from './Tools';
 
-
-const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
+const Playground = () => {
   const navigate = useNavigate();
-  const inputDivRef = useRef<HTMLDivElement>(null);  // contains the reference to the editor area
+  const inputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the editor area
   const outputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the output area
   const [, setEditorValue] = useAtom(editorValueAtom);
   const [language, setLanguage] = useAtom(languageAtom);
@@ -44,10 +33,11 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
    * Load the code and language from the URL.
    */
   useEffect(() => {
-    // Get the 'check' parameter from the URL
     const urlParams = new URLSearchParams(window.location.search);
     let checkParam = urlParams.get('check');
-    if (checkParam === "VAL" || checkParam === "QBF") { checkParam = "SAT" } // v2.0.0: VAL and QBF are merged into SAT
+    if (checkParam === 'VAL' || checkParam === 'QBF') {
+      checkParam = 'SAT';
+    } // v2.0.0: VAL and QBF are merged into SAT
 
     const permalinkParam = urlParams.get('p');
 
@@ -58,22 +48,21 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
       short: tool.shortName,
     }));
 
-    const selectedOption = options.find(option => option.short === checkParam);
+    const selectedOption = options.find((option) => option.short === checkParam);
 
     // Load the code if 'check' parameter is present
     if (permalinkParam) {
       if (checkParam && permalinkParam) {
         loadCode(checkParam, permalinkParam);
       }
-      setPermalink({ check: checkParam, permalink: permalinkParam })
+      setPermalink({ check: checkParam, permalink: permalinkParam });
     }
 
     // Update the selected language if 'check' parameter is present
     if (selectedOption) {
       setLanguage(selectedOption);
     }
-
-  }, [])
+  }, []);
 
   /**
    * Update the URL when permalink changes.
@@ -87,27 +76,26 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
 
   /**
    * Update the URL with ``check`` type when language changes.
-   * @param {*} newLanguage 
+   * @param {*} newLanguage
    */
   const handleLanguageChange = (newLanguage: LanguageProps) => {
-    setLanguage(newLanguage)
-    window.history.pushState(null, '', `?check=${newLanguage.short}`)
-  }
-
+    setLanguage(newLanguage);
+    window.history.pushState(null, '', `?check=${newLanguage.short}`);
+  };
 
   const loadCode = async (check: string, permalink: string) => {
     await getCodeByParmalink(check, permalink)
       .then((res) => {
-        setEditorValue(res.code)
+        setEditorValue(res.code);
       })
-      .catch((err) => {
-        alert("Permaling not found. Redirecting...")
-        window.open(`/?check=SAT`, '_self')
-      })
-  }
+      .catch((_err) => {
+        alert('Permaling not found. Redirecting...');
+        window.open(`/?check=SAT`, '_self');
+      });
+  };
 
   const handleToolExecution = async () => {
-    setOutput('')
+    setOutput('');
     try {
       setIsExecuting(true);
       const currentTool = toolExecutionMap[language.short];
@@ -117,20 +105,20 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
         setIsExecuting(false);
       }
     } catch (err: any) {
-      if (err.code === "ERR_NETWORK") {
-        showErrorModal('Network Error. Please check your internet connection.')
-      }
-      else if (err.response.status === 413) {
-        showErrorModal('Code too long. Please reduce the size of the code.')
-      }
-      else {
-        showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
+      if (err.code === 'ERR_NETWORK') {
+        showErrorModal('Network Error. Please check your internet connection.');
+      } else if (err.response.status === 413) {
+        showErrorModal('Code too long. Please reduce the size of the code.');
+      } else {
+        showErrorModal(
+          `Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`
+        );
       }
     }
-  }
+  };
 
   const toggleFullScreen = (div: 'input' | 'output') => {
-    const element = { 'input': inputDivRef.current, 'output': outputDivRef.current }[div as 'input' | 'output'];
+    const element = { input: inputDivRef.current, output: outputDivRef.current }[div as 'input' | 'output'];
     const theme = localStorage.getItem('isDarkTheme') === 'true' ? 'dark' : 'light';
     if (!document.fullscreenElement) {
       // Enter fullscreen mode
@@ -181,23 +169,15 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   };
 
   return (
-    <div className="container Playground">
-      <Tools
-        onChange={handleLanguageChange}
-        selected={language}
-      />
-      <Tooltip id="playground-tooltip" />
-      <div className="row Playground">
-        <div className="col-md-6 Playground" ref={inputDivRef}>
-          <InputArea
-            onRunButtonClick={handleToolExecution}
-            onFullScreenButtonClick={() => toggleFullScreen('input')}
-          />
+    <div className='container Playground'>
+      <Tools onChange={handleLanguageChange} selected={language} />
+      <Tooltip id='playground-tooltip' />
+      <div className='row Playground'>
+        <div className='col-md-6 Playground' ref={inputDivRef}>
+          <InputArea onRunButtonClick={handleToolExecution} onFullScreenButtonClick={() => toggleFullScreen('input')} />
         </div>
-        <div className='col-md-6 Playground' ref={outputDivRef} >
-          <OutputArea
-            onFullScreenButtonClick={() => toggleFullScreen('output')}
-          />
+        <div className='col-md-6 Playground' ref={outputDivRef}>
+          <OutputArea onFullScreenButtonClick={() => toggleFullScreen('output')} />
         </div>
       </div>
       <Guides id={language.id} />
@@ -206,16 +186,15 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
           isErrorMessageModalOpen={isErrorMessageModalOpen}
           setIsErrorMessageModalOpen={hideErrorModal}
           toggleErrorMessageModal={hideErrorModal}
-          title="Error"
+          title='Error'
           errorMessage={errorMessage}
         />
       )}
-      {enableLsp && language.id === "smt2" && (
-        <UpdateSnackbar
-          message="This feature is experimental for the SMT language. <br/> If you encounter any misbehavior, please provide a <i>Feedback</i>." />
+      {enableLsp && language.id === 'smt2' && (
+        <UpdateSnackbar message='This feature is experimental for the SMT language. <br/> If you encounter any misbehavior, please provide a <i>Feedback</i>.' />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Playground
+export default Playground;

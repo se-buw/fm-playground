@@ -1,9 +1,8 @@
 const generateColor = (relationship: string) => {
-
   // Generate a color based on the relationship name
   const hashCode = (s: string) => {
     return s.split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
+      a = (a << 5) - a + b.charCodeAt(0);
       return a & a;
     }, 0);
   };
@@ -32,8 +31,8 @@ const CytoscapeStylesheet = (uniqueRelationships: string[]) => {
         'text-valign': 'center',
         'text-halign': 'center',
         'text-wrap': 'wrap',
-        'text-max-width': '80px', 
-        label: 'data(label)', 
+        'text-max-width': '80px',
+        label: 'data(label)',
       },
     },
     {
@@ -75,4 +74,4 @@ const CytoscapeStylesheet = (uniqueRelationships: string[]) => {
   return styles;
 };
 
-export default CytoscapeStylesheet
+export default CytoscapeStylesheet;

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import CytoscapeComponent from "react-cytoscapejs";
+import React, { useEffect, useState } from 'react';
+import CytoscapeComponent from 'react-cytoscapejs';
 import CytoscapeStylesheet from './CytoscapeStylesheet';
 
 interface AlloyCytoscapeGraphProps {
@@ -7,11 +7,11 @@ interface AlloyCytoscapeGraphProps {
   height: string;
 }
 
-const AlloyCytoscapeGraph: React.FC<AlloyCytoscapeGraphProps> = ({alloyVizGraph, height}) => {
-  const cyRef = React.useRef<cytoscape.Core| null>(null);
-  const [layout, setLayout] = useState({ name: "breadthfirst" });
+const AlloyCytoscapeGraph: React.FC<AlloyCytoscapeGraphProps> = ({ alloyVizGraph, height }) => {
+  const cyRef = React.useRef<cytoscape.Core | null>(null);
+  const [layout] = useState({ name: 'breadthfirst' });
   const [stylesheet, setStylesheet] = useState<cytoscape.Stylesheet[]>([]);
-  const [uniqueRelationships, setUniqueRelationships] = useState<any[]>([]);
+  const [, setUniqueRelationships] = useState<any[]>([]);
 
   useEffect(() => {
     if (cyRef.current) {
@@ -20,32 +20,28 @@ const AlloyCytoscapeGraph: React.FC<AlloyCytoscapeGraphProps> = ({alloyVizGraph,
     }
     const uniqueRels = [
       ...new Set(
-        alloyVizGraph
-          .filter((element) => element.data.relationship)
-          .map((element) => element.data.relationship)
+        alloyVizGraph.filter((element) => element.data.relationship).map((element) => element.data.relationship)
       ),
     ];
     setUniqueRelationships(uniqueRels);
     setStylesheet(CytoscapeStylesheet(uniqueRels) as cytoscape.Stylesheet[]);
   }, [alloyVizGraph]);
 
-
   return (
     <CytoscapeComponent
-    className='alloy-viz-area'
+      className='alloy-viz-area'
       elements={alloyVizGraph}
       style={{
-        width: "100%",
+        width: '100%',
         height: height,
       }}
       layout={layout}
       stylesheet={stylesheet}
       minZoom={0.1}
       maxZoom={1}
-      
       cy={(cy) => (cyRef.current = cy)}
     />
   );
-}
+};
 
 export default AlloyCytoscapeGraph;

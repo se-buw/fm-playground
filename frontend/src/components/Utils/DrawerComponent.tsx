@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import _debounce from 'lodash/debounce';
-import { PiPushPinFill, PiPushPinSlashFill } from "react-icons/pi";
-import { MdRefresh, MdOutlineSearch } from "react-icons/md";
+import { PiPushPinFill, PiPushPinSlashFill } from 'react-icons/pi';
+import { MdRefresh, MdOutlineSearch } from 'react-icons/md';
 import {
   Drawer,
   List,
@@ -10,11 +10,12 @@ import {
   Typography,
   Divider,
   IconButton,
-  InputAdornment, Input
+  InputAdornment,
+  Input,
 } from '@mui/material';
-import { getHistoryByPage, searchUserHistory, getCodeById } from '../../api/playgroundApi';
-import '../../assets/style/Drawer.css';
-import '../../assets/style/Playground.css';
+import { getHistoryByPage, searchUserHistory, getCodeById } from '@/api/playgroundApi';
+import '@/assets/style/Drawer.css';
+import '@/assets/style/Playground.css';
 
 interface DrawerComponentProps {
   isOpen: boolean;
@@ -29,8 +30,8 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
     check: string;
     code: string;
   }
-  
-  const [data, setData] = useState<HistoryItem[]>([]); // contains the user history 
+
+  const [data, setData] = useState<HistoryItem[]>([]); // contains the user history
   const [page, setPage] = useState(1); // contains the current page number for history pagination
   const [loading, setLoading] = useState(false); // contains the loading state for history pagination
   const [pinned, setPinned] = useState(false); // contains the pinned state for the drawer
@@ -41,7 +42,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
   const drawerRef = useRef(null);
 
   /**
-   * Fetches the user history from the API. 
+   * Fetches the user history from the API.
    * If the page number is 1, it will set the data to the fetched data. Otherwise, it will append the data to the existing data.
    * hasMoreData is used to check if there's more data to fetch.
    * @param {number} pageNumber - The page number to fetch
@@ -75,7 +76,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
    * @param {string} query - The search query
    * @todo Add pagination for search results if needed
    * @returns {void}
-  */
+   */
   const debouncedSearchDataFetch = _debounce(async (query, pageNumber) => {
     if (query.length < 1) {
       // clean the search data if the query is less than 3 characters
@@ -93,8 +94,8 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
           }
         })
         .catch((err: unknown) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -110,11 +111,11 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
   };
 
   /**
-   * Handles the search query change. Once the search query changes, 
+   * Handles the search query change. Once the search query changes,
    * it will call the debounced search data fetch function.
    * @param {object} event - The event object
    * @returns {void}
-  */
+   */
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const newSearchQuery = event.target.value;
     setDebouncedSearchQuery(newSearchQuery);
@@ -123,9 +124,9 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
 
   /**
    * Handles the scroll event. If the user scrolls to the bottom of the page,
-   * it will call the fetch data function to fetch the next page. 
-   * @returns {void} 
-  */
+   * it will call the fetch data function to fetch the next page.
+   * @returns {void}
+   */
   const handleScroll = () => {
     if (drawerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = drawerRef.current;
@@ -140,7 +141,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
     }
   };
 
-  /** 
+  /**
    * Handles the item click event. When the user clicks on an item on the drawer,
    * it will fetch the item content from the API and call the callback function
    * with the code.
@@ -149,8 +150,8 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
    * @param {string} check - The check name (Check type: Limboole, NuXmv, etc.)
    * @returns {void}
    * @todo Add error handling
-  */
-  const handleItemClick = async (itemId: number, check: string) => {
+   */
+  const handleItemClick = async (itemId: number, _check: string) => {
     try {
       await getCodeById(itemId)
         .then((res: { check: string; permalink: string; code: string }) => {
@@ -160,8 +161,8 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
           setSelectedItemId(itemId);
         })
         .catch((err: unknown) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     } catch (error) {
       console.error('Error fetching item content:', error);
     }
@@ -186,10 +187,9 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
         setData((prevData) => [...res.history, ...prevData]);
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   };
-
 
   /**
    * Remove duplicates from data array
@@ -197,11 +197,12 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
    * But because of async nature of the API, it's possible to get duplicate data someetimes.
    * @todo Remove this if the API is updated to return unique data.
    */
-  const uniqueData = (data ?? []).length > 0
-    ? Array.from(new Set(data.map((item) => item.id))).map((id) => {
-      return data.find((item) => item.id === id);
-    })
-    : [];
+  const uniqueData =
+    (data ?? []).length > 0
+      ? Array.from(new Set(data.map((item) => item.id))).map((id) => {
+          return data.find((item) => item.id === id);
+        })
+      : [];
 
   /**
    * Remove duplicates from search data array
@@ -209,12 +210,12 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
    * But because of async nature of the API, it's possible to get duplicate data someetimes.
    * @todo Remove this if the API is updated to return unique data.
    */
-  const uniqueSearchData = (searchData ?? []).length > 0
-    ? Array.from(new Set(searchData.map((item) => item.id))).map((id) => {
-      return searchData.find((item) => item.id === id);
-    })
-    : [];
-
+  const uniqueSearchData =
+    (searchData ?? []).length > 0
+      ? Array.from(new Set(searchData.map((item) => item.id))).map((id) => {
+          return searchData.find((item) => item.id === id);
+        })
+      : [];
 
   useEffect(() => {
     if (page === 1) {
@@ -223,9 +224,9 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
   }, [page]);
 
   /**
- * Adds an event listener to the window object to listen for scroll events.
- * Handle scroll event is called when the user scrolls to the bottom of the page.
- */
+   * Adds an event listener to the window object to listen for scroll events.
+   * Handle scroll event is called when the user scrolls to the bottom of the page.
+   */
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -239,7 +240,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
     }
   }, [isOpen]);
 
-  /** 
+  /**
    * Fetches the user history from the API when the search query changes.
    */
   useEffect(() => {
@@ -250,11 +251,10 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
     <Drawer
       ref={drawerRef}
       variant={pinned ? 'permanent' : 'temporary'}
-      anchor="right"
+      anchor='right'
       open={isOpen}
       onClose={onClose}
       ModalProps={{ disableScrollLock: true }}
-      // width={300} // FIXME: Remove if no issue found
       sx={{
         flexShrink: 0,
         '& .MuiDrawer-paper': {
@@ -273,27 +273,32 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
           onScroll={handleScroll}
         >
           <ListItem className='d-flex justify-content-between mx-auto'>
-            <Typography variant="h5">History</Typography>
+            <Typography variant='h5'>History</Typography>
             <div className='d-flex align-items-center'>
-              {debouncedSearchQuery
-                ? ''
-                : <IconButton onClick={handleRefresh}>
+              {debouncedSearchQuery ? (
+                ''
+              ) : (
+                <IconButton onClick={handleRefresh}>
                   <MdRefresh className='playground-icon' />
                 </IconButton>
-              }
+              )}
               <IconButton onClick={handlePinToggle}>
-                {pinned ? <PiPushPinFill className='playground-icon' /> : <PiPushPinSlashFill className='playground-icon' />}
+                {pinned ? (
+                  <PiPushPinFill className='playground-icon' />
+                ) : (
+                  <PiPushPinSlashFill className='playground-icon' />
+                )}
               </IconButton>
             </div>
           </ListItem>
           <ListItem>
             <Input
-              type="text"
-              placeholder="Search"
+              type='text'
+              placeholder='Search'
               onChange={handleSearchChange}
               fullWidth
               startAdornment={
-                <InputAdornment position="start">
+                <InputAdornment position='start'>
                   <IconButton>
                     <MdOutlineSearch className='playground-icon' />
                   </IconButton>
@@ -302,19 +307,22 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
             />
           </ListItem>
           {debouncedSearchQuery
-            ? uniqueSearchData
-              .map((item, index) => (
+            ? uniqueSearchData.map((item, index) => (
                 <React.Fragment key={item?.id}>
                   <ListItem disablePadding>
                     <ListItemButton
                       selected={item && selectedItemId === item.id}
-                      onClick={() => item && handleItemClick(item.id, item.check)}>
+                      onClick={() => item && handleItemClick(item.id, item.check)}
+                    >
                       <div>
-                        <Typography variant="subtitle1">
+                        <Typography variant='subtitle1'>
                           {item && `${item.time} -`} <span style={{ color: 'gray' }}>{item?.check}</span>
                         </Typography>
                         {item && (
-                          <Typography variant="subtitle1"> <code>{item.code}</code></Typography>
+                          <Typography variant='subtitle1'>
+                            {' '}
+                            <code>{item.code}</code>
+                          </Typography>
                         )}
                       </div>
                     </ListItemButton>
@@ -323,24 +331,27 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({ isOpen, onClose, onIt
                 </React.Fragment>
               ))
             : uniqueData.map((item, index) => (
-              <React.Fragment key={item?.id}>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    selected={selectedItemId === item?.id}
-                    onClick={() => item && handleItemClick(item.id, item.check)}>
-                    <div>
-                      <Typography variant="subtitle1">
-                        {item?.time} - <span style={{ color: 'gray' }}>{item?.check}</span>
-                      </Typography>
+                <React.Fragment key={item?.id}>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      selected={selectedItemId === item?.id}
+                      onClick={() => item && handleItemClick(item.id, item.check)}
+                    >
+                      <div>
+                        <Typography variant='subtitle1'>
+                          {item?.time} - <span style={{ color: 'gray' }}>{item?.check}</span>
+                        </Typography>
 
-                      <Typography variant="subtitle1"> <code>{item?.code}</code></Typography>
-                    </div>
-                  </ListItemButton>
-                </ListItem>
-                {index < data.length - 1 && <Divider />}
-              </React.Fragment>
-            ))}
-
+                        <Typography variant='subtitle1'>
+                          {' '}
+                          <code>{item?.code}</code>
+                        </Typography>
+                      </div>
+                    </ListItemButton>
+                  </ListItem>
+                  {index < data.length - 1 && <Divider />}
+                </React.Fragment>
+              ))}
         </List>
       </div>
     </Drawer>

@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 import Select, { SingleValue } from 'react-select';
-import { editorValueAtom, alloySelectedCmdAtom, alloyCmdOptionsAtom } from '../../../atoms';
 import { useAtom } from 'jotai';
+import { editorValueAtom, alloySelectedCmdAtom, alloyCmdOptionsAtom } from '@/atoms';
 
 const AlloyCmdOptions = () => {
   const [editorValue] = useAtom(editorValueAtom);
   const [, setAlloySelectedCmd] = useAtom(alloySelectedCmdAtom);
   const [alloyCmdOption, setAlloyCmdOption] = useAtom(alloyCmdOptionsAtom);
 
-
   const findIndexByValue = (cmdOptionValue: number) => {
-    return alloyCmdOption.findIndex((option) => option.value === cmdOptionValue)
-  }
+    return alloyCmdOption.findIndex((option) => option.value === cmdOptionValue);
+  };
 
   useEffect(() => {
     if (editorValue) {
@@ -40,20 +39,25 @@ const AlloyCmdOptions = () => {
     }
   }, [editorValue]);
 
-  
-  const handleOptionChange = (selectedOption: SingleValue<{ value: number, label: string }>) => {
+  const handleOptionChange = (selectedOption: SingleValue<{ value: number; label: string }>) => {
     if (selectedOption) {
-      setAlloySelectedCmd(findIndexByValue(selectedOption.value))
+      setAlloySelectedCmd(findIndexByValue(selectedOption.value));
     }
-  }
+  };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '15px' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '15px',
+      }}
+    >
       <p style={{ marginRight: '10px', marginTop: '5px' }}>Command:</p>
       <div style={{ width: '70%' }}>
         <Select
-          className="basic-single react-select-container"
-          classNamePrefix="select"
+          className='basic-single react-select-container'
+          classNamePrefix='select'
           isDisabled={false}
           isLoading={false}
           isClearable={false}
@@ -64,7 +68,7 @@ const AlloyCmdOptions = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AlloyCmdOptions
+export default AlloyCmdOptions;

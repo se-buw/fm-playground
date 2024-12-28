@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect } from 'react'
-import Editor from "@monaco-editor/react";
-import '../../assets/style/Playground.css'
+import { useState, useRef, useEffect } from 'react';
 import * as monacoEditor from 'monaco-editor';
+import Editor from '@monaco-editor/react';
 import { useAtom } from 'jotai';
 import { editorValueAtom, languageAtom, lineToHighlightAtom } from '@/atoms';
 import { fmpConfig, languageConfigMap } from '@/components/Playground/ToolMaps';
+import '@/assets/style/Playground.css';
 
 interface BasicCodeEditorProps {
   height: string;
@@ -19,15 +19,15 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
   const [decorationIds, setDecorationIds] = useState<string[]>([]);
 
   /**
-  * Sets the editor value when the editorValue prop changes.
-  */
+   * Sets the editor value when the editorValue prop changes.
+   */
   useEffect(() => {
     setEditorValue(editorValue);
   }, [editorValue]);
 
   /**
    * Sets the language when the language prop changes.
-  */
+   */
   useEffect(() => {
     setLanguage(language);
   }, [language.id]);
@@ -36,14 +36,14 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
     if (editorRef.current) {
       const editor = editorRef.current;
       if (lineToHighlight !== null && lineToHighlight.length > 0) {
-        const decorations = lineToHighlight.map(line => {
+        const decorations = lineToHighlight.map((line) => {
           return {
             range: new window.monaco.Range(line, 1, line, 1),
             options: {
               isWholeLine: true,
               className: 'lineHighlight',
-              glyphMarginClassName: 'lineHighlightGlyph'
-            }
+              glyphMarginClassName: 'lineHighlightGlyph',
+            },
           };
         });
         const newDecorationIds = editor.deltaDecorations(decorationIds, decorations);
@@ -56,24 +56,17 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
     }
   }, [lineToHighlight]);
 
-  /**
-   * Handles the editor did mount event. On mount, registers all the languages. 
-   * Languages and their configurations are defined in the assets/languages folder.
-   * @see assets/languages
-   * @param {*} editor // editor reference
-   * @param {*} monaco  
-   * @todo Add autocomplete for the languages (monaco.languages.registerCompletionItemProvider)
-   */
+  // Register the language configuration for each tool
   function handleEditorDidMount(editor: monacoEditor.editor.IStandaloneCodeEditor, monaco: typeof monacoEditor) {
-    editorRef.current = editor
-    editorRef.current.focus()
+    editorRef.current = editor;
+    editorRef.current.focus();
 
-    const tools: { [key: string]: { name: string; extension: string; shortName: string; } } = fmpConfig.tools;
+    const tools: { [key: string]: { name: string; extension: string; shortName: string } } = fmpConfig.tools;
     for (const toolKey in tools) {
       const tool = tools[toolKey as keyof typeof tools];
       const languageId = tool.extension.replace(/^\./, '');
       const resource = languageConfigMap[languageId];
-      if(!resource) {
+      if (!resource) {
         console.warn(`Language configuration for ${languageId} not found.`);
         continue;
       }
@@ -90,7 +83,6 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
         { token: 'system', foreground: '189BCC', fontStyle: 'bold' },
         { token: 'environment', foreground: '0CD806', fontStyle: 'bold' },
         { token: 'reg', foreground: 'FF00FF' },
-
       ],
       colors: {},
     });
@@ -100,30 +92,24 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
 
   useEffect(() => {
     if (editorRef.current) {
-      handleEditorDidMount(editorRef.current, window.monaco)
+      handleEditorDidMount(editorRef.current, window.monaco);
     }
   }, [props.editorTheme]);
 
-  /**
-   * Handles the code change event.
-   * Sets the editor value with the new code.
-   * @param {*} newCode 
-   */
   const handleCodeChange = (newCode: string | undefined) => {
     if (newCode !== undefined) {
       setEditorValue(newCode);
       setLineToHighlight([]);
     }
-  }
+  };
 
   return (
-
-    <div className="custom-code-editor">
+    <div className='custom-code-editor'>
       <Editor
         height={props.height}
-        width="100%"
+        width='100%'
         language={language.id}
-        defaultValue=""
+        defaultValue=''
         value={editorValue}
         theme={props.editorTheme}
         options={{
@@ -141,7 +127,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
         onChange={handleCodeChange}
       />
     </div>
-  )
-}
+  );
+};
 
 export default CodeEditor;

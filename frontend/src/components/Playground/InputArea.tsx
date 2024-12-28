@@ -1,19 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAtom } from 'jotai';
 import { Stack } from '@mui/material';
 import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
-import Toggle from 'react-toggle';
-import { useAtom } from 'jotai';
-import { enableLspAtom, editorValueAtom, outputAtom, permalinkAtom, languageAtom, isExecutingAtom, isFullScreenAtom } from '@/atoms';
 import { FaFileCirclePlus } from 'react-icons/fa6';
+import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
+import Toggle from 'react-toggle';
+import {
+  enableLspAtom,
+  editorValueAtom,
+  outputAtom,
+  permalinkAtom,
+  languageAtom,
+  isExecutingAtom,
+  isFullScreenAtom,
+} from '@/atoms';
 import ConfirmModal from '@/components/Utils/Modals/ConfirmModal';
 import FileUploadButton from '@/components/Utils/FileUpload';
 import FileDownload from '@/components/Utils/FileDownload';
 import CopyToClipboardBtn from '@/components/Utils/CopyToClipboardBtn';
 import LspEditor from './LspEditor';
 import Editor from './Editor';
-import { additionalInputAreaUiMap } from './ToolMaps'
-import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
+import { additionalInputAreaUiMap } from './ToolMaps';
 
 interface InputAreaProps {
   onRunButtonClick: () => void;
@@ -31,21 +39,21 @@ const InputArea: React.FC<InputAreaProps> = ({ onRunButtonClick, onFullScreenBut
 
   const [isNewSpecModalOpen, setIsNewSpecModalOpen] = useState(false); // state to control the new spec modal
 
-  const AdditionalUi = additionalInputAreaUiMap[language.short]
+  const AdditionalUi = additionalInputAreaUiMap[language.short];
 
   const openModal = () => setIsNewSpecModalOpen(true); // open the new spec modal
   const closeModal = () => setIsNewSpecModalOpen(false); // close the new spec modal
 
   const handleReset = () => {
-    setEditorValue('')
-    setOutput('')
+    setEditorValue('');
+    setOutput('');
     const infoElement = document.getElementById('info');
     if (infoElement) {
       infoElement.innerHTML = '';
     }
-    setPermalink({ check: null, permalink: null })
-    closeModal()
-  }
+    setPermalink({ check: null, permalink: null });
+    closeModal();
+  };
 
   const handleFileUpload = (file: File) => {
     const reader = new FileReader();
@@ -63,10 +71,9 @@ const InputArea: React.FC<InputAreaProps> = ({ onRunButtonClick, onFullScreenBut
     const queryParams = new URLSearchParams(useLocation().search);
     const p = queryParams.get('p');
     const fileName = p ? p : 'code';
-    const fileExtension = language.short == 'SMT' ? 'smt2' : language.short == 'XMV' ? 'smv' : language.short == 'SPECTRA' ? 'spectra' : language.short == 'als' ? 'als' : 'txt';
+    const fileExtension = language.id ?? 'txt';
     return <FileDownload content={content} fileName={fileName} fileExtension={fileExtension} />;
   };
-
 
   return (
     <div className='row'>
@@ -76,28 +83,29 @@ const InputArea: React.FC<InputAreaProps> = ({ onRunButtonClick, onFullScreenBut
             <h2>Input</h2>
           </div>
           <div>
-            <Stack direction="row" spacing={1}>
+            <Stack direction='row' spacing={1}>
               <span className='syntax-checking-span'>Syntax Checking</span>
-              <MDBIcon size='lg' className='playground-icon'
-                style={{ marginTop: "5px" }}
-                data-tooltip-id="playground-tooltip"
-                data-tooltip-content="This allows you to check the syntax of the code, get suggestions/code completion."
+              <MDBIcon
+                size='lg'
+                className='playground-icon'
+                style={{ marginTop: '5px' }}
+                data-tooltip-id='playground-tooltip'
+                data-tooltip-content='This allows you to check the syntax of the code, get suggestions/code completion.'
               >
                 <Toggle
                   id='cheese-status'
                   defaultChecked={enableLsp}
                   onChange={(e) => setEnableLsp(e.target.checked)}
                 />
-              </MDBIcon >
-              <MDBIcon size='lg' className='playground-icon'
+              </MDBIcon>
+              <MDBIcon
+                size='lg'
+                className='playground-icon'
                 onClick={openModal}
-                data-tooltip-id="playground-tooltip"
-                data-tooltip-content="New Spec"
+                data-tooltip-id='playground-tooltip'
+                data-tooltip-content='New Spec'
               >
-                <FaFileCirclePlus
-                  className='playground-icon'
-                  role='button'
-                />
+                <FaFileCirclePlus className='playground-icon' role='button' />
               </MDBIcon>
               <ConfirmModal
                 isOpen={isNewSpecModalOpen}
@@ -107,54 +115,51 @@ const InputArea: React.FC<InputAreaProps> = ({ onRunButtonClick, onFullScreenBut
                               This will reset the editor and the output areas`}
                 onConfirm={handleReset}
               />
-              <MDBIcon size='lg' className='playground-icon'
-                data-tooltip-id="playground-tooltip"
-                data-tooltip-content="Upload file"
+              <MDBIcon
+                size='lg'
+                className='playground-icon'
+                data-tooltip-id='playground-tooltip'
+                data-tooltip-content='Upload file'
               >
                 <FileUploadButton onFileSelect={handleFileUpload} />
               </MDBIcon>
-              <>
-                {handleDownload()}
-              </>
-              {permalink.check && permalink.permalink &&
-                <MDBIcon size='lg' className='playground-icon'
-                  data-tooltip-id="playground-tooltip"
-                  data-tooltip-content="Copy Permalink">
+              <>{handleDownload()}</>
+              {permalink.check && permalink.permalink && (
+                <MDBIcon
+                  size='lg'
+                  className='playground-icon'
+                  data-tooltip-id='playground-tooltip'
+                  data-tooltip-content='Copy Permalink'
+                >
                   <CopyToClipboardBtn />
                 </MDBIcon>
-              }
+              )}
               <MDBIcon size='lg' className='playground-icon' onClick={() => onFullScreenButtonClick()}>
-                {isFullScreen ?
+                {isFullScreen ? (
                   <AiOutlineFullscreenExit
                     className='playground-icon'
-                    data-tooltip-id="playground-tooltip"
-                    data-tooltip-content="Exit"
+                    data-tooltip-id='playground-tooltip'
+                    data-tooltip-content='Exit'
                   />
-                  : <AiOutlineFullscreen
+                ) : (
+                  <AiOutlineFullscreen
                     className='playground-icon'
-                    data-tooltip-id="playground-tooltip"
-                    data-tooltip-content="Fullscreen"
-                  />}
+                    data-tooltip-id='playground-tooltip'
+                    data-tooltip-content='Fullscreen'
+                  />
+                )}
               </MDBIcon>
             </Stack>
           </div>
         </div>
       </div>
-      {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ?
-        <LspEditor
-          height={isFullScreen ? '80vh' : '60vh'}
-          editorTheme="vs"
-        />
-        :
-        <Editor
-          height={isFullScreen ? '80vh' : '60vh'}
-          editorTheme="vs"
-        />
-      }
+      {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ? (
+        <LspEditor height={isFullScreen ? '80vh' : '60vh'} editorTheme='vs' />
+      ) : (
+        <Editor height={isFullScreen ? '80vh' : '60vh'} editorTheme='vs' />
+      )}
 
-      <div className="w-full px-1 pt-2">
-        {AdditionalUi && <AdditionalUi />}
-      </div>
+      <div className='w-full px-1 pt-2'>{AdditionalUi && <AdditionalUi />}</div>
       <MDBBtn
         className='mx-auto my-3'
         style={{ width: '95%' }}
@@ -165,7 +170,7 @@ const InputArea: React.FC<InputAreaProps> = ({ onRunButtonClick, onFullScreenBut
         {isExecuting ? 'Running...' : 'RUN'}
       </MDBBtn>
     </div>
-  )
-}
+  );
+};
 
-export default InputArea
+export default InputArea;

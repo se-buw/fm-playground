@@ -15,14 +15,13 @@ import workerPortUrlSmt from '@/tools/smt/langium/worker/smt-server-port?worker&
 import smtLanguageConfig from '@/tools/smt/langium/config/language-configuration.json?raw';
 import responseSmtTm from '@/tools/smt/langium/syntaxes/smt.tmLanguage.json?raw';
 
-
 const loadSmtpWorkerPort = () => {
   console.log(`Smt worker URL: ${workerPortUrlSmt}`);
   return new Worker(workerPortUrlSmt, {
     type: 'module',
     name: 'Smt Server Port',
   });
-}
+};
 
 const loadLimbooleWorkerPort = () => {
   console.log(`Limboole worker URL: ${workerPortUrlLimboole}`);
@@ -30,7 +29,7 @@ const loadLimbooleWorkerPort = () => {
     type: 'module',
     name: 'Limboole Server Port',
   });
-}
+};
 
 export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
   const limbooleExtensionFilesOrContents = new Map<string, string | URL>();
@@ -64,11 +63,11 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
         ...getKeybindingsServiceOverride(),
         ...getLifecycleServiceOverride(),
         ...getLocalizationServiceOverride(createDefaultLocaleConfiguration()),
-      }
+      },
     },
     editorAppConfig: {
       $type: 'extended',
-      editorOptions:{
+      editorOptions: {
         minimap: {
           enabled: false,
         },
@@ -83,67 +82,77 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
       codeResources: {
         main: {
           text: '',
-          fileExt: ''
-        }
+          fileExt: '',
+        },
       },
       useDiffEditor: false,
-      extensions: [{
-        config: {
-          name: 'smt-example',
-          publisher: 'soaibuzzaman',
-          version: '1.0.0',
-          engine: {
-            vscode: '*'
+      extensions: [
+        {
+          config: {
+            name: 'smt-example',
+            publisher: 'soaibuzzaman',
+            version: '1.0.0',
+            engine: {
+              vscode: '*',
+            },
+            contributes: {
+              languages: [
+                {
+                  id: 'smt',
+                  extensions: ['.smt2'],
+                  aliases: ['smt', 'Smt'],
+                  configuration: `./smt-configuration.json`,
+                },
+              ],
+              grammars: [
+                {
+                  language: 'smt',
+                  scopeName: 'source.smt',
+                  path: `./smt-grammar.json`,
+                },
+              ],
+            },
           },
-          contributes: {
-            languages: [{
-              id: 'smt',
-              extensions: ['.smt2'],
-              aliases: ['smt', 'Smt'],
-              configuration: `./smt-configuration.json`
-            }],
-            grammars: [{
-              language: 'smt',
-              scopeName: 'source.smt',
-              path: `./smt-grammar.json`
-            }]
-          }
+          filesOrContents: smtExtensionFilesOrContents,
         },
-        filesOrContents: smtExtensionFilesOrContents
-      },
-      {
-        config: {
-          name: 'limboole-example',
-          publisher: 'soaibuzzaman',
-          version: '1.0.0',
-          engine: {
-            vscode: '*'
+        {
+          config: {
+            name: 'limboole-example',
+            publisher: 'soaibuzzaman',
+            version: '1.0.0',
+            engine: {
+              vscode: '*',
+            },
+            contributes: {
+              languages: [
+                {
+                  id: 'limboole',
+                  extensions: ['.limboole'],
+                  aliases: ['limboole', 'Limboole'],
+                  configuration: `./limboole-configuration.json`,
+                },
+              ],
+              grammars: [
+                {
+                  language: 'limboole',
+                  scopeName: 'source.limboole',
+                  path: `./limboole-grammar.json`,
+                },
+              ],
+            },
           },
-          contributes: {
-            languages: [{
-              id: 'limboole',
-              extensions: ['.limboole'],
-              aliases: ['limboole', 'Limboole'],
-              configuration: `./limboole-configuration.json`
-            }],
-            grammars: [{
-              language: 'limboole',
-              scopeName: 'source.limboole',
-              path: `./limboole-grammar.json`
-            }]
-          }
+          filesOrContents: limbooleExtensionFilesOrContents,
         },
-        filesOrContents: limbooleExtensionFilesOrContents
-      }],
+      ],
       userConfiguration: {
         json: JSON.stringify({
           'workbench.colorTheme': 'Default Light Modern',
           'editor.guides.bracketPairsHorizontal': 'active',
           'editor.wordBasedSuggestions': 'off',
-          'editor.experimental.asyncTokenization': true
-        })
+          'editor.experimental.asyncTokenization': true,
+        }),
       },
-      monacoWorkerFactory: configureMonacoWorkers
+      monacoWorkerFactory: configureMonacoWorkers,
     },
     languageClientConfigs: {
       smt: {
@@ -154,7 +163,7 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
             worker: smtWorkerPort,
             messagePort: smtChannel.port1,
           },
-          messageTransports: { reader: smtReader, writer: smtWriter }
+          messageTransports: { reader: smtReader, writer: smtWriter },
         },
       },
       limboole: {
@@ -165,9 +174,9 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
             worker: limbooleWorkerPort,
             messagePort: limbooleChannel.port1,
           },
-          messageTransports: { reader: limbooleReader, writer: limbooleWriter }
+          messageTransports: { reader: limbooleReader, writer: limbooleWriter },
         },
-      }
+      },
     },
   };
-}
+};

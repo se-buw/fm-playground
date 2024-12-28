@@ -7,7 +7,7 @@ import { LangiumDocument, MaybePromise } from 'langium';
 
 export class LimbooleCodeActionProvider implements CodeActionProvider {
 
-    constructor(services: LimbooleServices) { }
+    constructor(_services: LimbooleServices) { }
 
 
     getCodeActions(document: LangiumDocument, params: CodeActionParams): MaybePromise<Array<Command | CodeAction>> {

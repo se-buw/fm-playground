@@ -19,7 +19,7 @@ export function registerValidationChecks(services: SmtServices) {
  */
 export class SmtValidator {
 
-    checkPersonStartsWithCapital(model: Model, accept: ValidationAcceptor): void {
+    checkPersonStartsWithCapital(_model: Model, _accept: ValidationAcceptor): void {
         // if (Model[Symbol] !== model[Symbol]) {
         //     const firstChar = model.elements.substring(0, 1);
         //     if (firstChar.toUpperCase() !== firstChar) {

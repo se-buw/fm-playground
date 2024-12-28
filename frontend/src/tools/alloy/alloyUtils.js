@@ -31,24 +31,25 @@ export function getGraphData(alloyInstance) {
 
     // Handle Subset sigs. Issue #9
     const varSigs = d
-      .filter(item => item.atom)
-      .flatMap(item => {
+      .filter((item) => item.atom)
+      .flatMap((item) => {
         const atoms = Array.isArray(item.atom) ? item.atom : [item.atom];
         return atoms
-          .filter(atomItem => 
-            // check if atom label contiains $ and item label contains /
-            !(String(atomItem.label).includes('$')) || !(item.label.includes('/')) || 
-            (atomItem.label.split('$')[0] !== item.label.split('/').pop())
+          .filter(
+            (atomItem) =>
+              // check if atom label contiains $ and item label contains /
+              !String(atomItem.label).includes('$') ||
+              !item.label.includes('/') ||
+              atomItem.label.split('$')[0] !== item.label.split('/').pop()
           )
-          .map(atomItem => ({
-            atom: (String(atomItem.label).includes('$')) ? atomItem.label.replace('$', '') : String(atomItem.label),
+          .map((atomItem) => ({
+            atom: String(atomItem.label).includes('$') ? atomItem.label.replace('$', '') : String(atomItem.label),
             label: item.label,
           }));
       });
-    varSigs.forEach(item => {
+    varSigs.forEach((item) => {
       subsetSigs.add(item);
     });
-
   }
 
   function processField(field) {
@@ -57,7 +58,7 @@ export function getGraphData(alloyInstance) {
     const atomTypes = [];
     // check length of types array
     if (field['types']['type']) {
-      // collect type elements in field['types'] types 
+      // collect type elements in field['types'] types
       for (const type of field['types']['type'] || {}) {
         atomTypes.push(type['ID']);
       }
@@ -75,7 +76,8 @@ export function getGraphData(alloyInstance) {
       if (typeof t === 'object' && t !== null) {
         const atoms = t['atom'] || [];
         if (atoms.length >= 2) {
-          if (atoms.length > 2) { // Nested relation according to official Alloy 
+          if (atoms.length > 2) {
+            // Nested relation according to official Alloy
             const sourceLabel = atoms[0]['label'].toString();
             const targetLabel = atoms[atoms.length - 1]['label'].toString();
             if (sourceLabel && targetLabel) {
@@ -84,17 +86,16 @@ export function getGraphData(alloyInstance) {
               for (let i = 1; i < atoms.length - 1; i++) {
                 const nodeLabel = atoms[i]['label'].toString();
                 edges.push({
-                  "data": {
-                    "id": `${sourceLabel}_${targetLabel}_${label}_[${nodeLabel.replace('$', '')}]`,
-                    "label": `${label} [${nodeLabel.replace('$', '')}]`,
-                    "source": sourceLabel.replace('$', ''),
-                    "target": targetLabel.replace('$', ''),
-                    "relationship": relationship,
-                  }
+                  data: {
+                    id: `${sourceLabel}_${targetLabel}_${label}_[${nodeLabel.replace('$', '')}]`,
+                    label: `${label} [${nodeLabel.replace('$', '')}]`,
+                    source: sourceLabel.replace('$', ''),
+                    target: targetLabel.replace('$', ''),
+                    relationship: relationship,
+                  },
                 });
               }
             }
-
           } else {
             const sourceLabel = atoms[0]['label'].toString();
             const targetLabel = atoms[1]['label'].toString();
@@ -102,13 +103,13 @@ export function getGraphData(alloyInstance) {
               nodes.add(sourceLabel.replace('$', ''));
               nodes.add(targetLabel.replace('$', ''));
               edges.push({
-                "data": {
-                  "id": `${sourceLabel}_${targetLabel}`,
-                  "label": label,
-                  "source": sourceLabel.replace('$', ''),
-                  "target": targetLabel.replace('$', ''),
-                  "relationship": relationship,
-                }
+                data: {
+                  id: `${sourceLabel}_${targetLabel}`,
+                  label: label,
+                  source: sourceLabel.replace('$', ''),
+                  target: targetLabel.replace('$', ''),
+                  relationship: relationship,
+                },
               });
             }
           }
@@ -127,21 +128,21 @@ export function getGraphData(alloyInstance) {
   }
 
   if ('sig' in alloyInstance) {
-    getAtomsFromSig(alloyInstance["sig"]);
+    getAtomsFromSig(alloyInstance['sig']);
   }
   if ('field' in alloyInstance) {
-    const fields = Array.isArray(alloyInstance["field"]) ? alloyInstance["field"] : [alloyInstance["field"]];
+    const fields = Array.isArray(alloyInstance['field']) ? alloyInstance['field'] : [alloyInstance['field']];
     for (const field of fields) {
       processField(field);
     }
   }
 
-  const nodeList = Array.from(nodes).map(node => ({ "data": { "id": node, "label": node } }));
+  const nodeList = Array.from(nodes).map((node) => ({ data: { id: node, label: node } }));
   const elements = nodeList.concat(edges);
 
   // Handle Subset sigs. Issue #9
   const atomLabelMap = new Map();
-  subsetSigs.forEach(item => {
+  subsetSigs.forEach((item) => {
     // Group labels by atom
     if (atomLabelMap.has(item.atom)) {
       atomLabelMap.get(item.atom).push(item.label);
@@ -149,7 +150,7 @@ export function getGraphData(alloyInstance) {
       atomLabelMap.set(item.atom, [item.label]);
     }
   });
-  elements.forEach(element => {
+  elements.forEach((element) => {
     const id = element.data.id;
     if (atomLabelMap.has(id)) {
       const labels = atomLabelMap.get(id);

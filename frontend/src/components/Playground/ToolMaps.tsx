@@ -28,7 +28,7 @@ export const toolExecutionMap: Record<string, () => void> = {
   SMT: executeZ3Wasm,
   XMV: executeNuxmvTool,
   ALS: executeAlloyTool,
-  SPECTRA: executeSpectraTool
+  SPECTRA: executeSpectraTool,
 };
 
 export const toolOutputMap: Record<string, React.FC<any>> = {
@@ -36,7 +36,7 @@ export const toolOutputMap: Record<string, React.FC<any>> = {
   SMT: PlainOutput,
   XMV: PlainOutput,
   ALS: AlloyOutput,
-  SPECTRA: PlainOutput
+  SPECTRA: PlainOutput,
 };
 
 export const languageConfigMap: Record<string, { tokenProvider: any; configuration: any }> = {
@@ -44,39 +44,38 @@ export const languageConfigMap: Record<string, { tokenProvider: any; configurati
   smt2: { tokenProvider: smt2Lang, configuration: smt2Conf },
   xmv: { tokenProvider: nuxmvLang, configuration: nuxmvConf },
   als: { tokenProvider: alloyLang, configuration: alloyConf },
-  spectra: { tokenProvider: spectraLang, configuration: spectraConf }
-}
-
+  spectra: { tokenProvider: spectraLang, configuration: spectraConf },
+};
 
 export const fmpConfig = {
-  title: "FM Playground",
-  repository: "https://github.com/se-buw/fm-playground",
-  issues: "https://github.com/se-buw/fm-playground/issues",
+  title: 'FM Playground',
+  repository: 'https://github.com/se-buw/fm-playground',
+  issues: 'https://github.com/se-buw/fm-playground/issues',
   tools: {
     limboole: {
-      name: "Limboole",
-      extension: "limboole",
-      shortName: "SAT",
+      name: 'Limboole',
+      extension: 'limboole',
+      shortName: 'SAT',
     },
     smt2: {
-      name: "SMT",
-      extension: "smt2",
-      shortName: "SMT",
+      name: 'SMT',
+      extension: 'smt2',
+      shortName: 'SMT',
     },
     xmv: {
-      name: "nuXmv",
-      extension: ".xmv",
-      shortName: "XMV",
+      name: 'nuXmv',
+      extension: '.xmv',
+      shortName: 'XMV',
     },
     als: {
-      name: "Alloy",
-      extension: "als",
-      shortName: "ALS",
+      name: 'Alloy',
+      extension: 'als',
+      shortName: 'ALS',
     },
     spectra: {
-      name: "Spectra",
-      extension: "spectra",
-      shortName: "SPECTRA",
+      name: 'Spectra',
+      extension: 'spectra',
+      shortName: 'SPECTRA',
     },
   },
 };

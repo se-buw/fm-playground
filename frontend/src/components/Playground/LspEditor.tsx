@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import * as vscode from 'vscode';
 import { createModelReference } from 'vscode/monaco';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
-import { createLangiumGlobalConfig } from '@/tools/common/lspWrapperConfig';
-import '../../assets/style/Playground.css'
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
+import { useAtom } from 'jotai';
+import { createLangiumGlobalConfig } from '@/tools/common/lspWrapperConfig';
 import type { LanguageProps } from './Tools';
 import { fmpConfig } from '@/components/Playground/ToolMaps';
-import { useAtom } from 'jotai';
 import { editorValueAtom, languageAtom } from '@/atoms';
+import '@/assets/style/Playground.css';
 
 type LspEditorProps = {
   height: string;
@@ -24,7 +24,7 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
   const prevLanguageRef = useRef<LanguageProps | null>(null);
 
   const getExtensionById = (id: string): string | undefined => {
-    const tool = Object.values(fmpConfig.tools).find(tool => tool.extension.toLowerCase() === id.toLowerCase());
+    const tool = Object.values(fmpConfig.tools).find((tool) => tool.extension.toLowerCase() === id.toLowerCase());
     return tool?.extension;
   };
 
@@ -42,7 +42,7 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
       const uri = vscode.Uri.parse(`/workspace/example.${currentExtension}`);
       const modelRef = await createModelReference(uri, editorValue);
       wrapper.updateEditorModels({
-        modelRef
+        modelRef,
       });
 
       editorRef.current = wrapper.getEditor();
@@ -68,13 +68,11 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
     return () => {
       disposeEditor();
     };
-
   }, []);
 
   useEffect(() => {
     editorRef.current = wrapper.getEditor();
     if (editorRef.current && language?.id === 'limboole') {
-
       const code = localStorage.getItem('editorValue');
       if (code) {
         editorRef.current.setValue(code);
@@ -89,37 +87,31 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
     setEditorValue(value);
   };
 
-  const getEditorValue = () => {
-    if (editorRef.current) {
-      const value = editorRef.current.getValue();
-      setEditorValue(value);
-    }
-  };
+  // const getEditorValue = () => {
+  //   if (editorRef.current) {
+  //     const value = editorRef.current.getValue();
+  //     setEditorValue(value);
+  //   }
+  // };
 
   useEffect(() => {
     setEditorValue(editorValue);
   }, [editorValue]);
 
-
   useEffect(() => {
     wrapper.updateCodeResources({
       main: {
         text: editorValue,
-        fileExt: getExtensionById(language.id) ?? ''
-      }
+        fileExt: getExtensionById(language.id) ?? '',
+      },
     });
   }, [language]);
 
   return (
-    <div className="custom-code-editor">
-      <div
-        id="monaco-editor-root"
-        style={{ height: props.height }}
-      />
+    <div className='custom-code-editor'>
+      <div id='monaco-editor-root' style={{ height: props.height }} />
     </div>
-  )
-}
+  );
+};
 
-
-
-export default LspEditor
+export default LspEditor;

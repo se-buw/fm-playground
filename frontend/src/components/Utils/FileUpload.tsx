@@ -1,20 +1,19 @@
 import React, { useRef, useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
-import MessageModal from './Modals/MessageModal';
-import '../../assets/style/Playground.css';
-
+import MessageModal from '@/components/Utils/Modals/MessageModal';
+import { fmpConfig } from '@/components/Playground/ToolMaps';
+import '@/assets/style/Playground.css';
 interface FileUploadButtonProps {
   onFileSelect: (file: File) => void;
 }
 
 const FileUploadButton: React.FC<FileUploadButtonProps> = ({ onFileSelect }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);  // contains the error messages from the API.
-  const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState<boolean>(false); // contains the state of the message modal.
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState<boolean>(false);
 
   const handleButtonClick = () => {
-    // Trigger click on the hidden file input
-    if(fileInputRef.current){
+    if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
@@ -31,11 +30,15 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({ onFileSelect }) => 
       return;
     }
 
-    // TODO: This should be an enum later
     if (file) {
-      const allowedFileExtensions = /(\.txt|\.smv|\.smt2|\.als|\.spectra)$/i;
+      const allowedFileExtensionsFromConfig = Object.values(fmpConfig.tools)
+        .map((tool) => (tool.extension.startsWith('.') ? tool.extension : `.${tool.extension}`))
+        .join('|');
+      const allowedFileExtensions = new RegExp(`(${allowedFileExtensionsFromConfig})$`, 'i');
       if (!allowedFileExtensions.exec(file.name)) {
-        showErrorModal('Invalid file type! Only .txt, .smv, .smt2, .als, .spectra files are allowed.');
+        showErrorModal(
+          `Invalid file type! Only ${allowedFileExtensionsFromConfig.replace(/\|/g, ', ')} files are allowed.`
+        );
         return false;
       }
     }
@@ -64,18 +67,13 @@ const FileUploadButton: React.FC<FileUploadButtonProps> = ({ onFileSelect }) => 
       <div onClick={handleButtonClick}>
         <FaUpload className='playground-icon' />
       </div>
-      <input
-        type='file'
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-        onChange={handleFileSelect}
-      />
+      <input type='file' ref={fileInputRef} style={{ display: 'none' }} onChange={handleFileSelect} />
       {errorMessage && (
         <MessageModal
           isErrorMessageModalOpen={isErrorMessageModalOpen}
           setIsErrorMessageModalOpen={hideErrorModal}
           toggleErrorMessageModal={hideErrorModal}
-          title="Error"
+          title='Error'
           errorMessage={errorMessage}
         />
       )}

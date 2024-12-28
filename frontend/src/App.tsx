@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { AuthProvider } from './contexts/AuthContext'
-import Nav from './components/Utils/Nav'
-import Footer from './components/Utils/Footer'
-import Playground from './components/Playground/Playground'
-import Login from './components/Authentication/Login'
-import ProtectedRoutes from './components/Authentication/ProtectedRoutes'
-import Missing from './components/Utils/Missing'
-import Feedback from './components/Utils/Feedback';
-import './assets/style/index.css'
-import '../src/assets/style/App.css'
-import '../src/assets/style/Feedback.css'
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from '@/contexts/AuthContext';
 import { Provider as JotaiProvider } from 'jotai'
-import { jotaiStore } from './atoms'
+import Nav from '@/components/Utils/Nav';
+import Footer from '@/components/Utils/Footer';
+import Playground from '@/components/Playground/Playground';
+import Login from '@/components/Authentication/Login';
+import ProtectedRoutes from '@/components/Authentication/ProtectedRoutes';
+import Missing from '@/components/Utils/Missing'
+import Feedback from '@/components/Utils/Feedback';
+import { jotaiStore } from '@/atoms'
+import '@/assets/style/index.css'
+import '@/assets/style/App.css'
+import '@/assets/style/Feedback.css'
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     const storedTheme = localStorage.getItem('isDarkTheme');
     return storedTheme === 'true';
   });
-  const [editorTheme, setEditorTheme] = useState(() => {
+  const [, setEditorTheme] = useState(() => {
     const storedTheme = localStorage.getItem('editorTheme');
     return storedTheme || 'vs';
   });
@@ -31,13 +31,13 @@ const App = () => {
   };
 
 
-  const handleToggleTheme = () => {
-    setIsDarkTheme((prevIsDarkTheme) => {
-      const newTheme = !prevIsDarkTheme;
-      localStorage.setItem('isDarkTheme', newTheme.toString());
-      return newTheme;
-    });
-  };
+  // const handleToggleTheme = () => {
+  //   setIsDarkTheme((prevIsDarkTheme) => {
+  //     const newTheme = !prevIsDarkTheme;
+  //     localStorage.setItem('isDarkTheme', newTheme.toString());
+  //     return newTheme;
+  //   });
+  // };
 
   useEffect(() => {
     localStorage.setItem('isDarkTheme', isDarkTheme ? 'true' : 'false');
@@ -65,9 +65,7 @@ const App = () => {
             <Routes>
               <Route element={<ProtectedRoutes />} >
               </Route>
-              <Route path="/" element={<Playground
-                editorTheme={editorTheme}
-              />} />
+              <Route path="/" element={<Playground/>} />
               <Route path="/login" element={<Login />} />
               <Route path="*" element={<Missing />} />
             </Routes>

@@ -1,48 +1,41 @@
 import React, { useState } from 'react';
 import { useAtom } from 'jotai';
 import { MDBIcon } from 'mdb-react-ui-kit';
-import {
-  AiOutlineFullscreen,
-  AiOutlineFullscreenExit
-} from 'react-icons/ai';
-import { isFullScreenAtom, languageAtom, outputAtom } from '@/atoms';
-import NuxmvCopyrightNotice from '@/components/Utils/Modals/NuxmvCopyrightNotice';
-import { toolOutputMap } from '@/components/Playground/ToolMaps'
+import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
+import { isFullScreenAtom, languageAtom } from '@/atoms';
+import NuxmvCopyrightNotice from '@/components/Playground/nuxmv/NuxmvCopyrightNotice';
+import { toolOutputMap } from '@/components/Playground/ToolMaps';
 
 interface OutputAreaProps {
-  onFullScreenButtonClick: () => void
+  onFullScreenButtonClick: () => void;
 }
 
 const OutputArea: React.FC<OutputAreaProps> = ({ onFullScreenButtonClick }) => {
-  const [, setOutput] = useAtom(outputAtom)
-  const [language] = useAtom(languageAtom)
-  const [isFullScreen, setIsFullScreen] = useAtom(isFullScreenAtom)
+  const [language] = useAtom(languageAtom);
+  const [isFullScreen] = useAtom(isFullScreenAtom);
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false);
 
   const OutputComponent = toolOutputMap[language.short];
-
-  const handleOutputChange = (newCode: string) => {
-    setOutput(newCode);
-  };
 
   return (
     <div className='row'>
       <div className='col-md-12'>
         <div className={`d-flex justify-content-between align-items-center ${language.id !== 'xmv' ? 'mb-2' : ''}`}>
           <h2>Output</h2>
-          <MDBIcon size='lg' className='playground-icon'
-            onClick={() => onFullScreenButtonClick()}>
-            {isFullScreen ?
+          <MDBIcon size='lg' className='playground-icon' onClick={() => onFullScreenButtonClick()}>
+            {isFullScreen ? (
               <AiOutlineFullscreenExit
                 className='playground-icon'
-                data-tooltip-id="playground-tooltip"
-                data-tooltip-content="Exit"
+                data-tooltip-id='playground-tooltip'
+                data-tooltip-content='Exit'
               />
-              : <AiOutlineFullscreen
+            ) : (
+              <AiOutlineFullscreen
                 className='playground-icon'
-                data-tooltip-id="playground-tooltip"
-                data-tooltip-content="Fullscreen"
-              />}
+                data-tooltip-id='playground-tooltip'
+                data-tooltip-content='Fullscreen'
+              />
+            )}
           </MDBIcon>
         </div>
       </div>
@@ -51,7 +44,8 @@ const OutputArea: React.FC<OutputAreaProps> = ({ onFullScreenButtonClick }) => {
           <a
             style={{ cursor: 'pointer', textDecoration: 'underline' }}
             role='button'
-            onClick={() => setIsNuxmvModalOpen(true)}>
+            onClick={() => setIsNuxmvModalOpen(true)}
+          >
             nuXmv Copyright Notice
           </a>
           {/* Render the modal conditionally */}
@@ -66,14 +60,10 @@ const OutputArea: React.FC<OutputAreaProps> = ({ onFullScreenButtonClick }) => {
       )}
 
       <div className='col-md-12'>
-        {OutputComponent ? (
-          <OutputComponent />
-        ) : (
-          <div>No output component available for {language.short}</div>
-        )}
+        {OutputComponent ? <OutputComponent /> : <div>No output component available for {language.short}</div>}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OutputArea
+export default OutputArea;

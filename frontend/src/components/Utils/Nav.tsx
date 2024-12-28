@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useAtom } from 'jotai';
 import {
   MDBContainer,
   MDBNavbar,
@@ -11,23 +12,20 @@ import {
   MDBDropdown,
   MDBDropdownMenu,
   MDBDropdownToggle,
-  MDBDropdownItem
-
+  MDBDropdownItem,
 } from 'mdb-react-ui-kit';
-import AuthContext from '../../contexts/AuthContext';
-import { FaGithub } from 'react-icons/fa'
-import DrawerComponent from './DrawerComponent';
-import CustomSnackbar from './Modals/CustomSnackbar';
-import ConfirmModal from './Modals/ConfirmModal';
-import { downloadUserData, deleteProfile } from '../../api/playgroundApi';
-import axiosAuth from '../../api/axiosAuth';
-import SessionExpiredModal from './Modals/SessionExpiredModal'
-import '../../assets/style/Nav.css';
-import Toggle from './Toggle';
-import { useAtom } from 'jotai';
-import { editorValueAtom, languageAtom } from '../../atoms';
-import { fmpConfig } from '../Playground/ToolMaps';
-
+import { FaGithub } from 'react-icons/fa';
+import AuthContext from '@/contexts/AuthContext';
+import DrawerComponent from '@/components/Utils/DrawerComponent';
+import CustomSnackbar from '@/components/Utils/Modals/CustomSnackbar';
+import ConfirmModal from '@/components/Utils/Modals/ConfirmModal';
+import { downloadUserData, deleteProfile } from '@/api/playgroundApi';
+import axiosAuth from '@/api/axiosAuth';
+import SessionExpiredModal from '@/components/Utils/Modals//SessionExpiredModal';
+import Toggle from '@/components/Utils/Toggle';
+import { editorValueAtom, languageAtom } from '@/atoms';
+import { fmpConfig } from '@/components/Playground/ToolMaps';
+import '@/assets/style/Nav.css';
 
 interface NavbarProps {
   isDarkTheme: boolean;
@@ -46,33 +44,30 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  /**
-   * Handle the logout button.
-   * @returns
-   */
   function handleLogout() {
-    const res = axiosAuth.get(`${import.meta.env.VITE_FMP_API_URL}/logout`)
-      .then((res) => {
-        setIsLoggedIn(false)
+    axiosAuth
+      .get(`${import.meta.env.VITE_FMP_API_URL}/logout`)
+      .then((_res) => {
+        setIsLoggedIn(false);
         setSnackbarMessage('Logout successful');
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   /**
    * Fetch the user history from the API.
    * @todo: This function is moved to DrawerComponent.jsx.  Remove this function if it's not used anywhere else.
-   * @param {*} pageNumber 
+   * @param {*} pageNumber
    */
   const handleUserDataDownload = async () => {
     try {
       await downloadUserData()
         .then((res) => {
-          const user = res.email
-          const history = res.data
-          const data = { user, history }
+          const user = res.email;
+          const history = res.data;
+          const data = { user, history };
           const url = window.URL.createObjectURL(new Blob([JSON.stringify(data)]));
           const link = document.createElement('a');
           link.href = url;
@@ -81,8 +76,8 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
           link.click();
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -90,20 +85,18 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
 
   const handleUserProfileDelete = async () => {
     try {
-
       await deleteProfile()
         .then((res) => {
-          console.log(res)
-          setIsLoggedIn(false)
+          console.log(res);
+          setIsLoggedIn(false);
         })
         .catch((err) => {
-          console.log(err)
-        })
+          console.log(err);
+        });
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -131,17 +124,14 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
       label: tool.name,
       short: tool.shortName,
     }));
-    const selectedOption = options.find(option => option.short === check);
+    const selectedOption = options.find((option) => option.short === check);
     if (selectedOption) {
       setLanguage(selectedOption);
     }
     window.history.pushState(null, '', `/?check=${check}&p=${permalink}`);
-    // Clean the output area when a new item is loaded from the history. 
-    // FIXME: Better approach would be to handle this using useState hook in the Output component.
-    //But limboole is setting the output from web-assembly. We need to handle this when we refactor the code for Alloy.
-    const info = document.getElementById("info");
+    const info = document.getElementById('info');
     if (info) {
-      info.innerText = "";
+      info.innerText = '';
     }
   };
 
@@ -161,14 +151,12 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
       <SessionExpiredModal />
       <header className='fixed-top header'>
         <MDBNavbar expand='lg'>
-          <MDBContainer >
+          <MDBContainer>
             <MDBNavbarBrand href={window.location.origin}>
               <h2 className='bold header'>FM Playground</h2>
             </MDBNavbarBrand>
 
-            {isMobile && 
-              <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-            }
+            {isMobile && <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />}
 
             <MDBNavbarToggler
               type='button'
@@ -186,41 +174,45 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                       className='navbar-option-button'
                       onClick={handleDrawerOpen}
                       style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
-                    >History
+                    >
+                      History
                     </MDBBtn>
-                    <DrawerComponent isOpen={isDrawerOpen} onClose={handleDrawerClose} onItemSelect={handleDrawerItemClick} />
-                    <MDBDropdown className='btn-group navbar-option-button' style={{ width: 'auto', display: 'flex', alignItems: 'center' }} >
-                      <MDBBtn
-                        color='danger'
-                        onClick={handleLogout}
-                      >
+                    <DrawerComponent
+                      isOpen={isDrawerOpen}
+                      onClose={handleDrawerClose}
+                      onItemSelect={handleDrawerItemClick}
+                    />
+                    <MDBDropdown
+                      className='btn-group navbar-option-button'
+                      style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
+                    >
+                      <MDBBtn color='danger' onClick={handleLogout}>
                         Logout
                       </MDBBtn>
                       <MDBDropdownToggle split color='dark' style={{ flex: '0' }}></MDBDropdownToggle>
                       <MDBDropdownMenu style={{ minWidth: '200px' }}>
-                        <MDBDropdownItem
-                          link
-                          onClick={handleUserDataDownload}
-                        >Download Your Data
+                        <MDBDropdownItem link onClick={handleUserDataDownload}>
+                          Download Your Data
                         </MDBDropdownItem>
-                        <MDBDropdownItem
-                          link
-                          onClick={openModal}
-                        >Delete Profile
+                        <MDBDropdownItem link onClick={openModal}>
+                          Delete Profile
                         </MDBDropdownItem>
                       </MDBDropdownMenu>
                     </MDBDropdown>
                   </>
                 ) : (
-                  <MDBBtn rounded color='primary' href='/login'>Login</MDBBtn>
+                  <MDBBtn rounded color='primary' href='/login'>
+                    Login
+                  </MDBBtn>
                 )}
 
                 {isMobile && (
                   <button
                     color='navbar-option-button'
                     onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                    style={{backgroundColor: 'transparent', border: 'none', display: 'flex', alignItems: 'center'}}
-                  ><FaGithub size={24} />
+                    style={{ backgroundColor: 'transparent', border: 'none', display: 'flex', alignItems: 'center' }}
+                  >
+                    <FaGithub size={24} />
                   </button>
                 )}
               </MDBNavbarNav>
@@ -238,15 +230,10 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
             role='button'
           />
         </MDBNavbar>
-
-        {/* Snackbar component */}
-        <CustomSnackbar
-          message={snackbarMessage}
-          onClose={handleSnackbarClose}
-        />
+        <CustomSnackbar message={snackbarMessage} onClose={handleSnackbarClose} />
       </header>
     </div>
   );
-}
+};
 
 export default Navbar;

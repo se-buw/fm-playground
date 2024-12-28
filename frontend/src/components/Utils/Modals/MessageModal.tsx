@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   MDBBtn,
   MDBModal,
@@ -8,7 +8,7 @@ import {
   MDBModalTitle,
   MDBModalBody,
   MDBModalFooter,
-} from "mdb-react-ui-kit";
+} from 'mdb-react-ui-kit';
 
 interface MessageModalProps {
   isErrorMessageModalOpen: boolean;
@@ -17,7 +17,6 @@ interface MessageModalProps {
   title: string;
   errorMessage: string;
 }
-
 
 const MessageModal: React.FC<MessageModalProps> = ({
   isErrorMessageModalOpen,
@@ -29,26 +28,18 @@ const MessageModal: React.FC<MessageModalProps> = ({
   const toggle = () => setIsErrorMessageModalOpen(!isErrorMessageModalOpen);
   return (
     <>
-      <MDBModal
-        open={isErrorMessageModalOpen}
-        toggle={toggle}
-        tabIndex="-1"
-      >
+      <MDBModal open={isErrorMessageModalOpen} toggle={toggle} tabIndex='-1'>
         <MDBModalDialog>
-          <MDBModalContent className="message-modal-content">
-            <MDBModalHeader className="bg-danger text-white">
+          <MDBModalContent className='message-modal-content'>
+            <MDBModalHeader className='bg-danger text-white'>
               <MDBModalTitle>{title}</MDBModalTitle>
-              <MDBBtn
-                className="btn-close text-white"
-                color="none"
-                onClick={toggleErrorMessageModal}
-              ></MDBBtn>
+              <MDBBtn className='btn-close text-white' color='none' onClick={toggleErrorMessageModal}></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody>
               <div dangerouslySetInnerHTML={{ __html: errorMessage }} />
             </MDBModalBody>
             <MDBModalFooter>
-              <MDBBtn color="secondary" onClick={toggleErrorMessageModal}>
+              <MDBBtn color='secondary' onClick={toggleErrorMessageModal}>
                 Close
               </MDBBtn>
             </MDBModalFooter>

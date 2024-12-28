@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'react';
 import { FaDownload } from 'react-icons/fa';
 import { MDBIcon } from 'mdb-react-ui-kit';
-import '../../assets/style/Playground.css';
+import '@/assets/style/Playground.css';
 
 interface FileDownloadProps {
   content: string;
   fileName: string;
-  fileExtension: string; // TODO: This should be an enum later
+  fileExtension: string;
 }
 
 const FileDownload: React.FC<FileDownloadProps> = ({ content, fileName, fileExtension }) => {
@@ -23,17 +23,15 @@ const FileDownload: React.FC<FileDownloadProps> = ({ content, fileName, fileExte
   };
 
   return (
-
-    <MDBIcon size='lg' className='playground-icon' 
-    onClick={handleDownload}>
+    <MDBIcon size='lg' className='playground-icon' onClick={handleDownload}>
       <FaDownload
         className='playground-icon'
         role='button'
-        data-tooltip-id="playground-tooltip"
-        data-tooltip-content="Download file" />
+        data-tooltip-id='playground-tooltip'
+        data-tooltip-content='Download file'
+      />
     </MDBIcon>
-
   );
-}
+};
 
-export default FileDownload
+export default FileDownload;

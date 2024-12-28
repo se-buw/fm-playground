@@ -1,5 +1,5 @@
-import {useState } from 'react'
-import { useIdleTimer } from 'react-idle-timer'
+import { useState } from 'react';
+import { useIdleTimer } from 'react-idle-timer';
 import {
   MDBBtn,
   MDBModal,
@@ -10,49 +10,40 @@ import {
   MDBModalBody,
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
-
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const SessionExpiredModal = () => {
   const [timeoutModal, setTimeoutModal] = useState(false);
-  const [state, setState] = useState('Active')
+  const [state, setState] = useState('Active');
   const { isLoggedIn } = useAuth();
 
   const handleIdle = () => {
-    setTimeoutModal(false)
-    window.location.reload()
-  }
+    setTimeoutModal(false);
+    window.location.reload();
+  };
 
   const onIdle = () => {
-    setState('Idle')
-    setTimeoutModal(true)
-  }
+    setState('Idle');
+    setTimeoutModal(true);
+  };
 
-  const {
-  } = useIdleTimer({
+  const {} = useIdleTimer({
     onIdle,
     timeout: 3600 * 1000,
     crossTab: true,
     leaderElection: true,
-    syncTimers: 200
-  })
+    syncTimers: 200,
+  });
 
   return (
     <>
-     {state === 'Idle' && isLoggedIn && (
-        <MDBModal
-          open={timeoutModal}
-          tabIndex="-1"
-        >
+      {state === 'Idle' && isLoggedIn && (
+        <MDBModal open={timeoutModal} tabIndex='-1'>
           <MDBModalDialog>
-            <MDBModalContent className="message-modal-content">
-              <MDBModalHeader className="bg-primary text-white">
+            <MDBModalContent className='message-modal-content'>
+              <MDBModalHeader className='bg-primary text-white'>
                 <MDBModalTitle>Session Timeout</MDBModalTitle>
-                <MDBBtn
-                  className="btn-close btn-close-white"
-                  color="none"
-                  onClick={handleIdle}
-                ></MDBBtn>
+                <MDBBtn className='btn-close btn-close-white' color='none' onClick={handleIdle}></MDBBtn>
               </MDBModalHeader>
               <MDBModalBody className='text-center'>
                 <h5> Your login session has expired due to inactivity⌛</h5>
@@ -61,7 +52,7 @@ const SessionExpiredModal = () => {
               </MDBModalBody>
 
               <MDBModalFooter>
-                <MDBBtn color="secondary" onClick={handleIdle}>
+                <MDBBtn color='secondary' onClick={handleIdle}>
                   OK
                 </MDBBtn>
               </MDBModalFooter>
@@ -70,8 +61,7 @@ const SessionExpiredModal = () => {
         </MDBModal>
       )}
     </>
-  )
-}
-
+  );
+};
 
 export default SessionExpiredModal;
