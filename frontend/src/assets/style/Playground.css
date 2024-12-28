@@ -1,13 +1,17 @@
 .Playground {
   background-color: var(--background-color);
   color: var(--primary-text-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
 }
 
 .play-area {
   background-color: var(--background-color);
   color: var(--primary-text-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
 }
 
 .plain-output-box {
@@ -17,12 +21,13 @@
   padding: 16px; /* Adjust the value as needed */
 }
 
-
 .react-select-container {
   .select__control {
     background-color: var(--background-color);
     border-color: var(--border-color);
-    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+    transition:
+      background-color 250ms ease-in-out,
+      color 250ms ease-in-out;
 
     &:hover {
       border-color: var(--border-color);
@@ -31,15 +36,18 @@
 
   .select__menu {
     background-color: var(--background-color);
-    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+    transition:
+      background-color 250ms ease-in-out,
+      color 250ms ease-in-out;
     border: 1px solid var(--border-color);
-
   }
 
   .select__option {
     color: inherit;
     background-color: var(--background-color);
-    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+    transition:
+      background-color 250ms ease-in-out,
+      color 250ms ease-in-out;
 
     &:hover {
       background-color: var(--select-hover);
@@ -62,7 +70,9 @@
 
 .tools {
   background-color: var(--background-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
   color: var(--primary-text-color);
   margin-top: 100px;
   margin-bottom: 20px;
@@ -70,24 +80,27 @@
 
 .playground-icon {
   color: var(--primary-text-color);
-
 }
 
-.custom-code-editor{
+.custom-code-editor {
   background-color: var(--editor-background-color);
   border: 1px thin var(--border-color);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
 }
 
-.guide-box{
+.guide-box {
   background-color: var(--editor-background-color);
   padding: '1em';
   border: 1px thin var(--border-color);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
   border-radius: 8px;
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
 }
 
 .lineHighlight {
@@ -119,7 +132,7 @@
   -ms-user-select: none;
   user-select: none;
 
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -146,7 +159,7 @@
   height: 24px;
   padding: 0;
   border-radius: 30px;
-  background-color: #4D4D4D;
+  background-color: #4d4d4d;
   -webkit-transition: all 0.2s ease;
   -moz-transition: all 0.2s ease;
   transition: all 0.2s ease;
@@ -214,9 +227,9 @@
   left: 1px;
   width: 22px;
   height: 22px;
-  border: 1px solid #4D4D4D;
+  border: 1px solid #4d4d4d;
   border-radius: 50%;
-  background-color: #FAFAFA;
+  background-color: #fafafa;
 
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -230,7 +243,6 @@
   left: 27px;
   border-color: #3b71ca;
 }
-
 
 .syntax-checking-span {
   display: inline;

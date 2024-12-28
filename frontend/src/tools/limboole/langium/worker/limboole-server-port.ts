@@ -1,6 +1,6 @@
 /// <reference lib="WebWorker" />
 
-import { start} from './limboole-server-start.js';
+import { start } from './limboole-server-start.js';
 
 declare const self: DedicatedWorkerGlobalScope;
 

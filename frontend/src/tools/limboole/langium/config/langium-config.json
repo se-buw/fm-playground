@@ -5,9 +5,7 @@
     {
       "id": "limboole",
       "grammar": "../ls/limboole.langium",
-      "fileExtensions": [
-        ".limboole"
-      ],
+      "fileExtensions": [".limboole"],
       "textMate": {
         "out": "../syntaxes/limboole.tmLanguage.json"
       }

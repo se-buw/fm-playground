@@ -20,7 +20,6 @@ This is the frontend for the FM Playground application. FM Playground is a web a
 - [Z3](https://github.com/Z3Prover/z3) - A SMT solver developed at Microsoft Research.
 - [nuXmv ](https://nuxmv.fbk.eu/) - A symbolic model checker for the analysis of synchronous finite-state and infinite-state systems.
 - ~~[Alloy](https://alloytools.org/)~~ (in a separate UI) - A declarative modeling language for software systems.
-  
 
 ## Prerequisites
 
@@ -31,7 +30,6 @@ List any dependencies that must be installed before running the application.
 - Docker v20.10.0 or higher (optional)
 - Docker Compose v1.27.0 or higher (optional)
 
-
 ## Getting Started
 
 ### Installation
@@ -41,6 +39,7 @@ List any dependencies that must be installed before running the application.
 ```bash
 git clone https://github.com/se-buw/fm-playground
 ```
+
 2. Navigate to the project directory:
 
 ```bash
@@ -53,9 +52,9 @@ cd frontend
 cp .env.example .env
 ```
 
-4. Install dependencies: ```npm install```or```yarn install```
+4. Install dependencies: `npm install`or`yarn install`
 
-4. Start the development server:`npm run dev` or `yarn dev`
+5. Start the development server:`npm run dev` or `yarn dev`
 
 ### Docker
 
@@ -63,7 +62,8 @@ cp .env.example .env
 
 ```bash
 docker build -t fm-play-frontend .
-```  
+```
+
 2. Run the docker image:
 
 ```bash
@@ -75,13 +75,10 @@ docker run --name fm-play-frontend \
 Note: If you want to run the frontend together with the backend, you can use the docker compose file.
 Find the complete docker compose file [here](../docker-compose.yml).
 
-
 ## Contributing
 
-Contributions are welcome!  Please refer to the [contributing guidelines](../CONTRIBUTING.md) for detailed instructions.
-
+Contributions are welcome! Please refer to the [contributing guidelines](../CONTRIBUTING.md) for detailed instructions.
 
 ## License
 
 This project is licensed under the [MIT License](../LICENSE).
-

@@ -1,9 +1,7 @@
 {
   "name": "smt",
   "scopeName": "source.smt",
-  "fileTypes": [
-    "smt2"
-  ],
+  "fileTypes": ["smt2"],
   "patterns": [
     {
       "include": "#command"

@@ -2,22 +2,15 @@ import * as monacoEditor from 'monaco-editor';
 
 const limbooleConf: monacoEditor.languages.LanguageConfiguration = {
   comments: {
-    lineComment: "%",
+    lineComment: '%',
   },
-  autoClosingPairs: [
-      { open: '(', close: ')' }
-  ],
+  autoClosingPairs: [{ open: '(', close: ')' }],
   brackets: [['(', ')']],
-  surroundingPairs: [
-      { open: '(', close: ')' }
-  ],
+  surroundingPairs: [{ open: '(', close: ')' }],
 };
 
 const limbooleLang: monacoEditor.languages.IMonarchLanguage = {
-
-  operators: [
-    '<->', '->', '<-', '&','|', '/', '!',
-  ],
+  operators: ['<->', '->', '<-', '&', '|', '/', '!'],
 
   // operators
   symbols: /([\.]{2})|([=><!:&\|\+\-\*\/,;]+)/,
@@ -26,9 +19,9 @@ const limbooleLang: monacoEditor.languages.IMonarchLanguage = {
   escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
 
   tokenizer: {
-    root : [
+    root: [
       // operators
-      [ /@symbols/, { cases:{ '@operators': 'keyword'} } ],
+      [/@symbols/, { cases: { '@operators': 'keyword' } }],
 
       // whitespace
       { include: '@whitespace' },
@@ -38,7 +31,7 @@ const limbooleLang: monacoEditor.languages.IMonarchLanguage = {
       [/[ \t\r\n]+/, 'white'],
       [/(^%.*$)/, 'comment'],
     ],
-  }
+  },
 };
 
 export { limbooleConf, limbooleLang };

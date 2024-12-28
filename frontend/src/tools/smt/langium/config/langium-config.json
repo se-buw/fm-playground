@@ -5,9 +5,7 @@
     {
       "id": "smt",
       "grammar": "../ls/smt.langium",
-      "fileExtensions": [
-        ".smt2"
-      ],
+      "fileExtensions": [".smt2"],
       "textMate": {
         "out": "../syntaxes/smt.tmLanguage.json"
       }

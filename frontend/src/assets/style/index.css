@@ -1,4 +1,4 @@
-:root{
+:root {
   --background-color: #ffffff;
   --foreground-color: #343a40;
   --primary-text-color: #212529;
@@ -10,7 +10,7 @@
   --drawer-background-color: #f5f5f5;
 }
 
-[data-theme="dark"]{
+[data-theme='dark'] {
   --background-color: #1f2427;
   --foreground-color: #f8f9fa;
   --primary-text-color: #ebebeb;
@@ -22,12 +22,14 @@
   --drawer-background-color: #1c2022;
 }
 
-html, body {
+html,
+body {
   background-color: var(--background-color) !important;
   color: var(--primary-text-color) !important;
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
 }
-
 
 /* Works in WebKit/Blink browsers (e.g., Chrome, Safari) */
 ::-webkit-scrollbar {
@@ -47,7 +49,6 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555; /* Change color on hover */
 }
-
 
 .full-screen {
   position: fixed;

@@ -3,9 +3,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const ProtectedRoutes = () => {
   const { isLoggedIn } = useAuth();
-  return (
-    isLoggedIn ? <Outlet/> : <Navigate to='/login' />
-  )
-}
+  return isLoggedIn ? <Outlet /> : <Navigate to='/login' />;
+};
 
-export default ProtectedRoutes
+export default ProtectedRoutes;

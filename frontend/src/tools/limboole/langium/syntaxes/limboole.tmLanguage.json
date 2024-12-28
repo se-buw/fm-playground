@@ -1,9 +1,7 @@
 {
   "name": "limboole",
   "scopeName": "source.limboole",
-  "fileTypes": [
-    ".limboole"
-  ],
+  "fileTypes": [".limboole"],
   "patterns": [
     {
       "include": "#comments"

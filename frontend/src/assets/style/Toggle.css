@@ -27,7 +27,9 @@
   border-radius: 1em;
   background: linear-gradient(45deg, #3f456e, #392757);
   position: relative;
-  transition: background 250ms ease-in-out, box-shadow 250ms ease-in-out;
+  transition:
+    background 250ms ease-in-out,
+    box-shadow 250ms ease-in-out;
   margin-right: 0.5em;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -67,7 +69,7 @@
 }
 
 .toggle:checked + label:before {
-  background: linear-gradient(45deg, #FFC107, #FFEB3B);
+  background: linear-gradient(45deg, #ffc107, #ffeb3b);
 }
 
 .toggle:checked + label:after {

@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from '@/contexts/AuthContext';
-import { Provider as JotaiProvider } from 'jotai'
+import { Provider as JotaiProvider } from 'jotai';
 import Nav from '@/components/Utils/Nav';
 import Footer from '@/components/Utils/Footer';
 import Playground from '@/components/Playground/Playground';
 import Login from '@/components/Authentication/Login';
 import ProtectedRoutes from '@/components/Authentication/ProtectedRoutes';
-import Missing from '@/components/Utils/Missing'
+import Missing from '@/components/Utils/Missing';
 import Feedback from '@/components/Utils/Feedback';
-import { jotaiStore } from '@/atoms'
-import '@/assets/style/index.css'
-import '@/assets/style/App.css'
-import '@/assets/style/Feedback.css'
+import { jotaiStore } from '@/atoms';
+import '@/assets/style/index.css';
+import '@/assets/style/App.css';
+import '@/assets/style/Feedback.css';
 
 const App = () => {
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
@@ -29,7 +29,6 @@ const App = () => {
   const toggleFeedbackForm = () => {
     setShowFeedback((prev) => !prev);
   };
-
 
   // const handleToggleTheme = () => {
   //   setIsDarkTheme((prevIsDarkTheme) => {
@@ -52,25 +51,20 @@ const App = () => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [isDarkTheme]);
 
-
   return (
     <AuthProvider>
       <JotaiProvider store={jotaiStore}>
         <div className='App' data-theme={isDarkTheme ? 'dark' : 'light'}>
-          <Nav
-            isDarkTheme={isDarkTheme}
-            setIsDarkTheme={setIsDarkTheme}
-          />
+          <Nav isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
           <Router>
             <Routes>
-              <Route element={<ProtectedRoutes />} >
-              </Route>
-              <Route path="/" element={<Playground/>} />
-              <Route path="/login" element={<Login />} />
-              <Route path="*" element={<Missing />} />
+              <Route element={<ProtectedRoutes />}></Route>
+              <Route path='/' element={<Playground />} />
+              <Route path='/login' element={<Login />} />
+              <Route path='*' element={<Missing />} />
             </Routes>
           </Router>
-          <button className="floating-button" onClick={toggleFeedbackForm}>
+          <button className='floating-button' onClick={toggleFeedbackForm}>
             Feedback
           </button>
           {showFeedback && <Feedback toggleFeedback={toggleFeedbackForm} />}
@@ -78,7 +72,7 @@ const App = () => {
         </div>
       </JotaiProvider>
     </AuthProvider>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -1,7 +1,9 @@
 .header {
   background-color: var(--background-color);
   color: var(--primary-text-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
 }
 
 .navbar-nav {
@@ -17,18 +19,19 @@
 .navbar-toggler {
   background-color: var(--background-color);
   color: var(--primary-text-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+  transition:
+    background-color 250ms ease-in-out,
+    color 250ms ease-in-out;
 }
 
-.navbar-option-button{
- /*me-lg-2 justify-content-center */
+.navbar-option-button {
+  /*me-lg-2 justify-content-center */
   margin: 0 0.5rem;
   justify-content: center;
 }
 
-
 @media (max-width: 768px) {
-  .navbar-option-button{
+  .navbar-option-button {
     width: 100% !important;
     margin-bottom: 5px;
   }
@@ -41,13 +44,11 @@
   }
 }
 
-
 @media (max-width: 768px) {
   .toggle-icon {
     display: none;
   }
 }
-
 
 /* Navbar.css */
 .loading-container {
@@ -67,6 +68,10 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

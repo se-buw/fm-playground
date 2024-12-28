@@ -1,13 +1,12 @@
-import axios from "axios";
-import axiosAuth from "./axiosAuth";
+import axios from 'axios';
+import axiosAuth from './axiosAuth';
 
-const API_URL = import.meta.env.VITE_FMP_API_URL
-const FMP_VERSION = import.meta.env.VITE_FMP_VERSION
+const API_URL = import.meta.env.VITE_FMP_API_URL;
+const FMP_VERSION = import.meta.env.VITE_FMP_VERSION;
 
 export default axios.create({
   withCredentials: true,
 });
-
 
 /**
  * Handle the logout request
@@ -22,7 +21,6 @@ export async function userLogout() {
     console.log(error);
   }
 }
-
 
 /**
  * Return the code associated with the permalink and selected check
@@ -62,12 +60,17 @@ export async function getCodeById(id: number | string) {
 }
 
 //Save the code and the check type in the database and return the permalink
-export async function saveCode(code: string, check: string, parent: string | null, metadata: Record<string, any> | null) {
+export async function saveCode(
+  code: string,
+  check: string,
+  parent: string | null,
+  metadata: Record<string, any> | null
+) {
   let url = `${API_URL}/save`;
   const md = {
     ...metadata,
-    "fmp-version": FMP_VERSION
-  }
+    'fmp-version': FMP_VERSION,
+  };
   let meta = JSON.stringify(md);
   const response = await axiosAuth.post(url, { code, check, parent, meta });
   if (response.status === 200) {
@@ -75,9 +78,8 @@ export async function saveCode(code: string, check: string, parent: string | nul
   }
 }
 
-
 /**
- * Return the list of histories 
+ * Return the list of histories
  * By default, it returns the first 20 histories
  * @returns list of histories
  */
@@ -93,7 +95,7 @@ export async function getHistories() {
 
 /**
  * Return the list of histories by pagination
- * @param {int} page 
+ * @param {int} page
  * @returns Object with history and has_more_data: true/false
  */
 export async function getHistoryByPage(page: number) {
@@ -108,7 +110,7 @@ export async function getHistoryByPage(page: number) {
 
 /**
  * Search the user history by query
- * @param {string} query 
+ * @param {string} query
  * @returns list of history objects
  */
 export async function searchUserHistory(query: string) {
@@ -120,7 +122,6 @@ export async function searchUserHistory(query: string) {
     console.log(error);
   }
 }
-
 
 /**
  * Return all the user data stored in the server
@@ -135,7 +136,6 @@ export async function downloadUserData() {
     console.log(error);
   }
 }
-
 
 /**
  * Delete the user profile and unlink all the data associated with the user
@@ -167,7 +167,7 @@ export async function isUserLoggedIn() {
     const response = await axiosAuth.get(url);
     return response.data;
   } catch (error) {
-    console.log("Not logged in");
+    console.log('Not logged in');
   }
 }
 

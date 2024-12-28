@@ -4,7 +4,7 @@ import getLocalizationServiceOverride from '@codingame/monaco-vscode-localizatio
 import { createDefaultLocaleConfiguration } from 'monaco-languageclient/vscode/services';
 import { LogLevel } from 'vscode/services';
 import { BrowserMessageReader, BrowserMessageWriter } from 'vscode-languageclient/browser.js';
-import {WrapperConfig } from 'monaco-editor-wrapper';
+import { WrapperConfig } from 'monaco-editor-wrapper';
 import smtLanguageConfig from './language-configuration.json?raw';
 import responseSmtTm from '../syntaxes/smt.tmLanguage.json?raw';
 import { configureMonacoWorkers } from '../utils';
@@ -17,7 +17,7 @@ const loadLangiumWorkerPort = () => {
     type: 'module',
     name: 'Smt Server Port',
   });
-}
+};
 
 export const createLangiumSmtConfig = async (): Promise<WrapperConfig> => {
   const extensionFilesOrContents = new Map<string, string | URL>();
@@ -45,50 +45,56 @@ export const createLangiumSmtConfig = async (): Promise<WrapperConfig> => {
         ...getKeybindingsServiceOverride(),
         ...getLifecycleServiceOverride(),
         ...getLocalizationServiceOverride(createDefaultLocaleConfiguration()),
-      }
+      },
     },
     editorAppConfig: {
       $type: 'extended',
       codeResources: {
         main: {
           text: '(check-sat)',
-          fileExt: 'smt2'
-        }
+          fileExt: 'smt2',
+        },
       },
       useDiffEditor: false,
-      extensions: [{
-        config: {
-          name: 'smt-example',
-          publisher: 'soaibuzzaman',
-          version: '1.0.0',
-          engine: {
-            vscode: '*'
+      extensions: [
+        {
+          config: {
+            name: 'smt-example',
+            publisher: 'soaibuzzaman',
+            version: '1.0.0',
+            engine: {
+              vscode: '*',
+            },
+            contributes: {
+              languages: [
+                {
+                  id: 'smt',
+                  extensions: ['.smt2'],
+                  aliases: ['smt', 'Smt'],
+                  configuration: `./smt-configuration.json`,
+                },
+              ],
+              grammars: [
+                {
+                  language: 'smt',
+                  scopeName: 'source.smt',
+                  path: `./smt-grammar.json`,
+                },
+              ],
+            },
           },
-          contributes: {
-            languages: [{
-              id: 'smt',
-              extensions: ['.smt2'],
-              aliases: ['smt', 'Smt'],
-              configuration: `./smt-configuration.json`
-            }],
-            grammars: [{
-              language: 'smt',
-              scopeName: 'source.smt',
-              path: `./smt-grammar.json`
-            }]
-          }
+          filesOrContents: extensionFilesOrContents,
         },
-        filesOrContents: extensionFilesOrContents
-      }],
+      ],
       userConfiguration: {
         json: JSON.stringify({
           'workbench.colorTheme': 'Default Dark Modern',
           'editor.guides.bracketPairsHorizontal': 'active',
           'editor.wordBasedSuggestions': 'off',
-          'editor.experimental.asyncTokenization': true
-        })
+          'editor.experimental.asyncTokenization': true,
+        }),
       },
-      monacoWorkerFactory: configureMonacoWorkers
+      monacoWorkerFactory: configureMonacoWorkers,
     },
     languageClientConfigs: {
       smt: {
@@ -99,9 +105,9 @@ export const createLangiumSmtConfig = async (): Promise<WrapperConfig> => {
             worker: smtWorkerPort,
             messagePort: channel.port1,
           },
-          messageTransports: { reader, writer }
-        }
-      }
-    }
-  }
-}
+          messageTransports: { reader, writer },
+        },
+      },
+    },
+  };
+};

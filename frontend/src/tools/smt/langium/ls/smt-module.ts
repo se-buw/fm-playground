@@ -1,5 +1,12 @@
 import { type Module, inject } from 'langium';
-import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
+import {
+  createDefaultModule,
+  createDefaultSharedModule,
+  type DefaultSharedModuleContext,
+  type LangiumServices,
+  type LangiumSharedServices,
+  type PartialLangiumServices,
+} from 'langium/lsp';
 import { SmtGeneratedModule, SmtGeneratedSharedModule } from './generated/module.js';
 import { SmtValidator, registerValidationChecks } from './smt-validator.js';
 
@@ -7,16 +14,16 @@ import { SmtValidator, registerValidationChecks } from './smt-validator.js';
  * Declaration of custom services - add your own service classes here.
  */
 export type SmtAddedServices = {
-    validation: {
-        SmtValidator: SmtValidator
-    }
-}
+  validation: {
+    SmtValidator: SmtValidator;
+  };
+};
 
 /**
  * Union of Langium default services and your custom services - use this as constructor parameter
  * of custom service classes.
  */
-export type SmtServices = LangiumServices & SmtAddedServices
+export type SmtServices = LangiumServices & SmtAddedServices;
 
 /**
  * Dependency injection module that overrides Langium default services and contributes the
@@ -24,9 +31,9 @@ export type SmtServices = LangiumServices & SmtAddedServices
  * selected services, while the custom services must be fully specified.
  */
 export const SmtModule: Module<SmtServices, PartialLangiumServices & SmtAddedServices> = {
-    validation: {
-        SmtValidator: () => new SmtValidator()
-    }
+  validation: {
+    SmtValidator: () => new SmtValidator(),
+  },
 };
 
 /**
@@ -45,24 +52,17 @@ export const SmtModule: Module<SmtServices, PartialLangiumServices & SmtAddedSer
  * @returns An object wrapping the shared services and the language-specific services
  */
 export function createSmtServices(context: DefaultSharedModuleContext): {
-    shared: LangiumSharedServices,
-    Smt: SmtServices
+  shared: LangiumSharedServices;
+  Smt: SmtServices;
 } {
-    const shared = inject(
-        createDefaultSharedModule(context),
-        SmtGeneratedSharedModule
-    );
-    const Smt = inject(
-        createDefaultModule({ shared }),
-        SmtGeneratedModule,
-        SmtModule
-    );
-    shared.ServiceRegistry.register(Smt);
-    registerValidationChecks(Smt);
-    if (!context.connection) {
-        // We don't run inside a language server
-        // Therefore, initialize the configuration provider instantly
-        shared.workspace.ConfigurationProvider.initialized({});
-    }
-    return { shared, Smt };
+  const shared = inject(createDefaultSharedModule(context), SmtGeneratedSharedModule);
+  const Smt = inject(createDefaultModule({ shared }), SmtGeneratedModule, SmtModule);
+  shared.ServiceRegistry.register(Smt);
+  registerValidationChecks(Smt);
+  if (!context.connection) {
+    // We don't run inside a language server
+    // Therefore, initialize the configuration provider instantly
+    shared.workspace.ConfigurationProvider.initialized({});
+  }
+  return { shared, Smt };
 }

@@ -2,63 +2,121 @@ import * as monaco from 'monaco-editor';
 
 const spectraConf: monaco.languages.LanguageConfiguration = {
   comments: {
-    lineComment: "//",
+    lineComment: '//',
   },
-  brackets: [['{', '}'], ['[', ']'], ['(', ')']],
+  brackets: [
+    ['{', '}'],
+    ['[', ']'],
+    ['(', ')'],
+  ],
   autoClosingPairs: [
     { open: '{', close: '}' },
     { open: '[', close: ']' },
-    { open: '(', close: ')' }
+    { open: '(', close: ')' },
   ],
   surroundingPairs: [
     { open: '{', close: '}' },
     { open: '[', close: ']' },
-    { open: '(', close: ')' }
+    { open: '(', close: ')' },
   ],
 };
 
 /* Spectra language definition (borrowed from monaco editor languages) */
-const spectraLang : monaco.languages.IMonarchLanguage= {
-
+const spectraLang: monaco.languages.IMonarchLanguage = {
   // Set defaultToken to invalid to see what you do not tokenize yet
   // defaultToken: 'invalid',
 
   keywords: [
-    'module', 'spec', 'import', 'define', 'weight',
-    'output', 'out', 'sysvar', 'sys', 'input', 'in',
-    'envvar', 'env', 'auxvar', 'aux', 'type', 'define',
-    'keep', 'false', 'modulo', 'counter', 'monitor',
-    'ini', 'initially', 'G', 'trans', 'always', 'alw',
-    'pattern', 'var', 'GF', 'alwEv', 'alwaysEventually',
-    'predicate', 'boolean', 'Int', 'guarantee', 'gar',
-    'ini', 'initially', 'assumption', 'asm', 'GE', 'GEF', 'regtest',
-    'S', 'SINCE', 'T', 'TRIGGERED', 'Y', 'PREV', 'H', 'HISTORICALLY',
-    'O', 'ONCE', 'next', 'regexp', '.all', 'any', 'prod', 'sum',
-    'min', 'max', 'FALSE', 'TRUE', 'true', 'trig',
-    'forall', 'exists', 'not', 'implies', 'or', 'xor', 'iff', 'and', 'mod',
+    'module',
+    'spec',
+    'import',
+    'define',
+    'weight',
+    'output',
+    'out',
+    'sysvar',
+    'sys',
+    'input',
+    'in',
+    'envvar',
+    'env',
+    'auxvar',
+    'aux',
+    'type',
+    'define',
+    'keep',
+    'false',
+    'modulo',
+    'counter',
+    'monitor',
+    'ini',
+    'initially',
+    'G',
+    'trans',
+    'always',
+    'alw',
+    'pattern',
+    'var',
+    'GF',
+    'alwEv',
+    'alwaysEventually',
+    'predicate',
+    'boolean',
+    'Int',
+    'guarantee',
+    'gar',
+    'ini',
+    'initially',
+    'assumption',
+    'asm',
+    'GE',
+    'GEF',
+    'regtest',
+    'S',
+    'SINCE',
+    'T',
+    'TRIGGERED',
+    'Y',
+    'PREV',
+    'H',
+    'HISTORICALLY',
+    'O',
+    'ONCE',
+    'next',
+    'regexp',
+    '.all',
+    'any',
+    'prod',
+    'sum',
+    'min',
+    'max',
+    'FALSE',
+    'TRUE',
+    'true',
+    'trig',
+    'forall',
+    'exists',
+    'not',
+    'implies',
+    'or',
+    'xor',
+    'iff',
+    'and',
+    'mod',
   ],
 
-  operators: [
-    '->', '<->', '|', '&','=', '!=', '<', '>', 
-    '<=', '>=', '%', '+', '-', '*', '/', '|=>','!',
-  ],
+  operators: ['->', '<->', '|', '&', '=', '!=', '<', '>', '<=', '>=', '%', '+', '-', '*', '/', '|=>', '!'],
 
-  system: [
-    'sysvar', 'sys', 'output', 'guarantee', 'gar'
-  ],
+  system: ['sysvar', 'sys', 'output', 'guarantee', 'gar'],
 
-  environment: [
-    'envvar', 'env', 'input', 'in', 'assumption', 'asm'
-  ],
+  environment: ['envvar', 'env', 'input', 'in', 'assumption', 'asm'],
 
-  reg: [
-    'regexp', 'regtest'
-  ],
+  reg: ['regexp', 'regtest'],
 
   brackets: [
-    { open: '(', close: ')', token: 'delimiter.parenthesis'},
-    { open: '{', close: '}', token: 'delimiter.curly'},
-    { open: '[', close: ']', token: 'delimiter.square'}
+    { open: '(', close: ')', token: 'delimiter.parenthesis' },
+    { open: '{', close: '}', token: 'delimiter.curly' },
+    { open: '[', close: ']', token: 'delimiter.square' },
   ],
 
   // we include these common regular expressions
@@ -83,12 +141,15 @@ const spectraLang : monaco.languages.IMonarchLanguage= {
       // [/@symbols/, { cases: { '@operators': 'keyword' } }],
 
       // identifiers and keywords
-      [/[a-zA-Z_][\w$]*/, {
-        cases: {
-          '@keywords': 'keyword',
-          '@default': 'identifier'
-        }
-      }],
+      [
+        /[a-zA-Z_][\w$]*/,
+        {
+          cases: {
+            '@keywords': 'keyword',
+            '@default': 'identifier',
+          },
+        },
+      ],
       [/[A-Z][\w\$]*/, 'type.identifier'],
 
       // whitespace
@@ -100,13 +161,15 @@ const spectraLang : monaco.languages.IMonarchLanguage= {
 
       // delimiters and operators
       [/[{}()\[\]]/, '@brackets'],
-      [/@symbols/, {
-        cases: {
-          '@operators': 'predefined.operator',
-          '@default': 'operator'
-        }
-      }],
-
+      [
+        /@symbols/,
+        {
+          cases: {
+            '@operators': 'predefined.operator',
+            '@default': 'operator',
+          },
+        },
+      ],
 
       // numbers
       [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
@@ -119,7 +182,7 @@ const spectraLang : monaco.languages.IMonarchLanguage= {
       [/[,.]/, 'delimiter'],
 
       // strings
-      [/"([^"\\]|\\.)*$/, 'string.invalid'],  // non-teminated string
+      [/"([^"\\]|\\.)*$/, 'string.invalid'], // non-teminated string
       [/"/, { token: 'string.quote', bracket: '@open', next: '@string' }],
 
       // user values
@@ -128,22 +191,22 @@ const spectraLang : monaco.languages.IMonarchLanguage= {
     ],
     comment: [
       [/[^\/*]+/, 'comment'],
-      [/\/\*/, 'comment', '@push'],    // nested comment
-      ["\\*/", 'comment', '@pop'],
-      [/[\/*]/, 'comment']
+      [/\/\*/, 'comment', '@push'], // nested comment
+      ['\\*/', 'comment', '@pop'],
+      [/[\/*]/, 'comment'],
     ],
     uservalue: [
       [/[^\\\}]+/, 'string'],
       [/\}/, { token: 'string.curly', bracket: '@close', next: '@pop' }],
       [/\\\}/, 'string.escape'],
-      [/./, 'string']  // recover
+      [/./, 'string'], // recover
     ],
 
     string: [
       [/[^\\"]+/, 'string'],
       [/@escapes/, 'string.escape'],
       [/\\./, 'string.escape.invalid'],
-      [/"/, { token: 'string.quote', bracket: '@close', next: '@pop' }]
+      [/"/, { token: 'string.quote', bracket: '@close', next: '@pop' }],
     ],
 
     whitespace: [

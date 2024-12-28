@@ -20,7 +20,6 @@ export function registerValidationChecks(services: LimbooleServices) {
  * Implementation of custom validations.
  */
 export class LimbooleValidator {
-
   services: LimbooleServices;
 
   constructor(services: LimbooleServices) {
@@ -37,12 +36,16 @@ export class LimbooleValidator {
     if (isExpr(expr) && expr.var !== undefined) {
       const typo = checkTypo(expr.var, this.services);
       if (typo !== undefined) {
-        accept('hint', `A possible typo was detected. Do you mean: "${typo}"?`, { node: expr, property: 'var', code: 'typo', data: { typo } });
+        accept('hint', `A possible typo was detected. Do you mean: "${typo}"?`, {
+          node: expr,
+          property: 'var',
+          code: 'typo',
+          data: { typo },
+        });
       }
     }
   }
 }
-
 
 function validateBinaryOperands(
   expr: And | Or | Iff | Implies,
