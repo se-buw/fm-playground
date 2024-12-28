@@ -1,7 +1,6 @@
 import { getLineToHighlight } from "../lineHighlightingUtil";
-import { executeNuxmv } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
-import fmpConfig from "../../../../fmp.config";
+import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { 
   editorValueAtom, 
   jotaiStore, 
@@ -11,7 +10,18 @@ import {
   lineToHighlightAtom,
   outputAtom
 } from "../../../atoms";
+import { Permalink } from "@/types";
+import axios from "axios";
 
+async function executeNuxmv(permalink: Permalink) {
+  let url = `/nuxmv/xmv/run/?check=${permalink.check}&p=${permalink.permalink}`;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const executeNuxmvTool = async () => {
   const editorValue = jotaiStore.get(editorValueAtom);

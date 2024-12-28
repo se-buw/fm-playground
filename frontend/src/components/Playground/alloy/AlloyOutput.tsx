@@ -15,7 +15,6 @@ import {
   MDBTabsPane
 } from 'mdb-react-ui-kit';
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
-import { getAlloyNextInstance } from '../../../api/toolsApi';
 import PlainOutput from '../PlainOutput';
 import { getLineToHighlight } from '../../../assets/ts/lineHighlightingUtil';
 import {
@@ -27,7 +26,24 @@ import '../../../assets/style/AlloyOutput.css';
 import AlloyEvaluator from './AlloyEvaluator';
 import { useAtom } from 'jotai';
 import { lineToHighlightAtom, isFullScreenAtom, alloyInstanceAtom } from '../../../atoms';
+import axios from 'axios';
 
+async function getAlloyNextInstance(specId: string | null) {
+  let url = '/alloy/alloy/nextInstance';
+  if (!url) {
+    throw new Error("Alloy Next Instance API URL not found");
+  }
+  try {
+    const response = await axios.post(url, specId, {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 const AlloyOutput = () => {
   const [, setLineToHighlight] = useAtom(lineToHighlightAtom);

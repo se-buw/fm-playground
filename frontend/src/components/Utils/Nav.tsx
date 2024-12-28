@@ -17,7 +17,6 @@ import {
 import AuthContext from '../../contexts/AuthContext';
 import { FaGithub } from 'react-icons/fa'
 import DrawerComponent from './DrawerComponent';
-import Options from '../../assets/config/AvailableTools'
 import CustomSnackbar from './Modals/CustomSnackbar';
 import ConfirmModal from './Modals/ConfirmModal';
 import { downloadUserData, deleteProfile } from '../../api/playgroundApi';
@@ -27,6 +26,7 @@ import '../../assets/style/Nav.css';
 import Toggle from './Toggle';
 import { useAtom } from 'jotai';
 import { editorValueAtom, languageAtom } from '../../atoms';
+import { fmpConfig } from '../Playground/ToolMaps';
 
 
 interface NavbarProps {
@@ -125,7 +125,13 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
    */
   const handleDrawerItemClick = (check: string, permalink: string, code: string) => {
     setEditorValue(code);
-    const selectedOption = Options.find(option => option.short === check);
+    const options = Object.entries(fmpConfig.tools).map(([key, tool]) => ({
+      id: key,
+      value: tool.extension,
+      label: tool.name,
+      short: tool.shortName,
+    }));
+    const selectedOption = options.find(option => option.short === check);
     if (selectedOption) {
       setLanguage(selectedOption);
     }

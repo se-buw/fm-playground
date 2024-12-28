@@ -6,7 +6,7 @@ import { createLangiumGlobalConfig } from '../../assets/languages/lspWrapperConf
 import '../../assets/style/Playground.css'
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import type { LanguageProps } from './Tools';
-import fmpConfig from '../../../fmp.config';
+import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { useAtom } from 'jotai';
 import { editorValueAtom, languageAtom } from '../../atoms.js';
 

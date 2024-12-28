@@ -3,9 +3,8 @@ import Editor from "@monaco-editor/react";
 import '../../assets/style/Playground.css'
 import * as monacoEditor from 'monaco-editor';
 import { useAtom } from 'jotai';
-import { editorValueAtom, languageAtom, lineToHighlightAtom } from '../../atoms';
-import fmpConfig from '../../../fmp.config';
-import { languageConfigMap } from './ToolMaps';
+import { editorValueAtom, languageAtom, lineToHighlightAtom } from '@/atoms';
+import { fmpConfig, languageConfigMap } from '@/components/Playground/ToolMaps';
 
 interface BasicCodeEditorProps {
   height: string;
@@ -69,9 +68,9 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
     editorRef.current = editor
     editorRef.current.focus()
 
-    const tools = fmpConfig.tools;
+    const tools: { [key: string]: { name: string; extension: string; shortName: string; } } = fmpConfig.tools;
     for (const toolKey in tools) {
-      const tool = tools[toolKey];
+      const tool = tools[toolKey as keyof typeof tools];
       const languageId = tool.extension.replace(/^\./, '');
       const resource = languageConfigMap[languageId];
       if(!resource) {

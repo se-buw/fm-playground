@@ -1,8 +1,8 @@
 import runZ3WASM from "../runZ3WASM";
 import { getLineToHighlight } from "../lineHighlightingUtil";
-import { executeZ3 } from "../../../api/toolsApi";
+
 import { saveCode } from "../../../api/playgroundApi";
-import fmpConfig from "../../../../fmp.config";
+import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { 
   editorValueAtom, 
   jotaiStore, 
@@ -13,7 +13,18 @@ import {
   outputAtom,
   enableLspAtom
 } from "../../../atoms";
+import axios from "axios";
+import { Permalink } from "@/types";
 
+async function executeZ3(permalink: Permalink) {
+  let url = `/smt/smt/run/?check=${permalink.check}&p=${permalink.permalink}`;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const executeZ3Wasm = async () => {
   const editorValue = jotaiStore.get(editorValueAtom);

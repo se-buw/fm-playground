@@ -46,3 +46,37 @@ export const languageConfigMap: Record<string, { tokenProvider: any; configurati
   als: { tokenProvider: alloyLang, configuration: alloyConf },
   spectra: { tokenProvider: spectraLang, configuration: spectraConf }
 }
+
+
+export const fmpConfig = {
+  title: "FM Playground",
+  repository: "https://github.com/se-buw/fm-playground",
+  issues: "https://github.com/se-buw/fm-playground/issues",
+  tools: {
+    limboole: {
+      name: "Limboole",
+      extension: "limboole",
+      shortName: "SAT",
+    },
+    smt2: {
+      name: "SMT",
+      extension: "smt2",
+      shortName: "SMT",
+    },
+    xmv: {
+      name: "nuXmv",
+      extension: ".xmv",
+      shortName: "XMV",
+    },
+    als: {
+      name: "Alloy",
+      extension: "als",
+      shortName: "ALS",
+    },
+    spectra: {
+      name: "Spectra",
+      extension: "spectra",
+      shortName: "SPECTRA",
+    },
+  },
+};

@@ -1,7 +1,7 @@
 import { atom } from "jotai"
 import { atomWithStorage } from 'jotai/utils'
 import { createStore } from "jotai";
-import Options from "./assets/config/AvailableTools";
+import { fmpConfig } from "./components/Playground/ToolMaps";
 
 export const jotaiStore = createStore();
 
@@ -17,9 +17,16 @@ const rawStringStorage = {
     localStorage.removeItem(key)
   },
 }
-
+const defaultLanguage = Object.entries(fmpConfig.tools)
+  .map(([key, tool]) => ({
+    id: key,
+    value: tool.extension,
+    label: tool.name,
+    short: tool.shortName,
+  }))[0]; 
+  
 export const editorValueAtom = atomWithStorage("editorValue", "", rawStringStorage);
-export const languageAtom = atomWithStorage("language", Options[0]);
+export const languageAtom = atomWithStorage("language", defaultLanguage);
 export const permalinkAtom = atom<{ check: string | null, permalink: string | null }>({ check: null, permalink: null });
 export const isExecutingAtom = atom(false);
 export const lineToHighlightAtom = atom<number[]>([]);

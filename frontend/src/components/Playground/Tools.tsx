@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import '../../assets/style/Playground.css'
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
-import Options from '../../assets/config/AvailableTools'
+import '@/assets/style/Playground.css'
+import { fmpConfig } from '@/components/Playground/ToolMaps';
 
 export type LanguageProps = {
   id: string;
@@ -9,35 +9,41 @@ export type LanguageProps = {
   label: string;
   short: string;
 }
-
 interface ToolsProps {
-  onChange: (selectedOption: any) => void; // TODO: Change any to LanguageProps when the fmp.config.ts file is ready
+  onChange: (selectedOption: any) => void; 
   selected: LanguageProps;
 }
 
-
-
 const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {
-  // FIXME: This is a temporary solution. The options should be generated from the fmp.config.ts file.
-  const [options, setOptions] = useState(Options);
+  const [options, setOptions] = useState<{ id: string; value: string; label: string; short: string; }[]>([]);
+
+  useEffect(() => {
+    const generatedOptions = Object.entries(fmpConfig.tools).map(([key, tool]) => ({
+      id: key,
+      value: tool.extension,
+      label: tool.name,
+      short: tool.shortName,
+    }));
+    setOptions(generatedOptions);
+  }, []);
 
   return (
-      <div className='tools'> 
-        <Select
-          className="basic-single react-select-container"
-          classNamePrefix="select"
-          defaultValue={options[0]}
-          isDisabled={false}
-          isLoading={false}
-          isClearable={false}
-          isRtl={false}
-          isSearchable={true}
-          name="color"
-          options={options}
-          onChange={props.onChange}
-          value={props.selected}
-        />
-      </div>
+    <div className='tools'>
+      <Select
+        className="basic-single react-select-container"
+        classNamePrefix="select"
+        defaultValue={options[0]}
+        isDisabled={false}
+        isLoading={false}
+        isClearable={false}
+        isRtl={false}
+        isSearchable={true}
+        name="color"
+        options={options}
+        onChange={props.onChange}
+        value={props.selected}
+      />
+    </div>
   );
 };
 

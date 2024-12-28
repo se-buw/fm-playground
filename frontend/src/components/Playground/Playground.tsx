@@ -2,13 +2,12 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip'
 import Tools from './Tools';
-import Options from '../../assets/config/AvailableTools'
 import Guides from '../Utils/Guides';
 import MessageModal from '../Utils/Modals/MessageModal';
 import { getCodeByParmalink, } from '../../api/playgroundApi.js'
 import '../../assets/style/Playground.css'
 import type { LanguageProps } from './Tools';
-import fmpConfig from '../../../fmp.config.js';
+import { fmpConfig } from './ToolMaps';
 import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
 import {
@@ -52,7 +51,15 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
     if (checkParam === "VAL" || checkParam === "QBF") { checkParam = "SAT" } // v2.0.0: VAL and QBF are merged into SAT
 
     const permalinkParam = urlParams.get('p');
-    const selectedOption = Options.find(option => option.short === checkParam);
+
+    const options = Object.entries(fmpConfig.tools).map(([key, tool]) => ({
+      id: key,
+      value: tool.extension,
+      label: tool.name,
+      short: tool.shortName,
+    }));
+
+    const selectedOption = options.find(option => option.short === checkParam);
 
     // Load the code if 'check' parameter is present
     if (permalinkParam) {
@@ -107,7 +114,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
       const currentTool = toolExecutionMap[language.short];
       if (currentTool) {
         currentTool();
-      }else{
+      } else {
         setIsExecuting(false);
       }
     } catch (err: any) {
@@ -183,13 +190,13 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
       <Tooltip id="playground-tooltip" />
       <div className="row Playground">
         <div className="col-md-6 Playground" ref={inputDivRef}>
-          <InputArea 
-           onRunButtonClick={handleToolExecution}
-           onFullScreenButtonClick={() => toggleFullScreen('input')}
+          <InputArea
+            onRunButtonClick={handleToolExecution}
+            onFullScreenButtonClick={() => toggleFullScreen('input')}
           />
         </div>
         <div className='col-md-6 Playground' ref={outputDivRef} >
-          <OutputArea 
+          <OutputArea
             onFullScreenButtonClick={() => toggleFullScreen('output')}
           />
         </div>

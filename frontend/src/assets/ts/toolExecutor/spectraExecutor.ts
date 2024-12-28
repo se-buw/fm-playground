@@ -1,7 +1,6 @@
 import { getLineToHighlight } from "../lineHighlightingUtil";
-import { executeSpectra } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
-import fmpConfig from "../../../../fmp.config";
+import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { 
   editorValueAtom, 
   jotaiStore, 
@@ -12,6 +11,18 @@ import {
   outputAtom,
   spectraCliOptionsAtom
 } from "../../../atoms";
+import { Permalink } from "@/types";
+import axios from "axios";
+
+async function executeSpectra(permalink: Permalink, command: string) {
+  let url = `/spectra/spectra/run/?check=${permalink.check}&p=${permalink.permalink}&command=${command}`;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const executeSpectraTool = async () => {
   const editorValue = jotaiStore.get(editorValueAtom);

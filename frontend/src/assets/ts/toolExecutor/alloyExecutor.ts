@@ -1,6 +1,5 @@
-import { getAlloyInstance } from "../../../api/toolsApi";
 import { saveCode } from "../../../api/playgroundApi";
-import fmpConfig from "../../../../fmp.config";
+import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { 
   editorValueAtom, 
   jotaiStore, 
@@ -11,7 +10,18 @@ import {
   alloyInstanceAtom,
   outputAtom
  } from "../../../atoms";
+import { Permalink } from "@/types";
+import axios from "axios";
 
+ async function getAlloyInstance(permalink: Permalink, cmd: number) {
+  let url = `/alloy/alloy/instance?check=${permalink.check}&p=${permalink.permalink}&cmd=${cmd}`;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
 
 export const executeAlloyTool = async () => {
     

@@ -1,13 +1,23 @@
 import React from 'react';
-import PlainOutput from '../PlainOutput';
 import { MDBInput } from 'mdb-react-ui-kit';
-import { getAlloyEval } from '../../../api/toolsApi';
+import axios from 'axios';
+
 interface AlloyEvaluatorProps {
   height: string;
   specId: string | null;
   state: number;
   evaluatorOutput: string;
   setEvaluatorOutput: (evaluatorOutput: string) => void;
+}
+
+async function getAlloyEval(specId: string, expr: string, state: number) {
+  let url = `/alloy/alloy/eval?specId=${specId}&expr=${encodeURIComponent(expr)}&state=${state}`;
+  try {
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 }
 
 const AlloyEvaluator: React.FC<AlloyEvaluatorProps> = ({ height, specId, state, evaluatorOutput, setEvaluatorOutput }) => {
