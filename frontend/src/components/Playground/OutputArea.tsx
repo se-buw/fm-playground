@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAtom } from 'jotai';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
 import { isFullScreenAtom, languageAtom } from '@/atoms';
-import NuxmvCopyrightNotice from '@/components/Playground/nuxmv/NuxmvCopyrightNotice';
-import { toolOutputMap } from '@/components/Playground/ToolMaps';
+import { additonalOutputAreaUiMap, toolOutputMap } from '@/components/Playground/ToolMaps';
 
 interface OutputAreaProps {
   onFullScreenButtonClick: () => void;
@@ -13,7 +12,8 @@ interface OutputAreaProps {
 const OutputArea: React.FC<OutputAreaProps> = ({ onFullScreenButtonClick }) => {
   const [language] = useAtom(languageAtom);
   const [isFullScreen] = useAtom(isFullScreenAtom);
-  const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false);
+
+  const AdditionalUi = additonalOutputAreaUiMap[language.short];
 
   const OutputComponent = toolOutputMap[language.short];
 
@@ -39,26 +39,8 @@ const OutputArea: React.FC<OutputAreaProps> = ({ onFullScreenButtonClick }) => {
           </MDBIcon>
         </div>
       </div>
-      {language.id === 'xmv' && (
-        <div className='col-md-12'>
-          <a
-            style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            role='button'
-            onClick={() => setIsNuxmvModalOpen(true)}
-          >
-            nuXmv Copyright Notice
-          </a>
-          {/* Render the modal conditionally */}
-          {isNuxmvModalOpen && (
-            <NuxmvCopyrightNotice
-              isNuxmvModalOpen={isNuxmvModalOpen}
-              setIsNuxmvModalOpen={setIsNuxmvModalOpen}
-              toggleNuxmvModal={() => setIsNuxmvModalOpen(!isNuxmvModalOpen)}
-            />
-          )}
-        </div>
-      )}
 
+      <div>{AdditionalUi && <AdditionalUi />}</div>
       <div className='col-md-12'>
         {OutputComponent ? <OutputComponent /> : <div>No output component available for {language.short}</div>}
       </div>

@@ -17,10 +17,16 @@ import { nuxmvConf, nuxmvLang } from '@/tools/nuxmv/nuxmvTextMateGrammar';
 import { alloyConf, alloyLang } from '@/tools/alloy/alloyTextMateGrammar';
 import { spectraConf, spectraLang } from '@/tools/spectra/spectraTextMateGrammar';
 
+import NuxmvCopyrightNotice from '@/components/Playground/nuxmv/NuxmvCopyrightNotice';
+
 export const additionalInputAreaUiMap: Record<string, React.FC<any>> = {
   SAT: LimbooleCheckOptions,
   SPECTRA: SpectraCliOptions,
   ALS: AlloyCmdOptions,
+};
+
+export const additonalOutputAreaUiMap: Record<string, React.FC<any>> = {
+  XMV: NuxmvCopyrightNotice
 };
 
 export const toolExecutionMap: Record<string, () => void> = {

@@ -153,13 +153,13 @@ const InputArea: React.FC<InputAreaProps> = ({ onRunButtonClick, onFullScreenBut
           </div>
         </div>
       </div>
-      {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ? (
+      {enableLsp ? (
         <LspEditor height={isFullScreen ? '80vh' : '60vh'} editorTheme='vs' />
       ) : (
         <Editor height={isFullScreen ? '80vh' : '60vh'} editorTheme='vs' />
       )}
 
-      <div className='w-full px-1 pt-2'>{AdditionalUi && <AdditionalUi />}</div>
+      <div>{AdditionalUi && <AdditionalUi />}</div>
       <MDBBtn
         className='mx-auto my-3'
         style={{ width: '95%' }}
