@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip'
 import Tools from './Tools';
 import Options from '../../assets/config/AvailableTools'
-import FileDownload from '../Utils/FileDownload';
 import Guides from '../Utils/Guides';
 import MessageModal from '../Utils/Modals/MessageModal';
 import { getCodeByParmalink, } from '../../api/playgroundApi.js'
@@ -17,7 +16,6 @@ import {
   languageAtom,
   permalinkAtom,
   isExecutingAtom,
-  lineToHighlightAtom,
   outputAtom,
   isFullScreenAtom
 } from '../../atoms';
@@ -34,17 +32,15 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const navigate = useNavigate();
   const inputDivRef = useRef<HTMLDivElement>(null);  // contains the reference to the editor area
   const outputDivRef = useRef<HTMLDivElement>(null); // contains the reference to the output area
-  const [editorValue, setEditorValue] = useAtom(editorValueAtom);
+  const [, setEditorValue] = useAtom(editorValueAtom);
   const [language, setLanguage] = useAtom(languageAtom);
   const [permalink, setPermalink] = useAtom(permalinkAtom);
   const [, setOutput] = useAtom(outputAtom); // contains the output from the tool execution.
   const [, setIsExecuting] = useAtom(isExecutingAtom); // contains the state of the tool execution.
   const [, setIsFullScreen] = useAtom(isFullScreenAtom); // contains the state of the full screen mode.
-  const [, setIsNewSpecModalOpen] = useState(false); // contains the state of the new spec modal.
   const [errorMessage, setErrorMessage] = useState<string | null>(null); // contains the error messages from the API.
   const [isErrorMessageModalOpen, setIsErrorMessageModalOpen] = useState(false); // contains the state of the message modal.
-  const [, setLineToHighlight] = useAtom(lineToHighlightAtom); // contains the line number to highlight in the editor.
-  const [enableLsp, setEnableLsp] = useState(false); // contains the state of the LSP editor.
+  const [enableLsp] = useState(false); // contains the state of the LSP editor.
 
   /**
    * Load the code and language from the URL.
@@ -91,9 +87,8 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
     setLanguage(newLanguage)
     window.history.pushState(null, '', `?check=${newLanguage.short}`)
   }
-  /**
-   * Load the code from the api. 
-   */
+
+
   const loadCode = async (check: string, permalink: string) => {
     await getCodeByParmalink(check, permalink)
       .then((res) => {
@@ -126,41 +121,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
         showErrorModal(`Something went wrong. If the problem persists, open an <a href="${fmpConfig.issues}" target="_blank">issue</a>`);
       }
     }
-  }
-
-  const handleFileUpload = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      if (e.target) {
-        const content = e.target.result as string;
-        setEditorValue(content);
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const handleDownload = () => {
-    const content = editorValue;
-    const queryParams = new URLSearchParams(useLocation().search);
-    const p = queryParams.get('p');
-    const fileName = p ? p : 'code';
-    const fileExtension = language.short == 'SMT' ? 'smt2' : language.short == 'XMV' ? 'smv' : language.short == 'SPECTRA' ? 'spectra' : language.short == 'als' ? 'als' : 'txt';
-    return <FileDownload content={content} fileName={fileName} fileExtension={fileExtension} />;
-  };
-
-  const handleOutputChange = (newCode: string) => {
-    setOutput(newCode);
-  };
-
-  const handleReset = () => {
-    setEditorValue('')
-    setOutput('')
-    const infoElement = document.getElementById('info');
-    if (infoElement) {
-      infoElement.innerHTML = '';
-    }
-    setPermalink({ check: null, permalink: null })
-    closeModal()
   }
 
   const toggleFullScreen = (div: 'input' | 'output') => {
@@ -204,9 +164,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
     };
   }, []);
 
-  const openModal = () => setIsNewSpecModalOpen(true); // open the new spec modal
-  const closeModal = () => setIsNewSpecModalOpen(false); // close the new spec modal
-
   const showErrorModal = (message: string) => {
     setErrorMessage(message);
     setIsErrorMessageModalOpen(true);
@@ -215,10 +172,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
   const hideErrorModal = () => {
     setErrorMessage(null);
     setIsErrorMessageModalOpen(!isErrorMessageModalOpen);
-  };
-
-  const handleLineHighlight = (line: number[]) => {
-    setLineToHighlight(line);
   };
 
   return (
@@ -231,12 +184,14 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
       <div className="row Playground">
         <div className="col-md-6 Playground" ref={inputDivRef}>
           <InputArea 
-           onClick={handleToolExecution}
-          
+           onRunButtonClick={handleToolExecution}
+           onFullScreenButtonClick={() => toggleFullScreen('input')}
           />
         </div>
         <div className='col-md-6 Playground' ref={outputDivRef} >
-          <OutputArea />
+          <OutputArea 
+            onFullScreenButtonClick={() => toggleFullScreen('output')}
+          />
         </div>
       </div>
       <Guides id={language.id} />

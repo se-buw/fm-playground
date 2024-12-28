@@ -10,7 +10,11 @@ import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice'
 import PlainOutput from './PlainOutput'
 import { toolOutputMap } from './ToolMaps'
 
-const OutputArea = () => {
+interface OutputAreaProps {
+  onFullScreenButtonClick: () => void
+}
+
+const OutputArea: React.FC<OutputAreaProps> = ({ onFullScreenButtonClick }) => {
   const [output, setOutput] = useAtom(outputAtom)
   const [language] = useAtom(languageAtom)
   const [isFullScreen, setIsFullScreen] = useAtom(isFullScreenAtom)
@@ -27,8 +31,8 @@ const OutputArea = () => {
       <div className='col-md-12'>
         <div className={`d-flex justify-content-between align-items-center ${language.id !== 'xmv' ? 'mb-2' : ''}`}>
           <h2>Output</h2>
-          {/* <MDBIcon size='lg' className='playground-icon'
-            onClick={() => { toggleFullScreen('output') }}>
+          <MDBIcon size='lg' className='playground-icon'
+            onClick={() => onFullScreenButtonClick()}>
             {isFullScreen ?
               <AiOutlineFullscreenExit
                 className='playground-icon'
@@ -40,7 +44,7 @@ const OutputArea = () => {
                 data-tooltip-id="playground-tooltip"
                 data-tooltip-content="Fullscreen"
               />}
-          </MDBIcon> */}
+          </MDBIcon>
         </div>
       </div>
       {language.id === 'xmv' && (

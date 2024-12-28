@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../../assets/style/Playground.css'
 import Select from 'react-select';
-import fmpConfig from '../../../fmp.config';
 import Options from '../../assets/config/AvailableTools'
 
 export type LanguageProps = {

@@ -13,13 +13,19 @@ import CopyToClipboardBtn from '@/components/Utils/CopyToClipboardBtn';
 import LspEditor from './LspEditor';
 import Editor from './Editor';
 import { additionalInputAreaUiMap } from './ToolMaps'
+import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
 
-const InputArea = ({ onClick: handleToolExecution }: { onClick: () => void }) => {
+interface InputAreaProps {
+  onRunButtonClick: () => void;
+  onFullScreenButtonClick: () => void;
+}
+
+const InputArea: React.FC<InputAreaProps> = ({ onRunButtonClick, onFullScreenButtonClick }) => {
   const [enableLsp, setEnableLsp] = useAtom(enableLspAtom);
   const [editorValue, setEditorValue] = useAtom(editorValueAtom);
   const [, setOutput] = useAtom(outputAtom);
   const [permalink, setPermalink] = useAtom(permalinkAtom);
-  const [language, setLanguage] = useAtom(languageAtom);
+  const [language] = useAtom(languageAtom);
   const [isExecuting] = useAtom(isExecutingAtom);
   const [isFullScreen] = useAtom(isFullScreenAtom);
 
@@ -117,7 +123,7 @@ const InputArea = ({ onClick: handleToolExecution }: { onClick: () => void }) =>
                   <CopyToClipboardBtn />
                 </MDBIcon>
               }
-              {/* <MDBIcon size='lg' className='playground-icon' onClick={() => { toggleFullScreen('input') }}>
+              <MDBIcon size='lg' className='playground-icon' onClick={() => onFullScreenButtonClick()}>
                 {isFullScreen ?
                   <AiOutlineFullscreenExit
                     className='playground-icon'
@@ -129,7 +135,7 @@ const InputArea = ({ onClick: handleToolExecution }: { onClick: () => void }) =>
                     data-tooltip-id="playground-tooltip"
                     data-tooltip-content="Fullscreen"
                   />}
-              </MDBIcon> */}
+              </MDBIcon>
             </Stack>
           </div>
         </div>
@@ -153,7 +159,7 @@ const InputArea = ({ onClick: handleToolExecution }: { onClick: () => void }) =>
         className='mx-auto my-3'
         style={{ width: '95%' }}
         color='primary'
-        onClick={handleToolExecution}
+        onClick={onRunButtonClick}
         disabled={isExecuting}
       >
         {isExecuting ? 'Running...' : 'RUN'}

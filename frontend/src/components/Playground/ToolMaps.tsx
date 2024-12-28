@@ -1,6 +1,6 @@
-import LimbooleCheckOptions from './limboole/limbooleCheckOptions'
-import SpectraCliOptions from './spectra/SpectraCliOptions'
-import AlloyCmdOptions from './alloy/AlloyCmdOptions'
+import LimbooleCheckOptions from '@/components/Playground/limboole/limbooleCheckOptions';
+import SpectraCliOptions from '@/components/Playground/spectra/SpectraCliOptions';
+import AlloyCmdOptions from '@/components/Playground/alloy/AlloyCmdOptions';
 
 import { executeLimboole } from '@/assets/ts/toolExecutor/limbooleExecutor';
 import { executeZ3Wasm } from '@/assets/ts/toolExecutor/z3Executor';
@@ -8,8 +8,8 @@ import { executeNuxmvTool } from '@/assets/ts/toolExecutor/nuxmvExecutor';
 import { executeAlloyTool } from '@/assets/ts/toolExecutor/alloyExecutor';
 import { executeSpectraTool } from '@/assets/ts/toolExecutor/spectraExecutor';
 
-import PlainOutput from './PlainOutput';
-import AlloyOutput from './alloy/AlloyOutput';
+import PlainOutput from '@/components/Playground/PlainOutput';
+import AlloyOutput from '@/components/Playground/alloy/AlloyOutput';
 
 import { limbooleConf, limbooleLang } from '@/assets/languages/limboole';
 import { smt2Conf, smt2Lang } from '@/assets/languages/smt2';
