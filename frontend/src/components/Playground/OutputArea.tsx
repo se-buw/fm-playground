@@ -1,21 +1,20 @@
-import { MDBIcon } from 'mdb-react-ui-kit'
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useAtom } from 'jotai';
+import { MDBIcon } from 'mdb-react-ui-kit';
 import {
   AiOutlineFullscreen,
   AiOutlineFullscreenExit
-} from 'react-icons/ai'
-import { useAtom } from 'jotai'
-import { isFullScreenAtom, languageAtom, outputAtom } from '@/atoms'
-import NuxmvCopyrightNotice from '../Utils/Modals/NuxmvCopyrightNotice'
-import PlainOutput from './PlainOutput'
-import { toolOutputMap } from './ToolMaps'
+} from 'react-icons/ai';
+import { isFullScreenAtom, languageAtom, outputAtom } from '@/atoms';
+import NuxmvCopyrightNotice from '@/components/Utils/Modals/NuxmvCopyrightNotice';
+import { toolOutputMap } from '@/components/Playground/ToolMaps'
 
 interface OutputAreaProps {
   onFullScreenButtonClick: () => void
 }
 
 const OutputArea: React.FC<OutputAreaProps> = ({ onFullScreenButtonClick }) => {
-  const [output, setOutput] = useAtom(outputAtom)
+  const [, setOutput] = useAtom(outputAtom)
   const [language] = useAtom(languageAtom)
   const [isFullScreen, setIsFullScreen] = useAtom(isFullScreenAtom)
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false);

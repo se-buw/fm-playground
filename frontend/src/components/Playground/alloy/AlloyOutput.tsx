@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { TbBinaryTree } from "react-icons/tb";
@@ -15,13 +15,12 @@ import {
   MDBTabsPane
 } from 'mdb-react-ui-kit';
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
-import PlainOutput from '../PlainOutput';
-import { getLineToHighlight } from '../../../assets/ts/lineHighlightingUtil';
+import { getLineToHighlight } from '@/tools/common/lineHighlightingUtil';
 import {
   getGraphData,
   parseAlloyErrorMessage,
   getTraceLengthAndBackloop
-} from '../../../assets/js/alloyUtils';
+} from '@/tools/alloy/alloyUtils';
 import '../../../assets/style/AlloyOutput.css';
 import AlloyEvaluator from './AlloyEvaluator';
 import { useAtom } from 'jotai';

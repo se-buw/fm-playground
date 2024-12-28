@@ -1,7 +1,7 @@
-import run_limboole from "../../js/limboole";
-import { getLineToHighlight } from "../lineHighlightingUtil";
-import { saveCode } from "../../../api/playgroundApi";
-import { Permalink } from "../../../types";
+import run_limboole from '@/tools/limboole/limboole';
+import { getLineToHighlight } from '@/tools/common/lineHighlightingUtil';
+import { saveCode } from '@/api/playgroundApi';
+import { Permalink } from "@/types";
 import { fmpConfig } from '@/components/Playground/ToolMaps';
 import {
   editorValueAtom,
@@ -13,7 +13,7 @@ import {
   enableLspAtom,
   limbooleCliOptionsAtom,
   outputAtom
-} from "../../../atoms";
+} from '@/atoms';
 
 export const executeLimboole = async () => {
   const editorValue = jotaiStore.get(editorValueAtom);

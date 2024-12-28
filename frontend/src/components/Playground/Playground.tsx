@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'react-tooltip'
-import Tools from './Tools';
-import Guides from '../Utils/Guides';
-import MessageModal from '../Utils/Modals/MessageModal';
-import { getCodeByParmalink, } from '../../api/playgroundApi.js'
-import '../../assets/style/Playground.css'
+import Tools from '@/components/Playground/Tools';
+import Guides from '@/components/Utils/Guides';
+import MessageModal from '@/components/Utils/Modals/MessageModal';
+import { getCodeByParmalink, } from '@/api/playgroundApi';
+import '@/assets/style/Playground.css'
 import type { LanguageProps } from './Tools';
-import { fmpConfig } from './ToolMaps';
-import UpdateSnackbar from '../Utils/Modals/UpdateSnackbar.js';
+import { fmpConfig, toolExecutionMap } from '@/components/Playground/ToolMaps';
+import UpdateSnackbar from '@/components/Utils/Modals/UpdateSnackbar.js';
 import { useAtom } from 'jotai';
 import {
   editorValueAtom,
@@ -17,10 +17,9 @@ import {
   isExecutingAtom,
   outputAtom,
   isFullScreenAtom
-} from '../../atoms';
-import InputArea from './InputArea';
-import OutputArea from './OutputArea.js';
-import { toolExecutionMap } from './ToolMaps.js';
+} from '@/atoms';
+import InputArea from '@/components/Playground/InputArea';
+import OutputArea from '@/components/Playground//OutputArea';
 
 interface PlaygroundProps {
   editorTheme: string;

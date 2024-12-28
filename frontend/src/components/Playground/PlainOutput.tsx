@@ -1,10 +1,10 @@
-import '../../assets/style/Playground.css'
 import { useAtom } from 'jotai';
+import '@/assets/style/Playground.css';
 import { outputAtom, outputPreviewHeightAtom } from '@/atoms';
 
 
 const PlainOutput = () => {
-  const [code, setCode] = useAtom(outputAtom);
+  const [code] = useAtom(outputAtom);
   const [outputPreviewHeight] = useAtom(outputPreviewHeightAtom);
   
   return (

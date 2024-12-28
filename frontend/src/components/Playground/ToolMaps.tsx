@@ -2,20 +2,20 @@ import LimbooleCheckOptions from '@/components/Playground/limboole/limbooleCheck
 import SpectraCliOptions from '@/components/Playground/spectra/SpectraCliOptions';
 import AlloyCmdOptions from '@/components/Playground/alloy/AlloyCmdOptions';
 
-import { executeLimboole } from '@/assets/ts/toolExecutor/limbooleExecutor';
-import { executeZ3Wasm } from '@/assets/ts/toolExecutor/z3Executor';
-import { executeNuxmvTool } from '@/assets/ts/toolExecutor/nuxmvExecutor';
-import { executeAlloyTool } from '@/assets/ts/toolExecutor/alloyExecutor';
-import { executeSpectraTool } from '@/assets/ts/toolExecutor/spectraExecutor';
+import { executeLimboole } from '@/tools/limboole/limbooleExecutor';
+import { executeZ3Wasm } from '@/tools/smt/z3Executor';
+import { executeNuxmvTool } from '@/tools/nuxmv/nuxmvExecutor';
+import { executeAlloyTool } from '@/tools/alloy/alloyExecutor';
+import { executeSpectraTool } from '@/tools/spectra/spectraExecutor';
 
 import PlainOutput from '@/components/Playground/PlainOutput';
 import AlloyOutput from '@/components/Playground/alloy/AlloyOutput';
 
-import { limbooleConf, limbooleLang } from '@/assets/languages/limboole';
-import { smt2Conf, smt2Lang } from '@/assets/languages/smt2';
-import { nuxmvConf, nuxmvLang } from '@/assets/languages/nuxmv';
-import { alloyConf, alloyLang } from '@/assets/languages/alloy';
-import { spectraConf, spectraLang } from '@/assets/languages/spectra';
+import { limbooleConf, limbooleLang } from '@/tools/limboole/limbooleTextMateGrammar';
+import { smt2Conf, smt2Lang } from '@/tools/smt/smt2TextMateGrammar';
+import { nuxmvConf, nuxmvLang } from '@/tools/nuxmv/nuxmvTextMateGrammar';
+import { alloyConf, alloyLang } from '@/tools/alloy/alloyTextMateGrammar';
+import { spectraConf, spectraLang } from '@/tools/spectra/spectraTextMateGrammar';
 
 export const additionalInputAreaUiMap: Record<string, React.FC<any>> = {
   SAT: LimbooleCheckOptions,

@@ -2,13 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import * as vscode from 'vscode';
 import { createModelReference } from 'vscode/monaco';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
-import { createLangiumGlobalConfig } from '../../assets/languages/lspWrapperConfig';
+import { createLangiumGlobalConfig } from '@/tools/common/lspWrapperConfig';
 import '../../assets/style/Playground.css'
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import type { LanguageProps } from './Tools';
 import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { useAtom } from 'jotai';
-import { editorValueAtom, languageAtom } from '../../atoms.js';
+import { editorValueAtom, languageAtom } from '@/atoms';
 
 type LspEditorProps = {
   height: string;

@@ -1,7 +1,7 @@
-import runZ3WASM from "../runZ3WASM";
-import { getLineToHighlight } from "../lineHighlightingUtil";
+import runZ3WASM from '@/tools/smt/runZ3WASM';
+import { getLineToHighlight } from '@/tools/common/lineHighlightingUtil';
 
-import { saveCode } from "../../../api/playgroundApi";
+import { saveCode } from '@/api/playgroundApi';
 import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { 
   editorValueAtom, 
@@ -12,7 +12,7 @@ import {
   lineToHighlightAtom,
   outputAtom,
   enableLspAtom
-} from "../../../atoms";
+} from '@/atoms';
 import axios from "axios";
 import { Permalink } from "@/types";
 

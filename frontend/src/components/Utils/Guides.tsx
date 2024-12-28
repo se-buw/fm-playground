@@ -1,6 +1,6 @@
 import React from 'react';
-import data from '../../assets/config/Guides.json';
-import '../../assets/style/Playground.css';
+import data from '@/tools/common/Guides.json';
+import '@/assets/style/Playground.css';
 
 interface GuideItem {
   title: string;

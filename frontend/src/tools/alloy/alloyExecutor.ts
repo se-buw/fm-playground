@@ -1,4 +1,4 @@
-import { saveCode } from "../../../api/playgroundApi";
+import { saveCode } from '@/api/playgroundApi'
 import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { 
   editorValueAtom, 
@@ -9,7 +9,7 @@ import {
   alloySelectedCmdAtom,
   alloyInstanceAtom,
   outputAtom
- } from "../../../atoms";
+ } from '@/atoms';
 import { Permalink } from "@/types";
 import axios from "axios";
 
