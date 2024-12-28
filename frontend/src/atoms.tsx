@@ -26,6 +26,8 @@ export const lineToHighlightAtom = atom<number[]>([]);
 export const outputAtom = atom<string>("");
 export const isFullScreenAtom = atom(false);
 export const enableLspAtom = atom(false);
+export const outputPreviewHeightAtom = atom<string | number >((get) => get(isFullScreenAtom) ? '80vh' : '60vh');
+
 
 export const spectraCliOptionsAtom = atom('check-realizability');
 export const limbooleCliOptionsAtom = atom({ value: "1", label: 'satisfiability' });

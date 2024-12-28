@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
 import '../../assets/style/Playground.css'
 import { useAtom } from 'jotai';
-import { outputAtom } from '@/atoms';
-
+import { outputAtom, outputPreviewHeightAtom } from '@/atoms';
 
 
 const PlainOutput = () => {
   const [code, setCode] = useAtom(outputAtom);
+  const [outputPreviewHeight] = useAtom(outputPreviewHeightAtom);
   
   return (
     <pre
@@ -15,7 +14,7 @@ const PlainOutput = () => {
       contentEditable={false}
       style={{
         borderRadius: '8px',
-        height: '100%',
+        height: outputPreviewHeight,
         whiteSpace: 'pre-wrap'
       }}
       dangerouslySetInnerHTML={{ __html: code }}

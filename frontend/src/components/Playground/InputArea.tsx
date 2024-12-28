@@ -1,4 +1,4 @@
-import React, { lazy, useState, Suspense } from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { Stack } from '@mui/material';
 import { MDBBtn, MDBIcon } from 'mdb-react-ui-kit';
@@ -12,7 +12,6 @@ import FileDownload from '@/components/Utils/FileDownload';
 import CopyToClipboardBtn from '@/components/Utils/CopyToClipboardBtn';
 import LspEditor from './LspEditor';
 import Editor from './Editor';
-import fmpConfig from '../../../fmp.config';
 import { additionalInputAreaUiMap } from './ToolMaps'
 
 const InputArea = ({ onClick: handleToolExecution }: { onClick: () => void }) => {
