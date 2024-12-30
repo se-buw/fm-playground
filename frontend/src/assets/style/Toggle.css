@@ -1,7 +1,8 @@
 .toggle-container {
   position: relative;
   display: inline-block;
-  margin: 0 1em;
+  align-items: center;
+  padding-top: 0.3em;
 }
 
 .toggle {
@@ -15,16 +16,15 @@
 .toggle + label {
   display: flex;
   align-items: center;
-  font-size: 1em;
   cursor: pointer;
   position: relative;
 }
 
 .toggle + label:before {
   content: '';
-  width: 3.5em;
-  height: 2em;
-  border-radius: 1em;
+  width: 3.5em; /* Smaller width */
+  height: 2em; /* Smaller height */
+  border-radius: 1em; /* Rounded edges */
   background: linear-gradient(45deg, #3f456e, #392757);
   position: relative;
   transition:
@@ -39,13 +39,13 @@
 
 .toggle + label:after {
   content: '';
-  height: 1.6em;
-  width: 1.6em;
+  height: 1.4em; /* Smaller circle size */
+  width: 1.4em; /* Smaller circle size */
   border-radius: 50%;
   background-color: white;
   position: absolute;
-  top: 0.2em;
-  left: 0.2em;
+  top: 0.3em;
+  left: 0.3em; /* Adjusted position for perfect alignment */
   transition: transform 250ms ease-in-out;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
@@ -59,7 +59,7 @@
 }
 
 .toggle + label .sun-icon {
-  left: 0.5em;
+  left: 0.4em;
   opacity: 1;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .toggle:checked + label:after {
-  transform: translateX(1.5em);
+  transform: translateX(1.6em); /* Adjusted for smaller size */
 }
 
 .toggle:checked + label .sun-icon {

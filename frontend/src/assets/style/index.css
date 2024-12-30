@@ -71,9 +71,3 @@ body {
     opacity: 1;
   }
 }
-
-@media (max-width: 767px) {
-  .github-icon {
-    display: none;
-  }
-}

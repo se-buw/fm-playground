@@ -5,6 +5,7 @@ flask_session/
 *.tar
 **/data/db
 tmp/
+*.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -15,6 +15,7 @@ import {
   MDBDropdownItem,
 } from 'mdb-react-ui-kit';
 import { FaGithub } from 'react-icons/fa';
+import { MdOutlineMenu } from 'react-icons/md';
 import AuthContext from '@/contexts/AuthContext';
 import DrawerComponent from '@/components/Utils/DrawerComponent';
 import CustomSnackbar from '@/components/Utils/Modals/CustomSnackbar';
@@ -139,7 +140,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className='Nav'>
+    <div>
       <ConfirmModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -149,88 +150,126 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
         onConfirm={handleUserProfileDelete}
       />
       <SessionExpiredModal />
-      <header className='fixed-top header'>
-        <MDBNavbar expand='lg'>
-          <MDBContainer>
-            <MDBNavbarBrand href={window.location.origin}>
-              <h2 className='bold header'>FM Playground</h2>
-            </MDBNavbarBrand>
+      <header className='header'>
+        <MDBNavbarBrand className='d-flex align-items-center gap-2'>
+          <span>
+            <img className='nav-se-logo img-fluid' src='/logo_se.png' alt='SE Logo' />
+          </span>
+          <span className='text-lg font-weight-bold'>FM Playground</span>
+        </MDBNavbarBrand>
 
-            <MDBNavbarToggler
-              type='button'
-              aria-expanded='false'
-              aria-label='Toggle navigation'
-              onClick={() => setOpenNavRight(!openNavRight)}
-            >
-              <MDBIcon icon='bars' fas />
-            </MDBNavbarToggler>
-            <MDBCollapse navbar open={openNavRight}>
-              <MDBNavbarNav right fullWidth={false} className='mb-2 mb-lg-0'>
-                {isLoggedIn ? (
-                  <>
-                    <MDBBtn
-                      className='navbar-option-button'
-                      onClick={handleDrawerOpen}
-                      style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
-                    >
-                      History
-                    </MDBBtn>
-                    <DrawerComponent
-                      isOpen={isDrawerOpen}
-                      onClose={handleDrawerClose}
-                      onItemSelect={handleDrawerItemClick}
-                    />
-                    <MDBDropdown
-                      className='btn-group navbar-option-button'
-                      style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
-                    >
-                      <MDBBtn color='danger' onClick={handleLogout}>
-                        Logout
-                      </MDBBtn>
-                      <MDBDropdownToggle split color='dark' style={{ flex: '0' }}></MDBDropdownToggle>
-                      <MDBDropdownMenu style={{ minWidth: '200px' }}>
-                        <MDBDropdownItem link onClick={handleUserDataDownload}>
-                          Download Your Data
-                        </MDBDropdownItem>
-                        <MDBDropdownItem link onClick={openModal}>
-                          Delete Profile
-                        </MDBDropdownItem>
-                      </MDBDropdownMenu>
-                    </MDBDropdown>
-                  </>
-                ) : (
-                  <MDBBtn rounded color='primary' href='/login'>
-                    Login
-                  </MDBBtn>
-                )}
-                {isMobile && (
-                  <div className='navbar-mobile'>
-                    <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-                    <button
-                      className='navbar-mobile-github'
-                      onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                    >
-                      <FaGithub size={24} />
-                    </button>
-                  </div>
-                )}
-              </MDBNavbarNav>
-            </MDBCollapse>
-          </MDBContainer>
-          {/* FIXME: Enable Dark mode once moved all the LSP */}
-          <div className='toggle-icon'>
-            <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-          </div>
-          <FaGithub
-            size={40}
+        <div className='nav-right d-none d-lg-flex gap-2'>
+          {isLoggedIn ? (
+            <>
+              <MDBBtn
+                className='navbar-option-button'
+                onClick={handleDrawerOpen}
+                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
+              >
+                History
+              </MDBBtn>
+              <DrawerComponent isOpen={isDrawerOpen} onClose={handleDrawerClose} onItemSelect={handleDrawerItemClick} />
+              <MDBDropdown
+                className='btn-group navbar-option-button'
+                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
+              >
+                <MDBBtn color='danger' onClick={handleLogout}>
+                  Logout
+                </MDBBtn>
+                <MDBDropdownToggle split color='dark' style={{ flex: '0' }}></MDBDropdownToggle>
+                <MDBDropdownMenu style={{ minWidth: '200px' }}>
+                  <MDBDropdownItem link onClick={handleUserDataDownload}>
+                    Download Your Data
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link onClick={openModal}>
+                    Delete Profile
+                  </MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
+            </>
+          ) : (
+            <MDBBtn rounded color='primary' href='/login'>
+              Login
+            </MDBBtn>
+          )}
+
+          <button
             className='github-icon'
             onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-            style={{ marginRight: '20px' }}
-            role='button'
-          />
-        </MDBNavbar>
-        <CustomSnackbar message={snackbarMessage} onClose={handleSnackbarClose} />
+          >
+            <FaGithub size={24} className='github-icon' />
+          </button>
+          <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+        </div>
+
+        {/* Dropdown visible on small screens, hidden on large */}
+        <MDBDropdown className='d-lg-none'>
+          <MDBDropdownToggle color='light'>
+            <MdOutlineMenu />
+          </MDBDropdownToggle>
+          <MDBDropdownMenu style={{ textAlign: 'right' }}>
+            {isLoggedIn ? (
+              <MDBDropdownItem link onClick={handleDrawerOpen}>
+                History
+              </MDBDropdownItem>
+            ) : (
+              <></>
+            )}
+            {isLoggedIn ? (
+              <MDBDropdownItem link onClick={handleLogout}>
+                Logout
+              </MDBDropdownItem>
+            ) : (
+              <></>
+            )}
+            {isLoggedIn ? <MDBDropdownItem divider /> : <></>}
+            {isLoggedIn ? (
+              <MDBDropdownItem link onClick={handleUserDataDownload}>
+                Download Your Data
+              </MDBDropdownItem>
+            ) : (
+              <></>
+            )}
+            {isLoggedIn ? (
+              <MDBDropdownItem link onClick={openModal}>
+                Delete Profile
+              </MDBDropdownItem>
+            ) : (
+              <></>
+            )}
+
+            {!isLoggedIn ? (
+              <MDBDropdownItem link href='/login'>
+                Login
+              </MDBDropdownItem>
+            ) : (
+              <></>
+            )}
+            <MDBDropdownItem divider />
+            <MDBDropdownItem>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'end',
+                  alignItems: 'center',
+                  paddingBottom: '1em',
+                  paddingRight: '1em',
+                }}
+              >
+                <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+                <button
+                  className='github-icon'
+                  onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                >
+                  <FaGithub size={24} className='github-icon' />
+                </button>
+              </div>
+            </MDBDropdownItem>
+          </MDBDropdownMenu>
+        </MDBDropdown>
       </header>
+
+      <CustomSnackbar message={snackbarMessage} onClose={handleSnackbarClose} />
     </div>
   );
 };
