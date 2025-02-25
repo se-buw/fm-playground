@@ -1,5 +1,9 @@
 # Change Log
 
+## v2.5.0 [2025-02-25]
+### Added
+- ✨ Updated smt language support with cross-ref and code completion
+
 ## v2.4.0 [2024-12-16]
 ### Changed
 - ✨ Alloy- added support for atoms and skolems when parsing expressions
