@@ -2,14 +2,15 @@ import { type Module, inject } from 'langium';
 import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
 import { SmtGeneratedModule, SmtGeneratedSharedModule } from './generated/module.js';
 import { SmtValidator, registerValidationChecks } from './smt-validator.js';
-
+import { SmtScopeComputation } from './smt-scope-computation.js';
+import { SmtCompletionProvider } from './smt-completion-provider.js';
 /**
  * Declaration of custom services - add your own service classes here.
  */
 export type SmtAddedServices = {
     validation: {
         SmtValidator: SmtValidator
-    }
+    },
 }
 
 /**
@@ -26,6 +27,12 @@ export type SmtServices = LangiumServices & SmtAddedServices
 export const SmtModule: Module<SmtServices, PartialLangiumServices & SmtAddedServices> = {
     validation: {
         SmtValidator: () => new SmtValidator()
+    },
+    references: {
+        ScopeComputation: (services) => new SmtScopeComputation(services),
+    },
+    lsp:{
+        CompletionProvider: (services) => new SmtCompletionProvider(services)
     }
 };
 
@@ -59,6 +66,7 @@ export function createSmtServices(context: DefaultSharedModuleContext): {
     );
     shared.ServiceRegistry.register(Smt);
     registerValidationChecks(Smt);
+    // registerSymbolCollector(Smt);
     if (!context.connection) {
         // We don't run inside a language server
         // Therefore, initialize the configuration provider instantly

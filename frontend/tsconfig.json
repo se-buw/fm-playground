@@ -15,8 +15,13 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
-  "include": ["src"],
-  // "exclude": ["node_modules", "build"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "src/assets/languages/smt/ls/generated/ast.ts"
+  ]
 }

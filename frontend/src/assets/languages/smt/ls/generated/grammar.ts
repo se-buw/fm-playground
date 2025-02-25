@@ -54,7 +54,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -73,7 +73,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -89,73 +89,30 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@5"
+              "$ref": "#/rules@8"
             },
             "arguments": []
           },
           {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "declare-datatype"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "name",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@28"
-                  },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "Alternatives",
-                "elements": [
-                  {
-                    "$type": "Assignment",
-                    "feature": "dataTypeDec",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@8"
-                      },
-                      "arguments": []
-                    }
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "dataTypeDec",
-                    "operator": "=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@38"
-                      },
-                      "arguments": []
-                    }
-                  }
-                ]
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              }
-            ]
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@13"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@14"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@9"
+            },
+            "arguments": []
           },
           {
             "$type": "RuleCall",
@@ -167,7 +124,21 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@6"
+              "$ref": "#/rules@5"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@10"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@12"
             },
             "arguments": []
           },
@@ -177,254 +148,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "declare-sort"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "symbol",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@28"
-                  },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "Assignment",
-                "feature": "number",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@45"
-                  },
-                  "arguments": []
-                },
-                "cardinality": "*"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              }
-            ]
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "define-fun"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@12"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              }
-            ]
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "define-fun-rec"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@12"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              }
-            ]
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "define-funs-rec"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Assignment",
-                "feature": "functionDec",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@13"
-                  },
-                  "arguments": []
-                },
-                "cardinality": "+"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Assignment",
-                "feature": "term",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@19"
-                  },
-                  "arguments": []
-                },
-                "cardinality": "+"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              }
-            ]
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "define-sort"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "symbol",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@28"
-                  },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Assignment",
-                "feature": "symbol",
-                "operator": "+=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@28"
-                  },
-                  "arguments": []
-                },
-                "cardinality": "*"
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@15"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              }
-            ]
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -435,14 +159,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@49"
+                  "$ref": "#/rules@63"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -454,7 +178,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -469,7 +193,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@29"
+                    "$ref": "#/rules@43"
                   },
                   "arguments": []
                 }
@@ -477,7 +201,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -489,7 +213,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -499,20 +223,32 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               },
               {
                 "$type": "Assignment",
-                "feature": "name",
+                "feature": "options",
                 "operator": "=",
                 "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@30"
-                  },
-                  "arguments": []
+                  "$type": "Alternatives",
+                  "elements": [
+                    {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@49"
+                      },
+                      "arguments": []
+                    },
+                    {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@44"
+                      },
+                      "arguments": []
+                    }
+                  ]
                 }
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -524,7 +260,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -535,18 +271,18 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
               {
                 "$type": "Assignment",
                 "feature": "term",
-                "operator": "=",
+                "operator": "+=",
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@19"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 },
@@ -555,14 +291,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -574,7 +310,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -585,7 +321,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@45"
+                  "$ref": "#/rules@59"
                 },
                 "arguments": [],
                 "cardinality": "*"
@@ -593,7 +329,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -605,7 +341,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -616,7 +352,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@45"
+                  "$ref": "#/rules@59"
                 },
                 "arguments": [],
                 "cardinality": "*"
@@ -624,7 +360,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -636,7 +372,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -651,7 +387,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@31"
+                    "$ref": "#/rules@45"
                   },
                   "arguments": []
                 }
@@ -659,7 +395,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -671,7 +407,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -686,7 +422,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@28"
+                    "$ref": "#/rules@41"
                   },
                   "arguments": []
                 }
@@ -694,7 +430,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -706,7 +442,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -721,7 +457,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@34"
+                    "$ref": "#/rules@48"
                   },
                   "arguments": []
                 }
@@ -729,7 +465,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -741,7 +477,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -756,7 +492,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@19"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 },
@@ -765,7 +501,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -777,7 +513,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -801,7 +537,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@19"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 }
@@ -809,7 +545,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -836,7 +572,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -847,7 +583,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -859,7 +595,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -870,7 +606,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -881,7 +617,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@19"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 },
@@ -890,14 +626,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -921,7 +657,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
@@ -936,7 +672,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@19"
+                "$ref": "#/rules@28"
               },
               "arguments": []
             }
@@ -944,7 +680,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -1015,6 +751,187 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
     },
     {
       "$type": "ParserRule",
+      "name": "CmdDefSort",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "define-sort"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@41"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "symbol",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@6"
+              },
+              "arguments": []
+            },
+            "cardinality": "*"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@24"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "SortedParameter",
+      "definition": {
+        "$type": "Assignment",
+        "feature": "name",
+        "operator": "=",
+        "terminal": {
+          "$type": "Alternatives",
+          "elements": [
+            {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@41"
+              },
+              "arguments": []
+            },
+            {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@27"
+              },
+              "arguments": []
+            }
+          ]
+        }
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "CmdSortDeclZ3",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "declare-sort"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@41"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "number",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@59"
+              },
+              "arguments": []
+            },
+            "cardinality": "*"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "CmdConstDecl",
       "definition": {
         "$type": "Group",
@@ -1022,22 +939,27 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
-            "$type": "Keyword",
-            "value": "declare-const"
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "declare-const"
+            }
           },
           {
             "$type": "Assignment",
-            "feature": "symbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -1049,7 +971,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@15"
+                "$ref": "#/rules@24"
               },
               "arguments": []
             },
@@ -1058,7 +980,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -1080,22 +1002,27 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
-            "$type": "Keyword",
-            "value": "declare-fun"
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "declare-fun"
+            }
           },
           {
             "$type": "Assignment",
-            "feature": "symbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -1103,7 +1030,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
@@ -1114,7 +1041,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@15"
+                "$ref": "#/rules@24"
               },
               "arguments": []
             },
@@ -1123,7 +1050,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           },
@@ -1134,7 +1061,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@15"
+                "$ref": "#/rules@24"
               },
               "arguments": []
             }
@@ -1142,7 +1069,250 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "CmdDefFun",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@11"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@20"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "DefFunCommandName",
+      "dataType": "string",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": "define-fun-rec"
+          },
+          {
+            "$type": "Keyword",
+            "value": "define-fun"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "CmdDefFunsRec",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "define-funs-rec"
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "functionDec",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@22"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "term",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@28"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "CmdDecDataType",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "declare-datatype"
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@41"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "dataTypeDec",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@16"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "dataTypeDec",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@52"
+                  },
+                  "arguments": []
+                }
+              }
+            ]
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -1158,137 +1328,112 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
     {
       "$type": "ParserRule",
       "name": "CmdDecDataTypes",
-      "inferredType": {
-        "$type": "InferredType",
-        "name": "Command"
-      },
       "definition": {
         "$type": "Group",
         "elements": [
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
-            "$type": "Keyword",
-            "value": "declare-datatypes"
+            "$type": "Assignment",
+            "feature": "commandType",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "declare-datatypes"
+            }
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
-            "$type": "Alternatives",
-            "elements": [
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Assignment",
-                    "feature": "sortDecZ3",
-                    "operator": "+=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@36"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "*"
-                  },
-                  {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@41"
-                    },
-                    "arguments": []
-                  },
-                  {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@40"
-                    },
-                    "arguments": []
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "dataTypeDec",
-                    "operator": "+=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@38"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "+"
-                  }
-                ]
+            "$type": "Assignment",
+            "feature": "sortDec",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@19"
               },
-              {
-                "$type": "Group",
-                "elements": [
-                  {
-                    "$type": "Assignment",
-                    "feature": "sortDec",
-                    "operator": "+=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@11"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "+"
-                  },
-                  {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@41"
-                    },
-                    "arguments": []
-                  },
-                  {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@40"
-                    },
-                    "arguments": []
-                  },
-                  {
-                    "$type": "Assignment",
-                    "feature": "dataTypeDec",
-                    "operator": "+=",
-                    "terminal": {
-                      "$type": "RuleCall",
-                      "rule": {
-                        "$ref": "#/rules@8"
-                      },
-                      "arguments": []
-                    },
-                    "cardinality": "+"
-                  }
-                ]
-              }
-            ]
+              "arguments": []
+            },
+            "cardinality": "+"
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "dataTypeDecs",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@15"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "CommonDataTypeDec",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@16"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@52"
             },
             "arguments": []
           }
@@ -1313,7 +1458,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -1324,7 +1469,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@9"
+                    "$ref": "#/rules@17"
                   },
                   "arguments": []
                 },
@@ -1333,7 +1478,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -1345,7 +1490,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -1356,7 +1501,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -1367,7 +1512,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@28"
+                    "$ref": "#/rules@41"
                   },
                   "arguments": []
                 },
@@ -1376,14 +1521,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -1394,7 +1539,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@9"
+                    "$ref": "#/rules@17"
                   },
                   "arguments": []
                 },
@@ -1403,14 +1548,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -1434,18 +1579,18 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "symbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -1457,7 +1602,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@10"
+                "$ref": "#/rules@18"
               },
               "arguments": []
             },
@@ -1466,7 +1611,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -1483,45 +1628,99 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
       "$type": "ParserRule",
       "name": "SelectorDec",
       "definition": {
-        "$type": "Group",
+        "$type": "Alternatives",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@40"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "Assignment",
-            "feature": "symbol",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@28"
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
               },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "sort",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@15"
+              {
+                "$type": "Assignment",
+                "feature": "name",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@41"
+                  },
+                  "arguments": []
+                }
               },
-              "arguments": []
-            }
+              {
+                "$type": "Assignment",
+                "feature": "sort",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@24"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              }
+            ]
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@41"
-            },
-            "arguments": []
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "listKey",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Alternatives",
+                  "elements": [
+                    {
+                      "$type": "Keyword",
+                      "value": "tail"
+                    },
+                    {
+                      "$type": "Keyword",
+                      "value": "head"
+                    }
+                  ]
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "sort",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@24"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              }
+            ]
           }
         ]
       },
@@ -1536,45 +1735,62 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
       "$type": "ParserRule",
       "name": "SortDec",
       "definition": {
-        "$type": "Group",
+        "$type": "Alternatives",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@40"
-            },
-            "arguments": []
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "name",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@41"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "num",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@59"
+                  },
+                  "arguments": []
+                }
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              }
+            ]
           },
           {
             "$type": "Assignment",
-            "feature": "symbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
-          },
-          {
-            "$type": "Assignment",
-            "feature": "num",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@45"
-              },
-              "arguments": []
-            }
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@41"
-            },
-            "arguments": []
           }
         ]
       },
@@ -1593,12 +1809,12 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
         "elements": [
           {
             "$type": "Assignment",
-            "feature": "functionSymbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -1606,18 +1822,18 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "sortedVar",
+            "feature": "sortedVars",
             "operator": "+=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@14"
+                "$ref": "#/rules@23"
               },
               "arguments": []
             },
@@ -1626,21 +1842,89 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@15"
+              "$ref": "#/rules@24"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@19"
+              "$ref": "#/rules@28"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "FunctionDefRec",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@41"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "sortedVars",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@23"
+              },
+              "arguments": []
+            },
+            "cardinality": "*"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@24"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@28"
             },
             "arguments": []
           }
@@ -1662,18 +1946,18 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "functionSymbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -1681,18 +1965,18 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "var",
+            "feature": "vars",
             "operator": "+=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@14"
+                "$ref": "#/rules@23"
               },
               "arguments": []
             },
@@ -1701,21 +1985,21 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@15"
+              "$ref": "#/rules@24"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -1737,18 +2021,18 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "symbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -1760,7 +2044,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@15"
+                "$ref": "#/rules@24"
               },
               "arguments": []
             }
@@ -1768,7 +2052,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -1794,7 +2078,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@17"
+                "$ref": "#/rules@26"
               },
               "arguments": []
             }
@@ -1805,7 +2089,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -1816,7 +2100,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@17"
+                    "$ref": "#/rules@26"
                   },
                   "arguments": []
                 }
@@ -1828,7 +2112,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@15"
+                    "$ref": "#/rules@24"
                   },
                   "arguments": []
                 },
@@ -1837,7 +2121,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -1865,7 +2149,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@45"
+                "$ref": "#/rules@59"
               },
               "arguments": []
             }
@@ -1877,7 +2161,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -1893,20 +2177,27 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
     },
     {
       "$type": "ParserRule",
-      "name": "Identifier",
+      "name": "SortIdentifier",
       "definition": {
         "$type": "Alternatives",
         "elements": [
           {
             "$type": "Assignment",
-            "feature": "symbol",
+            "feature": "ID",
             "operator": "=",
             "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@28"
+              "$type": "CrossReference",
+              "type": {
+                "$ref": "#/types@1"
               },
-              "arguments": []
+              "terminal": {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@41"
+                },
+                "arguments": []
+              },
+              "deprecatedSyntax": false
             }
           },
           {
@@ -1915,7 +2206,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -1925,14 +2216,21 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               },
               {
                 "$type": "Assignment",
-                "feature": "symbol",
+                "feature": "ID",
                 "operator": "=",
                 "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@28"
+                  "$type": "CrossReference",
+                  "type": {
+                    "$ref": "#/types@1"
                   },
-                  "arguments": []
+                  "terminal": {
+                    "$type": "RuleCall",
+                    "rule": {
+                      "$ref": "#/rules@41"
+                    },
+                    "arguments": []
+                  },
+                  "deprecatedSyntax": false
                 }
               },
               {
@@ -1942,7 +2240,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@16"
+                    "$ref": "#/rules@25"
                   },
                   "arguments": []
                 },
@@ -1951,11 +2249,27 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
             ]
+          },
+          {
+            "$type": "Assignment",
+            "feature": "sort",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@27"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "Array"
           }
         ]
       },
@@ -1968,58 +2282,32 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
     },
     {
       "$type": "ParserRule",
-      "name": "PropLiteral",
+      "name": "PreDefinedSort",
       "definition": {
-        "$type": "Alternatives",
-        "elements": [
-          {
-            "$type": "Assignment",
-            "feature": "symbol",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@28"
-              },
-              "arguments": []
+        "$type": "Assignment",
+        "feature": "ID",
+        "operator": "=",
+        "terminal": {
+          "$type": "Alternatives",
+          "elements": [
+            {
+              "$type": "Keyword",
+              "value": "Int"
+            },
+            {
+              "$type": "Keyword",
+              "value": "Bool"
+            },
+            {
+              "$type": "Keyword",
+              "value": "Real"
+            },
+            {
+              "$type": "Keyword",
+              "value": "List"
             }
-          },
-          {
-            "$type": "Group",
-            "elements": [
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@40"
-                },
-                "arguments": []
-              },
-              {
-                "$type": "Keyword",
-                "value": "not"
-              },
-              {
-                "$type": "Assignment",
-                "feature": "symbol",
-                "operator": "=",
-                "terminal": {
-                  "$type": "RuleCall",
-                  "rule": {
-                    "$ref": "#/rules@28"
-                  },
-                  "arguments": []
-                }
-              },
-              {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@41"
-                },
-                "arguments": []
-              }
-            ]
-          }
-        ]
+          ]
+        }
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -2037,14 +2325,28 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@27"
+              "$ref": "#/rules@40"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@26"
+              "$ref": "#/rules@39"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@56"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@35"
             },
             "arguments": []
           },
@@ -2054,7 +2356,95 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@42"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "term",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@28"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "+"
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Keyword",
+                "value": "if"
+              },
+              {
+                "$type": "Assignment",
+                "feature": "term",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@28"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "+"
+              },
+              {
+                "$type": "Assignment",
+                "feature": "statement",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@34"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "*"
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2065,7 +2455,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@26"
+                    "$ref": "#/rules@39"
                   },
                   "arguments": []
                 }
@@ -2077,16 +2467,29 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@19"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 },
                 "cardinality": "+"
               },
               {
+                "$type": "Assignment",
+                "feature": "boolean",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              },
+              {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -2098,7 +2501,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2109,7 +2512,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2120,7 +2523,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@25"
+                    "$ref": "#/rules@38"
                   },
                   "arguments": []
                 },
@@ -2129,7 +2532,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               },
@@ -2140,7 +2543,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@19"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 }
@@ -2148,7 +2551,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -2157,7 +2560,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@22"
+              "$ref": "#/rules@31"
             },
             "arguments": []
           },
@@ -2167,7 +2570,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2182,7 +2585,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@19"
+                    "$ref": "#/rules@28"
                   },
                   "arguments": []
                 }
@@ -2190,7 +2593,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2201,7 +2604,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@23"
+                    "$ref": "#/rules@36"
                   },
                   "arguments": []
                 },
@@ -2210,7 +2613,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -2222,14 +2625,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2243,14 +2646,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@20"
+                      "$ref": "#/rules@29"
                     },
                     "arguments": []
                   },
                   {
                     "$type": "RuleCall",
                     "rule": {
-                      "$ref": "#/rules@21"
+                      "$ref": "#/rules@30"
                     },
                     "arguments": []
                   }
@@ -2259,7 +2662,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@45"
+                  "$ref": "#/rules@59"
                 },
                 "arguments": [],
                 "cardinality": "*"
@@ -2267,14 +2670,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               },
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@28"
+                  "$ref": "#/rules@41"
                 },
                 "arguments": [],
                 "cardinality": "*"
@@ -2282,7 +2685,110 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Keyword",
+                "value": "_"
+              },
+              {
+                "$type": "Keyword",
+                "value": "is"
+              },
+              {
+                "$type": "Keyword",
+                "value": "nil"
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
                   "$ref": "#/rules@41"
+                },
+                "arguments": [],
+                "cardinality": "*"
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
+                },
+                "arguments": []
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@54"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "Assignment",
+                "feature": "listKey",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Alternatives",
+                  "elements": [
+                    {
+                      "$type": "Keyword",
+                      "value": "tail"
+                    },
+                    {
+                      "$type": "Keyword",
+                      "value": "head"
+                    }
+                  ]
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "term",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@28"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "+"
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -2368,7 +2874,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
@@ -2388,7 +2894,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
@@ -2399,7 +2905,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@14"
+                "$ref": "#/rules@23"
               },
               "arguments": []
             },
@@ -2408,7 +2914,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           },
@@ -2417,9 +2923,233 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "feature": "term",
             "operator": "=",
             "terminal": {
+              "$type": "Alternatives",
+              "elements": [
+                {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@28"
+                  },
+                  "arguments": []
+                },
+                {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@32"
+                  },
+                  "arguments": []
+                }
+              ]
+            }
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "PatternedTerm",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "!"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "bodyterm",
+            "operator": "=",
+            "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@19"
+                "$ref": "#/rules@28"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "patternAttribute",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@33"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "PatternAttribute",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Keyword",
+            "value": ":pattern"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Assignment",
+            "feature": "term",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@28"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
+            },
+            "arguments": []
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "ConditionalTerm",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Alternatives",
+            "elements": [
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@40"
+                },
+                "arguments": []
+              },
+              {
+                "$type": "RuleCall",
+                "rule": {
+                  "$ref": "#/rules@56"
+                },
+                "arguments": []
+              }
+            ]
+          },
+          {
+            "$type": "Assignment",
+            "feature": "term",
+            "operator": "+=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@28"
+              },
+              "arguments": []
+            },
+            "cardinality": "+"
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "AttributedTerm",
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "Keyword",
+            "value": "!"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "term",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@28"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": ":named"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "name",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -2427,7 +3157,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -2449,7 +3179,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
@@ -2460,7 +3190,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@24"
+                "$ref": "#/rules@37"
               },
               "arguments": []
             }
@@ -2472,7 +3202,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@19"
+                "$ref": "#/rules@28"
               },
               "arguments": []
             }
@@ -2480,7 +3210,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -2506,7 +3236,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -2517,7 +3247,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2528,7 +3258,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@28"
+                    "$ref": "#/rules@41"
                   },
                   "arguments": []
                 }
@@ -2540,7 +3270,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@28"
+                    "$ref": "#/rules@41"
                   },
                   "arguments": []
                 },
@@ -2549,7 +3279,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -2573,7 +3303,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
@@ -2584,7 +3314,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -2596,7 +3326,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@19"
+                "$ref": "#/rules@28"
               },
               "arguments": []
             }
@@ -2604,7 +3334,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -2622,14 +3352,21 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
       "name": "QualIdentifier",
       "definition": {
         "$type": "Assignment",
-        "feature": "id",
+        "feature": "ID",
         "operator": "=",
         "terminal": {
-          "$type": "RuleCall",
-          "rule": {
-            "$ref": "#/rules@51"
+          "$type": "CrossReference",
+          "type": {
+            "$ref": "#/types@0"
           },
-          "arguments": []
+          "terminal": {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@41"
+            },
+            "arguments": []
+          },
+          "deprecatedSyntax": false
         }
       },
       "definesHiddenTokens": false,
@@ -2649,35 +3386,35 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@45"
+              "$ref": "#/rules@59"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@46"
+              "$ref": "#/rules@58"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@47"
+              "$ref": "#/rules@61"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@48"
+              "$ref": "#/rules@62"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@49"
+              "$ref": "#/rules@63"
             },
             "arguments": []
           }
@@ -2697,9 +3434,39 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
       "definition": {
         "$type": "RuleCall",
         "rule": {
-          "$ref": "#/rules@51"
+          "$ref": "#/rules@67"
         },
         "arguments": []
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
+      "name": "Operator",
+      "dataType": "string",
+      "definition": {
+        "$type": "Alternatives",
+        "elements": [
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@65"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@66"
+            },
+            "arguments": []
+          }
+        ]
       },
       "definesHiddenTokens": false,
       "entry": false,
@@ -2808,7 +3575,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@30"
+              "$ref": "#/rules@44"
             },
             "arguments": []
           }
@@ -2838,7 +3605,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -2865,7 +3632,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@30"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             }
@@ -2880,7 +3647,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@30"
+                    "$ref": "#/rules@44"
                   },
                   "arguments": []
                 }
@@ -2892,7 +3659,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@32"
+                    "$ref": "#/rules@46"
                   },
                   "arguments": []
                 }
@@ -2915,28 +3682,53 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
         "$type": "Alternatives",
         "elements": [
           {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@56"
+            },
+            "arguments": []
+          },
+          {
             "$type": "Assignment",
             "feature": "const",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@27"
+                "$ref": "#/rules@40"
               },
               "arguments": []
             }
           },
           {
-            "$type": "Assignment",
-            "feature": "symbol",
-            "operator": "=",
-            "terminal": {
-              "$type": "RuleCall",
-              "rule": {
-                "$ref": "#/rules@28"
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "symbol",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@41"
+                  },
+                  "arguments": []
+                }
               },
-              "arguments": []
-            }
+              {
+                "$type": "Assignment",
+                "feature": "string",
+                "operator": "+=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@63"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "*"
+              }
+            ]
           },
           {
             "$type": "Group",
@@ -2951,7 +3743,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -2962,7 +3754,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@33"
+                    "$ref": "#/rules@47"
                   },
                   "arguments": []
                 },
@@ -2971,7 +3763,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -3003,7 +3795,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@27"
+                "$ref": "#/rules@40"
               },
               "arguments": []
             }
@@ -3015,7 +3807,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -3027,7 +3819,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@30"
+                "$ref": "#/rules@44"
               },
               "arguments": []
             }
@@ -3038,7 +3830,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@40"
+                  "$ref": "#/rules@54"
                 },
                 "arguments": []
               },
@@ -3049,7 +3841,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@33"
+                    "$ref": "#/rules@47"
                   },
                   "arguments": []
                 },
@@ -3058,7 +3850,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
               {
                 "$type": "RuleCall",
                 "rule": {
-                  "$ref": "#/rules@41"
+                  "$ref": "#/rules@55"
                 },
                 "arguments": []
               }
@@ -3082,14 +3874,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@35"
+              "$ref": "#/rules@49"
             },
             "arguments": []
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@31"
+              "$ref": "#/rules@45"
             },
             "arguments": []
           }
@@ -3103,605 +3895,557 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
       "wildcard": false
     },
     {
-      "$type": "TerminalRule",
-      "name": "OptionTerminal",
+      "$type": "ParserRule",
+      "name": "OptionKeyword",
       "definition": {
-        "$type": "TerminalAlternatives",
+        "$type": "Alternatives",
         "elements": [
           {
-            "$type": "TerminalAlternatives",
+            "$type": "Group",
             "elements": [
               {
-                "$type": "TerminalAlternatives",
-                "elements": [
-                  {
-                    "$type": "TerminalAlternatives",
-                    "elements": [
-                      {
-                        "$type": "TerminalAlternatives",
-                        "elements": [
-                          {
-                            "$type": "TerminalAlternatives",
-                            "elements": [
-                              {
-                                "$type": "TerminalAlternatives",
-                                "elements": [
-                                  {
-                                    "$type": "TerminalAlternatives",
-                                    "elements": [
-                                      {
-                                        "$type": "TerminalAlternatives",
-                                        "elements": [
-                                          {
-                                            "$type": "TerminalAlternatives",
-                                            "elements": [
-                                              {
-                                                "$type": "TerminalAlternatives",
-                                                "elements": [
-                                                  {
-                                                    "$type": "TerminalAlternatives",
-                                                    "elements": [
-                                                      {
-                                                        "$type": "TerminalAlternatives",
-                                                        "elements": [
-                                                          {
-                                                            "$type": "TerminalAlternatives",
-                                                            "elements": [
-                                                              {
-                                                                "$type": "TerminalAlternatives",
-                                                                "elements": [
-                                                                  {
-                                                                    "$type": "TerminalAlternatives",
-                                                                    "elements": [
-                                                                      {
-                                                                        "$type": "TerminalAlternatives",
-                                                                        "elements": [
-                                                                          {
-                                                                            "$type": "TerminalAlternatives",
-                                                                            "elements": [
-                                                                              {
-                                                                                "$type": "TerminalAlternatives",
-                                                                                "elements": [
-                                                                                  {
-                                                                                    "$type": "TerminalGroup",
-                                                                                    "elements": [
-                                                                                      {
-                                                                                        "$type": "CharacterRange",
-                                                                                        "left": {
-                                                                                          "$type": "Keyword",
-                                                                                          "value": ":"
-                                                                                        }
-                                                                                      },
-                                                                                      {
-                                                                                        "$type": "CharacterRange",
-                                                                                        "left": {
-                                                                                          "$type": "Keyword",
-                                                                                          "value": "diagnostic-output-channel"
-                                                                                        }
-                                                                                      },
-                                                                                      {
-                                                                                        "$type": "TerminalRuleCall",
-                                                                                        "rule": {
-                                                                                          "$ref": "#/rules@49"
-                                                                                        }
-                                                                                      }
-                                                                                    ]
-                                                                                  },
-                                                                                  {
-                                                                                    "$type": "TerminalGroup",
-                                                                                    "elements": [
-                                                                                      {
-                                                                                        "$type": "CharacterRange",
-                                                                                        "left": {
-                                                                                          "$type": "Keyword",
-                                                                                          "value": ":"
-                                                                                        }
-                                                                                      },
-                                                                                      {
-                                                                                        "$type": "CharacterRange",
-                                                                                        "left": {
-                                                                                          "$type": "Keyword",
-                                                                                          "value": "global-declarations"
-                                                                                        }
-                                                                                      },
-                                                                                      {
-                                                                                        "$type": "TerminalRuleCall",
-                                                                                        "rule": {
-                                                                                          "$ref": "#/rules@42"
-                                                                                        }
-                                                                                      }
-                                                                                    ]
-                                                                                  }
-                                                                                ]
-                                                                              },
-                                                                              {
-                                                                                "$type": "TerminalGroup",
-                                                                                "elements": [
-                                                                                  {
-                                                                                    "$type": "CharacterRange",
-                                                                                    "left": {
-                                                                                      "$type": "Keyword",
-                                                                                      "value": ":"
-                                                                                    }
-                                                                                  },
-                                                                                  {
-                                                                                    "$type": "CharacterRange",
-                                                                                    "left": {
-                                                                                      "$type": "Keyword",
-                                                                                      "value": "interactive-mode"
-                                                                                    }
-                                                                                  },
-                                                                                  {
-                                                                                    "$type": "TerminalRuleCall",
-                                                                                    "rule": {
-                                                                                      "$ref": "#/rules@42"
-                                                                                    }
-                                                                                  }
-                                                                                ]
-                                                                              }
-                                                                            ]
-                                                                          },
-                                                                          {
-                                                                            "$type": "TerminalGroup",
-                                                                            "elements": [
-                                                                              {
-                                                                                "$type": "CharacterRange",
-                                                                                "left": {
-                                                                                  "$type": "Keyword",
-                                                                                  "value": ":"
-                                                                                }
-                                                                              },
-                                                                              {
-                                                                                "$type": "CharacterRange",
-                                                                                "left": {
-                                                                                  "$type": "Keyword",
-                                                                                  "value": "print-success"
-                                                                                }
-                                                                              },
-                                                                              {
-                                                                                "$type": "TerminalRuleCall",
-                                                                                "rule": {
-                                                                                  "$ref": "#/rules@42"
-                                                                                }
-                                                                              }
-                                                                            ]
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "$type": "TerminalGroup",
-                                                                        "elements": [
-                                                                          {
-                                                                            "$type": "CharacterRange",
-                                                                            "left": {
-                                                                              "$type": "Keyword",
-                                                                              "value": ":"
-                                                                            }
-                                                                          },
-                                                                          {
-                                                                            "$type": "CharacterRange",
-                                                                            "left": {
-                                                                              "$type": "Keyword",
-                                                                              "value": "produce-assertions"
-                                                                            }
-                                                                          },
-                                                                          {
-                                                                            "$type": "TerminalRuleCall",
-                                                                            "rule": {
-                                                                              "$ref": "#/rules@42"
-                                                                            }
-                                                                          }
-                                                                        ]
-                                                                      }
-                                                                    ]
-                                                                  },
-                                                                  {
-                                                                    "$type": "TerminalGroup",
-                                                                    "elements": [
-                                                                      {
-                                                                        "$type": "CharacterRange",
-                                                                        "left": {
-                                                                          "$type": "Keyword",
-                                                                          "value": ":"
-                                                                        }
-                                                                      },
-                                                                      {
-                                                                        "$type": "CharacterRange",
-                                                                        "left": {
-                                                                          "$type": "Keyword",
-                                                                          "value": "produce-assignments"
-                                                                        }
-                                                                      },
-                                                                      {
-                                                                        "$type": "TerminalRuleCall",
-                                                                        "rule": {
-                                                                          "$ref": "#/rules@42"
-                                                                        }
-                                                                      }
-                                                                    ]
-                                                                  }
-                                                                ]
-                                                              },
-                                                              {
-                                                                "$type": "TerminalGroup",
-                                                                "elements": [
-                                                                  {
-                                                                    "$type": "CharacterRange",
-                                                                    "left": {
-                                                                      "$type": "Keyword",
-                                                                      "value": ":"
-                                                                    }
-                                                                  },
-                                                                  {
-                                                                    "$type": "CharacterRange",
-                                                                    "left": {
-                                                                      "$type": "Keyword",
-                                                                      "value": "produce-models"
-                                                                    }
-                                                                  },
-                                                                  {
-                                                                    "$type": "TerminalRuleCall",
-                                                                    "rule": {
-                                                                      "$ref": "#/rules@42"
-                                                                    }
-                                                                  }
-                                                                ]
-                                                              }
-                                                            ]
-                                                          },
-                                                          {
-                                                            "$type": "TerminalGroup",
-                                                            "elements": [
-                                                              {
-                                                                "$type": "CharacterRange",
-                                                                "left": {
-                                                                  "$type": "Keyword",
-                                                                  "value": ":"
-                                                                }
-                                                              },
-                                                              {
-                                                                "$type": "CharacterRange",
-                                                                "left": {
-                                                                  "$type": "Keyword",
-                                                                  "value": "produce-proofs"
-                                                                }
-                                                              },
-                                                              {
-                                                                "$type": "TerminalRuleCall",
-                                                                "rule": {
-                                                                  "$ref": "#/rules@42"
-                                                                }
-                                                              }
-                                                            ]
-                                                          }
-                                                        ]
-                                                      },
-                                                      {
-                                                        "$type": "TerminalGroup",
-                                                        "elements": [
-                                                          {
-                                                            "$type": "CharacterRange",
-                                                            "left": {
-                                                              "$type": "Keyword",
-                                                              "value": ":"
-                                                            }
-                                                          },
-                                                          {
-                                                            "$type": "CharacterRange",
-                                                            "left": {
-                                                              "$type": "Keyword",
-                                                              "value": "produce-unsat-assumptions"
-                                                            }
-                                                          },
-                                                          {
-                                                            "$type": "TerminalRuleCall",
-                                                            "rule": {
-                                                              "$ref": "#/rules@42"
-                                                            }
-                                                          }
-                                                        ]
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "$type": "TerminalGroup",
-                                                    "elements": [
-                                                      {
-                                                        "$type": "CharacterRange",
-                                                        "left": {
-                                                          "$type": "Keyword",
-                                                          "value": ":"
-                                                        }
-                                                      },
-                                                      {
-                                                        "$type": "CharacterRange",
-                                                        "left": {
-                                                          "$type": "Keyword",
-                                                          "value": "produce-unsat-cores"
-                                                        }
-                                                      },
-                                                      {
-                                                        "$type": "TerminalRuleCall",
-                                                        "rule": {
-                                                          "$ref": "#/rules@42"
-                                                        }
-                                                      }
-                                                    ]
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "$type": "TerminalGroup",
-                                                "elements": [
-                                                  {
-                                                    "$type": "CharacterRange",
-                                                    "left": {
-                                                      "$type": "Keyword",
-                                                      "value": ":"
-                                                    }
-                                                  },
-                                                  {
-                                                    "$type": "CharacterRange",
-                                                    "left": {
-                                                      "$type": "Keyword",
-                                                      "value": "random-seed"
-                                                    }
-                                                  },
-                                                  {
-                                                    "$type": "TerminalRuleCall",
-                                                    "rule": {
-                                                      "$ref": "#/rules@45"
-                                                    }
-                                                  }
-                                                ]
-                                              }
-                                            ]
-                                          },
-                                          {
-                                            "$type": "TerminalGroup",
-                                            "elements": [
-                                              {
-                                                "$type": "CharacterRange",
-                                                "left": {
-                                                  "$type": "Keyword",
-                                                  "value": ":"
-                                                }
-                                              },
-                                              {
-                                                "$type": "CharacterRange",
-                                                "left": {
-                                                  "$type": "Keyword",
-                                                  "value": "regular-output-channel"
-                                                }
-                                              },
-                                              {
-                                                "$type": "TerminalRuleCall",
-                                                "rule": {
-                                                  "$ref": "#/rules@49"
-                                                }
-                                              }
-                                            ]
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "$type": "TerminalGroup",
-                                        "elements": [
-                                          {
-                                            "$type": "CharacterRange",
-                                            "left": {
-                                              "$type": "Keyword",
-                                              "value": ":"
-                                            }
-                                          },
-                                          {
-                                            "$type": "CharacterRange",
-                                            "left": {
-                                              "$type": "Keyword",
-                                              "value": "reproducible-resource-limit"
-                                            }
-                                          },
-                                          {
-                                            "$type": "TerminalRuleCall",
-                                            "rule": {
-                                              "$ref": "#/rules@45"
-                                            }
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "$type": "TerminalGroup",
-                                    "elements": [
-                                      {
-                                        "$type": "CharacterRange",
-                                        "left": {
-                                          "$type": "Keyword",
-                                          "value": ":"
-                                        }
-                                      },
-                                      {
-                                        "$type": "CharacterRange",
-                                        "left": {
-                                          "$type": "Keyword",
-                                          "value": "smt-auto-config"
-                                        }
-                                      },
-                                      {
-                                        "$type": "TerminalRuleCall",
-                                        "rule": {
-                                          "$ref": "#/rules@42"
-                                        }
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "$type": "TerminalGroup",
-                                "elements": [
-                                  {
-                                    "$type": "CharacterRange",
-                                    "left": {
-                                      "$type": "Keyword",
-                                      "value": ":"
-                                    }
-                                  },
-                                  {
-                                    "$type": "CharacterRange",
-                                    "left": {
-                                      "$type": "Keyword",
-                                      "value": "smt.mbqi"
-                                    }
-                                  },
-                                  {
-                                    "$type": "TerminalRuleCall",
-                                    "rule": {
-                                      "$ref": "#/rules@42"
-                                    }
-                                  }
-                                ]
-                              }
-                            ]
-                          },
-                          {
-                            "$type": "TerminalGroup",
-                            "elements": [
-                              {
-                                "$type": "CharacterRange",
-                                "left": {
-                                  "$type": "Keyword",
-                                  "value": ":"
-                                }
-                              },
-                              {
-                                "$type": "CharacterRange",
-                                "left": {
-                                  "$type": "Keyword",
-                                  "value": "smt.macro-finder"
-                                }
-                              },
-                              {
-                                "$type": "TerminalRuleCall",
-                                "rule": {
-                                  "$ref": "#/rules@42"
-                                }
-                              }
-                            ]
-                          }
-                        ]
-                      },
-                      {
-                        "$type": "TerminalGroup",
-                        "elements": [
-                          {
-                            "$type": "CharacterRange",
-                            "left": {
-                              "$type": "Keyword",
-                              "value": ":"
-                            }
-                          },
-                          {
-                            "$type": "CharacterRange",
-                            "left": {
-                              "$type": "Keyword",
-                              "value": "model.compact"
-                            }
-                          },
-                          {
-                            "$type": "TerminalRuleCall",
-                            "rule": {
-                              "$ref": "#/rules@42"
-                            }
-                          }
-                        ]
-                      }
-                    ]
-                  },
-                  {
-                    "$type": "TerminalGroup",
-                    "elements": [
-                      {
-                        "$type": "CharacterRange",
-                        "left": {
-                          "$type": "Keyword",
-                          "value": ":"
-                        }
-                      },
-                      {
-                        "$type": "CharacterRange",
-                        "left": {
-                          "$type": "Keyword",
-                          "value": "opt.priority"
-                        }
-                      },
-                      {
-                        "$type": "TerminalRuleCall",
-                        "rule": {
-                          "$ref": "#/rules@51"
-                        }
-                      }
-                    ]
-                  }
-                ]
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":diagnostic-output-channel"
+                }
               },
               {
-                "$type": "TerminalGroup",
-                "elements": [
-                  {
-                    "$type": "CharacterRange",
-                    "left": {
-                      "$type": "Keyword",
-                      "value": ":"
-                    }
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@63"
                   },
-                  {
-                    "$type": "CharacterRange",
-                    "left": {
-                      "$type": "Keyword",
-                      "value": "pp.bv-literals"
-                    }
-                  },
-                  {
-                    "$type": "TerminalRuleCall",
-                    "rule": {
-                      "$ref": "#/rules@42"
-                    }
-                  }
-                ]
+                  "arguments": []
+                },
+                "cardinality": "?"
               }
             ]
           },
           {
-            "$type": "TerminalGroup",
+            "$type": "Group",
             "elements": [
               {
-                "$type": "CharacterRange",
-                "left": {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
                   "$type": "Keyword",
-                  "value": ":"
+                  "value": ":global-declarations"
                 }
               },
               {
-                "$type": "CharacterRange",
-                "left": {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
                   "$type": "Keyword",
-                  "value": "verbosity"
+                  "value": ":interactive-mode"
                 }
               },
               {
-                "$type": "TerminalRuleCall",
-                "rule": {
-                  "$ref": "#/rules@45"
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
                 }
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":print-success"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":produce-assertions"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":produce-assignments"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":produce-models"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":produce-proofs"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":produce-unsat-assumptions"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":produce-unsat-cores"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":random-seed"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@59"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":regular-output-channel"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@63"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":reproducible-resource-limit"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@59"
+                  },
+                  "arguments": []
+                }
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":smt-auto-config"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":smt.mbqi"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":smt.macro-finder"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":model.compact"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":opt.priority"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@67"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":pp.bv-literals"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@56"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
+              }
+            ]
+          },
+          {
+            "$type": "Group",
+            "elements": [
+              {
+                "$type": "Assignment",
+                "feature": "option",
+                "operator": "=",
+                "terminal": {
+                  "$type": "Keyword",
+                  "value": ":verbosity"
+                }
+              },
+              {
+                "$type": "Assignment",
+                "feature": "value",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@59"
+                  },
+                  "arguments": []
+                },
+                "cardinality": "?"
               }
             ]
           }
         ]
       },
+      "definesHiddenTokens": false,
+      "entry": false,
       "fragment": false,
-      "hidden": false
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
     },
     {
       "$type": "ParserRule",
@@ -3713,7 +4457,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@28"
+            "$ref": "#/rules@41"
           },
           "arguments": []
         },
@@ -3739,7 +4483,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -3751,7 +4495,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@39"
+                "$ref": "#/rules@53"
               },
               "arguments": []
             },
@@ -3775,7 +4519,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
@@ -3786,7 +4530,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@37"
+                "$ref": "#/rules@51"
               },
               "arguments": []
             },
@@ -3795,7 +4539,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -3817,18 +4561,18 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@40"
+              "$ref": "#/rules@54"
             },
             "arguments": []
           },
           {
             "$type": "Assignment",
-            "feature": "symbol",
+            "feature": "name",
             "operator": "=",
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@28"
+                "$ref": "#/rules@41"
               },
               "arguments": []
             }
@@ -3840,7 +4584,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@15"
+                "$ref": "#/rules@24"
               },
               "arguments": []
             },
@@ -3849,7 +4593,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@41"
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -3929,14 +4673,30 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
     },
     {
       "$type": "TerminalRule",
-      "name": "DIGIT",
-      "type": {
-        "$type": "ReturnType",
-        "name": "number"
-      },
+      "name": "DECIMAL",
       "definition": {
-        "$type": "RegexToken",
-        "regex": "/[0-9]/"
+        "$type": "TerminalGroup",
+        "elements": [
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@59"
+            }
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "."
+            }
+          },
+          {
+            "$type": "TerminalRuleCall",
+            "rule": {
+              "$ref": "#/rules@59"
+            }
+          }
+        ]
       },
       "fragment": false,
       "hidden": false
@@ -3957,30 +4717,14 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
     },
     {
       "$type": "TerminalRule",
-      "name": "DECIMAL",
+      "name": "DIGIT",
+      "type": {
+        "$type": "ReturnType",
+        "name": "number"
+      },
       "definition": {
-        "$type": "TerminalGroup",
-        "elements": [
-          {
-            "$type": "TerminalRuleCall",
-            "rule": {
-              "$ref": "#/rules@45"
-            }
-          },
-          {
-            "$type": "CharacterRange",
-            "left": {
-              "$type": "Keyword",
-              "value": "."
-            }
-          },
-          {
-            "$type": "TerminalRuleCall",
-            "rule": {
-              "$ref": "#/rules@45"
-            }
-          }
-        ]
+        "$type": "RegexToken",
+        "regex": "/[0-9]/"
       },
       "fragment": false,
       "hidden": false
@@ -4028,6 +4772,236 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
         "regex": "/\\\\s+/"
       },
       "fragment": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "ARITHMETIC_OPERATOR",
+      "definition": {
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalAlternatives",
+                "elements": [
+                  {
+                    "$type": "TerminalAlternatives",
+                    "elements": [
+                      {
+                        "$type": "TerminalAlternatives",
+                        "elements": [
+                          {
+                            "$type": "TerminalAlternatives",
+                            "elements": [
+                              {
+                                "$type": "TerminalAlternatives",
+                                "elements": [
+                                  {
+                                    "$type": "TerminalAlternatives",
+                                    "elements": [
+                                      {
+                                        "$type": "TerminalAlternatives",
+                                        "elements": [
+                                          {
+                                            "$type": "TerminalAlternatives",
+                                            "elements": [
+                                              {
+                                                "$type": "CharacterRange",
+                                                "left": {
+                                                  "$type": "Keyword",
+                                                  "value": "-"
+                                                }
+                                              },
+                                              {
+                                                "$type": "CharacterRange",
+                                                "left": {
+                                                  "$type": "Keyword",
+                                                  "value": "+"
+                                                }
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "$type": "CharacterRange",
+                                            "left": {
+                                              "$type": "Keyword",
+                                              "value": "*"
+                                            }
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "$type": "CharacterRange",
+                                        "left": {
+                                          "$type": "Keyword",
+                                          "value": "/"
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "$type": "CharacterRange",
+                                    "left": {
+                                      "$type": "Keyword",
+                                      "value": "div"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "$type": "CharacterRange",
+                                "left": {
+                                  "$type": "Keyword",
+                                  "value": "mod"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "$type": "CharacterRange",
+                            "left": {
+                              "$type": "Keyword",
+                              "value": "abs"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "CharacterRange",
+                        "left": {
+                          "$type": "Keyword",
+                          "value": "<="
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "<"
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": ">="
+                }
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": ">"
+            }
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
+    },
+    {
+      "$type": "TerminalRule",
+      "name": "BOOLEAN_OPERATOR",
+      "definition": {
+        "$type": "TerminalAlternatives",
+        "elements": [
+          {
+            "$type": "TerminalAlternatives",
+            "elements": [
+              {
+                "$type": "TerminalAlternatives",
+                "elements": [
+                  {
+                    "$type": "TerminalAlternatives",
+                    "elements": [
+                      {
+                        "$type": "TerminalAlternatives",
+                        "elements": [
+                          {
+                            "$type": "TerminalAlternatives",
+                            "elements": [
+                              {
+                                "$type": "TerminalAlternatives",
+                                "elements": [
+                                  {
+                                    "$type": "CharacterRange",
+                                    "left": {
+                                      "$type": "Keyword",
+                                      "value": "not"
+                                    }
+                                  },
+                                  {
+                                    "$type": "CharacterRange",
+                                    "left": {
+                                      "$type": "Keyword",
+                                      "value": "=>"
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "$type": "CharacterRange",
+                                "left": {
+                                  "$type": "Keyword",
+                                  "value": "and"
+                                }
+                              }
+                            ]
+                          },
+                          {
+                            "$type": "CharacterRange",
+                            "left": {
+                              "$type": "Keyword",
+                              "value": "or"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "$type": "CharacterRange",
+                        "left": {
+                          "$type": "Keyword",
+                          "value": "xor"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "$type": "CharacterRange",
+                    "left": {
+                      "$type": "Keyword",
+                      "value": "="
+                    }
+                  }
+                ]
+              },
+              {
+                "$type": "CharacterRange",
+                "left": {
+                  "$type": "Keyword",
+                  "value": "ite"
+                }
+              }
+            ]
+          },
+          {
+            "$type": "CharacterRange",
+            "left": {
+              "$type": "Keyword",
+              "value": "distinct"
+            }
+          }
+        ]
+      },
+      "fragment": false,
+      "hidden": false
     },
     {
       "$type": "TerminalRule",
@@ -4092,7 +5066,7 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                                                                                   {
                                                                                     "$type": "TerminalRuleCall",
                                                                                     "rule": {
-                                                                                      "$ref": "#/rules@43"
+                                                                                      "$ref": "#/rules@57"
                                                                                     }
                                                                                   },
                                                                                   {
@@ -4314,13 +5288,13 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
                                                                                   {
                                                                                     "$type": "TerminalRuleCall",
                                                                                     "rule": {
-                                                                                      "$ref": "#/rules@43"
+                                                                                      "$ref": "#/rules@57"
                                                                                     }
                                                                                   },
                                                                                   {
                                                                                     "$type": "TerminalRuleCall",
                                                                                     "rule": {
-                                                                                      "$ref": "#/rules@44"
+                                                                                      "$ref": "#/rules@60"
                                                                                     }
                                                                                   }
                                                                                 ]
@@ -4493,457 +5467,97 @@ export const SmtGrammar = (): Grammar => loadedSmtGrammar ?? (loadedSmtGrammar =
         "regex": "/;[^\\\\n\\\\r]*/"
       },
       "fragment": false
-    },
+    }
+  ],
+  "types": [
     {
-      "$type": "TerminalRule",
-      "name": "SimplifyKeyword",
-      "definition": {
-        "$type": "TerminalAlternatives",
-        "elements": [
+      "$type": "Type",
+      "name": "NamedElement",
+      "type": {
+        "$type": "UnionType",
+        "types": [
           {
-            "$type": "TerminalAlternatives",
-            "elements": [
-              {
-                "$type": "TerminalAlternatives",
-                "elements": [
-                  {
-                    "$type": "TerminalAlternatives",
-                    "elements": [
-                      {
-                        "$type": "TerminalAlternatives",
-                        "elements": [
-                          {
-                            "$type": "TerminalAlternatives",
-                            "elements": [
-                              {
-                                "$type": "TerminalAlternatives",
-                                "elements": [
-                                  {
-                                    "$type": "TerminalAlternatives",
-                                    "elements": [
-                                      {
-                                        "$type": "TerminalAlternatives",
-                                        "elements": [
-                                          {
-                                            "$type": "TerminalAlternatives",
-                                            "elements": [
-                                              {
-                                                "$type": "TerminalAlternatives",
-                                                "elements": [
-                                                  {
-                                                    "$type": "TerminalAlternatives",
-                                                    "elements": [
-                                                      {
-                                                        "$type": "TerminalAlternatives",
-                                                        "elements": [
-                                                          {
-                                                            "$type": "TerminalAlternatives",
-                                                            "elements": [
-                                                              {
-                                                                "$type": "TerminalAlternatives",
-                                                                "elements": [
-                                                                  {
-                                                                    "$type": "TerminalAlternatives",
-                                                                    "elements": [
-                                                                      {
-                                                                        "$type": "TerminalAlternatives",
-                                                                        "elements": [
-                                                                          {
-                                                                            "$type": "TerminalAlternatives",
-                                                                            "elements": [
-                                                                              {
-                                                                                "$type": "TerminalAlternatives",
-                                                                                "elements": [
-                                                                                  {
-                                                                                    "$type": "TerminalAlternatives",
-                                                                                    "elements": [
-                                                                                      {
-                                                                                        "$type": "TerminalAlternatives",
-                                                                                        "elements": [
-                                                                                          {
-                                                                                            "$type": "TerminalAlternatives",
-                                                                                            "elements": [
-                                                                                              {
-                                                                                                "$type": "TerminalAlternatives",
-                                                                                                "elements": [
-                                                                                                  {
-                                                                                                    "$type": "TerminalAlternatives",
-                                                                                                    "elements": [
-                                                                                                      {
-                                                                                                        "$type": "TerminalAlternatives",
-                                                                                                        "elements": [
-                                                                                                          {
-                                                                                                            "$type": "TerminalAlternatives",
-                                                                                                            "elements": [
-                                                                                                              {
-                                                                                                                "$type": "TerminalAlternatives",
-                                                                                                                "elements": [
-                                                                                                                  {
-                                                                                                                    "$type": "TerminalAlternatives",
-                                                                                                                    "elements": [
-                                                                                                                      {
-                                                                                                                        "$type": "TerminalAlternatives",
-                                                                                                                        "elements": [
-                                                                                                                          {
-                                                                                                                            "$type": "TerminalAlternatives",
-                                                                                                                            "elements": [
-                                                                                                                              {
-                                                                                                                                "$type": "TerminalAlternatives",
-                                                                                                                                "elements": [
-                                                                                                                                  {
-                                                                                                                                    "$type": "TerminalAlternatives",
-                                                                                                                                    "elements": [
-                                                                                                                                      {
-                                                                                                                                        "$type": "TerminalAlternatives",
-                                                                                                                                        "elements": [
-                                                                                                                                          {
-                                                                                                                                            "$type": "TerminalAlternatives",
-                                                                                                                                            "elements": [
-                                                                                                                                              {
-                                                                                                                                                "$type": "TerminalAlternatives",
-                                                                                                                                                "elements": [
-                                                                                                                                                  {
-                                                                                                                                                    "$type": "TerminalAlternatives",
-                                                                                                                                                    "elements": [
-                                                                                                                                                      {
-                                                                                                                                                        "$type": "CharacterRange",
-                                                                                                                                                        "left": {
-                                                                                                                                                          "$type": "Keyword",
-                                                                                                                                                          "value": ":ite-extra-rules"
-                                                                                                                                                        }
-                                                                                                                                                      },
-                                                                                                                                                      {
-                                                                                                                                                        "$type": "CharacterRange",
-                                                                                                                                                        "left": {
-                                                                                                                                                          "$type": "Keyword",
-                                                                                                                                                          "value": ":flat"
-                                                                                                                                                        }
-                                                                                                                                                      }
-                                                                                                                                                    ]
-                                                                                                                                                  },
-                                                                                                                                                  {
-                                                                                                                                                    "$type": "CharacterRange",
-                                                                                                                                                    "left": {
-                                                                                                                                                      "$type": "Keyword",
-                                                                                                                                                      "value": ":elim-and"
-                                                                                                                                                    }
-                                                                                                                                                  }
-                                                                                                                                                ]
-                                                                                                                                              },
-                                                                                                                                              {
-                                                                                                                                                "$type": "CharacterRange",
-                                                                                                                                                "left": {
-                                                                                                                                                  "$type": "Keyword",
-                                                                                                                                                  "value": ":local-ctx"
-                                                                                                                                                }
-                                                                                                                                              }
-                                                                                                                                            ]
-                                                                                                                                          },
-                                                                                                                                          {
-                                                                                                                                            "$type": "CharacterRange",
-                                                                                                                                            "left": {
-                                                                                                                                              "$type": "Keyword",
-                                                                                                                                              "value": ":local-ctx-limit"
-                                                                                                                                            }
-                                                                                                                                          }
-                                                                                                                                        ]
-                                                                                                                                      },
-                                                                                                                                      {
-                                                                                                                                        "$type": "CharacterRange",
-                                                                                                                                        "left": {
-                                                                                                                                          "$type": "Keyword",
-                                                                                                                                          "value": ":blast-distinct"
-                                                                                                                                        }
-                                                                                                                                      }
-                                                                                                                                    ]
-                                                                                                                                  },
-                                                                                                                                  {
-                                                                                                                                    "$type": "CharacterRange",
-                                                                                                                                    "left": {
-                                                                                                                                      "$type": "Keyword",
-                                                                                                                                      "value": ":som"
-                                                                                                                                    }
-                                                                                                                                  }
-                                                                                                                                ]
-                                                                                                                              },
-                                                                                                                              {
-                                                                                                                                "$type": "CharacterRange",
-                                                                                                                                "left": {
-                                                                                                                                  "$type": "Keyword",
-                                                                                                                                  "value": ":som-blowup"
-                                                                                                                                }
-                                                                                                                              }
-                                                                                                                            ]
-                                                                                                                          },
-                                                                                                                          {
-                                                                                                                            "$type": "CharacterRange",
-                                                                                                                            "left": {
-                                                                                                                              "$type": "Keyword",
-                                                                                                                              "value": ":hoist-mul"
-                                                                                                                            }
-                                                                                                                          }
-                                                                                                                        ]
-                                                                                                                      },
-                                                                                                                      {
-                                                                                                                        "$type": "CharacterRange",
-                                                                                                                        "left": {
-                                                                                                                          "$type": "Keyword",
-                                                                                                                          "value": ":hoist-cmul"
-                                                                                                                        }
-                                                                                                                      }
-                                                                                                                    ]
-                                                                                                                  },
-                                                                                                                  {
-                                                                                                                    "$type": "CharacterRange",
-                                                                                                                    "left": {
-                                                                                                                      "$type": "Keyword",
-                                                                                                                      "value": ":algebraic-number-evaluator"
-                                                                                                                    }
-                                                                                                                  }
-                                                                                                                ]
-                                                                                                              },
-                                                                                                              {
-                                                                                                                "$type": "CharacterRange",
-                                                                                                                "left": {
-                                                                                                                  "$type": "Keyword",
-                                                                                                                  "value": ":mul-to-power"
-                                                                                                                }
-                                                                                                              }
-                                                                                                            ]
-                                                                                                          },
-                                                                                                          {
-                                                                                                            "$type": "CharacterRange",
-                                                                                                            "left": {
-                                                                                                              "$type": "Keyword",
-                                                                                                              "value": ":expand-power"
-                                                                                                            }
-                                                                                                          }
-                                                                                                        ]
-                                                                                                      },
-                                                                                                      {
-                                                                                                        "$type": "CharacterRange",
-                                                                                                        "left": {
-                                                                                                          "$type": "Keyword",
-                                                                                                          "value": ":expand-tan"
-                                                                                                        }
-                                                                                                      }
-                                                                                                    ]
-                                                                                                  },
-                                                                                                  {
-                                                                                                    "$type": "CharacterRange",
-                                                                                                    "left": {
-                                                                                                      "$type": "Keyword",
-                                                                                                      "value": ":max-degree"
-                                                                                                    }
-                                                                                                  }
-                                                                                                ]
-                                                                                              },
-                                                                                              {
-                                                                                                "$type": "CharacterRange",
-                                                                                                "left": {
-                                                                                                  "$type": "Keyword",
-                                                                                                  "value": ":eq2ineq"
-                                                                                                }
-                                                                                              }
-                                                                                            ]
-                                                                                          },
-                                                                                          {
-                                                                                            "$type": "CharacterRange",
-                                                                                            "left": {
-                                                                                              "$type": "Keyword",
-                                                                                              "value": ":sort-sums"
-                                                                                            }
-                                                                                          }
-                                                                                        ]
-                                                                                      },
-                                                                                      {
-                                                                                        "$type": "CharacterRange",
-                                                                                        "left": {
-                                                                                          "$type": "Keyword",
-                                                                                          "value": ":gcd-rounding"
-                                                                                        }
-                                                                                      }
-                                                                                    ]
-                                                                                  },
-                                                                                  {
-                                                                                    "$type": "CharacterRange",
-                                                                                    "left": {
-                                                                                      "$type": "Keyword",
-                                                                                      "value": ":arith-lhs"
-                                                                                    }
-                                                                                  }
-                                                                                ]
-                                                                              },
-                                                                              {
-                                                                                "$type": "CharacterRange",
-                                                                                "left": {
-                                                                                  "$type": "Keyword",
-                                                                                  "value": ":elim-to-real"
-                                                                                }
-                                                                              }
-                                                                            ]
-                                                                          },
-                                                                          {
-                                                                            "$type": "CharacterRange",
-                                                                            "left": {
-                                                                              "$type": "Keyword",
-                                                                              "value": ":push-to-real"
-                                                                            }
-                                                                          }
-                                                                        ]
-                                                                      },
-                                                                      {
-                                                                        "$type": "CharacterRange",
-                                                                        "left": {
-                                                                          "$type": "Keyword",
-                                                                          "value": ":elim-rem"
-                                                                        }
-                                                                      }
-                                                                    ]
-                                                                  },
-                                                                  {
-                                                                    "$type": "CharacterRange",
-                                                                    "left": {
-                                                                      "$type": "Keyword",
-                                                                      "value": ":udiv2mul"
-                                                                    }
-                                                                  }
-                                                                ]
-                                                              },
-                                                              {
-                                                                "$type": "CharacterRange",
-                                                                "left": {
-                                                                  "$type": "Keyword",
-                                                                  "value": ":split-concat-eq"
-                                                                }
-                                                              }
-                                                            ]
-                                                          },
-                                                          {
-                                                            "$type": "CharacterRange",
-                                                            "left": {
-                                                              "$type": "Keyword",
-                                                              "value": ":bit2bool"
-                                                            }
-                                                          }
-                                                        ]
-                                                      },
-                                                      {
-                                                        "$type": "CharacterRange",
-                                                        "left": {
-                                                          "$type": "Keyword",
-                                                          "value": ":blast-eq-value"
-                                                        }
-                                                      }
-                                                    ]
-                                                  },
-                                                  {
-                                                    "$type": "CharacterRange",
-                                                    "left": {
-                                                      "$type": "Keyword",
-                                                      "value": ":elim-sign-ext"
-                                                    }
-                                                  }
-                                                ]
-                                              },
-                                              {
-                                                "$type": "CharacterRange",
-                                                "left": {
-                                                  "$type": "Keyword",
-                                                  "value": ":hi-div0"
-                                                }
-                                              }
-                                            ]
-                                          },
-                                          {
-                                            "$type": "CharacterRange",
-                                            "left": {
-                                              "$type": "Keyword",
-                                              "value": ":mul2concat"
-                                            }
-                                          }
-                                        ]
-                                      },
-                                      {
-                                        "$type": "CharacterRange",
-                                        "left": {
-                                          "$type": "Keyword",
-                                          "value": ":expand-select-store"
-                                        }
-                                      }
-                                    ]
-                                  },
-                                  {
-                                    "$type": "CharacterRange",
-                                    "left": {
-                                      "$type": "Keyword",
-                                      "value": ":sort-store"
-                                    }
-                                  }
-                                ]
-                              },
-                              {
-                                "$type": "CharacterRange",
-                                "left": {
-                                  "$type": "Keyword",
-                                  "value": ":max-memory"
-                                }
-                              }
-                            ]
-                          },
-                          {
-                            "$type": "CharacterRange",
-                            "left": {
-                              "$type": "Keyword",
-                              "value": ":max-steps"
-                            }
-                          }
-                        ]
-                      },
-                      {
-                        "$type": "CharacterRange",
-                        "left": {
-                          "$type": "Keyword",
-                          "value": ":push-ite-arith"
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    "$type": "CharacterRange",
-                    "left": {
-                      "$type": "Keyword",
-                      "value": ":push-ite-bv"
-                    }
-                  }
-                ]
-              },
-              {
-                "$type": "CharacterRange",
-                "left": {
-                  "$type": "Keyword",
-                  "value": ":pull-cheap-ite"
-                }
-              }
-            ]
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@8"
+            }
           },
           {
-            "$type": "CharacterRange",
-            "left": {
-              "$type": "Keyword",
-              "value": ":cache-all"
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@9"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@20"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@22"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@23"
             }
           }
         ]
-      },
-      "fragment": false,
-      "hidden": false
+      }
+    },
+    {
+      "$type": "Type",
+      "name": "NamedSort",
+      "type": {
+        "$type": "UnionType",
+        "types": [
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@7"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@19"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@50"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@13"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@5"
+            }
+          },
+          {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/rules@6"
+            }
+          }
+        ]
+      }
     }
   ],
   "definesHiddenTokens": false,
   "hiddenTokens": [],
   "imports": [],
   "interfaces": [],
-  "types": [],
   "usedGrammars": []
 }`));

@@ -1,4 +1,5 @@
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
+// @ts-ignore
 import type { SmtAstType, Model } from './generated/ast.js';
 import type { SmtServices } from './smt-module.js';
 
