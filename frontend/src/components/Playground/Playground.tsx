@@ -65,7 +65,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const [limbooleCheckOption, setLimbooleCheckOption] = useState<ToolDropdown>({ value: "1", label: 'satisfiability' }); // contains the selected option for the Limboole cli tool.
   const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
-  const [enableLsp, setEnableLsp] = useState(false); // contains the state of the LSP editor.
+  const [enableLsp, setEnableLsp] = useState(true); // contains the state of the LSP editor.
 
   /**
    * Load the code and language from the URL.
@@ -277,7 +277,6 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                 </div>
                 <div>
                   <Stack direction="row" spacing={1}>
-                    {/* <div className='toggle-container'> */}
                     <span className='syntax-checking-span'>Syntax Checking</span>
                     <MDBIcon size='lg' className='playground-icon'
                       style={{ marginTop: "5px" }}
@@ -288,9 +287,11 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                         id='cheese-status'
                         defaultChecked={enableLsp}
                         onChange={(e) => setEnableLsp(e.target.checked)}
+                        // FIXME: Enable for all languages once the LSP is implemented
+                        disabled={language.id !== 'limboole' && language.id !== 'smt2'} 
                       />
                     </MDBIcon >
-                    {/* </div> */}
+                    
                     <MDBIcon size='lg' className='playground-icon'
                       onClick={openModal}
                       data-tooltip-id="playground-tooltip"
