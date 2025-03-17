@@ -89,7 +89,7 @@ const CodeEditor: React.FC<BasicCodeEditorProps> = (props: BasicCodeEditorProps)
 
     monaco.editor.setTheme('spectraTheme');
   }
-
+  
   useEffect(() => {
     if (editorRef.current) {
       handleEditorDidMount(editorRef.current, window.monaco);

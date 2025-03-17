@@ -30,29 +30,11 @@ export default defineConfig({
     strictPort: true,
     port: 5173,
     proxy: {
-      '/nuxmv': {
-        target: 'http://fmp-nuxmv-api:8080',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/nuxmv/, ''),
-      },
       '/smt': {
         target: 'http://fmp-z3-api:8080',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/smt/, ''),
-      },
-      '/alloy': {
-        target: 'http://fmp-alloy-api:8080',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/alloy/, ''),
-      },
-      '/spectra': {
-        target: 'http://fmp-spectra-api:8080',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/spectra/, ''),
       },
     },
   },
@@ -64,29 +46,11 @@ export default defineConfig({
     strictPort: true,
     port: 5173,
     proxy: {
-      '/nuxmv': {
-        target: 'http://fmp-nuxmv-api:8080',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/nuxmv/, ''),
-      },
       '/smt': {
         target: 'http://fmp-z3-api:8080',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/smt/, ''),
-      },
-      '/alloy': {
-        target: 'http://fmp-alloy-api:8080',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/alloy/, ''),
-      },
-      '/spectra': {
-        target: 'http://fmp-spectra-api:8080',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/spectra/, ''),
       },
     },
   },
