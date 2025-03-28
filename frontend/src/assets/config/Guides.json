@@ -81,11 +81,23 @@
   ],
   "spectra": [
     {
-      "title": "Video Tutorial",
+      "title": "Traffic Light Spec",
+      "link": "https://play.formal-methods.net/?check=SPECTRA&p=snare-crouch-dole-chummy"
+    },
+    {
+      "title": "Traffic Light Response Pattern",
+      "link": "https://play.formal-methods.net/?check=SPECTRA&p=emu-skewer-jersey-scam"
+    },
+    {
+      "title": "Video Tutorial (from ICSE)",
       "link": "https://www.youtube.com/playlist?list=PLGyeoukah9Nbx1QquUmZGdLulFZIsiRlZ"
     },
     {
-      "title": "Examples",
+      "title": "Spectra User Guide",
+      "link": "https://smlab.cs.tau.ac.il/syntech/spectra/userguide202305.pdf"
+    },
+    {
+      "title": "Larger Examples",
       "link": "https://smlab.cs.tau.ac.il/syntech/examples/index.html"
     }
   ]
