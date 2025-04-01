@@ -18,9 +18,10 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000,
   },
   preview: {
-    host: true,
-    strictPort: true,
     port: 5173,
+    strictPort: true,
+    host: '0.0.0.0', 
+		allowedHosts: true,
     proxy: {
       '/nuxmv': {
         target: 'http://fmp-nuxmv-api:8080',
@@ -47,15 +48,15 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/spectra/, '')
       },
     },
-    allowedHosts: ["play.formal-methods.net"]
   },
   server: {
     watch: {
       usePolling: true,
     },
-    host: true,
-    strictPort: true,
     port: 5173,
+    strictPort: true,
+    host: '0.0.0.0', 
+		allowedHosts: true,
     proxy: {
       '/nuxmv': {
         target: 'http://fmp-nuxmv-api:8080',
@@ -82,6 +83,5 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/spectra/, '')
       },
     },
-    allowedHosts: ["play.formal-methods.net"]
   }
 })
