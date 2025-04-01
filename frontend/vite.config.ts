@@ -47,6 +47,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/spectra/, '')
       },
     },
+    allowedHosts: ["play.formal-methods.net"]
   },
   server: {
     watch: {
