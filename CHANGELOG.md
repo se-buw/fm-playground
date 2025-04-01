@@ -1,5 +1,13 @@
 # Change Log
 
+## v2.5.2 [2025-04-01]
+- 📌 Migrated to vite 6
+- 📌 Updated python dependencies
+
+## v2.5.1 [2025-03-31]
+- ✨ Added materials for spectra
+- ✨ Added current variant of (spectra) pattern names, keeping old for backwards compatibility
+
 ## v2.5.0 [2025-02-25]
 ### Added
 - ✨ Updated smt language support with cross-ref and code completion
