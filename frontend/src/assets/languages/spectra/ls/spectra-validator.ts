@@ -61,9 +61,11 @@ export class SpectraValidator {
 
     private collectFunctionCalls(model: Model): TemporalPrimaryExpr[] {
         const result: TemporalPrimaryExpr[] = [];
+        const visited = new Set<any>();
 
         const visit = (node: any): void => {
-            if (!node || typeof node !== 'object') return;
+            if (!node || typeof node !== 'object' || visited.has(node)) return;
+            visited.add(node);
 
             if (isTemporalPrimaryExpr(node) && node.predPatt) {
                 result.push(node);
