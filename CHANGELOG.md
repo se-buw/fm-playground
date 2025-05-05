@@ -1,5 +1,16 @@
 # Change Log
 
+## v2.6.0 [2025-05-05]
+- ✨ Added Spectra language server support
+
+
+## v2.5.4 [2025-04-27]
+- 📌 Bump Python dependencies
+- 📌 Bump npm dependencies
+
+## v2.5.3 [2025-04-01]
+- 🔧 Added allowed hosts in the vite config file
+
 ## v2.5.2 [2025-04-01]
 - 📌 Migrated to vite 6
 - 📌 Updated python dependencies
