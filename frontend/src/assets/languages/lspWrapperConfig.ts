@@ -14,6 +14,10 @@ import responseLimbooleTm from './limboole/syntaxes/limboole.tmLanguage.json?raw
 import workerPortUrlSmt from './smt/worker/smt-server-port?worker&url';
 import smtLanguageConfig from './smt/config/language-configuration.json?raw';
 import responseSmtTm from './smt/syntaxes/smt.tmLanguage.json?raw';
+// Spectra specific imports
+import workerPortUrlSpectra from './spectra/worker/spectra-server-port?worker&url';
+import spectraLanguageConfig from './spectra/config/language-configuration.json?raw';
+import responseSpectraTm from './spectra/syntaxes/spectra.tmLanguage.json?raw';
 
 const loadSmtpWorkerPort = () => {
   console.log(`Smt worker URL: ${workerPortUrlSmt}`);
@@ -31,29 +35,54 @@ const loadLimbooleWorkerPort = () => {
   });
 }
 
+const loadSpectraWorkerPort = () => {
+  console.log(`Spectra worker URL: ${workerPortUrlSpectra}`);
+  return new Worker(workerPortUrlSpectra, {
+    type: 'module',
+    name: 'Spectra Server Port',
+  });
+}
+
 export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
+  // Load the worker ports for Limboole
   const limbooleExtensionFilesOrContents = new Map<string, string | URL>();
   limbooleExtensionFilesOrContents.set(`/limboole-configuration.json`, limbooleLanguageConfig);
   limbooleExtensionFilesOrContents.set(`/limboole-grammar.json`, responseLimbooleTm);
 
+  // Load the worker ports for SMT
   const smtExtensionFilesOrContents = new Map<string, string | URL>();
   smtExtensionFilesOrContents.set(`/smt-configuration.json`, smtLanguageConfig);
   smtExtensionFilesOrContents.set(`/smt-grammar.json`, responseSmtTm);
 
+  // Load the worker ports for Limboole
+  const spectraExtensionFilesOrContents = new Map<string, string | URL>();
+  spectraExtensionFilesOrContents.set(`/spectra-configuration.json`, spectraLanguageConfig);
+  spectraExtensionFilesOrContents.set(`/spectra-grammar.json`, responseSpectraTm);
+
+  // Load the workers 
   const smtWorkerPort = loadSmtpWorkerPort();
   const limbooleWorkerPort = loadLimbooleWorkerPort();
+  const spectraWorkerPort = loadSpectraWorkerPort();
 
+  // Create message channels for each worker
   const smtChannel = new MessageChannel();
   smtWorkerPort.postMessage({ port: smtChannel.port2 }, [smtChannel.port2]);
 
   const limbooleChannel = new MessageChannel();
   limbooleWorkerPort.postMessage({ port: limbooleChannel.port2 }, [limbooleChannel.port2]);
 
+  const spectraChannel = new MessageChannel();
+  spectraWorkerPort.postMessage({ port: spectraChannel.port2 }, [spectraChannel.port2]);
+
+  // Create message readers and writers for each channel
   const smtReader = new BrowserMessageReader(smtChannel.port1);
   const smtWriter = new BrowserMessageWriter(smtChannel.port1);
 
   const limbooleReader = new BrowserMessageReader(limbooleChannel.port1);
   const limbooleWriter = new BrowserMessageWriter(limbooleChannel.port1);
+
+  const spectraReader = new BrowserMessageReader(spectraChannel.port1);
+  const spectraWriter = new BrowserMessageWriter(spectraChannel.port1);
 
   return {
     id: '42',
@@ -67,7 +96,7 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
     },
     editorAppConfig: {
       $type: 'extended',
-      editorOptions:{
+      editorOptions: {
         minimap: {
           enabled: false,
         },
@@ -133,6 +162,30 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
           }
         },
         filesOrContents: limbooleExtensionFilesOrContents
+      },
+      {
+        config: {
+          name: 'spectra-example',
+          publisher: 'soaibuzzaman',
+          version: '1.0.0',
+          engine: {
+            vscode: '*'
+          },
+          contributes: {
+            languages: [{
+              id: 'spectra',
+              extensions: ['.spectra'],
+              aliases: ['spectra', 'Spectra'],
+              configuration: `./spectra-configuration.json`
+            }],
+            grammars: [{
+              language: 'spectra',
+              scopeName: 'source.spectra',
+              path: `./spectra-grammar.json`
+            }]
+          }
+        },
+        filesOrContents: spectraExtensionFilesOrContents
       }],
       userConfiguration: {
         json: JSON.stringify({
@@ -165,6 +218,17 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
             messagePort: limbooleChannel.port1,
           },
           messageTransports: { reader: limbooleReader, writer: limbooleWriter }
+        },
+      },
+      spectra: {
+        languageId: 'spectra',
+        connection: {
+          options: {
+            $type: 'WorkerDirect',
+            worker: spectraWorkerPort,
+            messagePort: spectraChannel.port1,
+          },
+          messageTransports: { reader: spectraReader, writer: spectraWriter }
         },
       }
     },

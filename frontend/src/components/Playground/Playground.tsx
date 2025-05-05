@@ -288,7 +288,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                         defaultChecked={enableLsp}
                         onChange={(e) => setEnableLsp(e.target.checked)}
                         // FIXME: Enable for all languages once the LSP is implemented
-                        disabled={language.id !== 'limboole' && language.id !== 'smt2'} 
+                        disabled={language.id !== 'limboole' && language.id !== 'smt2' && language.id !== 'spectra'} 
                       />
                     </MDBIcon >
                     
@@ -343,7 +343,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                 </div>
               </div>
             </div>
-            {enableLsp && (language.id === 'limboole' || language.id === 'smt2') ?
+            {enableLsp && (language.id === 'limboole' || language.id === 'smt2' || language.id === 'spectra') ?
               <LspEditor
                 height={isFullScreen ? '80vh' : '60vh'}
                 setEditorValue={setEditorValue}

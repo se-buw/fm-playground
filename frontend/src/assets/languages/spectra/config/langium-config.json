@@ -1,0 +1,20 @@
+{
+  "projectName": "Spectra",
+  "out": "../ls/generated",
+  "languages": [
+    {
+      "id": "spectra",
+      "grammar": "../ls/spectra.langium",
+      "fileExtensions": [
+        ".spectra"
+      ],
+      "textMate": {
+        "out": "../syntaxes/spectra.tmLanguage.json"
+      },
+      "monarch": {
+          "out": "../syntaxes/spectra.monarch.ts"
+      }
+    }
+  ]
+}
+
