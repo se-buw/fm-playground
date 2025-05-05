@@ -1,4 +1,12 @@
-import { AstNode, GenericAstNode, DefaultScopeComputation, LangiumCoreServices, LangiumDocument, PrecomputedScopes, } from "langium";
+import {
+    AstNode,
+    GenericAstNode,
+    DefaultScopeComputation,
+    LangiumCoreServices,
+    LangiumDocument,
+    PrecomputedScopes,
+} from "langium";
+import { isReferrable, isTypeDef, isVar, isVarDecl, TypeDef, Var, VarDecl } from "./generated/ast.js";
 
 export class SpectraScopeComputation extends DefaultScopeComputation {
     services: any;
@@ -8,7 +16,8 @@ export class SpectraScopeComputation extends DefaultScopeComputation {
 
     protected override async processNode(node: AstNode, document: LangiumDocument, scopes: PrecomputedScopes): Promise<void> {
         const container = node.$container;
-        if (container) {
+        if (container && isReferrable(node)) {
+
             const name = this.nameProvider.getName(node);
             if (name) {
                 const description = this.descriptions.createDescription(node, name, document);
@@ -16,24 +25,47 @@ export class SpectraScopeComputation extends DefaultScopeComputation {
                 scopes.add(container, description);
 
                 if (container.$container && node.$containerProperty) {
-                    const value = (node.$container as GenericAstNode)[node.$containerProperty as string];
+                    const value = (container as GenericAstNode)[node.$containerProperty as string];
                     if (Array.isArray(value)) scopes.add(container.$container, description);
                 }
 
             }
         }
 
-        const typeDefNode = node as GenericAstNode;
-        if (typeDefNode.const) {
-            const constants = Array.isArray(typeDefNode.const) ? typeDefNode.const : [];
+        if (container && isTypeDef(node)) {
+            const typeDefNode = node as TypeDef;
+            const constants = Array.isArray(typeDefNode.type.const) ? typeDefNode.type.const : [];
             for (const constant of constants) {
                 const constantName = this.nameProvider.getName(constant);
                 if (constantName) {
                     const constantDescription = this.descriptions.createDescription(constant, constantName, document);
-                    scopes.add(document.parseResult.value, constantDescription); // Add to the global scope
+                    scopes.add(container, constantDescription);
+                }
+            }
+        }
+
+        if (container && isVar(node)) {
+            const typeDefNode = node as Var;
+            const constants = Array.isArray(typeDefNode.type.const) ? typeDefNode.type.const : [];
+            for (const constant of constants) {
+                const constantName = this.nameProvider.getName(constant);
+                if (constantName) {
+                    const constantDescription = this.descriptions.createDescription(constant, constantName, document);
+                    scopes.add(container, constantDescription);
+                }
+            }
+        }
+
+        if (container && isVarDecl(node)) {
+            const typeDefNode = node as VarDecl;
+            const constants = Array.isArray(typeDefNode.type.const) ? typeDefNode.type.const : [];
+            for (const constant of constants) {
+                const constantName = this.nameProvider.getName(constant);
+                if (constantName) {
+                    const constantDescription = this.descriptions.createDescription(constant, constantName, document);
+                    scopes.add(container, constantDescription);
                 }
             }
         }
     }
 }
-

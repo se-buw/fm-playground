@@ -1,9 +1,17 @@
 import { DeepPartial, type Module, inject } from 'langium';
-import { createDefaultModule, createDefaultSharedModule, type DefaultSharedModuleContext, type LangiumServices, type LangiumSharedServices, type PartialLangiumServices } from 'langium/lsp';
+import { 
+    createDefaultModule, 
+    createDefaultSharedModule, 
+    type DefaultSharedModuleContext, 
+    type LangiumServices, 
+    type LangiumSharedServices, 
+    type PartialLangiumServices 
+} from 'langium/lsp';
 import { SpectraGeneratedModule, SpectraGeneratedSharedModule } from './generated/module.js';
 import { SpectraValidator, registerValidationChecks } from './spectra-validator.js';
 import { SpectraScopeComputation } from './spectra-scope.js';
-import { SpectraWorkspaceManager } from './SpectraWorkspaceManager.js';
+import { SpectraScopeProvider } from './spectra-scope-provider.js';
+import { SpectraWorkspaceManager } from './spectra-workspace-manager.js';
 import { SpectraCodeActionProvider } from './spectra-code-actions.js';
 
 
@@ -32,10 +40,11 @@ export const SpectraModule: Module<SpectraServices, PartialLangiumServices & Spe
         SpectraValidator: () => new SpectraValidator()
     },
     references: {
-        ScopeComputation: (services) => new SpectraScopeComputation(services)
+        ScopeComputation: (services) => new SpectraScopeComputation(services),
+        ScopeProvider: (services) => new SpectraScopeProvider(services)
     },
     lsp: {
-        CodeActionProvider: (services) => new SpectraCodeActionProvider(services),
+        CodeActionProvider: (services) => new SpectraCodeActionProvider(services)
     },
 };
 
