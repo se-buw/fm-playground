@@ -20,7 +20,6 @@ import spectraLanguageConfig from './spectra/config/language-configuration.json?
 import responseSpectraTm from './spectra/syntaxes/spectra.tmLanguage.json?raw';
 
 const loadSmtpWorkerPort = () => {
-  console.log(`Smt worker URL: ${workerPortUrlSmt}`);
   return new Worker(workerPortUrlSmt, {
     type: 'module',
     name: 'Smt Server Port',
@@ -28,7 +27,6 @@ const loadSmtpWorkerPort = () => {
 }
 
 const loadLimbooleWorkerPort = () => {
-  console.log(`Limboole worker URL: ${workerPortUrlLimboole}`);
   return new Worker(workerPortUrlLimboole, {
     type: 'module',
     name: 'Limboole Server Port',
@@ -36,7 +34,6 @@ const loadLimbooleWorkerPort = () => {
 }
 
 const loadSpectraWorkerPort = () => {
-  console.log(`Spectra worker URL: ${workerPortUrlSpectra}`);
   return new Worker(workerPortUrlSpectra, {
     type: 'module',
     name: 'Spectra Server Port',
@@ -189,7 +186,7 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
       }],
       userConfiguration: {
         json: JSON.stringify({
-          'workbench.colorTheme': 'Default Light Modern',
+          'workbench.colorTheme': 'Modern Light Default',
           'editor.guides.bracketPairsHorizontal': 'active',
           'editor.wordBasedSuggestions': 'off',
           'editor.experimental.asyncTokenization': true

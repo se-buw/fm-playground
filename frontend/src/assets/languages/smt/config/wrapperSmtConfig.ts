@@ -11,8 +11,6 @@ import { configureMonacoWorkers } from '../utils';
 import workerPortUrlSmt from '../worker/smt-server-port?worker&url';
 
 const loadLangiumWorkerPort = () => {
-  // Language Server preparation
-  console.log(`Langium worker URL: ${workerPortUrlSmt}`);
   return new Worker(workerPortUrlSmt, {
     type: 'module',
     name: 'Smt Server Port',
@@ -26,7 +24,6 @@ export const createLangiumSmtConfig = async (): Promise<WrapperConfig> => {
 
   const smtWorkerPort = loadLangiumWorkerPort();
   smtWorkerPort.onmessage = (event) => {
-    console.log('Received message from worker:', event.data);
   };
 
   const channel = new MessageChannel();
@@ -35,7 +32,6 @@ export const createLangiumSmtConfig = async (): Promise<WrapperConfig> => {
   const reader = new BrowserMessageReader(channel.port1);
   const writer = new BrowserMessageWriter(channel.port1);
   reader.listen((message) => {
-    console.log('Received message from worker:', message);
   });
 
   return {

@@ -20,7 +20,6 @@ const startEditor = async () => {
 
   const limbooleWorkerPort = loadLimbooleWorkerPort();
   limbooleWorkerPort.onmessage = (event) => {
-    console.log('Received message from worker:', event.data);
   };
 
   const channel = new MessageChannel();
@@ -29,7 +28,6 @@ const startEditor = async () => {
   const reader = new BrowserMessageReader(channel.port1);
   const writer = new BrowserMessageWriter(channel.port1);
   reader.listen((message) => {
-    console.log('Received message from worker:', message);
   });
 
   const langiumGlobalConfig = await createLangiumGlobalConfig({
@@ -46,27 +44,14 @@ const startEditor = async () => {
   wrapper.updateEditorModels({
     modelRef
   })
-
-  // const langiumGlobalConfig2 = await createLangiumGlobalConfig({
-  //   languageServerId: 'second',
-  //   useLanguageClient: false,
-  //   text: textMod
-  // });
-
-  // await wrapper2.initAndStart(langiumGlobalConfig2, document.getElementById('monaco-editor-root2'));
-  // vscode.commands.getCommands().then((x) => {
-  //   console.log('Currently registered # of vscode commands: ' + x.length);
-  // });
 };
 
 const disposeEditor = async () => {
   wrapper.reportStatus();
   await wrapper.dispose();
-  console.log(wrapper.reportStatus().join('\n'));
 
   wrapper2.reportStatus();
   await wrapper2.dispose();
-  console.log(wrapper2.reportStatus().join('\n'));
 };
 
 export const runLimbooleWrapper = async () => {
@@ -79,19 +64,15 @@ export const runLimbooleWrapper = async () => {
 };
 
 export const loadLimbooleWorkerRegular = () => {
-  // Language Server preparation
-  console.log(`Langium worker URL: ${workerUrl}`);
   return new Worker(workerUrl, {
-      type: 'module',
-      name: 'Limboole Server Regular',
+    type: 'module',
+    name: 'Limboole Server Regular',
   });
 };
 
 export const loadLimbooleWorkerPort = () => {
-  // Language Server preparation
-  console.log(`Langium worker URL: ${workerPortUrl}`);
   return new Worker(workerPortUrl, {
-      type: 'module',
-      name: 'Limboole Server Port',
+    type: 'module',
+    name: 'Limboole Server Port',
   });
 };

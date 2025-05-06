@@ -9,8 +9,6 @@ export class SmtCompletionProvider extends DefaultCompletionProvider {
   
     protected override completionFor(context: CompletionContext, next: NextFeature, acceptor: CompletionAcceptor): MaybePromise<void> {
         
-      console.log(next.feature);
-      
       super.completionFor(context, next, acceptor);
     
         if(this.isTerminalCompletionCandidate(next)){

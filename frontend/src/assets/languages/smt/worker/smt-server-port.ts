@@ -6,7 +6,6 @@ declare const self: DedicatedWorkerGlobalScope;
 
 self.onmessage = async (event: MessageEvent) => {
     const data = event.data;
-    console.log(event.data);
     if (data.port !== undefined) {
         start(data.port, 'smt-server-port');
 

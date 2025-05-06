@@ -6,8 +6,7 @@ import { BrowserMessageReader, BrowserMessageWriter, createConnection } from 'vs
 import { createSmtServices } from '../ls/smt-module.js';
 
 export const start = (port: MessagePort | DedicatedWorkerGlobalScope, name: string) => {
-    console.log(`Starting ${name}...`);
-    /* browser specific setup code */
+
     const messageReader = new BrowserMessageReader(port);
     const messageWriter = new BrowserMessageWriter(port);
 

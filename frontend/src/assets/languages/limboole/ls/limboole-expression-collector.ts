@@ -43,9 +43,7 @@ export class ExpressionCollection {
     }
 
     printCollection(): void {
-        console.log("Printing all expressions in the collection:");
         for (const expression in this.expressionMap) {
-            console.log(expression);
         }
     }
 
