@@ -147,7 +147,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
           executeAlloyTool({ editorValue, language, setIsExecuting, setAlloyInstance, showErrorModal, alloySelectedCmd, permalink, setPermalink })
           break;
         case 6:
-          executeSpectraTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink })
+          executeSpectraTool({ editorValue, language, setLineToHighlight, setIsExecuting, setOutput, showErrorModal, spectraCliOption, permalink, setPermalink, enableLsp })
           break;
         default:
           setIsExecuting(false);
