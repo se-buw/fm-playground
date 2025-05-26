@@ -15,6 +15,7 @@ interface ExecuteSpectraProps {
   spectraCliOption: string;
   permalink: Permalink;
   setPermalink: (value: Permalink) => void;
+  enableLsp?: boolean;
 }
 
 export const executeSpectraTool = async (
@@ -26,10 +27,11 @@ export const executeSpectraTool = async (
     showErrorModal,
     spectraCliOption,
     permalink,
-    setPermalink
+    setPermalink,
+    enableLsp
   }: ExecuteSpectraProps) => {
 
-  const metadata = { 'cli_option': spectraCliOption }
+  const metadata = { 'ls': enableLsp, 'cli_option': spectraCliOption }
   const response = await saveCode(editorValue, language.short, permalink.permalink || null, metadata);
   if (response) { setPermalink(response.data); }
   else {
