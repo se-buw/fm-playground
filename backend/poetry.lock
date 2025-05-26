@@ -539,13 +539,13 @@ zstandard = [
 
 [[package]]
 name = "flask-cors"
-version = "5.0.1"
+version = "6.0.0"
 description = "A Flask extension simplifying CORS support"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "flask_cors-5.0.1-py3-none-any.whl", hash = "sha256:fa5cb364ead54bbf401a26dbf03030c6b18fb2fcaf70408096a572b409586b0c"},
-    {file = "flask_cors-5.0.1.tar.gz", hash = "sha256:6ccb38d16d6b72bbc156c1c3f192bc435bfcc3c2bc864b2df1eb9b2d97b2403c"},
+    {file = "flask_cors-6.0.0-py3-none-any.whl", hash = "sha256:6332073356452343a8ccddbfec7befdc3fdd040141fe776ec9b94c262f058657"},
+    {file = "flask_cors-6.0.0.tar.gz", hash = "sha256:4592c1570246bf7beee96b74bc0adbbfcb1b0318f6ba05c412e8909eceec3393"},
 ]
 
 [package.dependencies]
@@ -1599,4 +1599,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "04eea2f6de8042bcb190ca118290455eb440847dfdad26048955e1d19d28326f"
+content-hash = "807099d9eb2fb0e043ed89bebceedb8934d46050e3bb8a303245e55f10a9246a"
