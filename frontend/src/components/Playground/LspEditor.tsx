@@ -4,7 +4,7 @@ import { createModelReference } from 'vscode/monaco';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import { useAtom } from 'jotai';
-import { createLangiumGlobalConfig } from '@/tools/common/lspWrapperConfig';
+import { createLangiumGlobalConfig } from '@/../tools/common/lspWrapperConfig';
 import type { LanguageProps } from './Tools';
 import { fmpConfig } from '@/components/Playground/ToolMaps';
 import { editorValueAtom, languageAtom } from '@/atoms';

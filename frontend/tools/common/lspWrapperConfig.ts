@@ -5,15 +5,15 @@ import { createDefaultLocaleConfiguration } from 'monaco-languageclient/vscode/s
 import { LogLevel } from 'vscode/services';
 import { BrowserMessageReader, BrowserMessageWriter } from 'vscode-languageclient/browser.js';
 import { WrapperConfig } from 'monaco-editor-wrapper';
-import { configureMonacoWorkers } from '@/tools/limboole/langium/utils';
+import { configureMonacoWorkers } from '@/../tools/limboole/langium/utils';
 // limboole specific imports
-import workerPortUrlLimboole from '@/tools/limboole/langium/worker/limboole-server-port?worker&url';
-import limbooleLanguageConfig from '@/tools/limboole/langium/config/language-configuration.json?raw';
-import responseLimbooleTm from '@/tools/limboole/langium/syntaxes/limboole.tmLanguage.json?raw';
+import workerPortUrlLimboole from '@/../tools/limboole/langium/worker/limboole-server-port?worker&url';
+import limbooleLanguageConfig from '@/../tools/limboole/langium/config/language-configuration.json?raw';
+import responseLimbooleTm from '@/../tools/limboole/langium/syntaxes/limboole.tmLanguage.json?raw';
 // Smt specific imports
-import workerPortUrlSmt from '@/tools/smt/langium/worker/smt-server-port?worker&url';
-import smtLanguageConfig from '@/tools/smt/langium/config/language-configuration.json?raw';
-import responseSmtTm from '@/tools/smt/langium/syntaxes/smt.tmLanguage.json?raw';
+import workerPortUrlSmt from '@/../tools/smt/langium/worker/smt-server-port?worker&url';
+import smtLanguageConfig from '@/../tools/smt/langium/config/language-configuration.json?raw';
+import responseSmtTm from '@/../tools/smt/langium/syntaxes/smt.tmLanguage.json?raw';
 
 const loadSmtpWorkerPort = () => {
   console.log(`Smt worker URL: ${workerPortUrlSmt}`);

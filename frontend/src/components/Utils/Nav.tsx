@@ -1,14 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useAtom } from 'jotai';
 import {
-  MDBContainer,
-  MDBNavbar,
   MDBNavbarBrand,
   MDBBtn,
-  MDBNavbarNav,
-  MDBNavbarToggler,
-  MDBIcon,
-  MDBCollapse,
   MDBDropdown,
   MDBDropdownMenu,
   MDBDropdownToggle,
@@ -36,11 +30,9 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
   const [, setEditorValue] = useAtom(editorValueAtom);
   const [, setLanguage] = useAtom(languageAtom);
-  const isMobile = window.matchMedia('(max-width: 767px)').matches;
   const authContext = useContext(AuthContext);
   const isLoggedIn = authContext?.isLoggedIn ?? false;
   const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => {});
-  const [openNavRight, setOpenNavRight] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);

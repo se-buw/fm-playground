@@ -10,8 +10,8 @@ import { LiaClipboardListSolid } from 'react-icons/lia';
 import { MDBBtn, MDBInput, MDBTabs, MDBTabsItem, MDBTabsLink, MDBTabsContent, MDBTabsPane } from 'mdb-react-ui-kit';
 import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
 import AlloyEvaluator from './AlloyEvaluator';
-import { getLineToHighlight } from '@/tools/common/lineHighlightingUtil';
-import { getGraphData, parseAlloyErrorMessage, getTraceLengthAndBackloop } from '@/tools/alloy/alloyUtils';
+import { getLineToHighlight } from '@/../tools/common/lineHighlightingUtil';
+import { getGraphData, parseAlloyErrorMessage, getTraceLengthAndBackloop } from '@/../tools/alloy/alloyUtils';
 import '@/assets/style/AlloyOutput.css';
 import { lineToHighlightAtom, isFullScreenAtom, alloyInstanceAtom } from '@/atoms';
 

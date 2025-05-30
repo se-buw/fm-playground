@@ -1,5 +1,5 @@
 import React from 'react';
-import data from '@/tools/common/Guides.json';
+import data from '@/../tools/common/Guides.json';
 import '@/assets/style/Playground.css';
 
 interface GuideItem {

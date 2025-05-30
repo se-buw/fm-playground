@@ -1,28 +1,28 @@
 // Tool executors
-import { executeLimboole } from '@/tools/limboole/limbooleExecutor';
-import { executeZ3Wasm } from '@/tools/smt/z3Executor';
-import { executeNuxmvTool } from '@/tools/nuxmv/nuxmvExecutor';
-import { executeAlloyTool } from '@/tools/alloy/alloyExecutor';
-import { executeSpectraTool } from '@/tools/spectra/spectraExecutor';
+import { executeLimboole } from '@/../tools/limboole/limbooleExecutor';
+import { executeZ3Wasm } from '@/../tools/smt/z3Executor';
+import { executeNuxmvTool } from '@/../tools/nuxmv/nuxmvExecutor';
+import { executeAlloyTool } from '@/../tools/alloy/alloyExecutor';
+import { executeSpectraTool } from '@/../tools/spectra/spectraExecutor';
 
 // Tool output components
 import TextualOutput from '@/components/Playground/TextualOutput';
-import AlloyOutput from '@/tools/alloy/components/AlloyOutput';
+import AlloyOutput from '@/../tools/alloy/components/AlloyOutput';
 
 // Language configurations for the different tools
-import { limbooleConf, limbooleLang } from '@/tools/limboole/limbooleTextMateGrammar';
-import { smt2Conf, smt2Lang } from '@/tools/smt/smt2TextMateGrammar';
-import { nuxmvConf, nuxmvLang } from '@/tools/nuxmv/nuxmvTextMateGrammar';
-import { alloyConf, alloyLang } from '@/tools/alloy/alloyTextMateGrammar';
-import { spectraConf, spectraLang } from '@/tools/spectra/spectraTextMateGrammar';
+import { limbooleConf, limbooleLang } from '@/../tools/limboole/limbooleTextMateGrammar';
+import { smt2Conf, smt2Lang } from '@/../tools/smt/smt2TextMateGrammar';
+import { nuxmvConf, nuxmvLang } from '@/../tools/nuxmv/nuxmvTextMateGrammar';
+import { alloyConf, alloyLang } from '@/../tools/alloy/alloyTextMateGrammar';
+import { spectraConf, spectraLang } from '@/../tools/spectra/spectraTextMateGrammar';
 
 // Additional input area components for the different tools
-import LimbooleCheckOptions from '@/tools/limboole/components/limbooleCheckOptions';
-import SpectraCliOptions from '@/tools/spectra/components/SpectraCliOptions';
-import AlloyCmdOptions from '@/tools/alloy/components/AlloyCmdOptions';
+import LimbooleCheckOptions from '@/../tools/limboole/components/limbooleCheckOptions';
+import SpectraCliOptions from '@/../tools/spectra/components/SpectraCliOptions';
+import AlloyCmdOptions from '@/../tools/alloy/components/AlloyCmdOptions';
 
 // Additional output area components for the different tools
-import NuxmvCopyrightNotice from '@/tools/nuxmv/components/NuxmvCopyrightNotice';
+import NuxmvCopyrightNotice from '@/../tools/nuxmv/components/NuxmvCopyrightNotice';
 
 import type { FmpConfig } from '@/types';
 
