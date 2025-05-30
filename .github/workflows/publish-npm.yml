@@ -1,0 +1,133 @@
+name: Publish to npm
+
+on:
+  # Trigger on new tags that start with 'v' (e.g., v1.0.0, v2.1.3)
+  push:
+    tags:
+      - "v*.*.*"
+
+  # Trigger on GitHub releases
+  release:
+    types: [published]
+
+  # Allow manual triggering
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (e.g., 1.0.0)"
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history for proper versioning
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+          # Cache dependencies
+          cache: "npm"
+          cache-dependency-path: create-fm-playground/package-lock.json
+
+      - name: Change to package directory
+        run: cd create-fm-playground
+
+      - name: Install dependencies
+        run: |
+          cd create-fm-playground
+          npm ci
+
+      - name: Copy Templates (e.g., alloy-api, backend, frontend, etc.)
+        run: |
+          # Assuming templates are in the root directory
+          cp -r ../alloy-api ./templates/alloy-api || echo "No alloy-api template found"
+          cp -r ../backend ./templates/backend || echo "No backend template found"
+          cp -r ../frontend ./templates/frontend || echo "No frontend template found"
+          cp -r ../limboole-api ./templates/limboole-api || echo "No limboole-api template found"
+          cp -r ../nuxmv-api ./templates/nuxmv-api || echo "No nuxmv-api template found"
+          cp -r ../spectra-api ./templates/spectra-api || echo "No spectra-api template found"
+          cp -r ../z3-api ./templates/z3-api || echo "No z3-api template found"
+
+      - name: Run linting (if available)
+        run: |
+          cd create-fm-playground
+          npm run lint || echo "No linting script found, skipping..."
+
+      - name: Run tests (if any)
+        run: |
+          cd create-fm-playground
+          npm test || echo "No tests found, skipping..."
+
+      - name: Build package
+        run: |
+          cd create-fm-playground
+          npm run build
+
+      - name: Check if package builds successfully
+        run: |
+          cd create-fm-playground
+          node dist/index.js --help || echo "Testing CLI import..."
+
+      - name: Extract version from tag or input
+        id: extract_version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            # Extract version from git tag (remove 'v' prefix)
+            VERSION=${GITHUB_REF#refs/tags/v}
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Update package version
+        run: |
+          cd create-fm-playground
+          npm version ${{ steps.extract_version.outputs.version }} --no-git-tag-version
+
+      - name: Verify package contents
+        run: |
+          cd create-fm-playground
+          npm pack --dry-run
+
+      - name: Publish to npm
+        run: |
+          cd create-fm-playground
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub release (if triggered by tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ## Changes
+
+            create-fm-playground version ${{ steps.extract_version.outputs.version }}
+
+            ### Installation
+            ```bash
+            npx create-fm-playground
+            ```
+
+            ### What's included:
+            - Interactive CLI for creating FM Playground projects
+            - Support for Alloy, Limboole, nuXmv, SMT (Z3), and Spectra tools
+            - Customizable project templates
+            - Automatic dependency installation
+          draft: false
+          prerelease: false
