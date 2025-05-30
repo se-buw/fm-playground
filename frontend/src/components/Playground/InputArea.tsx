@@ -21,7 +21,7 @@ import FileDownload from '@/components/Utils/FileDownload';
 import CopyToClipboardBtn from '@/components/Utils/CopyToClipboardBtn';
 import LspEditor from './LspEditor';
 import Editor from './Editor';
-import { additionalInputAreaUiMap } from './ToolMaps';
+import { additionalInputAreaUiMap } from '../../ToolMaps';
 
 interface InputAreaProps {
   editorTheme: string;

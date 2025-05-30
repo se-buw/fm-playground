@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { saveFeedback } from '@/api/playgroundApi';
-import { fmpConfig } from '@/components/Playground/ToolMaps';
+import { fmpConfig } from '@/ToolMaps';
 import '@/assets/style/Feedback.css';
 
 const Feedback: React.FC<{ toggleFeedback: () => void }> = ({ toggleFeedback }) => {

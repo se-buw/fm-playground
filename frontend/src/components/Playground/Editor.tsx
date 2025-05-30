@@ -3,7 +3,7 @@ import * as monacoEditor from 'monaco-editor';
 import Editor from '@monaco-editor/react';
 import { useAtom } from 'jotai';
 import { editorValueAtom, languageAtom, lineToHighlightAtom } from '@/atoms';
-import { fmpConfig, languageConfigMap } from '@/components/Playground/ToolMaps';
+import { fmpConfig, languageConfigMap } from '@/ToolMaps';
 import '@/assets/style/Playground.css';
 
 interface BasicCodeEditorProps {

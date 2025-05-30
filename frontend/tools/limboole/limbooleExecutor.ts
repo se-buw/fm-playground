@@ -2,7 +2,7 @@ import run_limboole from '@/../tools/limboole/limboole';
 import { getLineToHighlight } from '@/../tools/common/lineHighlightingUtil';
 import { saveCode } from '@/api/playgroundApi';
 import { Permalink } from '@/types';
-import { fmpConfig } from '@/components/Playground/ToolMaps';
+import { fmpConfig } from '@/ToolMaps';
 import {
   editorValueAtom,
   jotaiStore,

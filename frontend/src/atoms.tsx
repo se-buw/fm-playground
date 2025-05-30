@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 import { atomWithStorage } from 'jotai/utils';
 import { createStore } from 'jotai';
-import { fmpConfig } from './components/Playground/ToolMaps';
+import { fmpConfig } from './ToolMaps';
 
 export const jotaiStore = createStore();
 

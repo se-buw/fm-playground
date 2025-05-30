@@ -19,7 +19,7 @@ import axiosAuth from '@/api/axiosAuth';
 import SessionExpiredModal from '@/components/Utils/Modals//SessionExpiredModal';
 import Toggle from '@/components/Utils/Toggle';
 import { editorValueAtom, languageAtom } from '@/atoms';
-import { fmpConfig } from '@/components/Playground/ToolMaps';
+import { fmpConfig } from '@/ToolMaps';
 import '@/assets/style/Nav.css';
 
 interface NavbarProps {

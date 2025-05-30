@@ -3,7 +3,7 @@ import { useAtom } from 'jotai';
 import { MDBIcon } from 'mdb-react-ui-kit';
 import { AiOutlineFullscreen, AiOutlineFullscreenExit } from 'react-icons/ai';
 import { isFullScreenAtom, languageAtom } from '@/atoms';
-import { additonalOutputAreaUiMap, toolOutputMap } from '@/components/Playground/ToolMaps';
+import { additonalOutputAreaUiMap, toolOutputMap } from '@/ToolMaps';
 
 interface OutputAreaProps {
   onFullScreenButtonClick: () => void;

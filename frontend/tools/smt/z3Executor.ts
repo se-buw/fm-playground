@@ -2,7 +2,7 @@ import runZ3WASM from '@/../tools/smt/runZ3WASM';
 import { getLineToHighlight } from '@/../tools/common/lineHighlightingUtil';
 
 import { saveCode } from '@/api/playgroundApi';
-import { fmpConfig } from '@/components/Playground/ToolMaps';
+import { fmpConfig } from '@/ToolMaps';
 import {
   editorValueAtom,
   jotaiStore,

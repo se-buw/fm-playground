@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
-import { fmpConfig } from '@/components/Playground/ToolMaps';
+import { fmpConfig } from '@/ToolMaps';
 import '@/assets/style/Playground.css';
 
 export type LanguageProps = {

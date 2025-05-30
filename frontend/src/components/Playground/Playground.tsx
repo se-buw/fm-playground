@@ -6,7 +6,7 @@ import Tools from '@/components/Playground/Tools';
 import Guides from '@/components/Utils/Guides';
 import MessageModal from '@/components/Utils/Modals/MessageModal';
 import { getCodeByParmalink } from '@/api/playgroundApi';
-import { fmpConfig, toolExecutionMap } from '@/components/Playground/ToolMaps';
+import { fmpConfig, toolExecutionMap } from '@/ToolMaps';
 import Feedback from '@/components/Utils/Feedback';
 import { editorValueAtom, languageAtom, permalinkAtom, isExecutingAtom, outputAtom, isFullScreenAtom } from '@/atoms';
 import InputArea from '@/components/Playground/InputArea';

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { FaUpload } from 'react-icons/fa';
 import MessageModal from '@/components/Utils/Modals/MessageModal';
-import { fmpConfig } from '@/components/Playground/ToolMaps';
+import { fmpConfig } from '@/ToolMaps';
 import '@/assets/style/Playground.css';
 interface FileUploadButtonProps {
   onFileSelect: (file: File) => void;
