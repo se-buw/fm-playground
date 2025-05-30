@@ -1,0 +1,54 @@
+{
+    "name": "create-fm-tool",
+    "version": "2.7.0",
+    "description": "CLI tool to scaffold formal methods tools for fm-playground",
+    "main": "dist/index.js",
+    "type": "module",
+    "bin": {
+        "create-fm-tool": "./bin/cli.mjs"
+    },
+    "preferGlobal": true,
+    "files": [
+        "dist",
+        "bin",
+        "templates",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "prepublishOnly": "npm run build",
+        "start": "node bin/cli.mjs",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "format": "prettier --write ."
+    },
+    "keywords": [
+        "cli",
+        "template",
+        "formal-methods",
+        "scaffold",
+        "fm-playground",
+        "code-generation",
+        "tooling"
+    ],
+    "dependencies": {
+        "chalk": "^4.1.2",
+        "fs-extra": "^11.1.1",
+        "inquirer": "^8.2.6",
+        "mustache": "^4.2.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.1",
+        "@types/inquirer": "^8.2.10",
+        "@types/mustache": "^4.2.2",
+        "@types/node": "^20.4.5",
+        "prettier": "^3.5.3",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.1.6"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    },
+    "author": "Soaibuzzaman",
+    "license": "MIT"
+}

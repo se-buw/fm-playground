@@ -1,0 +1,43 @@
+import React, { useState } from 'react';
+import { MDBContainer, MDBRow, MDBCol, MDBCheckbox, MDBInput } from 'mdb-react-ui-kit';
+
+interface {{toolDisplayName}}InputProps {
+  // Add props as needed for your tool's options
+  onInputChange?: (options: any) => void;
+}
+
+const {{toolDisplayName}}Input: React.FC<{{toolDisplayName}}InputProps > = ({ onInputChange }) => {
+  const [options, setInput] = useState({
+    // Add default options for your tool
+    customOption: '',
+  });
+
+  const handleOptionChange = (key: string, value: any) => {
+    const newInput = { ...options, [key]: value };
+    setInput(newInput);
+    onInputChange?.(newInput);
+  };
+
+  return (
+    <MDBContainer className="p-3">
+      <MDBRow>
+        <MDBCol md="12">
+          <h6>{{toolDisplayName}} Input</h6>
+        </MDBCol>
+      </MDBRow>
+      
+      <MDBRow className="mb-2">
+        <MDBCol md="12">
+          <MDBInput
+            label="Custom option"
+            type="text"
+            value={options.customOption}
+            onChange={(e) => handleOptionChange('customOption', e.target.value)}
+          />
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  );
+};
+
+export default {{toolDisplayName}}Input;

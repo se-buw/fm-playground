@@ -1,0 +1,24 @@
+import React from 'react';
+import { MDBContainer, MDBRow, MDBCol } from 'mdb-react-ui-kit';
+
+const {{toolDisplayName}}Output: React.FC = () => {
+  return (
+    <MDBContainer className="p-3">
+      <MDBRow>
+        <MDBCol md="12">
+          <div className="border rounded p-3 bg-light">
+            <h6 className="mb-2">{{toolDisplayName}} Information</h6>
+            <p className="mb-1 small text-muted">
+              This tool is powered by {{toolDisplayName}}.
+            </p>
+            <p className="mb-0 small text-muted">
+              For more information, visit the official documentation.
+            </p>
+          </div>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
+  );
+};
+
+export default {{toolDisplayName}}Output;
