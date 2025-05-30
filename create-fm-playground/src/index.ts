@@ -472,11 +472,17 @@ async function updateHtmlFile(targetDir: string, selectedTools: string[], spinne
     if (await fs.pathExists(htmlFilePath)) {
         let htmlContent = await fs.readFile(htmlFilePath, 'utf8');
 
+        // Always remove analytics script from generated projects
+        htmlContent = htmlContent.replace(
+            /<script defer src="https:\/\/play\.formal-methods\.net\/analytics\/script\.js"[^>]*><\/script>\s*/g,
+            ''
+        );
+
         // Check which tools are selected
         const includeZ3Scripts = selectedTools.includes('smt');
         const includeLimbooleScripts = selectedTools.includes('limboole');
 
-        // Handle Z3 scripts
+        // Handle Z3 scripts - only remove if SMT tool is NOT selected
         if (!includeZ3Scripts) {
             // Remove Z3 script tags and global initialization if SMT is not selected
             htmlContent = htmlContent.replace(/<script src="z3-built\.js"><\/script>\s*/g, '');
@@ -486,7 +492,7 @@ async function updateHtmlFile(targetDir: string, selectedTools: string[], spinne
             );
         }
 
-        // Handle Limboole scripts
+        // Handle Limboole scripts - only remove if Limboole tool is NOT selected
         if (!includeLimbooleScripts) {
             // Remove Limboole script tag if Limboole is not selected
             htmlContent = htmlContent.replace(/<script src="limboole\.js"><\/script>\s*/g, '');
