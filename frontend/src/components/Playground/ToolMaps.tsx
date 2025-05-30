@@ -6,8 +6,8 @@ import { executeAlloyTool } from '@/tools/alloy/alloyExecutor';
 import { executeSpectraTool } from '@/tools/spectra/spectraExecutor';
 
 // Tool output components
-import PlainOutput from '@/components/Playground/PlainOutput';
-import AlloyOutput from '@/components/Playground/alloy/AlloyOutput';
+import TextualOutput from '@/components/Playground/TextualOutput';
+import AlloyOutput from '@/tools/alloy/components/AlloyOutput';
 
 // Language configurations for the different tools
 import { limbooleConf, limbooleLang } from '@/tools/limboole/limbooleTextMateGrammar';
@@ -17,12 +17,12 @@ import { alloyConf, alloyLang } from '@/tools/alloy/alloyTextMateGrammar';
 import { spectraConf, spectraLang } from '@/tools/spectra/spectraTextMateGrammar';
 
 // Additional input area components for the different tools
-import LimbooleCheckOptions from '@/components/Playground/limboole/limbooleCheckOptions';
-import SpectraCliOptions from '@/components/Playground/spectra/SpectraCliOptions';
-import AlloyCmdOptions from '@/components/Playground/alloy/AlloyCmdOptions';
+import LimbooleCheckOptions from '@/tools/limboole/components/limbooleCheckOptions';
+import SpectraCliOptions from '@/tools/spectra/components/SpectraCliOptions';
+import AlloyCmdOptions from '@/tools/alloy/components/AlloyCmdOptions';
 
 // Additional output area components for the different tools
-import NuxmvCopyrightNotice from '@/components/Playground/nuxmv/NuxmvCopyrightNotice';
+import NuxmvCopyrightNotice from '@/tools/nuxmv/components/NuxmvCopyrightNotice';
 
 import type { FmpConfig } from '@/types';
 
@@ -45,11 +45,11 @@ export const toolExecutionMap: Record<string, () => void> = {
 };
 
 export const toolOutputMap: Record<string, React.FC<any>> = {
-  SAT: PlainOutput,
-  SMT: PlainOutput,
-  XMV: PlainOutput,
+  SAT: TextualOutput,
+  SMT: TextualOutput,
+  XMV: TextualOutput,
   ALS: AlloyOutput,
-  SPECTRA: PlainOutput,
+  SPECTRA: TextualOutput,
 };
 
 export const languageConfigMap: Record<string, { tokenProvider: any; configuration: any }> = {

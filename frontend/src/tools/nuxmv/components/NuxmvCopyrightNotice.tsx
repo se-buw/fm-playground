@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import NuxmvCopyrightNoticeModal from '@/components/Playground/nuxmv/NuxmvCopyrightNoticeModal';
+import NuxmvCopyrightNoticeModal from '@/tools/nuxmv/components/NuxmvCopyrightNoticeModal';
 
 const NuxmvCopyrightNotice = () => {
   const [isNuxmvModalOpen, setIsNuxmvModalOpen] = useState(false);
