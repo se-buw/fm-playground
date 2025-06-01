@@ -1,5 +1,17 @@
 # Change Log
 
+## v2.6.4 [2025-06-01]
+- ⬆️ Updated python dependencies
+- ⬆️ Upgrade flask cors from 5.0.1 to 6.0.0
+- ✨ Added script to automatically update the versions 
+
+
+## v2.6.1-3 [2025-05-10]
+- 🐛 Fixed Maximum call stack size exceeded in validation
+- ✨ Added scope provider for spectra workspace
+- 🗃️ Storing lsp metadata of spectra in the database.
+
+
 ## v2.6.0 [2025-05-05]
 - ✨ Added Spectra language server support
 
