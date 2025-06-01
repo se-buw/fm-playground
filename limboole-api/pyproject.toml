@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "limboole-api"
-version = "2.6.4"
+version = "2.6.5"
 description = "Limboole API for FM Playground"
 authors = ["Soaibuzzaman <soaibuzzaman@uni-weimar.de>"]
 license = "MIT"
