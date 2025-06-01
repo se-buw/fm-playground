@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         folder: [alloy-api, backend, frontend, limboole-api, nuxmv-api, spectra-api, z3-api] 
