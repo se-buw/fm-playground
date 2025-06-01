@@ -12,7 +12,7 @@ RUN apk add --no-cache \
     wget
 WORKDIR /backend
 COPY pyproject.toml poetry.lock* ./
-RUN poetry install
+RUN poetry install --no-root
 
 COPY . .
 RUN sed -i -e 's/\r$//' entrypoint.sh && \
