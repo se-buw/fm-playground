@@ -3,7 +3,7 @@ RUN apk add --no-cache poetry
 RUN apk add --no-cache wget bash gzip tar
 WORKDIR /app
 COPY pyproject.toml poetry.lock* ./
-RUN poetry install
+RUN poetry install --no-root
 COPY . .
 RUN sed -i -e 's/\r$//' install_dependencies.sh
 RUN chmod +x ./install_dependencies.sh
