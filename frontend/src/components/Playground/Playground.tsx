@@ -66,6 +66,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const [alloyCmdOption, setAlloyCmdOption] = useState<AlloyCmdOption[]>([]); // contains the selected option for the Alloy cli tool.
   const [alloySelectedCmd, setAlloySelectedCmd] = useState(0); // contains the selected option for the Alloy cli tool.
   const [enableLsp, setEnableLsp] = useState(true); // contains the state of the LSP editor.
+  const [isLoadingPermalink, setIsLoadingPermalink] = useState(false); // contains the state of loading permalink.
 
   /**
    * Load the code and language from the URL.
@@ -79,17 +80,18 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
     const permalinkParam = urlParams.get('p');
     const selectedOption = Options.find(option => option.short === checkParam);
 
+    // Update the selected language if 'check' parameter is present first
+    if (selectedOption) {
+      setLanguage(selectedOption);
+    }
+
     // Load the code if 'check' parameter is present
     if (permalinkParam) {
       if (checkParam && permalinkParam) {
+        setIsLoadingPermalink(true);
         loadCode(checkParam, permalinkParam);
       }
       setPermalink({ check: checkParam, permalink: permalinkParam })
-    }
-
-    // Update the selected language if 'check' parameter is present
-    if (selectedOption) {
-      setLanguage(selectedOption);
     }
 
   }, [])
@@ -111,18 +113,19 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
   const handleLanguageChange = (newLanguage: LanguageProps) => {
     setLanguage(newLanguage)
     window.history.pushState(null, '', `?check=${newLanguage.short}`)
-  }
-  /**
+  }  /**
    * Load the code from the api. 
    */
   const loadCode = async (check: string, permalink: string) => {
     await getCodeByParmalink(check, permalink)
       .then((res) => {
         setEditorValue(res.code)
+        setIsLoadingPermalink(false);
       })
       .catch((err) => {
         alert("Permaling not found. Redirecting...")
         window.open(`/?check=SAT`, '_self')
+        setIsLoadingPermalink(false);
       })
   }
 
@@ -288,10 +291,10 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                         defaultChecked={enableLsp}
                         onChange={(e) => setEnableLsp(e.target.checked)}
                         // FIXME: Enable for all languages once the LSP is implemented
-                        disabled={language.id !== 'limboole' && language.id !== 'smt2' && language.id !== 'spectra'} 
+                        disabled={language.id !== 'limboole' && language.id !== 'smt2' && language.id !== 'spectra'}
                       />
                     </MDBIcon >
-                    
+
                     <MDBIcon size='lg' className='playground-icon'
                       onClick={openModal}
                       data-tooltip-id="playground-tooltip"
@@ -342,8 +345,7 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                   </Stack>
                 </div>
               </div>
-            </div>
-            {enableLsp && (language.id === 'limboole' || language.id === 'smt2' || language.id === 'spectra') ?
+            </div>            {enableLsp && language?.id && (language.id === 'limboole' || language.id === 'smt2' || language.id === 'spectra') ?
               <LspEditor
                 height={isFullScreen ? '80vh' : '60vh'}
                 setEditorValue={setEditorValue}

@@ -19,87 +19,119 @@ type LspEditorProps = {
   editorTheme?: string;
 };
 
-const wrapper = new MonacoEditorLanguageClientWrapper();
+// Create wrapper instance only when needed
+let wrapperInstance: MonacoEditorLanguageClientWrapper | null = null;
 
 const LspEditor: React.FC<LspEditorProps> = (props) => {
   const editorRef = useRef<any>(null);
   const prevLanguageRef = useRef<LanguageProps | null>(null);
+  const isInitializedRef = useRef<boolean>(false);
 
   const getExtensionById = (id: string): string | undefined => {
     const tool = Object.values(fmpConfig.tools).find(tool => tool.extension.toLowerCase() === id.toLowerCase());
     return tool?.extension;
   };
 
+  const handleCodeChange = (value: string) => {
+    props.setEditorValue(value);
+  };
+
   useEffect(() => {
+    // Don't initialize if language is not set yet
+    if (!props.language?.id) {
+      return;
+    }
+
+    // Initialize wrapper if not already done
+    if (!wrapperInstance) {
+      wrapperInstance = new MonacoEditorLanguageClientWrapper();
+    }
+
     const startEditor = async () => {
-      if (wrapper.isStarted()) {
-        alert('Editor already started');
-        return;
+      if (wrapperInstance?.isStarted()) {
+        console.warn('Editor already started, disposing first...');
+        await wrapperInstance.dispose();
+        isInitializedRef.current = false;
       }
 
-      const langiumGlobalConfig = await createLangiumGlobalConfig();
-      await wrapper.initAndStart(langiumGlobalConfig, document.getElementById('monaco-editor-root'));
+      if (!isInitializedRef.current) {
+        const langiumGlobalConfig = await createLangiumGlobalConfig();
+        await wrapperInstance!.initAndStart(langiumGlobalConfig, document.getElementById('monaco-editor-root'));
 
-      const currentExtension = getExtensionById(props.language?.id ?? '');
-      const uri = vscode.Uri.parse(`/workspace/example.${currentExtension}`);
-      const modelRef = await createModelReference(uri, props.editorValue);
-      wrapper.updateEditorModels({
-        modelRef
-      });
+        const currentExtension = getExtensionById(props.language?.id ?? '');
+        const uri = vscode.Uri.parse(`/workspace/example.${currentExtension}`);
+        const modelRef = await createModelReference(uri, props.editorValue);
+        wrapperInstance!.updateEditorModels({
+          modelRef
+        });
 
-      editorRef.current = wrapper.getEditor();
-      editorRef.current.onDidChangeModelContent(() => {
-        handleCodeChange(editorRef.current.getValue());
-      });
+        editorRef.current = wrapperInstance!.getEditor();
+        editorRef.current.onDidChangeModelContent(() => {
+          handleCodeChange(editorRef.current.getValue());
+        });
 
-      const code = localStorage.getItem('editorValue');
-      if (code) {
-        editorRef.current.setValue(code);
-      } else {
-        editorRef.current.setValue(props.editorValue);
+        const code = localStorage.getItem('editorValue');
+        if (code) {
+          editorRef.current.setValue(code);
+        } else {
+          editorRef.current.setValue(props.editorValue);
+        }
+
+        isInitializedRef.current = true;
+        prevLanguageRef.current = props.language;
       }
-    };
-
-    const disposeEditor = async () => {
-      wrapper.reportStatus();
-      await wrapper.dispose();
     };
 
     startEditor();
 
     return () => {
-      disposeEditor();
+      // Clean up on unmount
+      if (wrapperInstance?.isStarted()) {
+        wrapperInstance.dispose();
+        wrapperInstance = null;
+        isInitializedRef.current = false;
+      }
     };
 
-  }, []);
+  }, [props.language?.id]); // Only depend on language ID for initialization
 
   useEffect(() => {
-    editorRef.current = wrapper.getEditor();
-    if (editorRef.current && props.language?.id === 'limboole') {
+    // Only update if editor is initialized and language has changed
+    if (!isInitializedRef.current || !editorRef.current || !props.language?.id || !wrapperInstance) {
+      return;
+    }
 
-      const code = localStorage.getItem('editorValue');
-      if (code) {
-        editorRef.current.setValue(code);
-      } else {
-        editorRef.current.setValue(props.editorValue);
+    // Check if language actually changed
+    if (prevLanguageRef.current?.id === props.language.id) {
+      return;
+    }
+
+    // Update the code resources for the new language
+    wrapperInstance.updateCodeResources({
+      main: {
+        text: props.editorValue,
+        fileExt: getExtensionById(props.language.id) ?? ''
       }
-    }
-    prevLanguageRef.current = props.language ?? null;
-  }, [props.language]);
+    });
 
-  const handleCodeChange = (value: string) => {
-    props.setEditorValue(value);
-  };
+    // Update the model reference with new language extension
+    const updateModel = async () => {
+      const currentExtension = getExtensionById(props.language.id);
+      const uri = vscode.Uri.parse(`/workspace/example.${currentExtension}`);
+      const modelRef = await createModelReference(uri, props.editorValue);
+      wrapperInstance!.updateEditorModels({
+        modelRef
+      });
+    };
 
-  const getEditorValue = () => {
-    if (editorRef.current) {
-      const value = editorRef.current.getValue();
-      props.setEditorValue(value);
-    }
-  };
+    updateModel();
+    prevLanguageRef.current = props.language;
+  }, [props.language?.id]);
 
   useEffect(() => {
-    setEditorValue(props.editorValue);
+    if (isInitializedRef.current && editorRef.current) {
+      setEditorValue(props.editorValue);
+    }
   }, [props.editorValue]);
 
   const setEditorValue = (value: string) => {
@@ -115,15 +147,12 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
     }
   };
 
-
-  useEffect(() => {
-    wrapper.updateCodeResources({
-      main: {
-        text: props.editorValue,
-        fileExt: getExtensionById(props.language.id) ?? ''
-      }
-    });
-  }, [props.language]);
+  const getEditorValue = () => {
+    if (editorRef.current) {
+      const value = editorRef.current.getValue();
+      props.setEditorValue(value);
+    }
+  };
 
   return (
     <div className="custom-code-editor">
@@ -134,7 +163,5 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
     </div>
   )
 }
-
-
 
 export default LspEditor
