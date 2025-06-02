@@ -1,9 +1,14 @@
 # Change Log
 
-## v2.6.4 [2025-06-01]
+
+## v2.6.7 [2025-06-02]
+- 🐛Fixed language support is not working from permalink 
+
+## v2.6.4-6 [2025-06-01]
 - ⬆️ Updated python dependencies
 - ⬆️ Upgrade flask cors from 5.0.1 to 6.0.0
 - ✨ Added script to automatically update the versions 
+- 🐛 Fixed poetry install in docker with --no-root
 
 
 ## v2.6.1-3 [2025-05-10]
