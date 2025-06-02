@@ -16,12 +16,20 @@ export default defineConfig({
   react()],
   build: {
     chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+          return;
+        }
+        warn(warning);
+      },
+    }
   },
   preview: {
     port: 5173,
     strictPort: true,
-    host: '0.0.0.0', 
-		allowedHosts: true,
+    host: '0.0.0.0',
+    allowedHosts: true,
     proxy: {
       '/nuxmv': {
         target: 'http://fmp-nuxmv-api:8080',
@@ -55,8 +63,8 @@ export default defineConfig({
     },
     port: 5173,
     strictPort: true,
-    host: '0.0.0.0', 
-		allowedHosts: true,
+    host: '0.0.0.0',
+    allowedHosts: true,
     proxy: {
       '/nuxmv': {
         target: 'http://fmp-nuxmv-api:8080',
