@@ -186,10 +186,36 @@ export const createLangiumGlobalConfig = async (): Promise<WrapperConfig> => {
       }],
       userConfiguration: {
         json: JSON.stringify({
-          'workbench.colorTheme': 'Modern Light Default',
+          'workbench.colorTheme': 'Default Light Modern',
           'editor.guides.bracketPairsHorizontal': 'active',
           'editor.wordBasedSuggestions': 'off',
-          'editor.experimental.asyncTokenization': true
+          'editor.experimental.asyncTokenization': true,
+          'editor.semanticHighlighting.enabled': true,
+          'editor.tokenColorCustomizations': {
+            'textMateRules': [
+              {
+                'scope': 'keyword.system.spectra',
+                'settings': {
+                  'foreground': '#189BCC',
+                  'fontStyle': 'bold'
+                }
+              },
+              {
+                'scope': 'keyword.environment.spectra',
+                'settings': {
+                  'foreground': '#0CD806',
+                  'fontStyle': 'bold'
+                }
+              },
+              {
+                'scope': 'keyword.regex.spectra',
+                'settings': {
+                  'foreground': '#FF00FF',
+                  'fontStyle': 'bold'
+                }
+              }
+            ]
+          }
         })
       },
       monacoWorkerFactory: configureMonacoWorkers

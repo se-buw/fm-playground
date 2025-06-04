@@ -1,16 +1,23 @@
 // Monarch syntax highlighting for the spectra language.
 export default {
     keywords: [
-        '.all','.any','.max','.min','.prod','.sum','FALSE','G','GE','GEF','GF','H','HISTORICALLY','Int','O','ONCE','PREV','S','SINCE','T','TRIGGERED','TRUE','Y','alw','alwEv','always','alwaysEventually','and','asm','assumption','aux','auxvar','boolean','counter','dec:','define','env','envvar','exists','false','forall','gar','guarantee','iff','implies','import','in','inc:','ini','initially','input','keep','mod','module','modulo','monitor','next','not','or','out','output','overflow:','pattern','predicate','regexp','regtest','reset:','spec','sys','sysvar','trans','trig','true','type','underflow:','var','weight','xor'
+        '.all','.any','.max','.min','.prod','.sum','FALSE','G','GE','GEF','GF','H','HISTORICALLY','Int','O','ONCE','PREV','S','SINCE','T','TRIGGERED','TRUE','Y','alw','alwEv','always','alwaysEventually','and','aux','auxvar','boolean','counter','dec:','define','exists','false','forall','iff','implies','import','ini','initially','keep','mod','module','modulo','monitor','next','not','or','out','overflow:','pattern','predicate','spec','trans','trig','true','type','underflow:','var','weight','xor'
+    ],
+    systemKeywords: [
+        'sysvar','sys','output','guarantee','gar'
+    ],
+    environmentKeywords: [
+        'envvar','env','input','in','assumption','asm'
+    ],
+    regexKeywords: [
+        'regexp','regtest'
     ],
     operators: [
         '!','!=','%','&','*','+',',','-','->','.','..','/',':',':=',';','<','<->','<=','=','>','>=','?','|','|=>','~'
     ],
-    symbols: /!|!=|%|&|\(|\(\)|\)|\*|\+|,|-|->|\.|\.\.|\/|:|:=|;|<|<->|<=|=|>|>=|\?|\[|\]|\{|\||\|=>|\}|~/,
-
-    tokenizer: {
+    symbols: /!|!=|%|&|\(|\(\)|\)|\*|\+|,|-|->|\.|\.\.|\/|:|:=|;|<|<->|<=|=|>|>=|\?|\[|\]|\{|\||\|=>|\}|~/,    tokenizer: {
         initial: [
-            { regex: /(\^?(([a-z]|[A-Z])|_)((([a-z]|[A-Z])|_)|[0-9])*)/, action: { cases: { '@keywords': {"token":"keyword"}, '@default': {"token":"string"} }} },
+            { regex: /(\^?(([a-z]|[A-Z])|_)((([a-z]|[A-Z])|_)|[0-9])*)/, action: { cases: { '@systemKeywords': {"token":"system"}, '@environmentKeywords': {"token":"environment"}, '@regexKeywords': {"token":"reg"}, '@keywords': {"token":"keyword"}, '@default': {"token":"string"} }} },
             { regex: /[0-9]+/, action: {"token":"number"} },
             { regex: /("((\\(((("|\\)|n)|r)|t))|((?!(\\|"))[\s\S]*?))*")/, action: {"token":"string"} },
             { include: '@whitespace' },

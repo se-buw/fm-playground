@@ -9,8 +9,20 @@
       "include": "#comments"
     },
     {
+      "name": "keyword.system.spectra",
+      "match": "\\b(sysvar|sys|output|guarantee|gar)\\b"
+    },
+    {
+      "name": "keyword.environment.spectra",
+      "match": "\\b(envvar|env|input|in|assumption|asm)\\b"
+    },
+    {
+      "name": "keyword.regex.spectra",
+      "match": "\\b(regexp|regtest)\\b"
+    },
+    {
       "name": "keyword.control.spectra",
-      "match": "\\b(FALSE|G|GE|GEF|GF|H|HISTORICALLY|Int|O|ONCE|PREV|S|SINCE|T|TRIGGERED|TRUE|Y|alw|alwEv|always|alwaysEventually|and|asm|assumption|aux|auxvar|boolean|counter|define|env|envvar|exists|false|forall|gar|guarantee|iff|implies|import|in|ini|initially|input|keep|mod|module|modulo|monitor|next|not|or|out|output|pattern|predicate|regexp|regtest|spec|sys|sysvar|trans|trig|true|type|var|weight|xor)\\b|\\B(\\.all|\\.any|\\.max|\\.min|\\.prod|\\.sum)\\b|\\b(dec:|inc:|overflow:|reset:|underflow:)\\B"
+      "match": "\\b(FALSE|G|GE|GEF|GF|H|HISTORICALLY|Int|O|ONCE|PREV|S|SINCE|T|TRIGGERED|TRUE|Y|alw|alwEv|always|alwaysEventually|and|aux|auxvar|boolean|counter|define|exists|false|forall|iff|implies|import|ini|initially|keep|mod|module|modulo|monitor|next|not|or|out|pattern|predicate|spec|trans|trig|true|type|var|weight|xor)\\b|\\B(\\.all|\\.any|\\.max|\\.min|\\.prod|\\.sum)\\b|\\b(dec:|inc:|overflow:|reset:|underflow:)\\B"
     },
     {
       "name": "string.quoted.double.spectra",
