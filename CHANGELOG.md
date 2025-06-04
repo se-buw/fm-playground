@@ -1,8 +1,10 @@
 # Change Log
 
-## v2.6.7 [2025-06-42]
+## v2.6.8-9 [2025-06-04]
+- 🐛Fixed Alloy, tabular instance view not showing #17
 - 🐛Fixed Spectra Syntax Highlighting is not working while LSP is enabled #19
 - 🐛Fixed Line Highlighting is not working in the lsp editor #20
+
 
 ## v2.6.7 [2025-06-02]
 - 🐛Fixed language support is not working from permalink 
