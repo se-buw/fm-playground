@@ -30,6 +30,9 @@ const PlainOutput: React.FC<PlainOutputProps> = ({ code, onChange, height }) => 
     onChange(newCode); // Send the updated code back to the parent component
   };
 
+  // Check if the code contains HTML tags (for backward compatibility)
+  const containsHTML = /<[^>]*>/.test(internalCode);
+
   return (
     <pre
       id='info'
@@ -41,7 +44,10 @@ const PlainOutput: React.FC<PlainOutputProps> = ({ code, onChange, height }) => 
         whiteSpace: 'pre-wrap'
       }}
       onInput={handleChange}
-      dangerouslySetInnerHTML={{ __html: internalCode }}
+      {...(containsHTML 
+        ? { dangerouslySetInnerHTML: { __html: internalCode } }
+        : { children: internalCode }
+      )}
     />
   );
 };

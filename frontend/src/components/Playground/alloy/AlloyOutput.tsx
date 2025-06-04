@@ -204,11 +204,20 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
    * We need to extract the selected state from the instance.
    */
   const getAlloyTabularInstance = (alloyTabularInstance: string, state: number) => {
-    const states = alloyTabularInstance.split('------State').slice(1);
-    const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
-    return selectedState;
+    // For debugging - check if the instance is empty or null
+    if (!alloyTabularInstance) {
+      return 'No tabular data available';
+    }
+    // Check if the tabular instance contains state separators
+    if (alloyTabularInstance.includes('------State')) {
+      const states = alloyTabularInstance.split('------State').slice(1);
+      const selectedState = states[state]?.split('\n').slice(1).join('\n') || '';
+      return selectedState;
+    } else {
+      return alloyTabularInstance;
+    }
   }
-  
+
   return (
     <div>
       {isInstance ? (
@@ -244,10 +253,9 @@ const AlloyOutput: React.FC<AlloyOutputProps> = ({ alloyInstance, setAlloyInstan
                 alloyVizGraph={alloyVizGraph}
                 height={isFullScreen ? '80vh' : '57vh'}
               />
-            </MDBTabsPane>
-            <MDBTabsPane open={activeTab === 'tabular'}>
+            </MDBTabsPane>            <MDBTabsPane open={activeTab === 'tabular'}>
               <PlainOutput
-                code={getAlloyTabularInstance(alloyTabularInstance, instanceIndexToShow)}
+                code={getAlloyTabularInstance(alloyTabularInstance, instanceIndexToShow) || 'No tabular data available'}
                 height={isFullScreen ? '80vh' : '57vh'}
                 onChange={() => { }} />
             </MDBTabsPane>
