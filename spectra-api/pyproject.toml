@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "spectra-api"
-version = "2.6.7"
+version = "2.6.8"
 description = "Spectra API for FM Playground"
 authors = ["Soaibuzzaman <soaibuzzaman@uni-weimar.de>"]
 license = "MIT"

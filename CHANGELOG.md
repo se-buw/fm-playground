@@ -1,5 +1,8 @@
 # Change Log
 
+## v2.6.7 [2025-06-42]
+- 🐛Fixed Spectra Syntax Highlighting is not working while LSP is enabled #19
+- 🐛Fixed Line Highlighting is not working in the lsp editor #20
 
 ## v2.6.7 [2025-06-02]
 - 🐛Fixed language support is not working from permalink 
