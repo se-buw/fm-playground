@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as vscode from 'vscode';
 import { createModelReference } from 'vscode/monaco';
 import { MonacoEditorLanguageClientWrapper } from 'monaco-editor-wrapper';
@@ -7,6 +7,7 @@ import '../../assets/style/Playground.css'
 import '@codingame/monaco-vscode-theme-defaults-default-extension';
 import type { LanguageProps } from './Tools';
 import fmpConfig from '../../../fmp.config';
+import * as monaco from 'monaco-editor';
 
 type LspEditorProps = {
   height: string;
@@ -14,8 +15,8 @@ type LspEditorProps = {
   editorValue: string;
   language: LanguageProps;
   setLanguage?: (value: string) => void;
-  lineToHighlight?: number;
-  setLineToHighlight?: (value: number) => void;
+  lineToHighlight: number[];
+  setLineToHighlight: (line: number[]) => void;
   editorTheme?: string;
 };
 
@@ -26,14 +27,15 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
   const editorRef = useRef<any>(null);
   const prevLanguageRef = useRef<LanguageProps | null>(null);
   const isInitializedRef = useRef<boolean>(false);
+  const [decorationIds, setDecorationIds] = useState<string[]>([]);
 
   const getExtensionById = (id: string): string | undefined => {
     const tool = Object.values(fmpConfig.tools).find(tool => tool.extension.toLowerCase() === id.toLowerCase());
     return tool?.extension;
   };
-
   const handleCodeChange = (value: string) => {
     props.setEditorValue(value);
+    props.setLineToHighlight([]);
   };
 
   useEffect(() => {
@@ -127,12 +129,36 @@ const LspEditor: React.FC<LspEditorProps> = (props) => {
     updateModel();
     prevLanguageRef.current = props.language;
   }, [props.language?.id]);
-
   useEffect(() => {
     if (isInitializedRef.current && editorRef.current) {
       setEditorValue(props.editorValue);
     }
   }, [props.editorValue]);
+
+  // Line highlighting effect - similar to Editor.tsx
+  useEffect(() => {
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      if (props.lineToHighlight !== null && props.lineToHighlight.length > 0) {
+        const decorations = props.lineToHighlight.map(line => {
+          return {
+            range: new monaco.Range(line, 1, line, 1),
+            options: {
+              isWholeLine: true,
+              className: 'lineHighlight',
+              glyphMarginClassName: 'lineHighlightGlyph'
+            }
+          };
+        });
+        const newDecorationIds = editor.deltaDecorations(decorationIds, decorations);
+        setDecorationIds(newDecorationIds);
+      } else {
+        // Remove all decorations
+        const newDecorationIds = editor.deltaDecorations(decorationIds, []);
+        setDecorationIds(newDecorationIds);
+      }
+    }
+  }, [props.lineToHighlight]);
 
   const setEditorValue = (value: string) => {
     if (editorRef.current) {

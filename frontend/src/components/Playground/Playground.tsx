@@ -351,6 +351,8 @@ const Playground: React.FC<PlaygroundProps> = ({ editorValue, setEditorValue, la
                 setEditorValue={setEditorValue}
                 language={language}
                 editorValue={editorValue}
+                lineToHighlight={lineToHighlight}
+                setLineToHighlight={handleLineHighlight}
                 editorTheme={editorTheme}
               />
               :
