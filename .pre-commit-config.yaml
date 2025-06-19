@@ -1,4 +1,4 @@
-# Pre-commit hooks for Java (alloy-api)
+# Pre-commit hooks for Java (alloy-api)eScript/JavaScript (frontend)
 # See https://pre-commit.com for more information
 repos:
   # General hooks
@@ -6,14 +6,18 @@ repos:
     rev: v4.6.0
     hooks:
       - id: trailing-whitespace
-        files: ^alloy-api/.*
+        files: ^(alloy-api|frontend)/.*
       - id: end-of-file-fixer
-        files: ^alloy-api/.*
+        files: ^(alloy-api|frontend)/.*
       - id: check-merge-conflict
-        files: ^alloy-api/.*
+        files: ^(alloy-api|frontend)/.*
       - id: check-added-large-files
         args: ['--maxkb=1000']
-        files: ^alloy-api/.*
+        files: ^(alloy-api|frontend)/.*
+      - id: check-json
+        files: ^frontend/.*\.json$
+      - id: check-yaml
+        files: ^frontend/.*\.ya?ml$
 
   # Java formatting with Google Java Format
   - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
@@ -22,6 +26,35 @@ repos:
       - id: pretty-format-java
         args: [--autofix]
         files: ^alloy-api/.*\.java$
+
+  # TypeScript/JavaScript formatting with Prettier (using frontend config)
+  - repo: local
+    hooks:
+      - id: prettier-frontend-check
+        name: Prettier Check Frontend
+        entry: npx --prefix frontend prettier --config frontend/.prettierrc --check
+        language: system
+        files: ^frontend/.*\.(ts|tsx|js|jsx|json|css|scss|html|md)$
+        exclude: ^frontend/(node_modules|dist)/.*
+        pass_filenames: true
+      - id: prettier-frontend-format
+        name: Prettier Format Frontend
+        entry: npx --prefix frontend prettier --config frontend/.prettierrc --write
+        language: system
+        files: ^frontend/.*\.(ts|tsx|js|jsx|json|css|scss|html|md)$
+        exclude: ^frontend/(node_modules|dist)/.*
+        pass_filenames: true
+
+  # TypeScript/JavaScript linting with ESLint
+  - repo: local
+    hooks:
+      - id: eslint-frontend
+        name: ESLint Frontend
+        entry: bash -c 'cd frontend && npm run lint'
+        language: system
+        files: ^frontend/.*\.(ts|tsx|js|jsx)$
+        exclude: ^frontend/(node_modules|dist)/.*
+        pass_filenames: false
 
   # Custom hook for Gradle Spotless check
   - repo: local
