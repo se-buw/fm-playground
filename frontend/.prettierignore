@@ -1,0 +1,4 @@
+public/
+*.js
+
+tools/**/ls/generated/

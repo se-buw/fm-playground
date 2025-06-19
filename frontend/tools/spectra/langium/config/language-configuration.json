@@ -1,0 +1,28 @@
+{
+    "comments": {
+        // -- and // are used for single line comments
+        "lineComment": "--"
+    },
+    // (), {}, [] for brackets
+    "brackets": [
+        ["(", ")"],
+        ["{", "}"],
+        ["[", "]"]
+    ],
+    // symbols that are auto closed when typing
+    "autoClosingPairs": [
+        { "open": "{", "close": "}", "notIn": ["string"] },
+        { "open": "[", "close": "]", "notIn": ["string"] },
+        { "open": "(", "close": ")", "notIn": ["string"] },
+        { "open": "\"", "close": "\"", "notIn": ["string"] },
+        { "open": "'", "close": "'", "notIn": ["string"] }
+    ],
+    // symbols that can be used to surround a selection
+    "surroundingPairs": [
+        { "open": "{", "close": "}" },
+        { "open": "[", "close": "]" },
+        { "open": "(", "close": ")" },
+        { "open": "\"", "close": "\"" },
+        { "open": "'", "close": "'" }
+    ]
+}

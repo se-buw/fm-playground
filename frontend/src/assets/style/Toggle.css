@@ -1,83 +1,85 @@
 .toggle-container {
-  position: relative;
-  display: inline-block;
-  margin: 0 1em;
+    position: relative;
+    display: inline-block;
+    align-items: center;
+    padding-top: 0.3em;
 }
 
 .toggle {
-  position: absolute;
-  visibility: hidden;
-  opacity: 0;
-  height: 0;
-  width: 0;
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    height: 0;
+    width: 0;
 }
 
 .toggle + label {
-  display: flex;
-  align-items: center;
-  font-size: 1em;
-  cursor: pointer;
-  position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
 }
 
 .toggle + label:before {
-  content: '';
-  width: 3.5em;
-  height: 2em;
-  border-radius: 1em;
-  background: linear-gradient(45deg, #3f456e, #392757);
-  position: relative;
-  transition: background 250ms ease-in-out, box-shadow 250ms ease-in-out;
-  margin-right: 0.5em;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    content: '';
+    width: 3.5em; /* Smaller width */
+    height: 2em; /* Smaller height */
+    border-radius: 1em; /* Rounded edges */
+    background: linear-gradient(45deg, #3f456e, #392757);
+    position: relative;
+    transition:
+        background 250ms ease-in-out,
+        box-shadow 250ms ease-in-out;
+    margin-right: 0.5em;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .toggle + label:after {
-  content: '';
-  height: 1.6em;
-  width: 1.6em;
-  border-radius: 50%;
-  background-color: white;
-  position: absolute;
-  top: 0.2em;
-  left: 0.2em;
-  transition: transform 250ms ease-in-out;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 1.4em; /* Smaller circle size */
+    width: 1.4em; /* Smaller circle size */
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 0.3em;
+    left: 0.3em; /* Adjusted position for perfect alignment */
+    transition: transform 250ms ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .toggle + label .icon {
-  font-size: 1em;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: opacity 250ms ease-in-out;
+    font-size: 1em;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 250ms ease-in-out;
 }
 
 .toggle + label .sun-icon {
-  left: 0.5em;
-  opacity: 1;
+    left: 0.4em;
+    opacity: 1;
 }
 
 .toggle + label .moon-icon {
-  right: 0.5em;
-  opacity: 0;
+    right: 0.5em;
+    opacity: 0;
 }
 
 .toggle:checked + label:before {
-  background: linear-gradient(45deg, #FFC107, #FFEB3B);
+    background: linear-gradient(45deg, #ffc107, #ffeb3b);
 }
 
 .toggle:checked + label:after {
-  transform: translateX(1.5em);
+    transform: translateX(1.6em); /* Adjusted for smaller size */
 }
 
 .toggle:checked + label .sun-icon {
-  opacity: 0;
+    opacity: 0;
 }
 
 .toggle:checked + label .moon-icon {
-  opacity: 1;
+    opacity: 1;
 }

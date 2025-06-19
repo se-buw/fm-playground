@@ -1,0 +1,30 @@
+{
+    "name": "limboole",
+    "scopeName": "source.limboole",
+    "fileTypes": [".limboole"],
+    "patterns": [
+        {
+            "include": "#comments"
+        },
+        {
+            "name": "keyword.control.limboole",
+            "match": "!|&|->|<-|<->|\\|"
+        }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "begin": "%",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "punctuation.whitespace.comment.leading.limboole"
+                        }
+                    },
+                    "end": "(?=$)",
+                    "name": "comment.line.limboole"
+                }
+            ]
+        }
+    }
+}

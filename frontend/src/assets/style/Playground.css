@@ -1,243 +1,255 @@
 .Playground {
-  background-color: var(--background-color);
-  color: var(--primary-text-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
 }
 
 .play-area {
-  background-color: var(--background-color);
-  color: var(--primary-text-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
 }
 
 .plain-output-box {
-  background-color: var(--output-box-color);
-  border: 1px thin var(--border-color);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  padding: 16px; /* Adjust the value as needed */
-  font-family: 'Courier New', Consolas, 'Lucida Console', monospace;
-  unicode-bidi: plaintext;
-  text-rendering: optimizeSpeed;
+    background-color: var(--output-box-color);
+    border: 1px thin var(--border-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    padding: 16px; /* Adjust the value as needed */
+    font-family: 'Courier New', Consolas, 'Lucida Console', monospace;
+    unicode-bidi: plaintext;
+    text-rendering: optimizeSpeed;
 }
 
-
 .react-select-container {
-  .select__control {
-    background-color: var(--background-color);
-    border-color: var(--border-color);
-    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+    .select__control {
+        background-color: var(--background-color);
+        border-color: var(--border-color);
+        transition:
+            background-color 250ms ease-in-out,
+            color 250ms ease-in-out;
 
-    &:hover {
-      border-color: var(--border-color);
+        &:hover {
+            border-color: var(--border-color);
+        }
     }
-  }
 
-  .select__menu {
-    background-color: var(--background-color);
-    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
-    border: 1px solid var(--border-color);
-
-  }
-
-  .select__option {
-    color: inherit;
-    background-color: var(--background-color);
-    transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
-
-    &:hover {
-      background-color: var(--select-hover);
+    .select__menu {
+        background-color: var(--background-color);
+        transition:
+            background-color 250ms ease-in-out,
+            color 250ms ease-in-out;
+        border: 1px solid var(--border-color);
     }
-  }
 
-  .select__indicator-separator {
-    background-color: var(--border-color);
-  }
+    .select__option {
+        color: inherit;
+        background-color: var(--background-color);
+        transition:
+            background-color 250ms ease-in-out,
+            color 250ms ease-in-out;
 
-  .select__placeholder,
-  .select__single-value {
-    color: var(--primary-text-color);
-  }
+        &:hover {
+            background-color: var(--select-hover);
+        }
+    }
 
-  .select__single-value {
-    color: var(--primary-text-color);
-  }
+    .select__indicator-separator {
+        background-color: var(--border-color);
+    }
+
+    .select__placeholder,
+    .select__single-value {
+        color: var(--primary-text-color);
+    }
+
+    .select__single-value {
+        color: var(--primary-text-color);
+    }
 }
 
 .tools {
-  background-color: var(--background-color);
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
-  color: var(--primary-text-color);
-  margin-top: 100px;
-  margin-bottom: 20px;
+    background-color: var(--background-color);
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
+    color: var(--primary-text-color);
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .playground-icon {
-  color: var(--primary-text-color);
-
+    color: var(--primary-text-color);
 }
 
-.custom-code-editor{
-  background-color: var(--editor-background-color);
-  border: 1px thin var(--border-color);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+.custom-code-editor {
+    background-color: var(--editor-background-color);
+    border: 1px thin var(--border-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
 }
 
-.guide-box{
-  background-color: var(--editor-background-color);
-  padding: '1em';
-  border: 1px thin var(--border-color);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  transition: background-color 250ms ease-in-out, color 250ms ease-in-out;
+.guide-box {
+    background-color: var(--editor-background-color);
+    padding: '1em';
+    border: 1px thin var(--border-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
 }
 
 .lineHighlight {
-  background-color: rgba(255, 255, 0, 0.2); /* Yellow background */
+    background-color: rgba(255, 255, 0, 0.2); /* Yellow background */
 }
 .lineHighlightGlyph {
-  background-color: yellow; /* Yellow margin */
+    background-color: yellow; /* Yellow margin */
 }
 
 .MuiStack-root {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .react-toggle {
-  touch-action: pan-x;
+    touch-action: pan-x;
 
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  background-color: transparent;
-  border: 0;
-  padding: 0;
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
 
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: transparent;
 }
 
 .react-toggle-screenreader-only {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
 }
 
 .react-toggle--disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  -webkit-transition: opacity 0.25s;
-  transition: opacity 0.25s;
+    cursor: not-allowed;
+    opacity: 0.5;
+    -webkit-transition: opacity 0.25s;
+    transition: opacity 0.25s;
 }
 
 .react-toggle-track {
-  width: 50px;
-  height: 24px;
-  padding: 0;
-  border-radius: 30px;
-  background-color: #4D4D4D;
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  transition: all 0.2s ease;
+    width: 50px;
+    height: 24px;
+    padding: 0;
+    border-radius: 30px;
+    background-color: #4d4d4d;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #000000;
+    background-color: #000000;
 }
 
 .react-toggle--checked .react-toggle-track {
-  background-color: #3b71ca;
+    background-color: #3b71ca;
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: #3b71ca;
+    background-color: #3b71ca;
 }
 
 .react-toggle-track-check {
-  position: absolute;
-  width: 14px;
-  height: 10px;
-  top: 0px;
-  bottom: 0px;
-  margin-top: auto;
-  margin-bottom: auto;
-  line-height: 0;
-  left: 8px;
-  opacity: 0;
-  -webkit-transition: opacity 0.25s ease;
-  -moz-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
+    position: absolute;
+    width: 14px;
+    height: 10px;
+    top: 0px;
+    bottom: 0px;
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 0;
+    left: 8px;
+    opacity: 0;
+    -webkit-transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
 }
 
 .react-toggle--checked .react-toggle-track-check {
-  opacity: 1;
-  -webkit-transition: opacity 0.25s ease;
-  -moz-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
+    opacity: 1;
+    -webkit-transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
 }
 
 .react-toggle-track-x {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  top: 0px;
-  bottom: 0px;
-  margin-top: auto;
-  margin-bottom: auto;
-  line-height: 0;
-  right: 10px;
-  opacity: 1;
-  -webkit-transition: opacity 0.25s ease;
-  -moz-transition: opacity 0.25s ease;
-  transition: opacity 0.25s ease;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    top: 0px;
+    bottom: 0px;
+    margin-top: auto;
+    margin-bottom: auto;
+    line-height: 0;
+    right: 10px;
+    opacity: 1;
+    -webkit-transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
 }
 
 .react-toggle--checked .react-toggle-track-x {
-  opacity: 0;
+    opacity: 0;
 }
 
 .react-toggle-thumb {
-  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
-  position: absolute;
-  top: 1px;
-  left: 1px;
-  width: 22px;
-  height: 22px;
-  border: 1px solid #4D4D4D;
-  border-radius: 50%;
-  background-color: #FAFAFA;
+    transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #4d4d4d;
+    border-radius: 50%;
+    background-color: #fafafa;
 
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 
-  -webkit-transition: all 0.25s ease;
-  -moz-transition: all 0.25s ease;
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
 }
 
 .react-toggle--checked .react-toggle-thumb {
-  left: 27px;
-  border-color: #3b71ca;
+    left: 27px;
+    border-color: #3b71ca;
 }
 
-
 .syntax-checking-span {
-  display: inline;
-  font-size: 0.9rem;
-  margin-right: 0.15rem;
-  text-align: center;
+    display: inline;
+    font-size: 0.9rem;
+    margin-right: 0.15rem;
+    text-align: center;
 }

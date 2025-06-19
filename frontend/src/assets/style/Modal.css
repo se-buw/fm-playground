@@ -1,31 +1,31 @@
 .modal-content {
-  background-color: var(--background-color);
-  color: var(--primary-text-color);
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
 }
 
 .modal-header {
-  border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .modal-footer {
-  border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
 }
 
 .modal-title {
-  color: var(--foreground-color);
+    color: var(--foreground-color);
 }
 
 .btn-close:hover {
-  color: var(--select-hover);
+    color: var(--select-hover);
 }
 
 .modal-body p {
-  color: var(--primary-text-color);
+    color: var(--primary-text-color);
 }
 .modal-header .btn-close {
-  display: none;
+    display: none;
 }
 
 .modal-footer .btn {
-  box-shadow: none;
+    box-shadow: none;
 }

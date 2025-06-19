@@ -1,63 +1,62 @@
 .plain-alloy-message-box {
-  background-color: var(--output-box-color);
-  border: 1px thin var(--border-color);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  padding: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  font-size: 1em;
-  text-align: center;
+    background-color: var(--output-box-color);
+    border: 1px thin var(--border-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    font-size: 1em;
+    text-align: center;
 }
 
 .alloy-viz-area {
-  background-color: var(--output-box-color);
-  border: 1px thin var(--border-color);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
+    background-color: var(--output-box-color);
+    border: 1px thin var(--border-color);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
 }
 
-
 .nav-tabs .nav-link {
-  color: var(--text-color);
-  background-color: var(--background-color);
-  /* border: 1px thin red; */
-  font: 1em sans-serif;
-  padding-top: 0;
-  padding-bottom: 0.4em;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    /* border: 1px thin red; */
+    font: 1em sans-serif;
+    padding-top: 0;
+    padding-bottom: 0.4em;
 }
 
 .nav-tabs .nav-link:hover {
-  color: var(--text-color);
-  background-color: var(--hover-color);
+    color: var(--text-color);
+    background-color: var(--hover-color);
 }
 
 .nav-tabs .nav-link.active {
-  color: var(--text-color);
-  background-color: var(--active-color);
+    color: var(--text-color);
+    background-color: var(--active-color);
 }
 
 .alloy-eval-close-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 24px;
-  cursor: pointer;
-  color: #333333;
-  background: transparent;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333333;
+    background: transparent;
 }
 
 .alloy-eval-close-icon:hover {
-  color: #dc4c64;
+    color: #dc4c64;
 }
 
-.alloy-eval-expression-input{
-  background-color: var(--output-box-color);
-  border: 1px thin var(--border-color);
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  white-space: pre-wrap;
-  font-size: 1em;
+.alloy-eval-expression-input {
+    background-color: var(--output-box-color);
+    border: 1px thin var(--border-color);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    font-size: 1em;
 }

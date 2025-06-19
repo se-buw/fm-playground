@@ -1,0 +1,196 @@
+{
+    "name": "smt",
+    "scopeName": "source.smt",
+    "fileTypes": ["smt2"],
+    "patterns": [
+        {
+            "include": "#command"
+        },
+        {
+            "include": "#reserved"
+        },
+        {
+            "include": "#keyword"
+        },
+        {
+            "include": "#sort"
+        },
+        {
+            "include": "#spec_constant"
+        },
+        {
+            "include": "#symbol"
+        },
+        {
+            "include": "#comment"
+        }
+    ],
+    "repository": {
+        "command": {
+            "patterns": [
+                {
+                    "match": "\\b(apply|assert-not|assert-soft|check-sat-using|dbg-[a-z\\-]+|declare-map|declare-rel|declare-tactic|declare-var|display-dimacs|display|euf-project|eufi|eval|get-consequences|get-interpolant|get-objectives|get-proof-graph|get-user-tactics|help-tactic|help|include|labels|maximize|mbi|mbp|minimize|query|rule|simplify|define-const|model-add|model-del)\\b",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.tag.smt"
+                        }
+                    }
+                },
+                {
+                    "match": "\\b(block-model-values|block-model|declare-codatatypes|declare-codatatype|declare-heap|declare-pool|get-abduct-next|get-abduct|get-difficulty|get-interpol-next|get-interpol|get-learned-literals|get-qe-disjunct|get-qe)\\b",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.tag.smt"
+                        }
+                    }
+                },
+                {
+                    "match": "\\b(assume|constraint|check-synth-next|check-synth|declare-var|inv-constraint|set-feature|synth-fun|synth-inv)\\b",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.tag.smt"
+                        }
+                    }
+                },
+                {
+                    "match": "\\b(assert|check-sat-assuming|check-sat|declare-const|declare-datatypes|declare-datatype|declare-fun|declare-sort|define-fun-rec|define-fun|define-funs-rec|define-sort|echo|exit|get-assertions|get-assignment|get-info|get-model|get-option|get-proof|get-unsat-assumptions|get-unsat-core|get-value|pop|push|reset-assertions|reset|set-info|set-logic|set-option)\\b",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.other.smt"
+                        }
+                    }
+                }
+            ]
+        },
+        "reserved": {
+            "match": "\\b(_|!|as|exists|forall|let|match|par)\\b",
+            "captures": {
+                "1": {
+                    "name": "keyword.control.smt"
+                }
+            }
+        },
+        "keyword": {
+            "match": ":\\b([a-zA-Z~!@$%^&*_\\-+=<>.?/]|[a-zA-Z~!@$%^&*_\\-+=<>.?/][a-zA-Z0-9~!@$%^&*_\\-+=<>.?/]+)\\b",
+            "captures": {
+                "1": {
+                    "name": "keyword.control.smt"
+                }
+            }
+        },
+        "sort": {
+            "patterns": [
+                {
+                    "match": "\\b([A-Z][a-zA-Z~!@$%^&*_\\-+=<>.?/]|[A-Z][a-zA-Z0-9~!@$%^&*_\\-+=<>.?/]*)\\b",
+                    "captures": {
+                        "1": {
+                            "name": "support.type.smt"
+                        }
+                    }
+                },
+                {
+                    "match": "\\|\\b([A-Z][a-zA-Z~!@$%^&*_\\-+=<>.?/]|[A-Z][a-zA-Z0-9~!@$%^&*_\\-+=<>.?/]*)\\b\\|",
+                    "captures": {
+                        "1": {
+                            "name": "support.type.smt"
+                        }
+                    }
+                }
+            ]
+        },
+        "spec_constant": {
+            "patterns": [
+                {
+                    "include": "#decimal"
+                },
+                {
+                    "include": "#numeral"
+                },
+                {
+                    "include": "#hexadecimal"
+                },
+                {
+                    "include": "#binary"
+                },
+                {
+                    "include": "#string"
+                },
+                {
+                    "include": "#b_value"
+                }
+            ]
+        },
+        "symbol": {
+            "patterns": [
+                {
+                    "match": "\\b([a-zA-Z~!@$%^&*_\\-+=<>.?/]|[a-zA-Z~!@$%^&*_\\-+=<>.?/][a-zA-Z0-9~!@$%^&*_\\-+=<>.?/]+)\\b",
+                    "captures": {
+                        "1": {
+                            "name": "variable.other.smt"
+                        }
+                    }
+                },
+                {
+                    "begin": "\\|",
+                    "end": "\\|",
+                    "contentName": "variable.other.smt"
+                }
+            ]
+        },
+        "comment": {
+            "match": ";.*",
+            "name": "comment.smt"
+        },
+        "decimal": {
+            "match": "\\b(\\d+\\.\\d+)\\b",
+            "captures": {
+                "1": {
+                    "name": "constant.numeric.smt"
+                }
+            }
+        },
+        "numeral": {
+            "match": "\\b(\\d+)\\b",
+            "captures": {
+                "1": {
+                    "name": "constant.numeric.smt"
+                }
+            }
+        },
+        "hexadecimal": {
+            "match": "\\s(#x\\h+)\\b",
+            "captures": {
+                "1": {
+                    "name": "constant.numeric.smt"
+                }
+            }
+        },
+        "binary": {
+            "match": "\\s(#b[01]+)\\b",
+            "captures": {
+                "1": {
+                    "name": "constant.numeric.smt"
+                }
+            }
+        },
+        "string": {
+            "begin": "\"",
+            "end": "\"",
+            "name": "string.quoted.double.smt",
+            "patterns": [
+                {
+                    "match": "\"\"",
+                    "name": "constant.character.escape.smt"
+                }
+            ]
+        },
+        "b_value": {
+            "match": "\\b(true|false)\\b",
+            "captures": {
+                "1": {
+                    "name": "constant.language.smt"
+                }
+            }
+        }
+    }
+}

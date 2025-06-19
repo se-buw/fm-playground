@@ -1,58 +1,47 @@
-import React from 'react';
-import { Snackbar } from '@mui/material'
-import { useState } from 'react'
-import { FaShareNodes } from "react-icons/fa6";
-import '../../assets/style/Playground.css';
+import { useState } from 'react';
+import { useAtom } from 'jotai';
+import { Snackbar } from '@mui/material';
+import { FaShareNodes } from 'react-icons/fa6';
+import { permalinkAtom } from '@/atoms';
+import '@/assets/style/Playground.css';
 
+const CopyToClipboardBtn = () => {
+    const [open, setOpen] = useState(false);
+    const [snackbarPosition] = useState<{ vertical: 'top' | 'bottom'; horizontal: 'left' | 'center' | 'right' }>({
+        vertical: 'top',
+        horizontal: 'center',
+    });
+    const [snackbarMessage, setSnackbarMessage] = useState('Copied to clipboard');
+    const [permalink] = useAtom(permalinkAtom);
 
-interface CoopyToClipboardBtnProps {
-  permalink: {
-    check: string;
-    permalink: string;
-  }
-}
+    const handleCopyClick = async () => {
+        try {
+            setOpen(true);
+            await navigator.clipboard.writeText(
+                `${window.location.origin}/?check=${permalink.check}&p=${permalink.permalink}`
+            );
+        } catch (err) {
+            setSnackbarMessage('Failed to copy to clipboard');
+        }
+    };
 
-const CopyToClipboardBtn: React.FC<CoopyToClipboardBtnProps> = ({ permalink }) => {
-  const [open, setOpen] = useState(false);
-  const [snackbarPosition, setSnackbarPosition] = useState<{ vertical: 'top' | 'bottom'; horizontal: 'left' | 'center' | 'right' }>({ vertical: 'top', horizontal: 'center' });
-  const [snackbarMessage, setSnackbarMessage] = useState('Copied to clipboard');
+    const handleSnackbarClose = () => {
+        setOpen(false);
+    };
 
-  /**
-   * @function handleCopyClick
-   * @description Copy the permalink to the clipboard. 
-   * @todo Change the URL to the deployed URL
-  */
-  const handleCopyClick = async () => {
-    try {
-      setOpen(true)
-      await navigator.clipboard.writeText(`${window.location.origin}/?check=${permalink.check}&p=${permalink.permalink}`)
-    } catch (err) {
-      setSnackbarMessage('Failed to copy to clipboard')
-    }
-  }
+    return (
+        <>
+            <FaShareNodes role='button' className='playground-icon' onClick={handleCopyClick} />
 
-  const handleSnackbarClose = () => {
-    setOpen(false);
-  };
+            <Snackbar
+                anchorOrigin={snackbarPosition}
+                open={open}
+                onClose={handleSnackbarClose}
+                autoHideDuration={2000}
+                message={snackbarMessage}
+            />
+        </>
+    );
+};
 
-  return (
-    <>
-      <FaShareNodes
-        role='button'
-        className='playground-icon'
-        onClick={handleCopyClick}
-      />
-
-      {/* Show a snackbar when the permalink is copied to the clipboard */}
-      <Snackbar
-        anchorOrigin={snackbarPosition}
-        open={open}
-        onClose={handleSnackbarClose}
-        autoHideDuration={2000}
-        message={snackbarMessage}
-      />
-    </>
-  )
-}
-
-export default CopyToClipboardBtn
+export default CopyToClipboardBtn;

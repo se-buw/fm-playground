@@ -1,52 +1,50 @@
-import React, { useState } from 'react';
-import '../../assets/style/Playground.css'
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
-import fmpConfig from '../../../fmp.config';
-import Options from '../../assets/config/AvailableTools'
+import { fmpConfig } from '@/ToolMaps';
+import '@/assets/style/Playground.css';
 
 export type LanguageProps = {
-  id: string;
-  value: string;
-  label: string;
-  short: string;
-}
-
+    id: string;
+    value: string;
+    label: string;
+    short: string;
+};
 interface ToolsProps {
-  onChange: (selectedOption: any) => void; // TODO: Change any to LanguageProps when the fmp.config.ts file is ready
-  selected: LanguageProps;
+    onChange: (selectedOption: any) => void;
+    selected: LanguageProps;
 }
-
-// TODO: Use it when the fmp.config.ts file is ready
-const options = Object.values(fmpConfig.tools).map(tool => ({
-  id: tool.name.toLowerCase(),
-  value: tool.dropdown.value,
-  label: tool.dropdown.label,
-  short: tool.shortName
-}));
-
 
 const Tools: React.FC<ToolsProps> = (props: ToolsProps) => {
-  // FIXME: This is a temporary solution. The options should be generated from the fmp.config.ts file.
-  const [options, setOptions] = useState(Options);
+    const [options, setOptions] = useState<{ id: string; value: string; label: string; short: string }[]>([]);
 
-  return (
-      <div className='tools'> 
-        <Select
-          className="basic-single react-select-container"
-          classNamePrefix="select"
-          defaultValue={options[0]}
-          isDisabled={false}
-          isLoading={false}
-          isClearable={false}
-          isRtl={false}
-          isSearchable={true}
-          name="color"
-          options={options}
-          onChange={props.onChange}
-          value={props.selected}
-        />
-      </div>
-  );
+    useEffect(() => {
+        const generatedOptions = Object.entries(fmpConfig.tools).map(([key, tool]) => ({
+            id: key,
+            value: tool.extension,
+            label: tool.name,
+            short: tool.shortName,
+        }));
+        setOptions(generatedOptions);
+    }, []);
+
+    return (
+        <div className='tools'>
+            <Select
+                className='basic-single react-select-container'
+                classNamePrefix='select'
+                defaultValue={options[0]}
+                isDisabled={false}
+                isLoading={false}
+                isClearable={false}
+                isRtl={false}
+                isSearchable={true}
+                name='color'
+                options={options}
+                onChange={props.onChange}
+                value={props.selected}
+            />
+        </div>
+    );
 };
 
 export default Tools;
