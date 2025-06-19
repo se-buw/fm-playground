@@ -7,13 +7,17 @@ repos:
     hooks:
       - id: trailing-whitespace
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
       - id: end-of-file-fixer
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
       - id: check-merge-conflict
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
       - id: check-added-large-files
         args: ['--maxkb=1000']
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
       - id: check-json
         files: ^(frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*\.json$
       - id: check-yaml
@@ -59,14 +63,14 @@ repos:
         entry: npx --prefix frontend prettier --config frontend/.prettierrc --check
         language: system
         files: ^frontend/.*\.(ts|tsx|js|jsx|json|css|scss|html|md)$
-        exclude: ^frontend/(node_modules|dist)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
         pass_filenames: true
       - id: prettier-frontend-format
         name: Prettier Format Frontend
         entry: npx --prefix frontend prettier --config frontend/.prettierrc --write
         language: system
         files: ^frontend/.*\.(ts|tsx|js|jsx|json|css|scss|html|md)$
-        exclude: ^frontend/(node_modules|dist)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
         pass_filenames: true
 
   # TypeScript/JavaScript linting with ESLint

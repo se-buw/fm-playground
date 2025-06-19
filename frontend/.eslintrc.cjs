@@ -7,6 +7,14 @@ module.exports = {
         'plugin:react/jsx-runtime',
         'plugin:react-hooks/recommended',
     ],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        ecmaFeatures: {
+            jsx: true,
+        },
+    },
     ignorePatterns: [
         'dist',
         '.eslintrc.cjs',
@@ -14,6 +22,7 @@ module.exports = {
         'public/*.js',        // Ignore generated JS files in public
         'public/*.wasm',      // Ignore WASM files
         'public/*.worker.js', // Ignore worker files
+        'tools/**/generated/**',            // Ignore all generated files in tools
         'tools/*/langium/ls/generated/**',  // Ignore generated Langium files
         'tools/*/langium/syntaxes/**',      // Ignore syntax files
         'tools/*/*.js',       // Ignore JS tool files (likely generated)
@@ -23,7 +32,6 @@ module.exports = {
         'tools/**/*.ts',      // Ignore all TypeScript files in tools for now
         'tools/**/*.tsx',     // Ignore all TypeScript JSX files in tools for now
     ],
-    parser: '@typescript-eslint/parser',
     parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
