@@ -1,0 +1,50 @@
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      args:
+        VITE_FMP_API_URL: http://127.0.0.1:8000/api
+    container_name: fmp-frontend
+    env_file:
+      - .env
+    ports:
+      - "5173:5173"
+    networks:
+      - my_network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+    container_name: fmp-backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - my_network
+    restart: unless-stopped
+  
+  alloy:
+    build:
+      context: ./alloy-api
+    container_name: fmp-alloy-api
+    environment:
+      API_URL: http://fmp-backend:8000/
+    networks:
+      - my_network
+    restart: unless-stopped
+
+  cnd:
+    build:
+      context: ./copeanddrag
+    container_name: fmp-cnd
+    ports:
+      - "3000:3000"
+    networks:
+      - my_network
+    restart: unless-stopped
+
+networks:
+  my_network:
+    external: true
