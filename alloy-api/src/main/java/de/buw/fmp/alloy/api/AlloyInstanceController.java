@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
@@ -357,5 +358,167 @@ public class AlloyInstanceController {
                 reasonForFailing = t;
             }
         }
+    }
+
+    //////////// SPECS 2025 ////////////
+    /// AlloyCnD Instance API /////////
+
+    @PostMapping("/instance/{cmd}")
+    public String getInstance(@RequestBody InstanceRequest instanceRequest, @PathVariable int cmd) throws IOException {
+        String code = instanceRequest.getCode();
+        CompModule module = null;
+        // parse Alloy file from code variable
+        try {
+            module = CompUtil.parseEverything_fromString(A4Reporter.NOP, code);
+        } catch (Exception e) {
+            // return error message as JSON with http status code 400
+            JSONObject obj = new JSONObject();
+            obj.put("error", e.toString());
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        // Check if the requested command index exists
+        if (cmd < 0 || cmd >= module.getAllCommands().size()) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "Command index " + cmd + " is out of bounds. Available commands: 0 to " + (module.getAllCommands().size() - 1));
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        Command runCommand = module.getAllCommands().get(cmd);        
+        if (cmd == 0 && hasDefaultCommand(module)) {
+            runCommand = new Command(Pos.UNKNOWN, ExprConstant.TRUE, "FMPlayDefault", false, 4, 4, 4, -1, -1, -1, null, null, ExprConstant.TRUE, null);
+        };
+
+        A4Options options = getOptions();
+        // get the first instance of the Alloy file
+        A4Solution instance;
+        SafeList<Sig> sigs = module.getAllSigs();
+        try {
+            Command finalRunCommand = runCommand;
+            instance = runTimed(new InstanceRunner() {
+                @Override
+                public A4Solution runInstance() {
+                    return TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, sigs, finalRunCommand, options);
+                }
+            }, TIME_OUT);
+        } catch (Throwable t) {
+            // return error message as JSON with http status code 400
+            JSONObject obj = new JSONObject();
+            String message = t.getMessage();
+            obj.put("error", message);
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        String specId = null;
+        if (!instance.satisfiable()) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "No instance found");
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+        
+        // generate a unieuq id for the instance
+        do {
+            specId = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        } while (instances.containsKey(specId));
+        // store the instance in the instances map
+        instances.put(specId, new StoredSolution(module, instance));
+
+        File tmpFile = File.createTempFile("alloy_instance", ".xml");
+        tmpFile.deleteOnExit();
+        instance.writeXML(tmpFile.getAbsolutePath());
+        // read content of instance.xml as String
+        String instanceContent = Files.readString(Paths.get(tmpFile.getAbsolutePath()));
+        
+        // Add source tag before closing </alloy> tag
+        String sourceTag = "<source filename=\"..\" content=\"..\"></source>";
+        instanceContent = instanceContent.replace("</alloy>", sourceTag + "\n</alloy>");
+        
+        return instanceContent;
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/alloycnd/instance")
+    public String getInstanceForAlloyCnD(
+            @RequestParam(required = true) String check,
+            @RequestParam(required = true) String p,
+            @RequestParam(required = true) int cmd) throws IOException {
+
+        if (!"ALSCnD".equalsIgnoreCase(check)) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "Invalid Permalink");
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        String code = getCodeByPermalink(check, p);
+        if (code == null) {
+            JSONObject obj = new JSONObject();
+            obj.put("error", "Invalid Permalink");
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        CompModule module = null;
+        // parse Alloy file from code variable
+        try {
+            module = CompUtil.parseEverything_fromString(A4Reporter.NOP, code);
+        } catch (Exception e) {
+            // return error message as JSON with http status code 400
+            JSONObject obj = new JSONObject();
+            obj.put("error", e.toString());
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        Command runCommand = module.getAllCommands().get(cmd);
+        if (cmd == 0 && hasDefaultCommand(module)) {
+            runCommand = new Command(Pos.UNKNOWN, ExprConstant.TRUE, "FMPlayDefault", false, 4, 4, 4, -1, -1, -1, null,
+                    null, runCommand.formula, null);
+        }
+
+        A4Options options = getOptions();
+        // get the first instance of the Alloy file
+        A4Solution instance;
+        SafeList<Sig> sigs = module.getAllSigs();
+        try {
+            Command finalRunCommand = runCommand;
+            instance = runTimed(new InstanceRunner() {
+                @Override
+                public A4Solution runInstance() {
+                    return TranslateAlloyToKodkod.execute_command(A4Reporter.NOP, sigs, finalRunCommand, options);
+                }
+            }, TIME_OUT);
+        } catch (Throwable t) {
+            // return error message as JSON with http status code 400
+            JSONObject obj = new JSONObject();
+            String message = t.getMessage();
+            obj.put("error", message);
+            obj.put("status", HttpStatus.BAD_REQUEST.value());
+            return obj.toString();
+        }
+
+        String specId = null;
+        // generate a unieuq id for the instance
+        do {
+            specId = Long.toHexString(Double.doubleToLongBits(Math.random()));
+        } while (instances.containsKey(specId));
+        // store the instance in the instances map
+        instances.put(specId, new StoredSolution(module, instance));
+
+        File tmpFile = File.createTempFile("alloy_instance", ".xml");
+        tmpFile.deleteOnExit();
+        instance.writeXML(tmpFile.getAbsolutePath());
+        // read content of instance.xml as String
+        String instanceContent = Files.readString(Paths.get(tmpFile.getAbsolutePath()));
+        
+        // Add source tag before closing </alloy> tag
+        String sourceTag = "<source filename=\"..\" content=\"..\"></source>";
+        instanceContent = instanceContent.replace("</alloy>", sourceTag + "\n</alloy>");
+        
+        return instanceContent;
     }
 }
