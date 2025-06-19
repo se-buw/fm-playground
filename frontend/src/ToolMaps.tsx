@@ -3,11 +3,13 @@ import { executeLimboole } from '@/../tools/limboole/limbooleExecutor';
 import { executeZ3Wasm } from '@/../tools/smt/z3Executor';
 import { executeNuxmvTool } from '@/../tools/nuxmv/nuxmvExecutor';
 import { executeAlloyTool } from '@/../tools/alloy/alloyExecutor';
+import { executeAlloyCnDTool } from '@/../tools/alloyCnD/alloyCnDExecutor';
 import { executeSpectraTool } from '@/../tools/spectra/spectraExecutor';
 
 // Tool output components
 import TextualOutput from '@/components/Playground/TextualOutput';
 import AlloyOutput from '@/../tools/alloy/components/AlloyOutput';
+import AlloyCnDOutput from '@/../tools/alloyCnD/components/AlloyCnDOutput';
 
 // Language configurations for the different tools
 import { limbooleConf, limbooleLang } from '@/../tools/limboole/limbooleTextMateGrammar';
@@ -30,6 +32,7 @@ export const additionalInputAreaUiMap: Record<string, React.FC<any>> = {
   SAT: LimbooleCheckOptions,
   SPECTRA: SpectraCliOptions,
   ALS: AlloyCmdOptions,
+  ALSCnD: AlloyCmdOptions,
 };
 
 export const additonalOutputAreaUiMap: Record<string, React.FC<any>> = {
@@ -41,6 +44,7 @@ export const toolExecutionMap: Record<string, () => void> = {
   SMT: executeZ3Wasm,
   XMV: executeNuxmvTool,
   ALS: executeAlloyTool,
+  ALSCnD: executeAlloyCnDTool,
   SPECTRA: executeSpectraTool,
 };
 
@@ -49,6 +53,7 @@ export const toolOutputMap: Record<string, React.FC<any>> = {
   SMT: TextualOutput,
   XMV: TextualOutput,
   ALS: AlloyOutput,
+  ALSCnD: AlloyCnDOutput,
   SPECTRA: TextualOutput,
 };
 
@@ -57,6 +62,7 @@ export const languageConfigMap: Record<string, { tokenProvider: any; configurati
   smt2: { tokenProvider: smt2Lang, configuration: smt2Conf },
   xmv: { tokenProvider: nuxmvLang, configuration: nuxmvConf },
   als: { tokenProvider: alloyLang, configuration: alloyConf },
+  cnd: { tokenProvider: alloyLang, configuration: alloyConf },
   spectra: { tokenProvider: spectraLang, configuration: spectraConf },
 };
 
@@ -69,6 +75,7 @@ export const fmpConfig: FmpConfig = {
     smt2: { name: 'SMT', extension: 'smt2', shortName: 'SMT' },
     xmv: { name: 'nuXmv', extension: '.xmv', shortName: 'XMV' },
     als: { name: 'Alloy', extension: 'als', shortName: 'ALS' },
+    cnd: { name: 'AlloyCnD', extension: 'cnd', shortName: 'ALSCnD' },
     spectra: { name: 'Spectra', extension: 'spectra', shortName: 'SPECTRA' },
   },
 };
