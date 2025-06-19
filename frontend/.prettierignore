@@ -1,5 +1,4 @@
 public/
 *.js
 
-src/tools/limboole/langium/ls/generated/
-src/tools/smt/langium/ls/generated/
+tools/**/ls/generated/
