@@ -1,75 +1,36 @@
 <div align="center">
   <img src="./frontend/public/logo_se.png" width="100px" />
   <h1>FM Playground</h1>
-  <a href="https://play.formal-methods.net/"><img src="https://img.shields.io/website?url=https%3A%2F%2Fplay.formal-methods.net%2F&label=play.formal-methods.net" alt="FM Playground"></a>
-  <img alt="GitHub Repository size" src="https://img.shields.io/github/repo-size/se-buw/fm-playground">
-  <img src="https://img.shields.io/github/issues/se-buw/fm-playground" alt="GitHub issues">
-  <img src="https://img.shields.io/github/actions/workflow/status/se-buw/fm-playground/ci.yml" alt="Build">
-  <img src="https://img.shields.io/github/license/se-buw/fm-playground" alt="GitHub License">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fwakapi.soaib.me%2Fapi%2Fcompat%2Fshields%2Fv1%2Fsoaib%2Finterval%3Aany%2Fproject%3Afm-playground&style=flat&label=dev&color=%233b71ca" alt="Wakapi">
   <hr>
 </div>
 
-A Formal Method playground for limboole, z3, nuXmv, Alloy, and Spectra. This project is a part of the Formal Methods course at the Bauhaus-Universität Weimar. It is a web application that allows users to run formal methods tools in the browser.
+This branch showcases a proof-of-concept developed during the hackathon at the 2nd International Summer School on Formal Specifications and Analysis for Software Engineers (SPECS) 2025. It presents a streamlined version of the original FM Playground, emphasizing the visualization of Alloy models and its integration with Cope and Drag (CND).
 
-## Overview and Examples
+## Installation
 
-We started a small overview of the features of the FM Playground and how to use it. The video playlist is available on [YouTube](https://www.youtube.com/playlist?list=PLGyeoukah9NYq9ULsIuADG2r2QjX530nf)
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/se-buw/fm-playground.git -b specs2025 --depth 1
+   ````
+2. **Initialize the submodules**:
+   ```bash
+   git submodule update --init --recursive
+   ```
 
-<div align="center">
+3. **Create the Docker network** (if it doesn't exist):
+   ```bash
+   docker network create my_network
+    ```
+4. **Start the services**:
+    ```bash
+    docker compose -f docker-compose-specs2025.yml up --build
+    ```
+5. **Access the application**:
+   Open your browser and go to [http://localhost:5173](http://localhost:5173/?check=ALSCnD).
 
-[![Formal Methods Playground](./resources/fmp-tutorial.jpg)](https://www.youtube.com/playlist?list=PLGyeoukah9NYq9ULsIuADG2r2QjX530nf)
-
-</div>
-
-For more updates, examples, and tutorials, please visit the [formal-methods.net](https://formal-methods.net) website.
-
-## Development
-
-### Requirements
-
-- Python >= 3.10.0
-- Node >= 20.0.0
-- PostgreSQL >= 15.0 (optional) - use sqlite3 for development
-- Docker >= 20.10.0 (optional)
-- Docker Compose >= 1.27.0 (optional)
-
-### Installation
-
-- [TODO]
-
-### Docker
-
-- [TODO]
-
-### Docker Compose
-
-- Copy the `.env.example` file to `.env` and update the environment variables as needed:
-
-```bash
-cp .env.example .env
-```
-
-- Run the following command:
-
-```bash
-docker compose up -d
-```
-
-## Contributing
-
-TODO: Create a contributing guide
-
-Contributions are welcome! Please refer to the [contributing guidelines](CONTRIBUTING.md) for detailed instructions.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
-### Third-Party Licenses
-
-- Limboole - https://github.com/maximaximal/limboole/blob/master/LICENSE
-- Z3 - https://github.com/Z3Prover/z3/blob/master/LICENSE.txt
-- nuXmv - https://nuxmv.fbk.eu/downloads/LICENSE.txt
-- Alloy - https://github.com/AlloyTools/org.alloytools.alloy/blob/master/LICENSE
-- Spectra - https://github.com/SpectraSynthesizer/spectra-synt/blob/master/LICENSE
+## Notes
+- To get latest changes of the submodules, run:
+  ```bash
+  git submodule update --remote --merge
+  ```
+- The `docker-compose-specs2025.yml` file is tailored for the SPECS 2025 hackathon setup. It includes configurations for the frontend, backend, Alloy API, and Cope and Drag (CND) services, ensuring they communicate over a shared Docker network.
