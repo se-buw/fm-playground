@@ -1,0 +1,36 @@
+# Pre-commit hooks for Java (alloy-api)
+# See https://pre-commit.com for more information
+repos:
+  # General hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+        files: ^alloy-api/.*
+      - id: end-of-file-fixer
+        files: ^alloy-api/.*
+      - id: check-merge-conflict
+        files: ^alloy-api/.*
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+        files: ^alloy-api/.*
+
+  # Java formatting with Google Java Format
+  - repo: https://github.com/macisamuele/language-formatters-pre-commit-hooks
+    rev: v2.13.0
+    hooks:
+      - id: pretty-format-java
+        args: [--autofix]
+        files: ^alloy-api/.*\.java$
+
+  # Custom hook for Gradle Spotless check
+  - repo: local
+    hooks:
+      - id: spotless-check
+        name: Spotless Check
+        entry: bash -c 'cd alloy-api && ./gradlew spotlessCheck'
+        language: system
+        files: ^alloy-api/.*\.(java|gradle)$
+        pass_filenames: false
+
+

@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.0'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group = 'de.buw'
@@ -9,7 +10,7 @@ version = '0.0.1'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -31,3 +32,37 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// Spotless configuration for code formatting
+spotless {
+	java {
+		target 'src/**/*.java'
+		googleJavaFormat('1.21.0')
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+
+	format 'misc', {
+		target '*.gradle', '*.md', '.gitignore'
+		trimTrailingWhitespace()
+		indentWithTabs()
+		endWithNewline()
+	}
+}
+
+// Convenience tasks for development
+task formatCode {
+	description = 'Format all code using Spotless'
+	group = 'formatting'
+	dependsOn 'spotlessApply'
+}
+
+task checkFormat {
+	description = 'Check code formatting using Spotless'
+	group = 'verification'
+	dependsOn 'spotlessCheck'
+}
+
+// Make check task depend on format check
+check.dependsOn checkFormat
