@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { useAtom } from 'jotai';
 import {
-  MDBNavbarBrand,
-  MDBBtn,
-  MDBDropdown,
-  MDBDropdownMenu,
-  MDBDropdownToggle,
-  MDBDropdownItem,
+    MDBNavbarBrand,
+    MDBBtn,
+    MDBDropdown,
+    MDBDropdownMenu,
+    MDBDropdownToggle,
+    MDBDropdownItem,
 } from 'mdb-react-ui-kit';
 import { FaGithub } from 'react-icons/fa';
 import { MdOutlineMenu } from 'react-icons/md';
@@ -23,247 +23,251 @@ import { fmpConfig } from '@/ToolMaps';
 import '@/assets/style/Nav.css';
 
 interface NavbarProps {
-  isDarkTheme: boolean;
-  setIsDarkTheme: (value: boolean) => void;
+    isDarkTheme: boolean;
+    setIsDarkTheme: (value: boolean) => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
-  const [, setEditorValue] = useAtom(editorValueAtom);
-  const [, setLanguage] = useAtom(languageAtom);
-  const authContext = useContext(AuthContext);
-  const isLoggedIn = authContext?.isLoggedIn ?? false;
-  const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => {});
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+    const [, setEditorValue] = useAtom(editorValueAtom);
+    const [, setLanguage] = useAtom(languageAtom);
+    const authContext = useContext(AuthContext);
+    const isLoggedIn = authContext?.isLoggedIn ?? false;
+    const setIsLoggedIn = authContext?.setIsLoggedIn ?? (() => {});
+    const [isDrawerOpen, setDrawerOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-  function handleLogout() {
-    axiosAuth
-      .get(`${import.meta.env.VITE_FMP_API_URL}/logout`)
-      .then((_res) => {
-        setIsLoggedIn(false);
-        setSnackbarMessage('Logout successful');
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  /**
-   * Fetch the user history from the API.
-   * @todo: This function is moved to DrawerComponent.jsx.  Remove this function if it's not used anywhere else.
-   * @param {*} pageNumber
-   */
-  const handleUserDataDownload = async () => {
-    try {
-      await downloadUserData()
-        .then((res) => {
-          const user = res.email;
-          const history = res.data;
-          const data = { user, history };
-          const url = window.URL.createObjectURL(new Blob([JSON.stringify(data)]));
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', `${user}.json`);
-          document.body.appendChild(link);
-          link.click();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    function handleLogout() {
+        axiosAuth
+            .get(`${import.meta.env.VITE_FMP_API_URL}/logout`)
+            .then((_res) => {
+                setIsLoggedIn(false);
+                setSnackbarMessage('Logout successful');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
-  };
 
-  const handleUserProfileDelete = async () => {
-    try {
-      await deleteProfile()
-        .then((res) => {
-          console.log(res);
-          setIsLoggedIn(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+    /**
+     * Fetch the user history from the API.
+     * @todo: This function is moved to DrawerComponent.jsx.  Remove this function if it's not used anywhere else.
+     * @param {*} pageNumber
+     */
+    const handleUserDataDownload = async () => {
+        try {
+            await downloadUserData()
+                .then((res) => {
+                    const user = res.email;
+                    const history = res.data;
+                    const data = { user, history };
+                    const url = window.URL.createObjectURL(new Blob([JSON.stringify(data)]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', `${user}.json`);
+                    document.body.appendChild(link);
+                    link.click();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
-  const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
+    const handleUserProfileDelete = async () => {
+        try {
+            await deleteProfile()
+                .then((res) => {
+                    console.log(res);
+                    setIsLoggedIn(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
+    const handleDrawerOpen = () => {
+        setDrawerOpen(true);
+    };
 
-  const handleSnackbarClose = () => {
-    setSnackbarMessage('');
-  };
+    const handleDrawerClose = () => {
+        setDrawerOpen(false);
+    };
 
-  /**
-   * Handle the drawer item click. Update the state in the Playground component to set the code in the Editor
-   * @param {*} check  - The short name of the tool.
-   * @param {*} permalink - The for the specification.
-   * @param {*} code - Specification code.
-   */
-  const handleDrawerItemClick = (check: string, permalink: string, code: string) => {
-    setEditorValue(code);
-    const options = Object.entries(fmpConfig.tools).map(([key, tool]) => ({
-      id: key,
-      value: tool.extension,
-      label: tool.name,
-      short: tool.shortName,
-    }));
-    const selectedOption = options.find((option) => option.short === check);
-    if (selectedOption) {
-      setLanguage(selectedOption);
-    }
-    window.history.pushState(null, '', `/?check=${check}&p=${permalink}`);
-    const info = document.getElementById('info');
-    if (info) {
-      info.innerText = '';
-    }
-  };
+    const handleSnackbarClose = () => {
+        setSnackbarMessage('');
+    };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+    /**
+     * Handle the drawer item click. Update the state in the Playground component to set the code in the Editor
+     * @param {*} check  - The short name of the tool.
+     * @param {*} permalink - The for the specification.
+     * @param {*} code - Specification code.
+     */
+    const handleDrawerItemClick = (check: string, permalink: string, code: string) => {
+        setEditorValue(code);
+        const options = Object.entries(fmpConfig.tools).map(([key, tool]) => ({
+            id: key,
+            value: tool.extension,
+            label: tool.name,
+            short: tool.shortName,
+        }));
+        const selectedOption = options.find((option) => option.short === check);
+        if (selectedOption) {
+            setLanguage(selectedOption);
+        }
+        window.history.pushState(null, '', `/?check=${check}&p=${permalink}`);
+        const info = document.getElementById('info');
+        if (info) {
+            info.innerText = '';
+        }
+    };
 
-  return (
-    <div>
-      <ConfirmModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        title='Delete Profile'
-        message={`This is a destructive action. This will unlink all specifications from your history (this information will be lost forever).
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
+    return (
+        <div>
+            <ConfirmModal
+                isOpen={isModalOpen}
+                onClose={closeModal}
+                title='Delete Profile'
+                message={`This is a destructive action. This will unlink all specifications from your history (this information will be lost forever).
         Are you sure you want to delete your profile?`}
-        onConfirm={handleUserProfileDelete}
-      />
-      <SessionExpiredModal />
-      <header className='header'>
-        <MDBNavbarBrand className='d-flex align-items-center gap-2'>
-          <span>
-            <img className='nav-se-logo img-fluid' src='/logo_se.png' alt='SE Logo' />
-          </span>
-          <span className='text-lg font-weight-bold'>FM Playground</span>
-        </MDBNavbarBrand>
+                onConfirm={handleUserProfileDelete}
+            />
+            <SessionExpiredModal />
+            <header className='header'>
+                <MDBNavbarBrand className='d-flex align-items-center gap-2'>
+                    <span>
+                        <img className='nav-se-logo img-fluid' src='/logo_se.png' alt='SE Logo' />
+                    </span>
+                    <span className='text-lg font-weight-bold'>FM Playground</span>
+                </MDBNavbarBrand>
 
-        <div className='nav-right d-none d-lg-flex gap-2'>
-          {isLoggedIn ? (
-            <>
-              <MDBBtn
-                className='navbar-option-button'
-                onClick={handleDrawerOpen}
-                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
-              >
-                History
-              </MDBBtn>
-              <DrawerComponent isOpen={isDrawerOpen} onClose={handleDrawerClose} onItemSelect={handleDrawerItemClick} />
-              <MDBDropdown
-                className='btn-group navbar-option-button'
-                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
-              >
-                <MDBBtn color='danger' onClick={handleLogout}>
-                  Logout
-                </MDBBtn>
-                <MDBDropdownToggle split color='dark' style={{ flex: '0' }}></MDBDropdownToggle>
-                <MDBDropdownMenu style={{ minWidth: '200px' }}>
-                  <MDBDropdownItem link onClick={handleUserDataDownload}>
-                    Download Your Data
-                  </MDBDropdownItem>
-                  <MDBDropdownItem link onClick={openModal}>
-                    Delete Profile
-                  </MDBDropdownItem>
-                </MDBDropdownMenu>
-              </MDBDropdown>
-            </>
-          ) : (
-            <MDBBtn rounded color='primary' href='/login'>
-              Login
-            </MDBBtn>
-          )}
+                <div className='nav-right d-none d-lg-flex gap-2'>
+                    {isLoggedIn ? (
+                        <>
+                            <MDBBtn
+                                className='navbar-option-button'
+                                onClick={handleDrawerOpen}
+                                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
+                            >
+                                History
+                            </MDBBtn>
+                            <DrawerComponent
+                                isOpen={isDrawerOpen}
+                                onClose={handleDrawerClose}
+                                onItemSelect={handleDrawerItemClick}
+                            />
+                            <MDBDropdown
+                                className='btn-group navbar-option-button'
+                                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
+                            >
+                                <MDBBtn color='danger' onClick={handleLogout}>
+                                    Logout
+                                </MDBBtn>
+                                <MDBDropdownToggle split color='dark' style={{ flex: '0' }}></MDBDropdownToggle>
+                                <MDBDropdownMenu style={{ minWidth: '200px' }}>
+                                    <MDBDropdownItem link onClick={handleUserDataDownload}>
+                                        Download Your Data
+                                    </MDBDropdownItem>
+                                    <MDBDropdownItem link onClick={openModal}>
+                                        Delete Profile
+                                    </MDBDropdownItem>
+                                </MDBDropdownMenu>
+                            </MDBDropdown>
+                        </>
+                    ) : (
+                        <MDBBtn rounded color='primary' href='/login'>
+                            Login
+                        </MDBBtn>
+                    )}
 
-          <button
-            className='github-icon'
-            onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-          >
-            <FaGithub size={24} className='github-icon' />
-          </button>
-          <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+                    <button
+                        className='github-icon'
+                        onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                    >
+                        <FaGithub size={24} className='github-icon' />
+                    </button>
+                    <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+                </div>
+
+                {/* Dropdown visible on small screens, hidden on large */}
+                <MDBDropdown className='d-lg-none'>
+                    <MDBDropdownToggle color='light'>
+                        <MdOutlineMenu />
+                    </MDBDropdownToggle>
+                    <MDBDropdownMenu style={{ textAlign: 'right' }}>
+                        {isLoggedIn ? (
+                            <MDBDropdownItem link onClick={handleDrawerOpen}>
+                                History
+                            </MDBDropdownItem>
+                        ) : (
+                            <></>
+                        )}
+                        {isLoggedIn ? (
+                            <MDBDropdownItem link onClick={handleLogout}>
+                                Logout
+                            </MDBDropdownItem>
+                        ) : (
+                            <></>
+                        )}
+                        {isLoggedIn ? <MDBDropdownItem divider /> : <></>}
+                        {isLoggedIn ? (
+                            <MDBDropdownItem link onClick={handleUserDataDownload}>
+                                Download Your Data
+                            </MDBDropdownItem>
+                        ) : (
+                            <></>
+                        )}
+                        {isLoggedIn ? (
+                            <MDBDropdownItem link onClick={openModal}>
+                                Delete Profile
+                            </MDBDropdownItem>
+                        ) : (
+                            <></>
+                        )}
+
+                        {!isLoggedIn ? (
+                            <MDBDropdownItem link href='/login'>
+                                Login
+                            </MDBDropdownItem>
+                        ) : (
+                            <></>
+                        )}
+                        <MDBDropdownItem divider />
+                        <MDBDropdownItem>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'end',
+                                    alignItems: 'center',
+                                    paddingBottom: '1em',
+                                    paddingRight: '1em',
+                                }}
+                            >
+                                <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+                                <button
+                                    className='github-icon'
+                                    onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                                >
+                                    <FaGithub size={24} className='github-icon' />
+                                </button>
+                            </div>
+                        </MDBDropdownItem>
+                    </MDBDropdownMenu>
+                </MDBDropdown>
+            </header>
+
+            <CustomSnackbar message={snackbarMessage} onClose={handleSnackbarClose} />
         </div>
-
-        {/* Dropdown visible on small screens, hidden on large */}
-        <MDBDropdown className='d-lg-none'>
-          <MDBDropdownToggle color='light'>
-            <MdOutlineMenu />
-          </MDBDropdownToggle>
-          <MDBDropdownMenu style={{ textAlign: 'right' }}>
-            {isLoggedIn ? (
-              <MDBDropdownItem link onClick={handleDrawerOpen}>
-                History
-              </MDBDropdownItem>
-            ) : (
-              <></>
-            )}
-            {isLoggedIn ? (
-              <MDBDropdownItem link onClick={handleLogout}>
-                Logout
-              </MDBDropdownItem>
-            ) : (
-              <></>
-            )}
-            {isLoggedIn ? <MDBDropdownItem divider /> : <></>}
-            {isLoggedIn ? (
-              <MDBDropdownItem link onClick={handleUserDataDownload}>
-                Download Your Data
-              </MDBDropdownItem>
-            ) : (
-              <></>
-            )}
-            {isLoggedIn ? (
-              <MDBDropdownItem link onClick={openModal}>
-                Delete Profile
-              </MDBDropdownItem>
-            ) : (
-              <></>
-            )}
-
-            {!isLoggedIn ? (
-              <MDBDropdownItem link href='/login'>
-                Login
-              </MDBDropdownItem>
-            ) : (
-              <></>
-            )}
-            <MDBDropdownItem divider />
-            <MDBDropdownItem>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'end',
-                  alignItems: 'center',
-                  paddingBottom: '1em',
-                  paddingRight: '1em',
-                }}
-              >
-                <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-                <button
-                  className='github-icon'
-                  onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
-                >
-                  <FaGithub size={24} className='github-icon' />
-                </button>
-              </div>
-            </MDBDropdownItem>
-          </MDBDropdownMenu>
-        </MDBDropdown>
-      </header>
-
-      <CustomSnackbar message={snackbarMessage} onClose={handleSnackbarClose} />
-    </div>
-  );
+    );
 };
 
 export default Navbar;

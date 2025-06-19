@@ -3,14 +3,14 @@
 ## Table of Contents
 
 - [FM Playground (Frontend)](#fm-playground-frontend)
-  - [Table of Contents](#table-of-contents)
-  - [Description](#description)
-  - [Prerequisites](#prerequisites)
-  - [Getting Started](#getting-started)
-    - [Installation](#installation)
-    - [Docker](#docker)
-  - [Contributing](#contributing)
-  - [License](#license)
+    - [Table of Contents](#table-of-contents)
+    - [Description](#description)
+    - [Prerequisites](#prerequisites)
+    - [Getting Started](#getting-started)
+        - [Installation](#installation)
+        - [Docker](#docker)
+    - [Contributing](#contributing)
+    - [License](#license)
 
 ## Description
 

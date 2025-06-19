@@ -8,10 +8,10 @@ import '@/assets/style/AlloyOutput.css';
  * Interface for the CnD API request body
  */
 interface CnDApiRequest {
-  alloydatum: string; // The Alloy instance XML data
-  cope: string; // Layout specification/configuration
-  instancenumber: number; // Instance number (default: 0)
-  loggingEnabled: string; // Enable logging ("true"/"false")
+    alloydatum: string; // The Alloy instance XML data
+    cope: string; // Layout specification/configuration
+    instancenumber: number; // Instance number (default: 0)
+    loggingEnabled: string; // Enable logging ("true"/"false")
 }
 
 /**
@@ -36,122 +36,122 @@ interface CnDApiRequest {
  * @returns Promise<string> - HTML content for the generated diagram
  */
 async function sendInstanceToCnDApi(
-  instanceData: string,
-  cope: string = '',
-  instanceNumber: number = 0,
-  loggingEnabled: string = 'false'
+    instanceData: string,
+    cope: string = '',
+    instanceNumber: number = 0,
+    loggingEnabled: string = 'false'
 ) {
-  try {
-    const requestBody: CnDApiRequest = {
-      alloydatum: instanceData,
-      cope: cope,
-      instancenumber: instanceNumber,
-      loggingEnabled: loggingEnabled,
-    };
+    try {
+        const requestBody: CnDApiRequest = {
+            alloydatum: instanceData,
+            cope: cope,
+            instancenumber: instanceNumber,
+            loggingEnabled: loggingEnabled,
+        };
 
-    const response = await axios.post('/cnd', requestBody, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error calling CnD API:', error);
-    throw error;
-  }
+        const response = await axios.post('/cnd', requestBody, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error calling CnD API:', error);
+        throw error;
+    }
 }
 
 const AlloyCndOutput = () => {
-  const [alloyInstance] = useAtom(alloyInstanceAtom);
-  const [htmlContent, setHtmlContent] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+    const [alloyInstance] = useAtom(alloyInstanceAtom);
+    const [htmlContent, setHtmlContent] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-  const cope = `directives:
+    const cope = `directives:
   - flag: hideDisconnectedBuiltIns`;
 
-  // Function to regenerate diagram with new parameters
-  const regenerateDiagram = useCallback(
-    async (params: { alloydatum: string; cope: string; instancenumber: number; loggingEnabled: string }) => {
-      setLoading(true);
-      setError('');
+    // Function to regenerate diagram with new parameters
+    const regenerateDiagram = useCallback(
+        async (params: { alloydatum: string; cope: string; instancenumber: number; loggingEnabled: string }) => {
+            setLoading(true);
+            setError('');
 
-      try {
-        const html = await sendInstanceToCnDApi(
-          params.alloydatum,
-          params.cope,
-          params.instancenumber,
-          params.loggingEnabled
-        );
-        setHtmlContent(html);
-        console.log('HTML content regenerated from CnD API:', html);
-      } catch (err: any) {
-        setError('Failed to regenerate diagram: ' + err.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    []
-  );
-
-  // Listen for messages from the iframe
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      console.log('Received message from iframe:', event.data);
-
-      if (event.data.type === 'REGENERATE_DIAGRAM') {
-        console.log('Regenerating diagram with params:', event.data.data);
-        regenerateDiagram(event.data.data);
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, [regenerateDiagram]);
-
-  useEffect(() => {
-    if (alloyInstance && typeof alloyInstance === 'string') {
-      setLoading(true);
-      setError('');
-
-      // Send the XML instance data with default parameters for now
-      // You can extend this to accept cope, instancenumber, and loggingEnabled as props if needed
-      sendInstanceToCnDApi(alloyInstance, cope, 0, 'false')
-        .then((html) => {
-          setHtmlContent(html);
-          console.log('HTML content received from CnD API:', html);
-        })
-        .catch((err) => {
-          setError('Failed to process instance data: ' + err.message);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [alloyInstance]); // Process HTML content to ensure scripts can load and handle form submissions
-  const processHtmlContent = (htmlContent: string) => {
-    console.log('Processing HTML content...');
-
-    // Remove any existing CSP headers that might block scripts
-    let processedHtml = htmlContent.replace(/<meta\s+http-equiv=["']Content-Security-Policy["'][^>]*>/gi, '');
-
-    // TODO: fix the urls with container name if running inside a container and port is not being exposed
-    processedHtml = processedHtml
-      .replace(/src=["']\/js\//g, 'src="http://localhost:3000/js/')
-      .replace(/href=["']\/css\//g, 'href="http://localhost:3000/css/')
-      .replace(/src=["']\/img\//g, 'src="http://localhost:3000/img/')
-      .replace(/href=["']\/img\//g, 'href="http://localhost:3000/img/');
-
-    // Add permissive CSP and fix base href
-    processedHtml = processedHtml.replace(
-      '<head>',
-      `<head>
-        <meta http-equiv="Content-Security-Policy" content="default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; style-src * data: 'unsafe-inline'; connect-src *;">
-        <base href="http://localhost:3000/">`
+            try {
+                const html = await sendInstanceToCnDApi(
+                    params.alloydatum,
+                    params.cope,
+                    params.instancenumber,
+                    params.loggingEnabled
+                );
+                setHtmlContent(html);
+                console.log('HTML content regenerated from CnD API:', html);
+            } catch (err: any) {
+                setError('Failed to regenerate diagram: ' + err.message);
+            } finally {
+                setLoading(false);
+            }
+        },
+        []
     );
 
-    // Add error handling for failed script loads
-    const errorHandlingScript = `
+    // Listen for messages from the iframe
+    useEffect(() => {
+        const handleMessage = (event: MessageEvent) => {
+            console.log('Received message from iframe:', event.data);
+
+            if (event.data.type === 'REGENERATE_DIAGRAM') {
+                console.log('Regenerating diagram with params:', event.data.data);
+                regenerateDiagram(event.data.data);
+            }
+        };
+
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    }, [regenerateDiagram]);
+
+    useEffect(() => {
+        if (alloyInstance && typeof alloyInstance === 'string') {
+            setLoading(true);
+            setError('');
+
+            // Send the XML instance data with default parameters for now
+            // You can extend this to accept cope, instancenumber, and loggingEnabled as props if needed
+            sendInstanceToCnDApi(alloyInstance, cope, 0, 'false')
+                .then((html) => {
+                    setHtmlContent(html);
+                    console.log('HTML content received from CnD API:', html);
+                })
+                .catch((err) => {
+                    setError('Failed to process instance data: ' + err.message);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+    }, [alloyInstance]); // Process HTML content to ensure scripts can load and handle form submissions
+    const processHtmlContent = (htmlContent: string) => {
+        console.log('Processing HTML content...');
+
+        // Remove any existing CSP headers that might block scripts
+        let processedHtml = htmlContent.replace(/<meta\s+http-equiv=["']Content-Security-Policy["'][^>]*>/gi, '');
+
+        // TODO: fix the urls with container name if running inside a container and port is not being exposed
+        processedHtml = processedHtml
+            .replace(/src=["']\/js\//g, 'src="http://localhost:3000/js/')
+            .replace(/href=["']\/css\//g, 'href="http://localhost:3000/css/')
+            .replace(/src=["']\/img\//g, 'src="http://localhost:3000/img/')
+            .replace(/href=["']\/img\//g, 'href="http://localhost:3000/img/');
+
+        // Add permissive CSP and fix base href
+        processedHtml = processedHtml.replace(
+            '<head>',
+            `<head>
+        <meta http-equiv="Content-Security-Policy" content="default-src * data: blob: 'unsafe-inline' 'unsafe-eval'; script-src * data: blob: 'unsafe-inline' 'unsafe-eval'; style-src * data: 'unsafe-inline'; connect-src *;">
+        <base href="http://localhost:3000/">`
+        );
+
+        // Add error handling for failed script loads
+        const errorHandlingScript = `
       <script>
         console.log('CnD: Error handling script loaded');
         
@@ -193,8 +193,8 @@ const AlloyCndOutput = () => {
       </script>
     `;
 
-    // Simple form override that doesn't interfere with other scripts
-    const simpleFormScript = `
+        // Simple form override that doesn't interfere with other scripts
+        const simpleFormScript = `
       <script>
         console.log('CnD: Simple form script loaded');
         
@@ -240,75 +240,75 @@ const AlloyCndOutput = () => {
       </script>
     `;
 
-    // Insert scripts at the end
-    processedHtml = processedHtml.replace('</body>', errorHandlingScript + simpleFormScript + '</body>');
+        // Insert scripts at the end
+        processedHtml = processedHtml.replace('</body>', errorHandlingScript + simpleFormScript + '</body>');
 
-    console.log('HTML processing complete');
-    return processedHtml;
-  };
+        console.log('HTML processing complete');
+        return processedHtml;
+    };
 
-  if (loading) {
+    if (loading) {
+        return (
+            <div className='alloy-output-container'>
+                <div className='loading-message'>Processing instance data...</div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className='alloy-output-container'>
+                <div className='error-message' style={{ color: 'red', padding: '20px' }}>
+                    {error}
+                </div>
+            </div>
+        );
+    }
+
+    if (!alloyInstance) {
+        return (
+            <div className='alloy-output-container'>
+                <div className='no-data-message'>No instance data available</div>
+            </div>
+        );
+    }
+
+    if (!htmlContent) {
+        return (
+            <div className='alloy-output-container'>
+                <pre
+                    id='info'
+                    className='plain-output-box'
+                    contentEditable={false}
+                    style={{
+                        borderRadius: '8px',
+                        height: '60vh',
+                        whiteSpace: 'pre-wrap',
+                    }}
+                >
+                    No diagram generated yet.
+                </pre>
+            </div>
+        );
+    }
+
     return (
-      <div className='alloy-output-container'>
-        <div className='loading-message'>Processing instance data...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className='alloy-output-container'>
-        <div className='error-message' style={{ color: 'red', padding: '20px' }}>
-          {error}
+        <div className='alloy-output-container'>
+            <iframe
+                key={htmlContent} // Force iframe to reload when content changes
+                srcDoc={processHtmlContent(htmlContent)}
+                style={{
+                    width: '100%',
+                    height: '90vh',
+                    border: '1px solid #ccc',
+                    borderRadius: '4px',
+                }}
+                title='Cope and Drag Visualization'
+                // No sandbox restrictions - allow everything
+                referrerPolicy='no-referrer'
+            />
         </div>
-      </div>
     );
-  }
-
-  if (!alloyInstance) {
-    return (
-      <div className='alloy-output-container'>
-        <div className='no-data-message'>No instance data available</div>
-      </div>
-    );
-  }
-
-  if (!htmlContent) {
-    return (
-      <div className='alloy-output-container'>
-        <pre
-          id='info'
-          className='plain-output-box'
-          contentEditable={false}
-          style={{
-            borderRadius: '8px',
-            height: '60vh',
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          No diagram generated yet.
-        </pre>
-      </div>
-    );
-  }
-
-  return (
-    <div className='alloy-output-container'>
-      <iframe
-        key={htmlContent} // Force iframe to reload when content changes
-        srcDoc={processHtmlContent(htmlContent)}
-        style={{
-          width: '100%',
-          height: '90vh',
-          border: '1px solid #ccc',
-          borderRadius: '4px',
-        }}
-        title='Cope and Drag Visualization'
-        // No sandbox restrictions - allow everything
-        referrerPolicy='no-referrer'
-      />
-    </div>
-  );
 };
 
 export default AlloyCndOutput;

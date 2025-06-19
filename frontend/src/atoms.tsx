@@ -6,22 +6,22 @@ import { fmpConfig } from './ToolMaps';
 export const jotaiStore = createStore();
 
 const rawStringStorage = {
-  getItem(key: string) {
-    const val = localStorage.getItem(key);
-    return val ?? '';
-  },
-  setItem(key: string, value: string) {
-    localStorage.setItem(key, value);
-  },
-  removeItem(key: string) {
-    localStorage.removeItem(key);
-  },
+    getItem(key: string) {
+        const val = localStorage.getItem(key);
+        return val ?? '';
+    },
+    setItem(key: string, value: string) {
+        localStorage.setItem(key, value);
+    },
+    removeItem(key: string) {
+        localStorage.removeItem(key);
+    },
 };
 const defaultLanguage = Object.entries(fmpConfig.tools).map(([key, tool]) => ({
-  id: key,
-  value: tool.extension,
-  label: tool.name,
-  short: tool.shortName,
+    id: key,
+    value: tool.extension,
+    label: tool.name,
+    short: tool.shortName,
 }))[0];
 
 export const isDarkThemeAtom = atomWithStorage('isDarkTheme', false);

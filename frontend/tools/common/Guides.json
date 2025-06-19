@@ -1,92 +1,92 @@
 {
-  "limboole": [
-    {
-      "title": "Validity Example",
-      "link": "https://play.formal-methods.net/?check=VAL&p=fringe-lapdog-scale-among"
-    },
-    {
-      "title": "Satisfiability Example",
-      "link": "https://play.formal-methods.net/?check=SAT&p=sloped-chair-yeast-vowed"
-    },
-    {
-      "title": "How to use limboole",
-      "link": "https://raw.githubusercontent.com/maximaximal/limboole/master/README"
-    },
-    {
-      "title": "Limboole Home",
-      "link": "https://fmv.jku.at/limboole/"
-    },
-    {
-      "title": "Lecture Slides on Moodle",
-      "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
-    }
-  ],
-  "smt2": [
-    {
-      "title": "Example: Dog, Cat, Mouse",
-      "link": "https://play.formal-methods.net/?check=SMT&p=relock-clever-parcel-envy"
-    },
-    {
-      "title": "Example: Drinker's Paradox",
-      "link": "https://play.formal-methods.net/?check=SMT&p=unrest-viable-math-tall"
-    },
-    {
-      "title": "SMTLIB Tutorial",
-      "link": "https://microsoft.github.io/z3guide/docs/logic/intro"
-    },
-    {
-      "title": "SMT-LIBv2",
-      "link": "https://smtlib.github.io/jSMTLIB/SMTLIBTutorial.pdf"
-    },
-    {
-      "title": "Lecture Slides on Moodle",
-      "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
-    }
-  ],
-  "xmv": [
-    {
-      "title": "Example: Traffic",
-      "link": "https://play.formal-methods.net/?check=XMV&p=xmv-example-1"
-    },
-    {
-      "title": "NuSMV 2.6 Tutorial",
-      "link": "https://nusmv.fbk.eu/tutorial/v26/tutorial.pdf"
-    },
-    {
-      "title": "NuSMV Manual",
-      "link": "https://nusmv.fbk.eu/userman/v26/nusmv.pdf"
-    }
-  ],
-  "als": [
-    {
-      "title": "Example: Traffic Light",
-      "link": "https://play.formal-methods.net/?check=ALS&p=bobble-payday-oboe-banana"
-    },
-    {
-      "title": "Alloy",
-      "link": "https://alloytools.org/"
-    },
-    {
-      "title": "Learning Alloy 6",
-      "link": "https://haslab.github.io/formal-software-design/"
-    },
-    {
-      "title": "Alloy API",
-      "link": "https://alloytools.org/documentation/alloy-api/index.html"
-    },
-    {
-      "title": "Tutorial for Alloy Analyzer 4.0",
-      "link": "https://alloytools.org/tutorials/online/"
-    }
-  ],
-  "spectra": [
-    {
-      "title": "Video Tutorial",
-      "link": "https://www.youtube.com/playlist?list=PLGyeoukah9Nbx1QquUmZGdLulFZIsiRlZ"
-    },
-    {
-      "title": "Examples",
-      "link": "https://smlab.cs.tau.ac.il/syntech/examples/index.html"
-    }
-  ]
+    "limboole": [
+        {
+            "title": "Validity Example",
+            "link": "https://play.formal-methods.net/?check=VAL&p=fringe-lapdog-scale-among"
+        },
+        {
+            "title": "Satisfiability Example",
+            "link": "https://play.formal-methods.net/?check=SAT&p=sloped-chair-yeast-vowed"
+        },
+        {
+            "title": "How to use limboole",
+            "link": "https://raw.githubusercontent.com/maximaximal/limboole/master/README"
+        },
+        {
+            "title": "Limboole Home",
+            "link": "https://fmv.jku.at/limboole/"
+        },
+        {
+            "title": "Lecture Slides on Moodle",
+            "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
+        }
+    ],
+    "smt2": [
+        {
+            "title": "Example: Dog, Cat, Mouse",
+            "link": "https://play.formal-methods.net/?check=SMT&p=relock-clever-parcel-envy"
+        },
+        {
+            "title": "Example: Drinker's Paradox",
+            "link": "https://play.formal-methods.net/?check=SMT&p=unrest-viable-math-tall"
+        },
+        {
+            "title": "SMTLIB Tutorial",
+            "link": "https://microsoft.github.io/z3guide/docs/logic/intro"
+        },
+        {
+            "title": "SMT-LIBv2",
+            "link": "https://smtlib.github.io/jSMTLIB/SMTLIBTutorial.pdf"
+        },
+        {
+            "title": "Lecture Slides on Moodle",
+            "link": "https://moodle.uni-weimar.de/course/view.php?id=46635"
+        }
+    ],
+    "xmv": [
+        {
+            "title": "Example: Traffic",
+            "link": "https://play.formal-methods.net/?check=XMV&p=xmv-example-1"
+        },
+        {
+            "title": "NuSMV 2.6 Tutorial",
+            "link": "https://nusmv.fbk.eu/tutorial/v26/tutorial.pdf"
+        },
+        {
+            "title": "NuSMV Manual",
+            "link": "https://nusmv.fbk.eu/userman/v26/nusmv.pdf"
+        }
+    ],
+    "als": [
+        {
+            "title": "Example: Traffic Light",
+            "link": "https://play.formal-methods.net/?check=ALS&p=bobble-payday-oboe-banana"
+        },
+        {
+            "title": "Alloy",
+            "link": "https://alloytools.org/"
+        },
+        {
+            "title": "Learning Alloy 6",
+            "link": "https://haslab.github.io/formal-software-design/"
+        },
+        {
+            "title": "Alloy API",
+            "link": "https://alloytools.org/documentation/alloy-api/index.html"
+        },
+        {
+            "title": "Tutorial for Alloy Analyzer 4.0",
+            "link": "https://alloytools.org/tutorials/online/"
+        }
+    ],
+    "spectra": [
+        {
+            "title": "Video Tutorial",
+            "link": "https://www.youtube.com/playlist?list=PLGyeoukah9Nbx1QquUmZGdLulFZIsiRlZ"
+        },
+        {
+            "title": "Examples",
+            "link": "https://smlab.cs.tau.ac.il/syntech/examples/index.html"
+        }
+    ]
 }

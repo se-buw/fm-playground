@@ -6,16 +6,16 @@ import { BrowserMessageReader, BrowserMessageWriter, createConnection } from 'vs
 import { createLimbooleServices } from '../ls/limboole-module.js';
 
 export const start = (port: MessagePort | DedicatedWorkerGlobalScope, name: string) => {
-  console.log(`Starting ${name}...`);
-  /* browser specific setup code */
-  const messageReader = new BrowserMessageReader(port);
-  const messageWriter = new BrowserMessageWriter(port);
+    console.log(`Starting ${name}...`);
+    /* browser specific setup code */
+    const messageReader = new BrowserMessageReader(port);
+    const messageWriter = new BrowserMessageWriter(port);
 
-  const connection = createConnection(messageReader, messageWriter);
+    const connection = createConnection(messageReader, messageWriter);
 
-  // Inject the shared services and language-specific services
-  const { shared } = createLimbooleServices({ connection, ...EmptyFileSystem });
+    // Inject the shared services and language-specific services
+    const { shared } = createLimbooleServices({ connection, ...EmptyFileSystem });
 
-  // Start the language server with the shared services
-  startLanguageServer(shared);
+    // Start the language server with the shared services
+    startLanguageServer(shared);
 };

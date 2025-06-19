@@ -16,50 +16,50 @@ import '@/assets/style/App.css';
 import '@/assets/style/Feedback.css';
 
 const App = () => {
-  const [isDarkTheme, setIsDarkTheme] = useAtom(isDarkThemeAtom);
-  const [editorTheme, setEditorTheme] = useState(() => {
-    const storedTheme = localStorage.getItem('editorTheme');
-    return storedTheme || 'vs';
-  });
+    const [isDarkTheme, setIsDarkTheme] = useAtom(isDarkThemeAtom);
+    const [editorTheme, setEditorTheme] = useState(() => {
+        const storedTheme = localStorage.getItem('editorTheme');
+        return storedTheme || 'vs';
+    });
 
-  // const handleToggleTheme = () => {
-  //   setIsDarkTheme((prevIsDarkTheme) => {
-  //     const newTheme = !prevIsDarkTheme;
-  //     localStorage.setItem('isDarkTheme', newTheme.toString());
-  //     return newTheme;
-  //   });
-  // };
+    // const handleToggleTheme = () => {
+    //   setIsDarkTheme((prevIsDarkTheme) => {
+    //     const newTheme = !prevIsDarkTheme;
+    //     localStorage.setItem('isDarkTheme', newTheme.toString());
+    //     return newTheme;
+    //   });
+    // };
 
-  useEffect(() => {
-    const theme = isDarkTheme ? 'dark' : 'light';
-    if (theme === 'dark') {
-      setEditorTheme('vs-dark');
-      localStorage.setItem('editorTheme', 'vs-dark');
-    } else {
-      setEditorTheme('vs');
-      localStorage.setItem('editorTheme', 'vs');
-    }
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [isDarkTheme]);
+    useEffect(() => {
+        const theme = isDarkTheme ? 'dark' : 'light';
+        if (theme === 'dark') {
+            setEditorTheme('vs-dark');
+            localStorage.setItem('editorTheme', 'vs-dark');
+        } else {
+            setEditorTheme('vs');
+            localStorage.setItem('editorTheme', 'vs');
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+    }, [isDarkTheme]);
 
-  return (
-    <AuthProvider>
-      <JotaiProvider store={jotaiStore}>
-        <div className='App' data-theme={isDarkTheme ? 'dark' : 'light'}>
-          <Nav isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
-          <Router>
-            <Routes>
-              <Route element={<ProtectedRoutes />}></Route>
-              <Route path='/' element={<Playground editorTheme={editorTheme} />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='*' element={<Missing />} />
-            </Routes>
-          </Router>
-          <Footer />
-        </div>
-      </JotaiProvider>
-    </AuthProvider>
-  );
+    return (
+        <AuthProvider>
+            <JotaiProvider store={jotaiStore}>
+                <div className='App' data-theme={isDarkTheme ? 'dark' : 'light'}>
+                    <Nav isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+                    <Router>
+                        <Routes>
+                            <Route element={<ProtectedRoutes />}></Route>
+                            <Route path='/' element={<Playground editorTheme={editorTheme} />} />
+                            <Route path='/login' element={<Login />} />
+                            <Route path='*' element={<Missing />} />
+                        </Routes>
+                    </Router>
+                    <Footer />
+                </div>
+            </JotaiProvider>
+        </AuthProvider>
+    );
 };
 
 export default App;

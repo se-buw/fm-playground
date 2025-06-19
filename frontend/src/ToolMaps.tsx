@@ -29,53 +29,53 @@ import NuxmvCopyrightNotice from '@/../tools/nuxmv/components/NuxmvCopyrightNoti
 import type { FmpConfig } from '@/types';
 
 export const additionalInputAreaUiMap: Record<string, React.FC<any>> = {
-  SAT: LimbooleCheckOptions,
-  SPECTRA: SpectraCliOptions,
-  ALS: AlloyCmdOptions,
-  ALSCnD: AlloyCmdOptions,
+    SAT: LimbooleCheckOptions,
+    SPECTRA: SpectraCliOptions,
+    ALS: AlloyCmdOptions,
+    ALSCnD: AlloyCmdOptions,
 };
 
 export const additonalOutputAreaUiMap: Record<string, React.FC<any>> = {
-  XMV: NuxmvCopyrightNotice,
+    XMV: NuxmvCopyrightNotice,
 };
 
 export const toolExecutionMap: Record<string, () => void> = {
-  SAT: executeLimboole,
-  SMT: executeZ3Wasm,
-  XMV: executeNuxmvTool,
-  ALS: executeAlloyTool,
-  ALSCnD: executeAlloyCnDTool,
-  SPECTRA: executeSpectraTool,
+    SAT: executeLimboole,
+    SMT: executeZ3Wasm,
+    XMV: executeNuxmvTool,
+    ALS: executeAlloyTool,
+    ALSCnD: executeAlloyCnDTool,
+    SPECTRA: executeSpectraTool,
 };
 
 export const toolOutputMap: Record<string, React.FC<any>> = {
-  SAT: TextualOutput,
-  SMT: TextualOutput,
-  XMV: TextualOutput,
-  ALS: AlloyOutput,
-  ALSCnD: AlloyCnDOutput,
-  SPECTRA: TextualOutput,
+    SAT: TextualOutput,
+    SMT: TextualOutput,
+    XMV: TextualOutput,
+    ALS: AlloyOutput,
+    ALSCnD: AlloyCnDOutput,
+    SPECTRA: TextualOutput,
 };
 
 export const languageConfigMap: Record<string, { tokenProvider: any; configuration: any }> = {
-  limboole: { tokenProvider: limbooleLang, configuration: limbooleConf },
-  smt2: { tokenProvider: smt2Lang, configuration: smt2Conf },
-  xmv: { tokenProvider: nuxmvLang, configuration: nuxmvConf },
-  als: { tokenProvider: alloyLang, configuration: alloyConf },
-  cnd: { tokenProvider: alloyLang, configuration: alloyConf },
-  spectra: { tokenProvider: spectraLang, configuration: spectraConf },
+    limboole: { tokenProvider: limbooleLang, configuration: limbooleConf },
+    smt2: { tokenProvider: smt2Lang, configuration: smt2Conf },
+    xmv: { tokenProvider: nuxmvLang, configuration: nuxmvConf },
+    als: { tokenProvider: alloyLang, configuration: alloyConf },
+    cnd: { tokenProvider: alloyLang, configuration: alloyConf },
+    spectra: { tokenProvider: spectraLang, configuration: spectraConf },
 };
 
 export const fmpConfig: FmpConfig = {
-  title: 'FM Playground',
-  repository: 'https://github.com/se-buw/fm-playground',
-  issues: 'https://github.com/se-buw/fm-playground/issues',
-  tools: {
-    limboole: { name: 'Limboole', extension: 'limboole', shortName: 'SAT' },
-    smt2: { name: 'SMT', extension: 'smt2', shortName: 'SMT' },
-    xmv: { name: 'nuXmv', extension: '.xmv', shortName: 'XMV' },
-    als: { name: 'Alloy', extension: 'als', shortName: 'ALS' },
-    cnd: { name: 'AlloyCnD', extension: 'cnd', shortName: 'ALSCnD' },
-    spectra: { name: 'Spectra', extension: 'spectra', shortName: 'SPECTRA' },
-  },
+    title: 'FM Playground',
+    repository: 'https://github.com/se-buw/fm-playground',
+    issues: 'https://github.com/se-buw/fm-playground/issues',
+    tools: {
+        limboole: { name: 'Limboole', extension: 'limboole', shortName: 'SAT' },
+        smt2: { name: 'SMT', extension: 'smt2', shortName: 'SMT' },
+        xmv: { name: 'nuXmv', extension: '.xmv', shortName: 'XMV' },
+        als: { name: 'Alloy', extension: 'als', shortName: 'ALS' },
+        cnd: { name: 'AlloyCnD', extension: 'cnd', shortName: 'ALSCnD' },
+        spectra: { name: 'Spectra', extension: 'spectra', shortName: 'SPECTRA' },
+    },
 };

@@ -5,7 +5,7 @@ import axios from 'axios';
  * @returns axios instance
  */
 const axiosAuth = axios.create({
-  withCredentials: true,
+    withCredentials: true,
 });
 
 export default axiosAuth;

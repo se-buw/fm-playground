@@ -5,7 +5,7 @@ const API_URL = import.meta.env.VITE_FMP_API_URL;
 const FMP_VERSION = import.meta.env.VITE_FMP_VERSION;
 
 export default axios.create({
-  withCredentials: true,
+    withCredentials: true,
 });
 
 /**
@@ -13,13 +13,13 @@ export default axios.create({
  * @returns true if loggout is successful
  */
 export async function userLogout() {
-  let url = `${API_URL}/logout`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.status === 200;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/logout`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.status === 200;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -29,19 +29,19 @@ export async function userLogout() {
  * @returns code
  */
 export async function getCodeByParmalink(check: string, permalink: string) {
-  let url = `${API_URL}/permalink/?check=${check}&p=${permalink}`;
-  const response = await axios.get(url);
-  if (response.status === 200) {
-    return response.data;
-  }
+    let url = `${API_URL}/permalink/?check=${check}&p=${permalink}`;
+    const response = await axios.get(url);
+    if (response.status === 200) {
+        return response.data;
+    }
 }
 
 export async function getMetadataByPermalink(check: string, permalink: string) {
-  let url = `${API_URL}/metadata?check=${check}&p=${permalink}`;
-  const response = await axios.get(url);
-  if (response.status === 200) {
-    return response.data;
-  }
+    let url = `${API_URL}/metadata?check=${check}&p=${permalink}`;
+    const response = await axios.get(url);
+    if (response.status === 200) {
+        return response.data;
+    }
 }
 
 /**
@@ -50,32 +50,32 @@ export async function getMetadataByPermalink(check: string, permalink: string) {
  * @returns {json} {code, check, permalink}
  */
 export async function getCodeById(id: number | string) {
-  let url = `${API_URL}/code/${id}`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/code/${id}`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 //Save the code and the check type in the database and return the permalink
 export async function saveCode(
-  code: string,
-  check: string,
-  parent: string | null,
-  metadata: Record<string, any> | null
+    code: string,
+    check: string,
+    parent: string | null,
+    metadata: Record<string, any> | null
 ) {
-  let url = `${API_URL}/save`;
-  const md = {
-    ...metadata,
-    'fmp-version': FMP_VERSION,
-  };
-  let meta = JSON.stringify(md);
-  const response = await axiosAuth.post(url, { code, check, parent, meta });
-  if (response.status === 200) {
-    return response;
-  }
+    let url = `${API_URL}/save`;
+    const md = {
+        ...metadata,
+        'fmp-version': FMP_VERSION,
+    };
+    let meta = JSON.stringify(md);
+    const response = await axiosAuth.post(url, { code, check, parent, meta });
+    if (response.status === 200) {
+        return response;
+    }
 }
 
 /**
@@ -84,13 +84,13 @@ export async function saveCode(
  * @returns list of histories
  */
 export async function getHistories() {
-  let url = `${API_URL}/histories`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/histories`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -99,13 +99,13 @@ export async function getHistories() {
  * @returns Object with history and has_more_data: true/false
  */
 export async function getHistoryByPage(page: number) {
-  let url = `${API_URL}/histories?page=${page}`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/histories?page=${page}`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -114,13 +114,13 @@ export async function getHistoryByPage(page: number) {
  * @returns list of history objects
  */
 export async function searchUserHistory(query: string) {
-  let url = `${API_URL}/search?q=${query}`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/search?q=${query}`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -128,13 +128,13 @@ export async function searchUserHistory(query: string) {
  * @returns user data: email, history
  */
 export async function downloadUserData() {
-  let url = `${API_URL}/download-user-data`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/download-user-data`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 /**
@@ -142,39 +142,39 @@ export async function downloadUserData() {
  * @returns true if the profile is deleted
  */
 export async function deleteProfile() {
-  let url = `${API_URL}/delete-profile`;
-  try {
-    const response = await axiosAuth.delete(url);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/delete-profile`;
+    try {
+        const response = await axiosAuth.delete(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export async function getProfile() {
-  let url = `${API_URL}/@me`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
+    let url = `${API_URL}/@me`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 export async function isUserLoggedIn() {
-  let url = `${API_URL}/check_session`;
-  try {
-    const response = await axiosAuth.get(url);
-    return response.data;
-  } catch (error) {
-    console.log('Not logged in');
-  }
+    let url = `${API_URL}/check_session`;
+    try {
+        const response = await axiosAuth.get(url);
+        return response.data;
+    } catch (error) {
+        console.log('Not logged in');
+    }
 }
 
 export async function saveFeedback(rating: number, comment: string) {
-  let url = `${API_URL}/feedback`;
-  const response = await axiosAuth.post(url, { rating, comment });
-  if (response.status === 200) {
-    return response;
-  }
+    let url = `${API_URL}/feedback`;
+    const response = await axiosAuth.post(url, { rating, comment });
+    if (response.status === 200) {
+        return response;
+    }
 }

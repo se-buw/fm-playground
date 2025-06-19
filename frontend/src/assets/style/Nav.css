@@ -1,134 +1,134 @@
 .header {
-  background-color: var(--background-color);
-  color: var(--primary-text-color);
-  transition:
-    background-color 250ms ease-in-out,
-    color 250ms ease-in-out;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
 }
 
 .navbar-nav {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  padding: 0;
-  margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .navbar-toggler {
-  background-color: var(--background-color);
-  color: var(--primary-text-color);
-  transition:
-    background-color 250ms ease-in-out,
-    color 250ms ease-in-out;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
 }
 
 .navbar-option-button {
-  /*me-lg-2 justify-content-center */
-  margin: 0 0.5rem;
-  justify-content: center;
+    /*me-lg-2 justify-content-center */
+    margin: 0 0.5rem;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {
-  .navbar-option-button {
-    width: 100% !important;
-    margin-bottom: 5px;
-  }
+    .navbar-option-button {
+        width: 100% !important;
+        margin-bottom: 5px;
+    }
 }
 
 @media (max-width: 768px) {
-  .navbar-nav {
-    flex-direction: column;
-    justify-content: space-between;
-  }
+    .navbar-nav {
+        flex-direction: column;
+        justify-content: space-between;
+    }
 }
 
 @media (max-width: 768px) {
-  .toggle-icon {
-    display: none;
-  }
+    .toggle-icon {
+        display: none;
+    }
 }
 
 /* Navbar.css */
 .loading-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  /* Make it cover the entire viewport height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    /* Make it cover the entire viewport height */
 }
 
 .loading-spinner {
-  border: 8px solid #f3f3f3;
-  /* Light gray border */
-  border-top: 8px solid #3498db;
-  /* Blue border on top */
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-  /* Apply the spin animation */
+    border: 8px solid #f3f3f3;
+    /* Light gray border */
+    border-top: 8px solid #3498db;
+    /* Blue border on top */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    /* Apply the spin animation */
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
 
-  100% {
-    transform: rotate(360deg);
-  }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .github-icon {
-  display: flex;
-  align-items: center;
-  background: transparent;
-  border: none;
-  fill: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    fill: var(--primary-text-color);
 }
 
 .nav-se-logo {
-  width: 30px;
-  height: 30px;
-  margin-right: 0.5rem;
+    width: 30px;
+    height: 30px;
+    margin-right: 0.5rem;
 }
 
 .header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: var(--background-color);
-  color: var(--primary-text-color);
-  transition:
-    background-color 250ms ease-in-out,
-    color 250ms ease-in-out;
-  align-items: center;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: var(--background-color);
+    color: var(--primary-text-color);
+    transition:
+        background-color 250ms ease-in-out,
+        color 250ms ease-in-out;
+    align-items: center;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .header .flex {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .nav-se-logo {
-  height: 40px; /* Adjust based on logo size */
-  width: auto;
+    height: 40px; /* Adjust based on logo size */
+    width: auto;
 }
 
 .nav-right {
-  display: flex;
-  gap: 1rem;
+    display: flex;
+    gap: 1rem;
 }
 
 .nav-right button:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 .text-lg {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
