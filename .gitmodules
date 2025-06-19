@@ -1,0 +1,3 @@
+[submodule "copeanddrag"]
+	path = copeanddrag
+	url = https://github.com/sidprasad/copeanddrag.git
