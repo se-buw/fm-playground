@@ -12,7 +12,7 @@ import AlloyCytoscapeGraph from './AlloyCytoscapeGraph';
 import AlloyEvaluator from './AlloyEvaluator';
 import { getLineToHighlight } from '@/../tools/common/lineHighlightingUtil';
 import { getGraphData, parseAlloyErrorMessage, getTraceLengthAndBackloop } from '@/../tools/alloy/alloyUtils';
-import '@/assets/style/AlloyOutput.css';
+import './AlloyOutput.css';
 import { lineToHighlightAtom, isFullScreenAtom, alloyInstanceAtom } from '@/atoms';
 
 async function getAlloyNextInstance(specId: string | null) {
