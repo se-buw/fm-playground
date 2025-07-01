@@ -156,7 +156,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                             <MDBBtn
                                 className='navbar-option-button'
                                 onClick={handleDrawerOpen}
-                                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
+                                style={{ width: 'auto', display: 'flex', alignItems: 'center', height: '38px' }}
                             >
                                 History
                             </MDBBtn>
@@ -167,12 +167,12 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                             />
                             <MDBDropdown
                                 className='btn-group navbar-option-button'
-                                style={{ width: 'auto', display: 'flex', alignItems: 'center' }}
+                                style={{ width: 'auto', display: 'flex', alignItems: 'center', height: '38px' }}
                             >
-                                <MDBBtn color='danger' onClick={handleLogout}>
+                                <MDBBtn color='danger' onClick={handleLogout} style={{ height: '38px' }}>
                                     Logout
                                 </MDBBtn>
-                                <MDBDropdownToggle split color='dark' style={{ flex: '0' }}></MDBDropdownToggle>
+                                <MDBDropdownToggle split color='dark' style={{ flex: '0', height: '38px' }}></MDBDropdownToggle>
                                 <MDBDropdownMenu style={{ minWidth: '200px' }}>
                                     <MDBDropdownItem link onClick={handleUserDataDownload}>
                                         Download Your Data
@@ -184,18 +184,23 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                             </MDBDropdown>
                         </>
                     ) : (
-                        <MDBBtn rounded color='primary' href='/login'>
+                        <MDBBtn 
+                            rounded 
+                            color='primary' 
+                            href='/login'
+                            style={{ height: '38px', display: 'flex', alignItems: 'center' }}
+                        >
                             Login
                         </MDBBtn>
                     )}
 
+                    <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
                     <button
-                        className='github-icon'
+                        className='github-icon-button'
                         onClick={() => window.open('https://github.com/fm4se/fm-playground', '_blank')}
                     >
-                        <FaGithub size={24} className='github-icon' />
+                        <FaGithub size={20} />
                     </button>
-                    <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
                 </div>
 
                 {/* Dropdown visible on small screens, hidden on large */}
@@ -254,10 +259,11 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                             >
                                 <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
                                 <button
-                                    className='github-icon'
+                                    className='github-icon-button'
                                     onClick={() => window.open('https://github.com/fm4se/fm-playground', '_blank')}
+                                    style={{ marginLeft: '0.5rem' }}
                                 >
-                                    <FaGithub size={24} className='github-icon' />
+                                    <FaGithub size={20} />
                                 </button>
                             </div>
                         </MDBDropdownItem>

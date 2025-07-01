@@ -89,6 +89,41 @@
     fill: var(--primary-text-color);
 }
 
+.github-icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    height: 38px;
+    width: 38px;
+    border-radius: 4px;
+    color: var(--primary-text-color);
+    transition: all 0.2s ease-in-out;
+    padding: 0;
+}
+
+.github-icon-button:hover {
+    background-color: var(--hover-background-color, rgba(0, 0, 0, 0.1));
+    transform: scale(1.05);
+}
+
+.github-icon-button:focus {
+    outline: 2px solid var(--primary-color, #007bff);
+    outline-offset: 2px;
+}
+
+.nav-icon-button {
+    border-radius: 4px !important;
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-icon-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 .nav-se-logo {
     width: 30px;
     height: 30px;
