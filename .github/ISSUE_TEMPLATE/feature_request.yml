@@ -1,0 +1,85 @@
+name: 🚀 Feature Request
+description: Suggest an idea or enhancement for FM Playground
+title: '[Feature]: '
+labels: ['enhancement', 'triage']
+body:
+  - type: markdown
+    attributes:
+      value: 'Thank you for suggesting a new feature! 🚀'
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: What feature would you like to see added?
+      placeholder: Describe the feature you'd like to see implemented in FM Playground.
+    validations:
+      required: true
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: Is your feature request related to a problem? Please describe.
+      placeholder: A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+    validations:
+      required: false
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the solution you'd like
+      placeholder: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe alternatives you've considered
+      placeholder: A clear and concise description of any alternative solutions or features you've considered.
+    validations:
+      required: false
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: How would this feature be used?
+      placeholder: Describe specific scenarios where this feature would be helpful.
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: '## Context'
+  - type: dropdown
+    id: tools
+    attributes:
+      label: Which tool(s) would this feature relate to?
+      multiple: true
+      options:
+        - General/UI
+        - Limboole
+        - SMT/Z3
+        - Alloy
+        - nuXmv
+        - Spectra
+        - Documentation
+        - API
+    validations:
+      required: true
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help implement this feature?
+      options:
+        - label: I would be willing to contribute to the implementation
+          required: false
+        - label: I can help with testing the feature
+          required: false
+        - label: I can help with documentation
+          required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, screenshots, mockups, or examples about the feature request here.
+      placeholder: 'e.g. Screenshots, links to similar features in other tools, etc.'
