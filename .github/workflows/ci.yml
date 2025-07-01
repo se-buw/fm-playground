@@ -10,6 +10,10 @@ on:
     tags:
       - "v*.*.*"
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -87,7 +91,11 @@ jobs:
           context: ./${{ matrix.folder }}
           file: ./${{ matrix.folder }}/Dockerfile
           tags: ${{ env.TAGS }}
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: |
+            ${{ steps.meta.outputs.labels }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.description=Docker image for ${{ matrix.folder }}
+            org.opencontainers.image.licenses=MIT
           platforms: linux/amd64
           push: true
           build-args: |
