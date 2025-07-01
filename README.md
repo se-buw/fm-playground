@@ -16,7 +16,7 @@ We started a small overview of the features of the FM Playground and how to use 
 
 <div align="center">
 
-[![Formal Methods Playground](./resources/fmp-tutorial.jpg)](https://www.youtube.com/playlist?list=PLGyeoukah9NYq9ULsIuADG2r2QjX530nf)
+[![Formal Methods Playground](./docs/assets/img/fmp-tutorial.jpg)](https://www.youtube.com/playlist?list=PLGyeoukah9NYq9ULsIuADG2r2QjX530nf)
 
 </div>
 

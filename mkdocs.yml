@@ -1,0 +1,85 @@
+site_name: FM Playground Documentation
+site_description: Comprehensive documentation for the Formal Methods Playground
+site_url: https://play.formal-methods.net/docs/
+
+
+# Repository
+repo_name: fm4se/fm-playground
+repo_url: https://github.com/fm4se/fm-playground
+edit_uri: "edit/main/docs/"
+
+nav:
+  - User Guide: index.md
+  - Developer Guide:
+    - Overview: developer-guide/index.md
+    - Tailered Playground:
+      - Setup Guide: developer-guide/existing-project/index.md
+      - Project Structure: developer-guide/existing-project/project-structure.md
+    - Empty Playground:
+      - Setup Guide: developer-guide/start-from-scratch/index.md
+      - Project Structure: developer-guide/start-from-scratch/project-structure.md
+    - Development:
+      - Adding Tools: development/adding-tools.md
+      - Deployment: development/deployment.md
+      - API Reference: development/api-reference.md
+  - Release Notes: CHANGELOG.md
+
+# Configuration
+theme:
+  name: material
+  custom_dir: docs/overrides
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.keys
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - md_in_html
+  - tables
+  - footnotes
+  - meta
+
+# Customization
+extra:
+  version:
+    provider: mike
+    default: latest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/fm4se/fm-playground
+    - icon: fontawesome/brands/youtube
+      link: https://www.youtube.com/playlist?list=PLGyeoukah9NYq9ULsIuADG2r2QjX530nf
+
+plugins:
+  - search
