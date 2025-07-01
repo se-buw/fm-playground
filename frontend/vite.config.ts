@@ -75,25 +75,25 @@ export default defineConfig({
         allowedHosts: true,
         proxy: {
             '/nuxmv': {
-                target: 'http://fmp-nuxmv-api:8080',
+                target: 'http://localhost:8080',
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/nuxmv/, ''),
             },
             '/smt': {
-                target: 'http://fmp-z3-api:8080',
+                target: 'http://localhost:8080',
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/smt/, ''),
             },
             '/alloy': {
-                target: 'http://fmp-alloy-api:8080',
+                target: 'http://localhost:8080',
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/alloy/, ''),
             },
             '/spectra': {
-                target: 'http://fmp-spectra-api:8080',
+                target: 'http://localhost:8080',
                 changeOrigin: true,
                 secure: false,
                 rewrite: (path) => path.replace(/^\/spectra/, ''),
