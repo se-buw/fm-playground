@@ -57,15 +57,18 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "release" ]]; then
             VERSION="${{ github.event.release.tag_name }}"
+            # Extract major.minor from version (e.g., v2.6.11 -> 2.6)
+            MAJOR_MINOR=$(echo $VERSION | sed 's/^v//' | cut -d. -f1,2)
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "alias=latest" >> $GITHUB_OUTPUT
-            echo "title=${VERSION}" >> $GITHUB_OUTPUT
+            echo "alias=${MAJOR_MINOR}.x latest" >> $GITHUB_OUTPUT
+            echo "title=v${MAJOR_MINOR}.x" >> $GITHUB_OUTPUT
           else
             # For manual dispatch, use latest tag
             VERSION=$(git describe --tags --abbrev=0)
+            MAJOR_MINOR=$(echo $VERSION | sed 's/^v//' | cut -d. -f1,2)
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "alias=latest" >> $GITHUB_OUTPUT
-            echo "title=${VERSION}" >> $GITHUB_OUTPUT
+            echo "alias=${MAJOR_MINOR}.x latest" >> $GITHUB_OUTPUT
+            echo "title=v${MAJOR_MINOR}.x" >> $GITHUB_OUTPUT
           fi
 
       - name: Deploy with mike
