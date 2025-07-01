@@ -1,6 +1,6 @@
 services:
   nuxmv:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: nuxmv

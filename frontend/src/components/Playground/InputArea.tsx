@@ -121,7 +121,7 @@ const InputArea: React.FC<InputAreaProps> = ({ editorTheme, onRunButtonClick, on
                                 isOpen={isNewSpecModalOpen}
                                 onClose={closeModal}
                                 title='New Spec'
-                                message={`Are you sure? 
+                                message={`Are you sure?
                               This will reset the editor and the output areas`}
                                 onConfirm={handleReset}
                             />

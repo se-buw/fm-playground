@@ -1,13 +1,14 @@
 import os
-import requests
 from typing import Union
+
+import requests
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
 load_dotenv()
-from nuxmv import process_commands
 import redis
+from nuxmv import process_commands
 from redis_cache import RedisCache
 
 API_URL = os.getenv("API_URL")
@@ -24,6 +25,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def is_redis_available() -> bool:
     try:

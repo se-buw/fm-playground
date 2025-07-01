@@ -1,6 +1,6 @@
 services:
   spectra:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: spectra

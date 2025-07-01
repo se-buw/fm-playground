@@ -1,6 +1,7 @@
-from unittest import mock
 import concurrent.futures
-from z3 import prettify_error, run_z3, process_commands, MAX_CONCURRENT_REQUESTS
+from unittest import mock
+
+from z3 import MAX_CONCURRENT_REQUESTS, prettify_error, process_commands, run_z3
 
 valid_spec = """(declare-const a Int)
 (declare-const b Int)
@@ -13,6 +14,5 @@ valid_spec = """(declare-const a Int)
 
 def test_train_success():
     result = run_z3(valid_spec)
-    assert "unsat" in result  
-    assert " model is not available" in result 
-
+    assert "unsat" in result
+    assert " model is not available" in result

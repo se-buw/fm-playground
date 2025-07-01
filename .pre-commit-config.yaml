@@ -7,19 +7,20 @@ repos:
     hooks:
       - id: trailing-whitespace
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
-        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated|frontend/public)/.*
       - id: end-of-file-fixer
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
-        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated|frontend/public)/.*
       - id: check-merge-conflict
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
-        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated|frontend/public)/.*
       - id: check-added-large-files
         args: ['--maxkb=1000']
         files: ^(alloy-api|frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*
-        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated|frontend/public)/.*
       - id: check-json
         files: ^(frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*\.json$
+        exclude: ^.*(frontend/public|language-configuration\.json|tsconfig\.json).*
       - id: check-yaml
         files: ^(frontend|backend|z3-api|spectra-api|limboole-api|nuxmv-api)/.*\.ya?ml$
       - id: check-toml
@@ -63,14 +64,14 @@ repos:
         entry: npx --prefix frontend prettier --config frontend/.prettierrc --check
         language: system
         files: ^frontend/.*\.(ts|tsx|js|jsx|json|css|scss|html|md)$
-        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated|frontend/public)/.*
         pass_filenames: true
       - id: prettier-frontend-format
         name: Prettier Format Frontend
         entry: npx --prefix frontend prettier --config frontend/.prettierrc --write
         language: system
         files: ^frontend/.*\.(ts|tsx|js|jsx|json|css|scss|html|md)$
-        exclude: ^.*(node_modules|dist|build|tools/.*/generated)/.*
+        exclude: ^.*(node_modules|dist|build|tools/.*/generated|frontend/public)/.*
         pass_filenames: true
 
   # TypeScript/JavaScript linting with ESLint
@@ -81,7 +82,7 @@ repos:
         entry: bash -c 'cd frontend && npm run lint'
         language: system
         files: ^frontend/.*\.(ts|tsx|js|jsx)$
-        exclude: ^frontend/(node_modules|dist)/.*
+        exclude: ^frontend/(node_modules|dist|public)/.*
         pass_filenames: false
 
   # Custom hook for Gradle Spotless check

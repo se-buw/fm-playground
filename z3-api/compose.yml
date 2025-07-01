@@ -1,6 +1,6 @@
 services:
   z3:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: z3

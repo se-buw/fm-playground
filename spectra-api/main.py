@@ -1,15 +1,15 @@
 import os
-import requests
 from typing import Union
+
+import requests
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
 load_dotenv()
-from spectra import process_commands
-
 import redis
 from redis_cache import RedisCache
+from spectra import process_commands
 
 API_URL = os.getenv("API_URL")
 REDIS_URL = os.getenv("REDIS_URL")
@@ -34,6 +34,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def is_redis_available() -> bool:
     try:

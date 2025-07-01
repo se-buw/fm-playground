@@ -26,7 +26,7 @@ Command:
    | PAR_OPEN 'set-logic' symbol=SmtSymbol PAR_CLOSE
    | PAR_OPEN 'set-option' option=Option PAR_CLOSE
     // Z3 Commands
-   | PAR_OPEN 'eval' term+=Term+ PAR_CLOSE 
+   | PAR_OPEN 'eval' term+=Term+ PAR_CLOSE
    | PAR_OPEN ('maximize' | 'minimize') term=Term PAR_CLOSE
 ;
 
@@ -81,9 +81,9 @@ CmdDecDataType:
 // sortDec is not exposed to other commands
 // We only have access to it, if we stay inside the command, like an inner function
 CmdDecDataTypes:
-    PAR_OPEN commandType='declare-datatypes' 
-    PAR_OPEN  sortDec+=SortDec+ PAR_CLOSE 
-    PAR_OPEN dataTypeDecs+=CommonDataTypeDec+ PAR_CLOSE 
+    PAR_OPEN commandType='declare-datatypes'
+    PAR_OPEN  sortDec+=SortDec+ PAR_CLOSE
+    PAR_OPEN dataTypeDecs+=CommonDataTypeDec+ PAR_CLOSE
     PAR_CLOSE;
 
 CommonDataTypeDec:
@@ -97,12 +97,12 @@ ConstructorDec:
     PAR_OPEN name=SmtSymbol selectorDec+=SelectorDec* PAR_CLOSE;
 
 SelectorDec:
-    PAR_OPEN name=SmtSymbol sort=Sort PAR_CLOSE 
+    PAR_OPEN name=SmtSymbol sort=Sort PAR_CLOSE
     | PAR_OPEN listKey=('tail'|'head') sort=Sort PAR_CLOSE
 ;
 
 SortDec:
-    PAR_OPEN name=SmtSymbol num=NUMERAL PAR_CLOSE 
+    PAR_OPEN name=SmtSymbol num=NUMERAL PAR_CLOSE
     | name=SmtSymbol;
 
 FunctionDef:
@@ -118,7 +118,7 @@ SortedVar:
     PAR_OPEN name=SmtSymbol sort=Sort PAR_CLOSE;
 
 Sort:
-    identifier=SortIdentifier 
+    identifier=SortIdentifier
     | PAR_OPEN identifier=SortIdentifier sorts+=Sort+ PAR_CLOSE
 ;
 
@@ -126,7 +126,7 @@ Index:
     num=NUMERAL | symbol=SmtSymbol;
 
 SortIdentifier:
-    ID=[NamedSort:SmtSymbol] 
+    ID=[NamedSort:SmtSymbol]
     | (PAR_OPEN '_' ID=[NamedSort:SmtSymbol] indices+=Index+ PAR_CLOSE)
     | sort=PreDefinedSort
     | 'Array'
@@ -141,7 +141,7 @@ Term:
     | QualIdentifier
     | BValue
     | AttributedTerm
-    | PAR_OPEN Operator term+=Term+ PAR_CLOSE 
+    | PAR_OPEN Operator term+=Term+ PAR_CLOSE
     | PAR_OPEN 'if' term+=Term+ statement+=ConditionalTerm*  PAR_CLOSE
     | PAR_OPEN qualId=QualIdentifier term+=Term+  boolean=BValue? PAR_CLOSE
     | PAR_OPEN 'let' PAR_OPEN varBinding+=VarBinding+ PAR_CLOSE term=Term PAR_CLOSE
@@ -210,7 +210,7 @@ Attribute:
 
 AttributeValue:
     BValue |
-    const=SpecConstant 
+    const=SpecConstant
     | symbol=SmtSymbol string+=STRING*
     | {infer AttributeValue} PAR_OPEN exprs+=SExpr* PAR_CLOSE;
 
@@ -235,7 +235,7 @@ OptionKeyword:
     | option=':random-seed' value=NUMERAL?
     | option=':regular-output-channel' value=STRING?
     | option=':reproducible-resource-limit' value=NUMERAL
-    // Z3 
+    // Z3
     | option=':smt-auto-config' value=BValue?
     | option=':smt.mbqi' value=BValue?
     | option=':smt.macro-finder' value=BValue?
@@ -272,11 +272,11 @@ terminal STRING returns string: /"([^"\\]|\\.|(WS|PRINTABLE_CHAR))+"/;
 hidden terminal WS: /\s+/;
 
 // - + * / div mod abs <= < >= > to_real to_int is_int
-terminal ARITHMETIC_OPERATOR: '-' | '+' | '*' | '/' | 'div' | 'mod' | 'abs' | '<=' | '<' | '>=' | '>'; 
+terminal ARITHMETIC_OPERATOR: '-' | '+' | '*' | '/' | 'div' | 'mod' | 'abs' | '<=' | '<' | '>=' | '>';
 // not => and or xor = // distinct ite
 terminal BOOLEAN_OPERATOR: 'not' | '=>' | 'and' | 'or' | 'xor' | '=' | 'ite' | 'distinct';
 
-terminal SIMPLE_SYMBOL: 
+terminal SIMPLE_SYMBOL:
     (LETTER | '+' | '-' | '/' | '*' | ',' | '=' | '%' | '?' | '!' | '.' | '$' | '_' | '~' | '&' | '^' | '<' | '>' | '@')
     (LETTER | DIGIT | '+' | '-' | '/' | '*' | '=' | '%' | '?' | '!' | '.' | '$' | '_' | '~' | '&' | '^' | '<' | '>' | '@')*;
 hidden terminal SL_COMMENT: /;[^\n\r]*/;

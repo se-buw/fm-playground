@@ -1,6 +1,6 @@
 services:
   limboole:
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     container_name: limboole-api

@@ -1,14 +1,15 @@
 import os
-import requests
 from typing import Union
+
+import requests
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
 load_dotenv()
-from z3 import process_commands
 import redis
 from redis_cache import RedisCache
+from z3 import process_commands
 
 API_URL = os.getenv("API_URL")
 REDIS_URL = os.getenv("REDIS_URL")
@@ -23,6 +24,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def is_redis_available() -> bool:
     try:
@@ -46,6 +48,7 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
 
 def run_z3(code: str) -> str:
     if is_redis_available():
+
         @cache.cache()
         def cached_run_z3(code: str) -> str:
             return process_commands(code)

@@ -1,6 +1,6 @@
 import os
-import subprocess
 import re
+import subprocess
 import tempfile
 
 LIMBOOLE_EXE = "lib/limbooleAPE.exe"

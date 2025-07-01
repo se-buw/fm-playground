@@ -1,13 +1,14 @@
 import os
-import requests
 from typing import Union
+
+import requests
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
 
 load_dotenv()
-from limboole import run_limboole
 import redis
+from limboole import run_limboole
 from redis_cache import RedisCache
 
 API_URL = os.getenv("API_URL")
@@ -23,6 +24,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 def is_redis_available() -> bool:
     try:
@@ -46,6 +48,7 @@ def get_code_by_permalink(check: str, p: str) -> Union[str, None]:
 
 def run(code: str, check_sat: bool) -> str:
     if is_redis_available():
+
         @cache.cache()
         def cached_run_limboole(code: str, check_sat) -> str:
             return run_limboole(code, check_sat)

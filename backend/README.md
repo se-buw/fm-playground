@@ -14,7 +14,7 @@
 
 ## Description
 
-This is the backend for the FM Playground application. FM Playground is a web application that allows users to run formal methods tools in the browser. 
+This is the backend for the FM Playground application. FM Playground is a web application that allows users to run formal methods tools in the browser.
 
 
 ## Prerequisites
@@ -51,7 +51,7 @@ cp .env.example .env
 
 4. Install dependencies: ```pip install -r requirements.txt```
 
-5. Start the development server: `python app.py` 
+5. Start the development server: `python app.py`
 
 
 ### Docker
@@ -60,7 +60,7 @@ cp .env.example .env
 
 ```bash
 docker build -t fm-play-backend .
-```  
+```
 2. Run the docker image:
 
 ```bash
