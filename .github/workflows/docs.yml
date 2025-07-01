@@ -1,13 +1,6 @@
 name: Deploy Documentation
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'docs/**'
-      - 'CHANGELOG.md'
-      - 'mkdocs.yml'
   release:
     types: [published]
   workflow_dispatch:
@@ -68,18 +61,14 @@ jobs:
             echo "alias=latest" >> $GITHUB_OUTPUT
             echo "title=${VERSION}" >> $GITHUB_OUTPUT
           else
-            # For main branch pushes and manual dispatch
-            VERSION="dev"
+            # For manual dispatch, use latest tag
+            VERSION=$(git describe --tags --abbrev=0)
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "alias=" >> $GITHUB_OUTPUT
-            echo "title=Development" >> $GITHUB_OUTPUT
+            echo "alias=latest" >> $GITHUB_OUTPUT
+            echo "title=${VERSION}" >> $GITHUB_OUTPUT
           fi
 
       - name: Deploy with mike
         run: |
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            mike deploy --push --update-aliases ${{ steps.version.outputs.version }} ${{ steps.version.outputs.alias }} --title="${{ steps.version.outputs.title }}"
-            mike set-default --push latest
-          else
-            mike deploy --push ${{ steps.version.outputs.version }} --title="${{ steps.version.outputs.title }}"
-          fi
+          mike deploy --push --update-aliases ${{ steps.version.outputs.version }} ${{ steps.version.outputs.alias }} --title="${{ steps.version.outputs.title }}"
+          mike set-default --push latest
