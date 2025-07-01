@@ -67,6 +67,9 @@ const InputArea: React.FC<InputAreaProps> = ({ editorTheme, onRunButtonClick, on
             if (e.target) {
                 const content = e.target.result as string;
                 setEditorValue(content);
+                // Reset permalink but keep the check status
+                setPermalink((prev) => ({ ...prev, permalink: null }));
+
             }
         };
         reader.readAsText(file);
