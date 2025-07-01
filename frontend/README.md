@@ -37,7 +37,7 @@ List any dependencies that must be installed before running the application.
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/se-buw/fm-playground
+git clone https://github.com/fm4se/fm-playground
 ```
 
 2. Navigate to the project directory:

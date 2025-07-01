@@ -191,7 +191,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
 
                     <button
                         className='github-icon'
-                        onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                        onClick={() => window.open('https://github.com/fm4se/fm-playground', '_blank')}
                     >
                         <FaGithub size={24} className='github-icon' />
                     </button>
@@ -255,7 +255,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                                 <Toggle isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
                                 <button
                                     className='github-icon'
-                                    onClick={() => window.open('https://github.com/se-buw/fm-playground', '_blank')}
+                                    onClick={() => window.open('https://github.com/fm4se/fm-playground', '_blank')}
                                 >
                                     <FaGithub size={24} className='github-icon' />
                                 </button>

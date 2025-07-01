@@ -16,7 +16,7 @@ const Footer = () => {
                     &copy; {new Date().getFullYear()} Copyright: Made with ♥ in Bauhaus-Universität Weimar
                     <br />
                     <a
-                        href={`https://github.com/se-buw/fm-playground/releases/tag/v${import.meta.env.VITE_FMP_VERSION}`}
+                        href={`https://github.com/fm4se/fm-playground/releases/tag/v${import.meta.env.VITE_FMP_VERSION}`}
                         target='_blank'
                         rel='noopener noreferrer'
                     >

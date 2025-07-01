@@ -71,8 +71,8 @@ export const lspSupportMap: Record<string, boolean> = {
 
 export const fmpConfig: FmpConfig = {
     title: 'FM Playground',
-    repository: 'https://github.com/se-buw/fm-playground',
-    issues: 'https://github.com/se-buw/fm-playground/issues',
+    repository: 'https://github.com/fm4se/fm-playground',
+    issues: 'https://github.com/fm4se/fm-playground/issues',
     tools: {
         limboole: { name: 'Limboole', extension: 'limboole', shortName: 'SAT' },
         smt2: { name: 'SMT', extension: 'smt2', shortName: 'SMT' },
