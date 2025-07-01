@@ -67,18 +67,19 @@ jobs:
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
             echo "alias=latest" >> $GITHUB_OUTPUT
             echo "title=${VERSION}" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          else
+            # For main branch pushes and manual dispatch
             VERSION="dev"
             echo "version=${VERSION}" >> $GITHUB_OUTPUT
-            echo "alias=dev" >> $GITHUB_OUTPUT
+            echo "alias=" >> $GITHUB_OUTPUT
             echo "title=Development" >> $GITHUB_OUTPUT
           fi
 
       - name: Deploy with mike
         run: |
-          mike deploy --push --update-aliases ${{ steps.version.outputs.version }} ${{ steps.version.outputs.alias }} --title="${{ steps.version.outputs.title }}"
-          
-          # Set default version to latest if this is a release
           if [[ "${{ github.event_name }}" == "release" ]]; then
+            mike deploy --push --update-aliases ${{ steps.version.outputs.version }} ${{ steps.version.outputs.alias }} --title="${{ steps.version.outputs.title }}"
             mike set-default --push latest
+          else
+            mike deploy --push ${{ steps.version.outputs.version }} --title="${{ steps.version.outputs.title }}"
           fi
