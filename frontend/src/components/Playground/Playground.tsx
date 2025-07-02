@@ -19,6 +19,7 @@ import {
 } from '@/atoms';
 import InputArea from '@/components/Playground/InputArea';
 import OutputArea from '@/components/Playground//OutputArea';
+import ResizableSplitter from '@/components/Utils/ResizableSplitter';
 import '@/assets/style/Playground.css';
 
 import type { LanguageProps } from './Tools';
@@ -188,19 +189,32 @@ const Playground: React.FC<PlaygroundProps> = ({ editorTheme }) => {
     };
 
     return (
-        <div className='container Playground'>
+        <div className='container-fluid Playground'>
             <Tools onChange={handleLanguageChange} selected={language} />
             <Tooltip id='playground-tooltip' />
             <div className='row Playground'>
-                <div className='col-md-6 Playground' ref={inputDivRef}>
-                    <InputArea
-                        editorTheme={editorTheme}
-                        onRunButtonClick={handleToolExecution}
-                        onFullScreenButtonClick={() => toggleFullScreen('input')}
+                <div className='col-12'>
+                    <ResizableSplitter
+                        leftChild={
+                            <div ref={inputDivRef}>
+                                <InputArea
+                                    editorTheme={editorTheme}
+                                    onRunButtonClick={handleToolExecution}
+                                    onFullScreenButtonClick={() => toggleFullScreen('input')}
+                                />
+                            </div>
+                        }
+                        rightChild={
+                            <div ref={outputDivRef}>
+                                <OutputArea onFullScreenButtonClick={() => toggleFullScreen('output')} />
+                            </div>
+                        }
+                        initialLeftWidth={50}
+                        minLeftWidth={25}
+                        maxLeftWidth={75}
+                        resizerWidth={12}
+                        breakpoint={768}
                     />
-                </div>
-                <div className='col-md-6 Playground' ref={outputDivRef}>
-                    <OutputArea onFullScreenButtonClick={() => toggleFullScreen('output')} />
                 </div>
             </div>
             <Guides id={language.id} />

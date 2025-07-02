@@ -1,0 +1,119 @@
+.resizable-splitter-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.resizable-splitter-container.desktop-layout {
+    flex-direction: row;
+}
+
+.resizable-splitter-container.mobile-layout {
+    flex-direction: column;
+}
+
+.resizable-panel {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.mobile-panel {
+    width: 100% !important;
+    flex: 1;
+    margin-bottom: 1rem;
+}
+
+.mobile-panel:last-child {
+    margin-bottom: 0;
+}
+
+.left-panel {
+    border-right: none;
+}
+
+.right-panel {
+    border-left: none;
+}
+
+.resizable-resizer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    cursor: col-resize;
+    user-select: none;
+    position: relative;
+    transition: all 0.2s ease;
+    border: none;
+    padding: 0 2px;
+}
+
+.resizable-resizer:hover {
+    background-color: transparent;
+}
+
+.resizable-resizer.dragging {
+    background-color: transparent;
+}
+
+.resizer-handle {
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    border-radius: 2px;
+    opacity: 0.3;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.resizer-handle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 1px;
+}
+
+.resizable-resizer:hover .resizer-handle {
+    opacity: 0.8;
+    transform: scaleX(1.2);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.resizable-resizer.dragging .resizer-handle {
+    opacity: 1;
+    transform: scaleX(1.3);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+/* Dark theme support */
+[data-theme="dark"] .resizable-resizer:hover {
+    background-color: transparent;
+}
+
+[data-theme="dark"] .resizable-resizer.dragging {
+    background-color: transparent;
+}
+
+[data-theme="dark"] .resizer-handle {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+}
+
+[data-theme="dark"] .resizer-handle::before {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .resizable-resizer:hover .resizer-handle {
+    box-shadow: 0 2px 8px rgba(13, 110, 253, 0.4);
+}
+
+[data-theme="dark"] .resizable-resizer.dragging .resizer-handle {
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.5);
+}
