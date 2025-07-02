@@ -52,10 +52,10 @@ const ResizableSplitter: React.FC<ResizableSplitterProps> = ({
             const containerRect = containerRef.current.getBoundingClientRect();
             const containerWidth = containerRect.width;
             const mouseX = e.clientX - containerRect.left;
-            
+
             const newLeftWidth = (mouseX / containerWidth) * 100;
             const clampedWidth = Math.min(Math.max(newLeftWidth, minLeftWidth), maxLeftWidth);
-            
+
             setLeftWidth(clampedWidth);
         },
         [isDragging, minLeftWidth, maxLeftWidth]
@@ -91,37 +91,33 @@ const ResizableSplitter: React.FC<ResizableSplitterProps> = ({
     // For mobile screens, render a simple vertical layout
     if (isMobile) {
         return (
-            <div className="resizable-splitter-container mobile-layout">
-                <div className="resizable-panel mobile-panel">
-                    {leftChild}
-                </div>
-                <div className="resizable-panel mobile-panel">
-                    {rightChild}
-                </div>
+            <div className='resizable-splitter-container mobile-layout'>
+                <div className='resizable-panel mobile-panel'>{leftChild}</div>
+                <div className='resizable-panel mobile-panel'>{rightChild}</div>
             </div>
         );
     }
 
     return (
-        <div ref={containerRef} className="resizable-splitter-container desktop-layout">
-            <div 
-                className="resizable-panel left-panel" 
+        <div ref={containerRef} className='resizable-splitter-container desktop-layout'>
+            <div
+                className='resizable-panel left-panel'
                 style={{ width: `calc(${leftWidth}% - ${resizerWidth / 2}px)` }}
             >
                 {leftChild}
             </div>
-            
+
             <div
                 ref={resizerRef}
                 className={`resizable-resizer ${isDragging ? 'dragging' : ''}`}
                 style={{ width: `${resizerWidth}px` }}
                 onMouseDown={handleMouseDown}
             >
-                <div className="resizer-handle" />
+                <div className='resizer-handle' />
             </div>
-            
-            <div 
-                className="resizable-panel right-panel" 
+
+            <div
+                className='resizable-panel right-panel'
                 style={{ width: `calc(${rightWidth}% - ${resizerWidth / 2}px)` }}
             >
                 {rightChild}

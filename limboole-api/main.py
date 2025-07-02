@@ -1,13 +1,13 @@
-import redis
-from limboole import run_limboole
-from redis_cache import RedisCache
 import os
 from typing import Union
 
+import redis
 import requests
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from limboole import run_limboole
+from redis_cache import RedisCache
 
 load_dotenv()
 

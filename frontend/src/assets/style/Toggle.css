@@ -28,8 +28,7 @@
     background: transparent; /* Transparent background */
     border: none; /* No border */
     position: relative;
-    transition:
-        background 250ms ease-in-out;
+    transition: background 250ms ease-in-out;
     margin-right: 0.3em;
     display: flex;
     align-items: center;

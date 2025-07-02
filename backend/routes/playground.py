@@ -6,8 +6,6 @@ import time  # noqa: E402
 from datetime import datetime  # noqa: E402
 
 import pytz  # noqa: E402
-from flask import Blueprint, jsonify, make_response, request, session  # noqa: E402
-
 from config import app, limiter  # noqa: E402
 from db.db_query import (  # noqa: E402
     code_exists_in_db,
@@ -22,10 +20,11 @@ from db.db_query import (  # noqa: E402
     update_user_history_by_id,
 )
 from db.models import Code, Data, db  # noqa: E402
-from utils.logging_utils import (
+from flask import Blueprint, jsonify, make_response, request, session  # noqa: E402
+from utils.logging_utils import (  # noqa: E402
     generate_after_request_log,
     generate_before_request_log,
-)  # noqa: E402
+)
 from utils.permalink_generator import generate_passphrase  # noqa: E402
 
 aware_datetime = datetime.now(pytz.utc)

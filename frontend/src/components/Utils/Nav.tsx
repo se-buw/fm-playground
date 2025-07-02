@@ -172,7 +172,11 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                                 <MDBBtn color='danger' onClick={handleLogout} style={{ height: '38px' }}>
                                     Logout
                                 </MDBBtn>
-                                <MDBDropdownToggle split color='dark' style={{ flex: '0', height: '38px' }}></MDBDropdownToggle>
+                                <MDBDropdownToggle
+                                    split
+                                    color='dark'
+                                    style={{ flex: '0', height: '38px' }}
+                                ></MDBDropdownToggle>
                                 <MDBDropdownMenu style={{ minWidth: '200px' }}>
                                     <MDBDropdownItem link onClick={handleUserDataDownload}>
                                         Download Your Data
@@ -184,9 +188,9 @@ const Navbar: React.FC<NavbarProps> = ({ isDarkTheme, setIsDarkTheme }) => {
                             </MDBDropdown>
                         </>
                     ) : (
-                        <MDBBtn 
-                            rounded 
-                            color='primary' 
+                        <MDBBtn
+                            rounded
+                            color='primary'
                             href='/login'
                             style={{ height: '38px', display: 'flex', alignItems: 'center' }}
                         >

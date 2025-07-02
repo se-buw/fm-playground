@@ -94,26 +94,26 @@
 }
 
 /* Dark theme support */
-[data-theme="dark"] .resizable-resizer:hover {
+[data-theme='dark'] .resizable-resizer:hover {
     background-color: transparent;
 }
 
-[data-theme="dark"] .resizable-resizer.dragging {
+[data-theme='dark'] .resizable-resizer.dragging {
     background-color: transparent;
 }
 
-[data-theme="dark"] .resizer-handle {
+[data-theme='dark'] .resizer-handle {
     background: linear-gradient(135deg, #0d6efd, #0a58ca);
 }
 
-[data-theme="dark"] .resizer-handle::before {
+[data-theme='dark'] .resizer-handle::before {
     background-color: rgba(255, 255, 255, 0.9);
 }
 
-[data-theme="dark"] .resizable-resizer:hover .resizer-handle {
+[data-theme='dark'] .resizable-resizer:hover .resizer-handle {
     box-shadow: 0 2px 8px rgba(13, 110, 253, 0.4);
 }
 
-[data-theme="dark"] .resizable-resizer.dragging .resizer-handle {
+[data-theme='dark'] .resizable-resizer.dragging .resizer-handle {
     box-shadow: 0 4px 12px rgba(13, 110, 253, 0.5);
 }
