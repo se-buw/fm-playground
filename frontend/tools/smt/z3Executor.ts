@@ -48,9 +48,7 @@ export const executeZ3Wasm = async () => {
     const runWithTimeout = <T>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
         return Promise.race([
             promise,
-            new Promise<T>((_, reject) =>
-                setTimeout(() => reject(new Error("WASM load timeout")), timeoutMs)
-            ),
+            new Promise<T>((_, reject) => setTimeout(() => reject(new Error('WASM load timeout')), timeoutMs)),
         ]);
     };
 
