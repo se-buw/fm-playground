@@ -1,3 +1,6 @@
+import redis
+from limboole import run_limboole
+from redis_cache import RedisCache
 import os
 from typing import Union
 
@@ -7,9 +10,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
-import redis
-from limboole import run_limboole
-from redis_cache import RedisCache
+
 
 API_URL = os.getenv("API_URL")
 REDIS_URL = os.getenv("REDIS_URL")

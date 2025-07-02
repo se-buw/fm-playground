@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-from spectra import TIMEOUT
 
 
 def test_run_spectra_not_found(client: TestClient):
@@ -24,7 +23,6 @@ def test_run_spectra_success_ex1(client: TestClient):
 
 
 def test_run_spectra_success_timeout(client: TestClient):
-    TIMEOUT = 1
     response = client.get(
         "/spectra/run/?check=SPECTRA&p=aside-humped-random-very&command=check-realizability"
     )

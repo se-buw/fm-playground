@@ -1,7 +1,4 @@
-import concurrent.futures
-from unittest import mock
-
-from z3 import MAX_CONCURRENT_REQUESTS, prettify_error, process_commands, run_z3
+from z3 import run_z3
 
 valid_spec = """(declare-const a Int)
 (declare-const b Int)

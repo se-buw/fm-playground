@@ -1,6 +1,3 @@
-import concurrent.futures
-from unittest import mock
-
 from limboole import run_limboole
 
 valid_spec = """a & b"""

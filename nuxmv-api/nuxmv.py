@@ -36,7 +36,7 @@ def run_nuxmv(code: str) -> str:
     except subprocess.TimeoutExpired:
         os.remove(tmp_file.name)
         return (
-            f"<i style='color: red;'>Timeout: Process timed out after 60 seconds.</i>"
+            "<i style='color: red;'>Timeout: Process timed out after 60 seconds.</i>"
         )
 
 

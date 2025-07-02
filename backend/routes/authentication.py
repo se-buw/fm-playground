@@ -67,7 +67,7 @@ def auth(name):
             res = client.get("user", token=token)
             user = res.json()
             emails = client.get("user/emails")
-            primary_email = next(filter(lambda x: x["primary"] == True, emails.json()))
+            primary_email = next(filter(lambda x: x["primary"] is True, emails.json()))
             email = primary_email["email"]
             unique_id = f"github_{user['id']}"
 

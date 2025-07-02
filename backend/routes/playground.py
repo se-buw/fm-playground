@@ -1,14 +1,15 @@
 import sys
 
 sys.path.append("..")  # Adds higher directory to python modules path.
-import time
-from datetime import datetime
 
-import pytz
+import time  # noqa: E402
+from datetime import datetime  # noqa: E402
 
-aware_datetime = datetime.now(pytz.utc)
-from config import app, limiter
-from db.db_query import (
+import pytz  # noqa: E402
+from flask import Blueprint, jsonify, make_response, request, session  # noqa: E402
+
+from config import app, limiter  # noqa: E402
+from db.db_query import (  # noqa: E402
     code_exists_in_db,
     delete_user,
     get_code_by_data_id,
@@ -20,10 +21,14 @@ from db.db_query import (
     search_by_query,
     update_user_history_by_id,
 )
-from db.models import Code, Data, db
-from flask import Blueprint, jsonify, make_response, request, session
-from utils.logging_utils import generate_after_request_log, generate_before_request_log
-from utils.permalink_generator import generate_passphrase
+from db.models import Code, Data, db  # noqa: E402
+from utils.logging_utils import (
+    generate_after_request_log,
+    generate_before_request_log,
+)  # noqa: E402
+from utils.permalink_generator import generate_passphrase  # noqa: E402
+
+aware_datetime = datetime.now(pytz.utc)
 
 ERROR_LOGGEDIN_MESSAGE = "You are not logged in."
 TRY_AGAIN_MESSAGE = "There is a problem. Please try after some time."

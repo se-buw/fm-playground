@@ -36,14 +36,14 @@ def run_spectra(code: str, check: str) -> str:
     tmp_file = tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".spectra")
     tmp_file.write(code.strip().replace("\r\n", "\n"))
     tmp_file.close()
-    ## ==== Copy pattern files to the temp directory ====
+    # ==== Copy pattern files to the temp directory ====
     tmp_dir = os.path.dirname(tmp_file.name)
     pattern_files = glob.glob("lib/patterns/*")
     for file in pattern_files:
         dest = os.path.join(tmp_dir, os.path.basename(file))
         if not os.path.exists(dest):
             shutil.copy(file, tmp_dir)
-    ## ==== Run the spectra commands ====
+    # ==== Run the spectra commands ====
     if check == "check-realizability":
         command = [
             "java",

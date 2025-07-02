@@ -1,6 +1,5 @@
 import json
 
-from flask import jsonify
 from sqlalchemy import func
 
 from .models import Code, Data, User, db

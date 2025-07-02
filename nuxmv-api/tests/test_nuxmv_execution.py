@@ -5,7 +5,6 @@ from unittest import mock
 from nuxmv import (
     MAX_CONCURRENT_REQUESTS,
     prettify_error,
-    prettify_output,
     process_commands,
     run_nuxmv,
 )
