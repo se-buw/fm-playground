@@ -4,17 +4,20 @@ version = "2.17.0"
 description = "SMT Diff API for FM Playground"
 authors = ["Soaibuzzaman <soaibuzzaman@uni-weimar.de>"]
 license = "MIT"
-readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.13"
 fastapi = {extras = ["standard"], version = "^0.141.1"}
 httpx = "^0.28.1"
 requests = "^2.32.5"
 uvicorn = "^0.37.0"
 python-dotenv = "^1.0.1"
-z3-solver = "^4.15.3.0"
-sexpdata = "^1.0.2"
+z3-solver = ">=5.1.0.0,<6.0.0.0"
+# The smt-diff library is vendored for now. To fetch it from its repository instead,
+# replace this line with e.g. {git = "https://github.com/<org>/smt-diff.git", tag = "v0.1.0"}
+# and delete vendor/smt-diff.
+smt-diff = {path = "vendor/smt-diff", develop = true}
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^9.0.3"
