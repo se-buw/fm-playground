@@ -171,3 +171,69 @@ function extractBalancedParentheses(
         endIndex: endIndex,
     };
 }
+
+export interface AssertionSpan {
+    startLine: number; // 1-indexed
+    startColumn: number; // 1-indexed
+    endLine: number; // 1-indexed
+    endColumn: number; // 1-indexed, exclusive
+}
+
+const ASSERT_HEAD = /\(\s*assert[\s(]/y;
+
+/**
+ * Finds the position of every top-level assertion in the editor content.
+ * Assertions may span multiple lines; comments, strings and quoted symbols are skipped.
+ */
+export function findAssertionSpans(editorContent: string): AssertionSpan[] {
+    const spans: AssertionSpan[] = [];
+    let line = 1;
+    let col = 1;
+    let depth = 0;
+    let inComment = false;
+    let inString = false;
+    let inQuotedSymbol = false;
+    let current: { startLine: number; startColumn: number } | null = null;
+
+    for (let i = 0; i < editorContent.length; i++) {
+        const char = editorContent[i];
+
+        if (char === '\n') {
+            inComment = false;
+            line++;
+            col = 1;
+            continue;
+        }
+
+        if (inComment) {
+            // skip until end of line
+        } else if (inString) {
+            if (char === '"') inString = false;
+        } else if (inQuotedSymbol) {
+            if (char === '|') inQuotedSymbol = false;
+        } else if (char === ';') {
+            inComment = true;
+        } else if (char === '"') {
+            inString = true;
+        } else if (char === '|') {
+            inQuotedSymbol = true;
+        } else if (char === '(') {
+            if (depth === 0) {
+                ASSERT_HEAD.lastIndex = i;
+                if (ASSERT_HEAD.test(editorContent)) {
+                    current = { startLine: line, startColumn: col };
+                }
+            }
+            depth++;
+        } else if (char === ')') {
+            depth = Math.max(0, depth - 1);
+            if (depth === 0 && current) {
+                spans.push({ ...current, endLine: line, endColumn: col + 1 });
+                current = null;
+            }
+        }
+        col++;
+    }
+
+    return spans;
+}

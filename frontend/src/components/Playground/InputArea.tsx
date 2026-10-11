@@ -26,6 +26,7 @@ import CopyToClipboardBtn from '@/components/Utils/CopyToClipboardBtn';
 import LspEditor from './LspEditor';
 import Editor from './Editor';
 import { setupAlloyRedundancyCodeLens } from '@/../tools/alloy/features';
+import { setupSmtRedundancyCodeLens } from '@/../tools/smt/features';
 import { additionalInputAreaUiMap, lspSupportMap } from '@/ToolMaps';
 
 // Collaborative editing - lazy-loaded and gated behind env var
@@ -69,6 +70,7 @@ const InputArea: React.FC<InputAreaProps> = ({ editorTheme, onRunButtonClick, on
         activeMonacoRef.current = monaco;
         setEditorInstanceKey((prev) => prev + 1);
         setupAlloyRedundancyCodeLens(monaco);
+        setupSmtRedundancyCodeLens(monaco);
     };
 
     const onRunButtonClickRef = useRef(onRunButtonClick);

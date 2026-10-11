@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { smtModelAtom, outputPreviewHeightAtom, outputAtom } from '@/atoms';
 import { getNextSmtModel } from '../smtIterateModels';
 import { jotaiStore, permalinkAtom } from '@/atoms';
 import { logToDb } from '@/api/playgroundApi';
 import { smtCliOptionsAtom } from '@/atoms';
+import { SmtRedundancySummary, smtRedundancySummaryAtom } from '../features';
 
 const SmtOutput = () => {
     const [smtModel, setSmtModel] = useAtom(smtModelAtom);
@@ -21,6 +22,7 @@ const SmtOutput = () => {
     const [hasModel, setHasModel] = useState(false);
     const [isModelIterationMode, setIsModelIterationMode] = useState(false); // Track if this is model iteration mode
     const [smtCheckOption] = useAtom(smtCliOptionsAtom);
+    const redundancySummary = useAtomValue(smtRedundancySummaryAtom);
 
     //Update the model in the state when the API response is received
     useEffect(() => {
@@ -173,8 +175,14 @@ const SmtOutput = () => {
         return isModelIterationMode && specId !== null;
     };
 
+    // An explanation has nothing else to show, so the summary replaces the output panel
+    if (redundancySummary?.kind === 'explain') {
+        return <SmtRedundancySummary />;
+    }
+
     return (
         <div>
+            <SmtRedundancySummary />
             {hasModel ? (
                 <div>
                     <pre
