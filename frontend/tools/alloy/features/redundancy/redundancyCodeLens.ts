@@ -24,7 +24,7 @@ function isVscodeApiReady(): boolean {
 }
 
 
-export let isCodeLensEdit = false;
+export let isAlloyCodeLensEdit = false;
 
 export function triggerAlloyCodeLensUpdate() {
     if (codeLensEmitter) {
@@ -58,9 +58,9 @@ function handleCommentOutConstraint(constraint: AlloyRedundantConstraint) {
     }
 
     const updatedCode = lines.join('\n');
-    isCodeLensEdit = true;
+    isAlloyCodeLensEdit = true;
     jotaiStore.set(editorValueAtom, updatedCode);
-    setTimeout(() => { isCodeLensEdit = false; }, 100);
+    setTimeout(() => { isAlloyCodeLensEdit = false; }, 100);
 
     const currentResults = jotaiStore.get(alloyRedundancyResultsAtom);
     if (currentResults && currentResults.redundantConstraints) {
@@ -116,9 +116,9 @@ function handleRemoveConstraint(constraint: AlloyRedundantConstraint) {
     lines.splice(Math.min(s, e) - 1, linesToRemoveCount);
 
     const updatedCode = lines.join('\n');
-    isCodeLensEdit = true;
+    isAlloyCodeLensEdit = true;
     jotaiStore.set(editorValueAtom, updatedCode);
-    setTimeout(() => { isCodeLensEdit = false; }, 100);
+    setTimeout(() => { isAlloyCodeLensEdit = false; }, 100);
 
     const currentResults = jotaiStore.get(alloyRedundancyResultsAtom);
     if (currentResults && currentResults.redundantConstraints) {
