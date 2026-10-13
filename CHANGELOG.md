@@ -1,10 +1,14 @@
 # Change Log
 
+## v2.18.0[2026-10-13]
+
+- Integrated SMT code lens and summary to the editor
+
 ## v2.17.0[2026-09-07]
 
 - Integrated Alloy Diff
 
-## v2.16.0[2026-08-04]
+## v2.16.0[2026-08-04]F
 
 - Upgraded Langium grammar to 4
 - Fixed Alloy parsing issues
